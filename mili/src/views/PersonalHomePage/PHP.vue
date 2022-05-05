@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background-color: #f8f8f7">
     <el-container>
       <el-aside width="130px"></el-aside>
       <el-container>
@@ -14,19 +14,19 @@
           >
             <el-menu-item index="1" class="headcol">
               <span class="icomoon zy icohead"></span
-              ><span style="line-height=3em;"> 主页</span>
+              ><span class="catalogue"> 主页</span>
             </el-menu-item>
             <el-menu-item index="2" class="headcol">
               <span class="icomoon hj icohead"></span
-              ><span style="line-height=3em;"> 合集</span>
+              ><span class="catalogue"> 合集</span>
             </el-menu-item>
             <el-menu-item index="3" class="headcol">
               <span class="icomoon sc icohead"></span
-              ><span style="line-height=3em;"> 收藏</span>
+              ><span class="catalogue"> 收藏</span>
             </el-menu-item>
             <el-menu-item index="4" class="headcol">
               <span class="icomoon sz icohead"></span
-              ><span style="line-height=3em;"> 设置</span>
+              ><span class="catalogue"> 设置</span>
             </el-menu-item>
           </el-menu>
         </el-header>
@@ -87,7 +87,7 @@
               <!-- 间隔 -->
               <el-footer style="height: 2vh; width: 100%"></el-footer>
               <!-- 公告 -->
-              <div class="asd box">
+              <div style="width: 49vh">
                 <div class="NoticeTitle">公告</div>
                 <div>
                   <el-input
@@ -214,7 +214,7 @@ body {
 }
 .el-menu {
   position: relative;
-  width: 100%;
+  width: 99%;
   height: 6.7vh;
   display: flex;
   justify-content: space-between;
@@ -222,13 +222,18 @@ body {
   background: linear-gradient(rgb(255, 248, 241), white 80%);
   opacity: 0.97;
   box-shadow: 0 1px 4px 0 rgb(58 62 81 / 20%);
-  margin-left: 0 !important;
+  margin-left: 0.5% !important;
   margin-right: 0 !important;
   top: 23vh !important;
   border-radius: 0.9vh;
 }
 .el-menu-item {
   height: 3.5em;
+}
+
+.catalogue {
+  line-height: 3em;
+  text-align: center;
 }
 
 .headcol {
