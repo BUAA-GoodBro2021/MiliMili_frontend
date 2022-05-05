@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix title">
-        <span>个人信息</span>
+        <span class="title">个人信息</span>
       </div>
       <!-- 表单 -->
       <!-- 头像 -->
@@ -94,6 +94,10 @@ export default {
   border-color: white;
   opacity: 75%;
   height: 86%;
+}
+
+.title {
+  font-size: 1.2em;
 }
 
 .AvaBox {
