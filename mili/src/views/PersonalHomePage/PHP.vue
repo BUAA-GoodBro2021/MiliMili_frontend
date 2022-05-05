@@ -3,21 +3,32 @@
     <el-container>
       <el-aside width="130px"></el-aside>
       <el-container class="box">
+        <!-- 头部 -->
         <el-header>
-          <el-row :gutter="60">
-            <ek-col class="headcol">
+          <el-menu
+            :default-active="activeIndex"
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="handleSelect"
+            active-text-color="rgb(184, 147, 48)"
+          >
+            <el-menu-item index="1" class="headcol">
               <span class="icomoon zy icohead"></span
-              ><span style="line-height=3em"> 主页</span>
-            </ek-col>
-            <ek-col class="headcol">
-              <span class="icomoon sc icohead"></span><span> 收藏</span>
-            </ek-col>
-            <ek-col class="headcol">
-              <span class="icomoon sz icohead"></span><span> 设置</span>
-            </ek-col>
-          </el-row>
+              ><span style="line-height=3em;"> 主页</span>
+            </el-menu-item>
+            <el-menu-item index="2" class="headcol">
+              <span class="icomoon sc icohead"></span
+              ><span style="line-height=3em;"> 收藏</span>
+            </el-menu-item>
+            <el-menu-item index="3" class="headcol">
+              <span class="icomoon sz icohead"></span
+              ><span style="line-height=3em;"> 设置</span>
+            </el-menu-item>
+          </el-menu>
         </el-header>
+        <!-- 间隔 -->
         <el-footer style="height: 5vh; width: 100%"></el-footer>
+        <!-- 主体 -->
         <el-container>
           <el-main class="box"></el-main>
           <el-aside width="13px"></el-aside>
@@ -59,16 +70,21 @@
   height: 61px;
   box-shadow: 0 1px 4px 0 rgb(58 62 81 / 20%);
 }
-.el-row {
+.el-menu {
   position: relative;
   width: 100%;
+  height: 6.7vh;
   display: flex;
   justify-content: space-between;
   background: white;
   box-shadow: 0 1px 4px 0 rgb(58 62 81 / 20%);
   margin-left: 0 !important;
   margin-right: 0 !important;
-  top: 22vh !important;
+  top: 23vh !important;
+  /* color: rgb(184, 147, 48); */
+}
+.el-menu-item {
+  height: 3.5em;
 }
 
 .headcol {
@@ -76,7 +92,9 @@
 }
 
 .icohead {
-  font-size: 1.7em;
+  font-size: 1.8em;
+  line-height: 2em;
+  text-align: center;
 }
 .zy {
   color: rgb(39, 207, 81);
