@@ -12,6 +12,11 @@
             @select="handleSelect"
             active-text-color="rgb(206, 160, 36)"
           >
+            <div>
+              <el-avatar :size="60" :src="ava"></el-avatar>
+              <p class="Uname" v-text="name"></p>
+              <p v-text="introduce" class="Uintro"></p>
+            </div>
             <el-menu-item index="1" class="headcol">
               <span class="icomoon zy icohead"></span
               ><span class="catalogue"> 主页</span>
@@ -74,13 +79,13 @@
                     target="_blank"
                     class="UcreateItem1 UserCreateItem"
                     ><span class="el-icon-upload2"></span
-                    ><span class="i-m-text">视频投稿</span></a
+                    ><span class="i-m-text"> 视频投稿</span></a
                   ><a
                     href="#"
                     target="_blank"
                     class="UcreateItem2 UserCreateItem"
                     ><span class="el-icon-menu"></span
-                    ><span class="i-m-text">内容管理</span></a
+                    ><span class="i-m-text"> 内容管理</span></a
                   >
                 </div>
               </div>
@@ -109,6 +114,19 @@
     </el-container>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      ava: "http://n.sinaimg.cn/sinacn10116/581/w633h748/20190612/95d6-hyeztyt1927097.jpg",
+      name: "ZQRui",
+      introduce: "whatever",
+    };
+  },
+};
+</script>
+
 
 <style scoped>
 /* 内外边距清零 */
@@ -234,6 +252,28 @@ body {
 .catalogue {
   line-height: 3em;
   text-align: center;
+  transform: 0.2s;
+}
+.catalogue:hover {
+  color: rgb(206, 160, 36);
+}
+
+.el-avatar {
+  margin-left: -25vh;
+  margin-top: -5vh;
+}
+
+.Uname {
+  font-size: 2em;
+  color: rgb(61, 56, 50);
+  text-align: center;
+  margin-top: -6vh;
+}
+.Uintro {
+  font-size: 0.4em;
+  text-align: center;
+  color: #b8b8b8;
+  float: left;
 }
 
 .headcol {
@@ -243,7 +283,6 @@ body {
 .icohead {
   font-size: 1.8em;
   line-height: 2em;
-  text-align: center;
 }
 .zy {
   color: rgb(39, 207, 81);
