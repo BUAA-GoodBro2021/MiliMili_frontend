@@ -122,6 +122,7 @@ export default {
       ava: "http://n.sinaimg.cn/sinacn10116/581/w633h748/20190612/95d6-hyeztyt1927097.jpg",
       name: "ZQRui",
       introduce: "whatever",
+      textarea: "",
     };
   },
 };
@@ -249,13 +250,17 @@ body {
   height: 3.5em;
 }
 
+.headcol {
+  line-height: 3em;
+}
+.headcol:hover {
+  color: rgb(206, 160, 36) !important;
+}
+
 .catalogue {
   line-height: 3em;
   text-align: center;
   transform: 0.2s;
-}
-.catalogue:hover {
-  color: rgb(206, 160, 36);
 }
 
 .el-avatar {
@@ -274,10 +279,6 @@ body {
   text-align: center;
   color: #b8b8b8;
   float: left;
-}
-
-.headcol {
-  line-height: 3em;
 }
 
 .icohead {
