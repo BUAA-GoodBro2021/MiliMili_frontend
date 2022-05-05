@@ -24,6 +24,11 @@ const routes = [
         name: 'PersonalHomePage',
         component: () => import('../views/PersonalHomePage/PHP.vue'),
       },
+      {
+        path: '/PersonalInfromation',
+        name: 'PersonalInformation',
+        component: () => import('../views/PersonalHomePage/PIFM.vue'),
+      },
       //在这里填写的路由都将获得header
     ]
   },
