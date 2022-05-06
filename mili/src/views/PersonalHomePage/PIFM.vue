@@ -6,7 +6,7 @@
       </div>
       <!-- 表单 -->
       <!-- 头像 -->
-      <div style="padding: 20px 0">
+      <div style="padding: 20px 0; margin-top: -3vh">
         <div class="AvaBox">
           <a href="#">
             <div class="ChangeAva">

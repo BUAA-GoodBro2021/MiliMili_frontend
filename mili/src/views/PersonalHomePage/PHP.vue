@@ -12,11 +12,11 @@
             @select="handleSelect"
             active-text-color="rgb(206, 160, 36)"
           >
-            <div>
+            <a href="/PersonalInfromation">
               <el-avatar :size="60" :src="ava"></el-avatar>
               <p class="Uname" v-text="name"></p>
               <p v-text="introduce" class="Uintro"></p>
-            </div>
+            </a>
             <el-menu-item index="1" class="headcol">
               <span class="icomoon zy icohead"></span
               ><span class="catalogue"> 主页</span>
