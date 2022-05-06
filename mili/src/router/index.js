@@ -8,7 +8,7 @@ const routes = [
     path: '/',
     redirect: '/index',
     component: () => import('../views/HomePage/HeadView.vue'),
-    children:[
+    children: [
       {
         path: '/index',
         name: 'IndexPage',
@@ -18,6 +18,16 @@ const routes = [
         path: '/homepage',
         name: 'HomePage',
         component: () => import('../views/HomePage/HomeView.vue'), //视频主页
+      },
+      {
+        path: '/PersonalHomePage',
+        name: 'PersonalHomePage',
+        component: () => import('../views/PersonalHomePage/PHP.vue'),
+      },
+      {
+        path: '/PersonalInfromation',
+        name: 'PersonalInformation',
+        component: () => import('../views/PersonalHomePage/PIFM.vue'),
       },
       //在这里填写的路由都将获得header
     ]
@@ -35,7 +45,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode:'history',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes,
 })
