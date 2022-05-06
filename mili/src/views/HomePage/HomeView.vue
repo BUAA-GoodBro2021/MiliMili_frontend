@@ -1,6 +1,7 @@
 <template>
     <div>
-        <!-- 推荐部分 传递的值为六个视频的信息 -->
+        <!-- 推荐部分 传递的值为六个视频的信息 -->\
+    <el-footer style="height: 30px; width: 100%"></el-footer>
     <Recommend />
     <Block />
     </div>

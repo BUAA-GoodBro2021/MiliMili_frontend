@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div  >
     <div class="header">
-      <img src="@/assets/logo/milimili.png" width="150px" height="61px" style="margin-right: 300px" />
+      <img src="@/assets/logo/logo.png" width="150px" height="61px" style="margin-right: 200px;margin-left:100px;" />
       <div class="search">
         <el-input clearable placeholder="请输入您要搜索的内容" class="input"> </el-input>
         <i class="el-icon-search" />
@@ -43,6 +43,10 @@ export default {
 <style scoped>
 .header {
   margin: 0;
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
