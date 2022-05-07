@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="whole_wrap">
+      <Header />
       <img class="background" src="@/assets/PHP/BG5.png" />
       <div class="login_wrap">
         <div class="banner">
@@ -61,7 +62,7 @@
   </div>
 </template>
 <script>
-//import Header from "@/components/HomePage/Header.vue";
+import Header from "@/components/HomePage/Header.vue";
 export default {
   data() {
     return {
@@ -104,7 +105,7 @@ export default {
       this.imgFocus = false;
     },
   },
-  //components: { Header },
+  components: { Header },
 };
 </script>
 <style scoped>
@@ -130,7 +131,6 @@ export default {
   height: 320px;
   border-radius: 0 0 10px 10px;
   border-top: solid 1px;
-  /* background-color: rgba(255, 255, 255, 0.51); */
   background-color: rgba(255, 255, 255, 0.51);
 }
 .login_form {
