@@ -23,11 +23,15 @@ jobs:
           npm install
           CI=false npm run build
           
+      - name: Tar dist file
+        run: |
+          tar -zcvf dist.tar.gz dist # 打包dist文件夹  
+    
       - name: transfer
-        uses: garygrossgarten/github-action-ftp@release
+        uses: garygrossgarten/github-action-scp@release
         with:
-          local: ${{github.workspace}}/mili/dist
-          remote: ${{secrets.SERVER_DST_FOLDER}}/dist
+          local: ${{github.workspace}}/mili/dist.tar.gz
+          remote: ${{secrets.SERVER_DST_FOLDER}}/dist.tar.gz
           host: ${{secrets.SERVER_IP}}
           username: ${{secrets.SERVER_USERNAME}}
           password: ${{secrets.SERVER_PASSWORD}}
@@ -36,4 +40,5 @@ jobs:
 
       - name: reload
         run: |
-          sshpass -p ${{secrets.SERVER_PASSWORD}} ssh -o StrictHostKeyChecking=no ${{secrets.SERVER_USERNAME}}@${{secrets.SERVER_IP}} "nginx -s reload"
+          sshpass -p ${{secrets.SERVER_PASSWORD}} ssh -o StrictHostKeyChecking=no ${{secrets.SERVER_USERNAME}}@${{secrets.SERVER_IP}} "cd {{secrets.SERVER_DST_FOLDER}};
+          rm -rf dist;tar -zxvf dist.tar.gz;rm -rf dist.tar.gz;nginx -s reload"
