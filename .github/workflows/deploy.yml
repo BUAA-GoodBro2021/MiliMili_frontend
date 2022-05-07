@@ -19,14 +19,14 @@ jobs:
 
       - name: build
         run: |
-          cd ${{github.workspace}}
+          cd ${{github.workspace}}/mili
           npm install
           CI=false npm run build
           
       - name: transfer
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: ${{github.workspace}}/dist
+          local: ${{github.workspace}}/mili/dist
           remote: ${{secrets.SERVER_DST_FOLDER}}/dist
           host: ${{secrets.SERVER_IP}}
           username: ${{secrets.SERVER_USERNAME}}
