@@ -24,7 +24,7 @@ jobs:
           CI=false npm run build
           
       - name: transfer
-        uses: garygrossgarten/github-action-scp@release
+        uses: garygrossgarten/github-action-ftp@release
         with:
           local: ${{github.workspace}}/mili/dist
           remote: ${{secrets.SERVER_DST_FOLDER}}/dist
