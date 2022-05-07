@@ -48,7 +48,7 @@
           </el-form>
           <div class="btn">
             <el-button type="warning" plain>登录</el-button>
-            <el-button type="warning" plain>注册</el-button>
+            <!-- <el-button type="warning" plain>注册</el-button> -->
           </div>
           <!-- <div class="login_footer">
             没有账号?
