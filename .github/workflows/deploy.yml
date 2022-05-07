@@ -39,14 +39,15 @@ jobs:
 #           rmRemote: true
 #           dotfiles: true
 
-      - name: setup
-        run: |
-          npm install
+#       - name: setup
+#         run: |
+#           npm install
       
       - name: reload
         run: |
           sshpass -p ${{secrets.SERVER_PASSWORD}} ssh -o StrictHostKeyChecking=no ${{secrets.SERVER_USERNAME}}@${{secrets.SERVER_IP}} "git clone https://github.com/BUAA-GoodBro2021/MiliMili_frontend.git;
           cd mili/;
+          npm install;
           npm run build;
           mv dist {{secrets.SERVER_DST_FOLDER}};
           cd {{secrets.SERVER_DST_FOLDER}};
