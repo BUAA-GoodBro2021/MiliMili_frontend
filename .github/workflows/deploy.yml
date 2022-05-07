@@ -25,6 +25,7 @@ jobs:
           
       - name: Tar dist file
         run: |
+          cd ${{github.workspace}}/mili
           tar -zcvf dist.tar.gz dist # 打包dist文件夹  
     
       - name: transfer
