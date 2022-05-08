@@ -26,7 +26,7 @@
 </template>
 <script>
 import Video from "@/components/VideoDetail/VideoCover.vue";
-import Sort from "@/components/VideoDetail/SortView.vue";
+import Sort from "@/components/HomePage/SortView.vue";
 export default {
   props: {
       block:{

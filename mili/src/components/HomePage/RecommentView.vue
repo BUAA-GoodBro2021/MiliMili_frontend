@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="block_warp" style="margin-top: 30px">
-      <el-carousel :interval="3000" type="card" height="400px">
+      <el-carousel :interval="4000" type="card" height="400px">
         <el-carousel-item v-for="(item, index) in videos" :key="index">
           <div class="video_warp">
             <div class="cover_warp">
               <img
-                width="600px"
+                width="680px"
                 height="400px"
                 src="@/assets/debug/cover1.jpeg"
                 style="
