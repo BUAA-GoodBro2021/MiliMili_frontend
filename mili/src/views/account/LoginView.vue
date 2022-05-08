@@ -50,15 +50,7 @@
             <el-button type="warning" plain>登录</el-button>
             <el-button type="warning" plain>注册</el-button>
           </div>
-          <!-- <div class="login_footer">
-            没有账号?
-            <router-link to="/homepage" class="login_register"
-              >立即注册</router-link
-            >
-          </div> -->
-          <div >自动部署成功了没有呀  20373638 侯博</div>
         </div>
-        <div >自动部署成功了没有呀  20373638 侯博</div>
       </div>
     </div>
   </div>
