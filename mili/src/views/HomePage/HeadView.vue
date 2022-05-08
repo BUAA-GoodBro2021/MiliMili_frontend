@@ -1,15 +1,13 @@
 <template>
   <div>
-    <DynamicBanner />
     <Header />
   </div>
 </template>
 <script>
-import Header from '@/components/HomePage/Header.vue'
-import DynamicBanner from '@/components/HomePage/DynamicBanner.vue';
+import Header from '@/components/HomePage/HeaderPage.vue'
 export default {
   name: "HeadView",
-  components:{ Header, DynamicBanner }
+  components:{ Header}
 };
 </script>
 <style scoped>

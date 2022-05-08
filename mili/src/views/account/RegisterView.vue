@@ -77,7 +77,7 @@
   </div>
 </template>
 <script>
-import Header from "@/components/HomePage/Header.vue";
+import Header from "@/components/HomePage/HeaderPage.vue";
 export default {
   data() {
     return {
