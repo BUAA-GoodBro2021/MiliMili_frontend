@@ -6,43 +6,43 @@
     <DynamicBanner />
     <!-- 分区总览和快捷键 -->
     <el-footer style="height: 20px; width: 100%"></el-footer>
-    <div style="padding-left: 20px">
-      <div class="blocks">
-        <div class="block_tags">
-          <div v-for="(item, index) in blocks" :key="index">
-            <!-- todo加个click跳转到对应的item路由 -->
-            <el-tag
-              style="margin: 7px 10px 10px 10px; width: 90px"
-              :type="tagColor[index]"
-              >{{ item }}</el-tag
-            >
-          </div>
-        </div>
-        <div class="block_others">
-          <div class="card" style="background: #1ec1d9b1">
-            <router-link to="" style="text-decoration: none">
-              <i class="el-icon-upload iconImg" />
-              <span class="text"> 上传视频</span>
-            </router-link>
-          </div>
-          <div class="card" style="background: #307ad5b1">
-            <router-link to="" style="text-decoration: none">
-              <i class="el-icon-user iconImg" /><span class="text">
-                个人中心</span
-              >
-            </router-link>
-          </div>
-          <div class="card" style="background: #d94da6b1">
-            <router-link to="" style="text-decoration: none">
-              <i class="el-icon-chat-line-round iconImg" /><span class="text">
-                私信管理</span
-              >
-            </router-link>
-          </div>
+    <div class="blocks">
+      <div class="block_tags">
+        <div v-for="(item, index) in blocks" :key="index">
+          <!-- todo加个click跳转到对应的item路由 -->
+          <el-tag
+            style="margin: 7px 10px 10px 10px; width: 90px"
+            :type="tagColor[index]"
+            >{{ item }}</el-tag
+          >
         </div>
       </div>
-      <!-- 幻灯片 -->
-      <Recommend />
+      <div class="block_others">
+        <div class="card" style="background: #1ec1d9b1">
+          <router-link to="" style="text-decoration: none">
+            <i class="el-icon-upload iconImg" />
+            <span class="text"> 上传视频</span>
+          </router-link>
+        </div>
+        <div class="card" style="background: #307ad5b1">
+          <router-link to="" style="text-decoration: none">
+            <i class="el-icon-user iconImg" /><span class="text">
+              个人中心</span
+            >
+          </router-link>
+        </div>
+        <div class="card" style="background: #d94da6b1">
+          <router-link to="" style="text-decoration: none">
+            <i class="el-icon-chat-line-round iconImg" /><span class="text">
+              私信管理</span
+            >
+          </router-link>
+        </div>
+      </div>
+    </div>
+    <!-- 幻灯片 -->
+    <Recommend />
+    <div class="block_detail">
       <!-- 分区 -->
       <Block />
       <Block />
@@ -159,4 +159,5 @@ export default {
   font-size: 15px;
   display: block;
 }
+
 </style>
