@@ -50,8 +50,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* background: white; */
-  background-color: transparent;
+  background: transparent;/*----------------------------临时效果----------------------------------- */
   height: 61px;
   box-shadow: 0 1px 4px 0 rgb(58 62 81 / 20%);
 }
@@ -65,9 +64,6 @@ export default {
 }
 .el-menu {
   margin-left: auto;
-  background-color: transparent;
-}
-.el-menu-item{
-  background-color: transparent;
+  background-color: transparent;/*----------------------------临时效果----------------------------------- */
 }
 </style>
