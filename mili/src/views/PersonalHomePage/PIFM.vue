@@ -74,6 +74,7 @@ export default {
         introduce: "",
         ava: "http://n.sinaimg.cn/sinacn10116/581/w633h748/20190612/95d6-hyeztyt1927097.jpg",
       },
+      trans: true,
     };
   },
   methods: {

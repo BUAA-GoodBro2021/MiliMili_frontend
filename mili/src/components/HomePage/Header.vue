@@ -50,7 +50,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: white;
+  /* background: white; */
+  background-color: transparent;
   height: 61px;
   box-shadow: 0 1px 4px 0 rgb(58 62 81 / 20%);
 }
@@ -64,5 +65,9 @@ export default {
 }
 .el-menu {
   margin-left: auto;
+  background-color: transparent;
+}
+.el-menu-item{
+  background-color: transparent;
 }
 </style>
