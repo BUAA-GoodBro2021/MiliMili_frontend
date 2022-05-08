@@ -6,7 +6,7 @@
           <div class="video_warp">
             <div class="cover_warp">
               <img
-                width="680px"
+                width="670px"
                 height="400px"
                 src="@/assets/debug/cover1.jpeg"
                 style="

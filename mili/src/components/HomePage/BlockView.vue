@@ -163,5 +163,6 @@ export default {
     width: 360px;
     height: 550px;
     padding-top: 30px;
+    margin-left: 40px;
 }
 </style>
