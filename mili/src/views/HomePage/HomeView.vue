@@ -129,6 +129,7 @@ export default {
   display: flex;
 }
 .block_tags {
+    margin-left: 2vw;
   width: 65%;
   height: 100px;
   display: flex;
