@@ -187,7 +187,7 @@ body {
   background-color: rgba(255, 255, 255, 0.4);
 }
 .el-card {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {
