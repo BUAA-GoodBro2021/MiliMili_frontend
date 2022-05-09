@@ -24,7 +24,12 @@ const routes = [
         name: 'PersonalInformation',
         component: () => import('../views/PersonalHomePage/PIFM.vue'),
       },
-      //在这里填写的路由都将获得header
+      {
+        path: '/search',
+        name: 'SearchPage',
+        component: () => import('../views/HomePage/SearchView.vue')
+      },
+      //在这里填写的路由都将获得不透明header
     ]
   },
   {
