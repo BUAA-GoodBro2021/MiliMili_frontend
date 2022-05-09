@@ -156,10 +156,9 @@ export default {
   font-size: 1.5em;
   /* background: linear-gradient(-60deg, #fceabb70, #f8b60070); */
   /* background-color: rgba(167, 230, 255, 0.445); */
-  background: radial-gradient(
-    rgba(252, 196, 75, 0.6) 40%,
-    rgba(255, 229, 80, 0.6)
-  );
+  background-color: #fdf6ecc0;
+  border-color: #faecd8;
+  border: #faecd8 1px solid;
   /* rgba(202, 235, 16, 0.2) */
   /* background-color: rgba(0, 220, 236, 0.2); */
   width: 25vh;
