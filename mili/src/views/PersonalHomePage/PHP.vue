@@ -116,7 +116,11 @@
 </template>
 
 <script>
+// import video from "../../components/VideoDetail/VideoCover.vue";
 export default {
+  // components: {
+  //   video,
+  // },
   data() {
     return {
       ava: "http://n.sinaimg.cn/sinacn10116/581/w633h748/20190612/95d6-hyeztyt1927097.jpg",

@@ -29,6 +29,17 @@ const routes = [
         name: 'PersonalInformation',
         component: () => import('../views/PersonalHomePage/PIFM.vue'),
       },
+      {
+        path: '/PersonalContribution',
+        name: 'PersonalContribution',
+        component: () => import('../views/PersonalHomePage/PC.vue'),
+        children: [{
+          path: '/PChome',
+          name: 'PersonalContributionHome',
+          component: () => import('../components/PC/PChome.vue'),
+          hidden: true
+        }]
+      },
       //在这里填写的路由都将获得header
     ]
   },
