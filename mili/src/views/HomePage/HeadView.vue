@@ -1,6 +1,7 @@
 <template>
   <div>
     <Header />
+    <el-footer style="height: 61px; width: 100%"></el-footer>
     <router-view />
   </div>
 </template>
