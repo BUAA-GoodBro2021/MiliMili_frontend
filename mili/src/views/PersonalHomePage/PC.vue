@@ -42,10 +42,6 @@
             <i class="el-icon-chat-dot-square"></i>
             <span slot="title">私信管理</span>
           </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-magic-stick"></i>
-            <span slot="title">我的关注</span>
-          </el-menu-item>
         </el-menu>
       </el-head>
       <el-aside width="40vh"></el-aside>

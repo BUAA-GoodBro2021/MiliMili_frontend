@@ -22,16 +22,16 @@
               ><span class="catalogue"> 主页</span>
             </el-menu-item>
             <el-menu-item index="2" class="headcol">
-              <span class="icomoon hj icohead"></span
-              ><span class="catalogue"> 合集</span>
-            </el-menu-item>
-            <el-menu-item index="3" class="headcol">
               <span class="icomoon sc icohead"></span
               ><span class="catalogue"> 收藏</span>
             </el-menu-item>
+            <el-menu-item index="3" class="headcol">
+              <span class="icomoon sz icohead"></span
+              ><span class="catalogue"> 粉丝</span>
+            </el-menu-item>
             <el-menu-item index="4" class="headcol">
-              <span class="icomoon sz icohead"></span
-              ><span class="catalogue"> 设置</span>
+              <i class="el-icon-magic-stick sc icohead"></i>
+              <span class="catalogue"> 关注</span>
             </el-menu-item>
           </el-menu>
         </el-header>
