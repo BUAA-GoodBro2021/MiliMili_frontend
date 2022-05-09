@@ -68,7 +68,6 @@
       </el-main>
       <el-aside width="40vh"></el-aside>
     </el-container>
-    <router-view />
   </div>
 </template>
 
