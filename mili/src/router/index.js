@@ -25,6 +25,32 @@ const routes = [
         component: () => import('../views/PersonalHomePage/PIFM.vue'),
       },
       {
+        path: '/PersonalContribution',
+        name: 'PersonalContribution',
+        component: () => import('../views/PersonalHomePage/PC.vue'),
+        children: [{
+          path:'/PChome',
+          name: 'PersonalContributionHome',
+          component: () => import('../components/PC/PChome.vue'),
+          hidden: true
+        }, {
+          path: '/PCmanageVideo',
+          name: 'PersonalContributionManageVideo',
+          component: () => import('../components/PC/PCmanageVideo.vue'),
+          hidden: true
+        }, {
+          path: '/PCmanageComplaint',
+          name: 'PersonalContributionManageComplaint',
+          component: () => import('../components/PC/PCmanageComplaint.vue'),
+          hidden: true
+        }, {
+          path: '/PCMessage',
+          name: 'PersonalContributionMessage',
+          component: () => import('../components/PC/PCMessage.vue'),
+          hidden: true
+        }]
+      },
+      {
         path: '/search',
         name: 'SearchPage',
         component: () => import('../views/HomePage/SearchView.vue')
