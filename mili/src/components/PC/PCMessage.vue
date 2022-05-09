@@ -101,7 +101,7 @@ export default {
 }
 .tabs >>> .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active,
 .tabs >>> .el-tabs--border-card > .el-tabs__header .el-tabs__item:hover {
-  color: #46c1fa;
+  color: #9446fa;
   background-color: transparent;
   border: none;
 }

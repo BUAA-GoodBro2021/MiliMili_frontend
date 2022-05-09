@@ -127,7 +127,7 @@ a {
 }
 
 a:hover {
-  color: #46c1fa;
+  color: #666;
 }
 
 button,
@@ -165,7 +165,7 @@ body {
 
 .mod_price {
   font-size: 14px;
-  color: #46c1fa;
+  color: #9446fa;
 }
 
 @font-face {
@@ -219,19 +219,19 @@ body {
   color: #606266;
 }
 .el-menu-item.is-active {
-  color: #46c1fa;
+  color: #9446fa;
 }
 
 .el-tabs__item.is-active,
 .el-tabs__item:hover {
-  color: #46c1fa;
+  color: #9446fa;
 }
 .el-tabs__active-bar {
-  background-color: #46c1fa;
+  background-color: #9446fa;
 }
 
 body {
-  background-image: url("../../assets/PCM/BG12.jpg"); /*68 12*/
+  background-image: url("../../assets/PCM/BG15.png"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
