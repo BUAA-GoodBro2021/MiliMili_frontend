@@ -8,11 +8,18 @@
         style="margin-right: 190px; margin-left: 100px"
       />
       <div class="search">
-        <el-input clearable placeholder="请输入您要搜索的内容" class="input">
+        <el-input
+          clearable
+          placeholder="请输入您要搜索的内容"
+          class="input"
+          v-model="inputContext"
+        >
         </el-input>
         <i
           class="el-icon-search"
           :class="[headerMode ? 'text-transparent' : '']"
+          @click="searchContext()"
+          style="cursor: pointer"
         />
       </div>
       <el-menu
@@ -22,7 +29,10 @@
         :ellipsis="false"
       >
         <el-menu-item index="message">
-          <div class="message" :class="[headerMode ? 'text-transparent' : '']">
+          <div
+            class="message jump"
+            :class="[headerMode ? 'text-transparent' : '']"
+          >
             <i
               class="el-icon-chat-line-round"
               :class="[headerMode ? 'text-transparent' : '']"
@@ -31,7 +41,10 @@
           </div>
         </el-menu-item>
         <el-menu-item index="upload">
-          <div class="upload" :class="[headerMode ? 'text-transparent' : '']">
+          <div
+            class="upload jump"
+            :class="[headerMode ? 'text-transparent' : '']"
+          >
             <i
               class="el-icon-upload"
               :class="[headerMode ? 'text-transparent' : '']"
@@ -39,7 +52,7 @@
             <span>上传稿件</span>
           </div>
         </el-menu-item>
-        <el-submenu index="user">
+        <el-submenu index="user" class="jump">
           <template slot="title">
             <img class="avatar" /><i
               class="el-icon-user"
@@ -69,7 +82,16 @@ export default {
       },
     },
   },
-  methods: {},
+  data() {
+    return {
+      inputContext: "",
+    };
+  },
+  methods: {
+    searchContext: function () {
+      console.log(this.inputContext);
+    },
+  },
   watch: {
     headerMode(newName, oldName) {
       console.log(oldName + "->" + newName);
@@ -123,6 +145,13 @@ export default {
 }
 .text-transparent {
   color: white;
+}
+/* 图标浮动设置 */
+.jump {
+  transition: transform 0.5s;
+}
+.jump:hover {
+  transform: translate(0, -3px);
 }
 .el-menu-item:hover {
   background-color: transparent !important;

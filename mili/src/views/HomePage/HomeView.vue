@@ -111,7 +111,6 @@ export default {
         window.pageXOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
-      console.log(scrollTop);
       if (scrollTop < 150) {
         this.headMode = true;
       } else this.headMode = false;
