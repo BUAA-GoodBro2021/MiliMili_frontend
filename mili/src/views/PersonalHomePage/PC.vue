@@ -36,7 +36,7 @@
               <span slot="title">内容管理</span>
             </template>
             <el-menu-item index="/PCmanageVideo">稿件管理</el-menu-item>
-            <el-menu-item index="/PCmanageComplaint">申诉管理</el-menu-item>
+            <el-menu-item index="/PCmanageComplaint">投诉管理</el-menu-item>
           </el-submenu>
           <el-menu-item index="/PCMessage">
             <i class="el-icon-chat-dot-square"></i>
