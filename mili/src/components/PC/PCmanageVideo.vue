@@ -4,9 +4,9 @@
       <div slot="header" class="clearfix">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="全部稿件" name="first"> </el-tab-pane>
-          <el-tab-pane label="进行中" name="second"> </el-tab-pane>
-          <el-tab-pane label="已通过" name="third"> </el-tab-pane>
-          <el-tab-pane label="未通过" name="fourth"> </el-tab-pane>
+          <el-tab-pane label="自动审核" name="second"> </el-tab-pane>
+          <el-tab-pane label="人工审核" name="third"> </el-tab-pane>
+          <el-tab-pane label="已通过" name="fourth"> </el-tab-pane>
         </el-tabs>
       </div>
     </el-card>
