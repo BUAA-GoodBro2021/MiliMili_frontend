@@ -153,6 +153,10 @@ export default {
   font-size: 50px;
   margin-top: 10px;
   color: white;
+  transition: transform 0.5s;
+}
+.iconImg:hover{
+  transform: translate(0,-3px);
 }
 .text {
   color: white;

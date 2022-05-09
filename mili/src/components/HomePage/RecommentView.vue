@@ -143,9 +143,10 @@ export default {
   width: auto;
   height: auto;
   border-radius: 50px;
+  position: relative;
 }
 .cover_footer {
-  width: 600px;
+  width: 100%;
   line-height: 40px;
   font-size: 28px;
   position: absolute;
@@ -161,7 +162,7 @@ export default {
   line-height: 40px;
   display: inline-block;
   float: left;
-  margin-right: 25px;
+  margin-left: 25px;
   list-style: none;
   vertical-align: middle;
   color: white;
