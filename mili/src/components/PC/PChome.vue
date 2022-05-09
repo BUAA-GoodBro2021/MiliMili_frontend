@@ -154,7 +154,7 @@ export default {
 }
 .VideoData {
   font-size: 1.5em;
-  background: linear-gradient(-60deg, #fceabbb6, #f8b600ab);
+  background: linear-gradient(-60deg, #fceabb70, #f8b60070);
   width: 25vh;
   margin-left: 5.5vh;
   margin-top: 3vh;
