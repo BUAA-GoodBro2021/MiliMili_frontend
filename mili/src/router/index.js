@@ -20,7 +20,7 @@ const routes = [
         component: () => import('../views/PersonalHomePage/PHP.vue'),
       },
       {
-        path: '/PersonalInfromation',
+        path: '/PersonalInformation',
         name: 'PersonalInformation',
         component: () => import('../views/PersonalHomePage/PIFM.vue'),
       },
@@ -29,7 +29,7 @@ const routes = [
         name: 'PersonalContribution',
         component: () => import('../views/PersonalHomePage/PC.vue'),
         children: [{
-          path:'/PChome',
+          path: '/PChome',
           name: 'PersonalContributionHome',
           component: () => import('../components/PC/PChome.vue'),
           hidden: true
