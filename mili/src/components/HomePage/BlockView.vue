@@ -26,7 +26,7 @@
 </template>
 <script>
 import Video from "@/components/VideoDetail/VideoCover.vue";
-import Sort from "@/components/VideoDetail/SortView.vue";
+import Sort from "@/components/HomePage/SortView.vue";
 export default {
   props: {
       block:{
@@ -131,25 +131,27 @@ export default {
 <style scoped>
 .block_wrap{
     display: flex;
-    
+    width: 100%;
 }
 .block{
-    width: 1000px;
+    width: 75%;
     height: 550px;
+    margin-left: 3%;
 }
 .title{
-    width: 1000px;
+    width: 100%;
     height: 40px;
 }
 .videos{
-    width: 1000px;
+    width:  100%;
     height: 470px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 .title ul{
     line-height: 40px;
-    padding-left: 30px;
+    padding-left: 17px;
 }
 .title li{
     line-height: 40px;
@@ -160,8 +162,9 @@ export default {
     vertical-align: middle;
 }
 .sort{
-    width: 360px;
+    width: 22%;
     height: 550px;
-    padding-top: 30px;
+    padding-top: 10px;
+    margin-left: 40px;
 }
 </style>

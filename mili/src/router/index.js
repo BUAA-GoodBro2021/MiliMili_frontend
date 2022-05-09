@@ -15,11 +15,6 @@ const routes = [
         component: () => import('../views/HomePage/IndexView.vue'), //逼格界面
       },
       {
-        path: '/homepage',
-        name: 'HomePage',
-        component: () => import('../views/HomePage/HomeView.vue'), //视频主页
-      },
-      {
         path: '/PersonalHomePage',
         name: 'PersonalHomePage',
         component: () => import('../views/PersonalHomePage/PHP.vue'),
@@ -55,7 +50,13 @@ const routes = [
           hidden: true
         }]
       },
-      //在这里填写的路由都将获得header
+      {
+        //在这里填写的路由都将获得header
+        path: '/search',
+        name: 'SearchPage',
+        component: () => import('../views/HomePage/SearchView.vue')
+      },
+      //在这里填写的路由都将获得不透明header
     ]
   },
   {
@@ -67,7 +68,12 @@ const routes = [
     path: '/register',
     name: 'RegisterPage',
     component: () => import('../views/account/RegisterView.vue'),
-  }
+  },
+  {
+    path: '/homepage',
+    name: 'HomePage',
+    component: () => import('../views/HomePage/HomeView.vue'), //视频主页
+  },
 ]
 
 const router = new VueRouter({

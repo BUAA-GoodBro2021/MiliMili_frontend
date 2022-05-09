@@ -1,13 +1,12 @@
 <template>
   <div>
-    <div class="block_warp" style="margin-top: 30px">
-      <el-carousel :interval="3000" type="card" height="400px">
+    <div class="block_warp" style="margin-top: 30px;padding: 0 3vw 0vw 3vw;">
+      <el-carousel :interval="4000" type="card" height="400px">
         <el-carousel-item v-for="(item, index) in videos" :key="index">
           <div class="video_warp">
             <div class="cover_warp">
               <img
-                width="600px"
-                height="400px"
+                class="cover_img"
                 src="@/assets/debug/cover1.jpeg"
                 style="
                   border-radius: 30px;
@@ -107,7 +106,7 @@ export default {
       },
     },
   },
-  
+
   created() {
     console.log(this.videos);
   },
@@ -129,13 +128,20 @@ export default {
 .el-carousel__item:nth-child(2n + 1) {
   background-color: none;
 }
+.cover_img{
+  width: 100%;
+  height: 100%;
+}
 .video_warp {
-  height: 400px;
-  width: 600px;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 .cover_warp {
-  height: 400px;
-  width: 600px;
+  width: auto;
+  height: auto;
   border-radius: 50px;
 }
 .cover_footer {
