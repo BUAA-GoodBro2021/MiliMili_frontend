@@ -2,6 +2,9 @@
   <div class="tabs">
     <el-tabs type="border-card" tab-position="left">
       <el-tab-pane label="回复我的">
+        <div>
+          <div><span>回复我的</span></div>
+        </div>
         <ul
           class="infinite-list"
           v-infinite-scroll="loadCommits()"
@@ -113,5 +116,6 @@ export default {
 }
 .tabs >>> .el-tabs--border-card > .el-tabs__header .el-tabs__item {
   text-align: center;
+  font-weight: bold;
 }
 </style>
