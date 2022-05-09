@@ -91,7 +91,10 @@ export default {
   left: 20%;
   top: 10.5%;
   width: 60%;
-  background: linear-gradient(-60deg, #fceabb, #f8b500);
+  /* background: linear-gradient(-60deg, #fceabb, #f8b500); */
+  background-image: url("../../assets/PCM/BG6.jpg");
+  background-repeat: no-repeat;
+  background-size: auto 100%;
   border-color: white;
   opacity: 75%;
   height: 86%;
