@@ -38,6 +38,21 @@ const routes = [
           name: 'PersonalContributionHome',
           component: () => import('../components/PC/PChome.vue'),
           hidden: true
+        }, {
+          path: '/PCmanageVideo',
+          name: 'PersonalContributionManageVideo',
+          component: () => import('../components/PC/PCmanageVideo.vue'),
+          hidden: true
+        }, {
+          path: '/PCmanageComplaint',
+          name: 'PersonalContributionManageComplaint',
+          component: () => import('../components/PC/PCmanageComplaint.vue'),
+          hidden: true
+        }, {
+          path: '/PCMessage',
+          name: 'PersonalContributionMessage',
+          component: () => import('../components/PC/PCMessage.vue'),
+          hidden: true
         }]
       },
       //在这里填写的路由都将获得header
