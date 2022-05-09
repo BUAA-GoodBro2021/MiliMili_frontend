@@ -3,51 +3,87 @@
     <el-tabs type="border-card" tab-position="left">
       <el-tab-pane label="回复我的">
         <div>
-          <div><span>回复我的</span></div>
+          <div class="TabTitle"><span>回复我的</span></div>
         </div>
-        <ul
-          class="infinite-list"
-          v-infinite-scroll="loadCommits()"
-          style="overflow: auto"
-        >
-          <li v-for="item in commits">{{ item }}</li>
-        </ul>
-      </el-tab-pane>
-      <el-tab-pane label="@我的">
-        <ul
-          class="infinite-list"
-          v-infinite-scroll="loadAts()"
-          style="overflow: auto"
-        >
-          <li v-for="item in ats">{{ item }}</li>
-        </ul>
+        <div class="TabCard">
+          <ul
+            class="infinite-list"
+            v-infinite-scroll="loadCommits()"
+            style="overflow: auto"
+          >
+            <li v-for="item in commits">{{ item }}</li>
+          </ul>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="收到的赞">
-        <ul
-          class="infinite-list"
-          v-infinite-scroll="loadSupports()"
-          style="overflow: auto"
-        >
-          <li v-for="item in supports">{{ item }}</li>
-        </ul>
+        <div>
+          <div class="TabTitle"><span>收到的赞</span></div>
+        </div>
+        <div class="TabCard">
+          <ul
+            class="infinite-list"
+            v-infinite-scroll="loadAts()"
+            style="overflow: auto"
+          >
+            <li v-for="item in ats">{{ item }}</li>
+          </ul>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="收藏">
+        <div>
+          <div class="TabTitle"><span>收藏</span></div>
+        </div>
+        <div class="TabCard">
+          <ul
+            class="infinite-list"
+            v-infinite-scroll="loadSupports()"
+            style="overflow: auto"
+          >
+            <li v-for="item in supports">{{ item }}</li>
+          </ul>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="系统通知">
-        <ul
-          class="infinite-list"
-          v-infinite-scroll="loadNotices()"
-          style="overflow: auto"
-        >
-          <li v-for="item in notices">{{ item }}</li>
-        </ul>
+        <div>
+          <div class="TabTitle"><span>系统通知</span></div>
+        </div>
+        <div class="TabCard">
+          <ul
+            class="infinite-list"
+            v-infinite-scroll="loadNotices()"
+            style="overflow: auto"
+          >
+            <li v-for="item in notices">{{ item }}</li>
+          </ul>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="我的消息">
-        <ul
-          class="infinite-list"
-          v-infinite-scroll="loadMessages()"
-          style="overflow: auto"
-        >
-          <li v-for="item in messages">{{ item }}</li>
-        </ul>
+        <div>
+          <div class="TabTitle"><span>我的消息</span></div>
+        </div>
+        <div class="TabCard">
+          <ul
+            class="infinite-list"
+            v-infinite-scroll="loadMessages()"
+            style="overflow: auto"
+          >
+            <li v-for="item in messages">{{ item }}</li>
+          </ul>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="新增粉丝">
+        <div>
+          <div class="TabTitle"><span>新增粉丝</span></div>
+        </div>
+        <div class="TabCard">
+          <ul
+            class="infinite-list"
+            v-infinite-scroll="loadMessages()"
+            style="overflow: auto"
+          >
+            <li v-for="item in messages">{{ item }}</li>
+          </ul>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -91,11 +127,44 @@ export default {
   left: 53vh;
   top: 11.4vh;
 }
+.TabTitle {
+  height: 42px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 2px 4px 0 rgb(121 146 185 / 54%);
+  box-shadow: 0 2px 4px 0 rgb(121 146 185 / 54%);
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-size: 15px;
+  color: #666;
+  border-radius: 4px;
+}
+.TabCard {
+  padding: 2vh 1vh;
+  background-color: #fff;
+  -webkit-box-shadow: 0 2px 4px 0 rgb(121 146 185 / 54%);
+  box-shadow: 0 2px 4px 0 rgb(121 146 185 / 54%);
+  margin-bottom: 2vh;
+  border-radius: 5px;
+  margin-top: 1vh;
+  box-sizing: border-box;
+  display: flex;
+}
 
 .tabs >>> .el-tabs__nav-wrap,
 .tabs >>> .el-tabs__header {
   background-color: rgba(255, 255, 255, 0.4);
   border: none;
+  height: 87vh;
 }
 .tabs >>> .el-tabs--border-card {
   background: rgba(255, 255, 255, 0.3);
@@ -104,15 +173,15 @@ export default {
 }
 .tabs >>> .el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active,
 .tabs >>> .el-tabs--border-card > .el-tabs__header .el-tabs__item:hover {
-  color: #9446fa;
+  color: #46c1fa;
   background-color: transparent;
   border: none;
 }
 .tabs >>> .el-tabs--border-card > .el-tabs__header .el-tabs__item {
   transition: none;
   border: none;
-  margin-top: 2vh;
-  margin-bottom: 2vh;
+  margin-top: 2.4vh;
+  margin-bottom: 2.4vh;
 }
 .tabs >>> .el-tabs--border-card > .el-tabs__header .el-tabs__item {
   text-align: center;

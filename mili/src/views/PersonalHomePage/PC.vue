@@ -165,7 +165,7 @@ body {
 
 .mod_price {
   font-size: 14px;
-  color: #9446fa;
+  color: #46c1fa;
 }
 
 @font-face {
@@ -187,7 +187,7 @@ body {
   background-color: rgba(255, 255, 255, 0.4);
 }
 .el-card {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {
@@ -203,7 +203,7 @@ body {
 .el-menu-item:active,
 .el-submenu__title:hover,
 .el-submenu__title:active {
-  background-color: #fac14694;
+  background-color: #fdf3e5e5;
 }
 .el-radio-button__inner {
   width: 6vh;
@@ -215,23 +215,23 @@ body {
   background: rgba(255, 255, 255, 0.4);
 }
 .el-radio-button__inner:hover {
-  background-color: #fac14694;
+  background-color: #fdf3e5e5;
   color: #606266;
 }
 .el-menu-item.is-active {
-  color: #9446fa;
+  color: #46c1fa;
 }
 
 .el-tabs__item.is-active,
 .el-tabs__item:hover {
-  color: #9446fa;
+  color: #46c1fa;
 }
 .el-tabs__active-bar {
-  background-color: #9446fa;
+  background-color: #46c1fa;
 }
 
 body {
-  background-image: url("../../assets/PCM/BG15.png"); /*68 12*/
+  background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
