@@ -20,8 +20,9 @@ const routes = [
         component: () => import('../views/PersonalHomePage/PHP.vue'),
         children: [{
           path: '/PersonalHomePage/Main',
-          name: '/PersonalHomePage/Main',
-          component: () => import('../components/PHP/PHPMain.vue')
+          name: 'PersonalHomePage/Main',
+          component: () => import('../components/PHP/PHPMain.vue'),
+          hidden: true,
         }]
       },
       {

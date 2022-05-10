@@ -13,13 +13,17 @@
           </ul>
         </div>
         <div class="videos">
-          <div v-for="(item, index) in videos" :key="index" style="margin-left: 10px;margin-top:10px">
+          <div
+            v-for="(item, index) in videos"
+            :key="index"
+            style="margin-left: 10px; margin-top: 10px"
+          >
             <Video :singleVideo="item" />
           </div>
         </div>
       </div>
-      <div class="sort" >
-          <Sort />
+      <div class="sort">
+        <Sort />
       </div>
     </div>
   </div>
@@ -29,14 +33,14 @@ import Video from "@/components/VideoDetail/VideoCover.vue";
 import Sort from "@/components/HomePage/SortView.vue";
 export default {
   props: {
-      block:{
-          type: Object,
-          default(){
-              return {
-                  name: '鬼畜区',
-              };
-          }
+    block: {
+      type: Object,
+      default() {
+        return {
+          name: "鬼畜区",
+        };
       },
+    },
     videos: {
       type: Array,
       default() {
@@ -129,42 +133,42 @@ export default {
 };
 </script>
 <style scoped>
-.block_wrap{
-    display: flex;
-    width: 100%;
+.block_wrap {
+  display: flex;
+  width: 100%;
 }
-.block{
-    width: 75%;
-    height: 550px;
-    margin-left: 3%;
+.block {
+  width: 75%;
+  height: 550px;
+  margin-left: 3%;
 }
-.title{
-    width: 100%;
-    height: 40px;
+.title {
+  width: 100%;
+  height: 40px;
 }
-.videos{
-    width:  100%;
-    height: 470px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.videos {
+  width: 100%;
+  height: 470px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
-.title ul{
-    line-height: 40px;
-    padding-left: 17px;
+.title ul {
+  line-height: 40px;
+  padding-left: 17px;
 }
-.title li{
-    line-height: 40px;
-    display: inline-block;
-    float: left;
-    list-style: none;
-    margin-right: 30px;
-    vertical-align: middle;
+.title li {
+  line-height: 40px;
+  display: inline-block;
+  float: left;
+  list-style: none;
+  margin-right: 30px;
+  vertical-align: middle;
 }
-.sort{
-    width: 22%;
-    height: 550px;
-    padding-top: 10px;
-    margin-left: 40px;
+.sort {
+  width: 22%;
+  height: 550px;
+  padding-top: 10px;
+  margin-left: 40px;
 }
 </style>

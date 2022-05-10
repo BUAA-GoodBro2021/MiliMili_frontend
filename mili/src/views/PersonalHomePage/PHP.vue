@@ -11,6 +11,7 @@
             mode="horizontal"
             @select="handleSelect"
             active-text-color="rgb(206, 160, 36)"
+            router="true"
           >
             <a href="/PersonalInfromation">
               <el-avatar :size="60" :src="ava"></el-avatar>
