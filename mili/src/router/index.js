@@ -18,6 +18,11 @@ const routes = [
         path: '/PersonalHomePage',
         name: 'PersonalHomePage',
         component: () => import('../views/PersonalHomePage/PHP.vue'),
+        children: [{
+          path: '/PersonalHomePage/Main',
+          name: '/PersonalHomePage/Main',
+          component: () => import('../components/PHP/PHPMain.vue')
+        }]
       },
       {
         path: '/PersonalInformation',

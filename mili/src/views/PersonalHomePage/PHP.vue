@@ -17,7 +17,7 @@
               <p class="Uname" v-text="name"></p>
               <p v-text="introduce" class="Uintro"></p>
             </a>
-            <el-menu-item index="1" class="headcol">
+            <el-menu-item index="/PersonalHomePage/Main" class="headcol">
               <span class="icomoon zy icohead"></span
               ><span class="catalogue"> 主页</span>
             </el-menu-item>
@@ -40,7 +40,12 @@
         <!-- 主体 -->
         <el-container>
           <!-- 视频 -->
-          <el-main class="box"></el-main>
+          <el-main class="box">
+            <el-col :span="24" class="content-wrapper">
+              <transition name="fade" mode="out-in">
+                <router-view></router-view>
+              </transition> </el-col
+          ></el-main>
           <!-- 间隔 -->
           <el-aside width="1.5vh"></el-aside>
           <!-- 个人资料+创作中心+公告 -->
