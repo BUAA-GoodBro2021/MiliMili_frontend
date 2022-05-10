@@ -1,10 +1,21 @@
 <template>
   <div>
-    <div class="main">
-      <div class="listTop">
+    <div :class="[listType == 1 ? 'main' : '.main_personPage']">
+      <div :class="[listType == 1 ? 'listTop' : 'listTop_personPage ']">
         <span v-if="listType == 1">共有{{ users.length }}个搜索结果</span>
-        <span v-if="listType == 2">共有{{ users.length }}名粉丝</span>
-        <span v-if="listType == 3">共关注了{{ users.length }}人</span>
+        <span v-if="listType == 2" style="text-align: left; margin-left:5%;">共有{{ users.length }}名粉丝</span>
+        <span v-if="listType == 3" style="text-align: left; margin-left:5%;" >共关注了{{ users.length }}人</span>
+        <div class="pagination_personPage" v-if="listType != 1">
+          <el-pagination
+            hide-on-single-page
+            background
+            :page-size="pageSize"
+            layout="prev ,next"
+            :total="users.length"
+            @current-change="topicInit"
+            small
+          />
+        </div>
       </div>
       <div class="listCard">
         <div class="a_block" v-for="(item, index) in usersShow" :key="index">
@@ -12,7 +23,7 @@
         </div>
       </div>
       <!-- 页码 -->
-      <div class="pagination">
+      <div class="pagination" v-if="listType == 1">
         <el-pagination
           hide-on-single-page
           background
@@ -26,7 +37,7 @@
   </div>
 </template>
 <script>
-import UserCard from '@/components/PC/UserCard.vue'
+import UserCard from "@/components/PC/UserCard.vue";
 export default {
   props: {
     users: {
@@ -43,7 +54,7 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "桥哥",
             profile: "我爱五条悟！！！",
@@ -52,16 +63,16 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "Siri",
-            profile: "我爱五条悟！！！",
+            profile: "我爱丽塔！！！",
             avater_url: "@/assets/debug/avater1.jpg",
             followers: 15,
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "Zhoues",
             profile: "我爱五条悟！！！",
@@ -70,7 +81,7 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "骁儿",
             profile: "我爱五条悟！！！",
@@ -88,7 +99,7 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "桥哥",
             profile: "我爱五条悟！！！",
@@ -97,7 +108,7 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "Siri",
             profile: "我爱五条悟！！！",
@@ -106,7 +117,7 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "Zhoues",
             profile: "我爱五条悟！！！",
@@ -115,7 +126,7 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "骁儿",
             profile: "我爱五条悟！！！",
@@ -133,7 +144,7 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "桥哥",
             profile: "我爱五条悟！！！",
@@ -142,7 +153,7 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "Siri",
             profile: "我爱五条悟！！！",
@@ -151,7 +162,7 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "Zhoues",
             profile: "我爱五条悟！！！",
@@ -160,7 +171,7 @@ export default {
             videos: 7,
           },
           {
-              id: "1",
+            id: "1",
             isfollow: true,
             name: "骁儿",
             profile: "我爱五条悟！！！",
@@ -168,7 +179,6 @@ export default {
             followers: 15,
             videos: 7,
           },
-         
         ];
       },
     },
@@ -194,38 +204,58 @@ export default {
   methods: {
     topicInit: function (page) {
       if (this.users.length <= 0) return;
-      this.usersShow = this.users.slice(this.pageSize * (page - 1), this.pageSize * page);
+      this.usersShow = this.users.slice(
+        this.pageSize * (page - 1),
+        this.pageSize * page
+      );
     },
   },
-  created(){
-      this.topicInit(1)
+  created() {
+    this.topicInit(1);
+    console.log("listType:" + this.listType);
   },
-  components:{
-      UserCard
-  }
+  components: {
+    UserCard,
+  },
 };
 </script>
 <style scoped>
 .main {
   width: 100%;
   border-radius: 30px;
-  padding: 20px 20px 20px 20px;
-  background:  #fdf6ec;
+  background: #fdf6ec;
   overflow: auto;
+  margin-top: 10px;
+}
+.main_personPage {
+  width: 100%;
+  background: white;
+  overflow: auto;
+  margin-top: 20px;
 }
 .listTop {
   font-size: 15px;
+  margin-top: 10px;
+}
+.listTop_personPage {
+  font-size: 15px;
+  margin-top: 10px;
+  text-align: left;
 }
 .listCard {
-  margin: 20px 0;
+  margin: 10px 5%;
   height: auto;
-  width: 100%;
+  width: 90%;
 }
-.a_block{
-    margin-top: 10px;
+.a_block {
+  margin-top: 10px;
 }
 .pagination {
   float: right;
   margin: 10px auto;
+}
+.pagination_personPage{
+  float: right;
+  margin-right: 5%;
 }
 </style>

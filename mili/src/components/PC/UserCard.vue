@@ -12,8 +12,8 @@
           </li>
           <li>
             <div class="title_profile">
-              <span class="name">这里是姓名</span>
-              <span class="profile">我爱五条悟 </span>
+              <span class="name">{{user.name}}</span>
+              <span class="profile">{{user.profile}}</span>
             </div>
           </li>
           <li style="float: right; vertical-align: middle; line-height: 50px">
@@ -22,13 +22,13 @@
             >
           </li>
           <li
-            v-if="listType == 1 && user.isfollow == true"
+            v-if="listType != 3 && user.isfollow == true"
             style="float: right; vertical-align: middle; line-height: 50px"
           >
             <span class="follow">已关注 <i class="el-icon-check" /></span>
           </li>
           <li
-            v-if="listType == 1 && user.isfollow == false"
+            v-if="listType != 3 && user.isfollow == false"
             style="float: right; vertical-align: middle; line-height: 50px"
           >
             <el-button size="small" plain type="warning">关注</el-button>
@@ -82,9 +82,10 @@ export default {
 .card_wrap {
   height: 85px;
   border-radius: 10px;
-  border: solid 0.5px #e6a23ca9;
+  /* border: solid 2px rgb(233, 196, 214); */
+  border: solid 0.5px #ffb444a9;
   padding-top: 10px;
-  /* box-shadow: 0 2px 0 1px rgba(255, 223, 42, 0.734); */
+  box-shadow: 0 0.5px 0 0.5px #ffb444a9;
 }
 .card_body {
   height: 50px;
@@ -111,6 +112,8 @@ export default {
   height: 30px;
   line-height: 30px;
   cursor: pointer;
+  text-align: left;
+  display: block;
 }
 .profile {
   font-size: 13px;

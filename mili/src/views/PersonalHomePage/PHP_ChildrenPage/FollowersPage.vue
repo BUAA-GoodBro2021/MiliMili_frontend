@@ -1,113 +1,16 @@
 <template>
-  <div>
-    <div class="wrap">
-      <el-tabs v-model="activeName" @tab-click="handleClick" type="border-card">
-        <el-tab-pane label="视频" name="videos">
-          <div class="videos">
-            <div v-for="(item, index) in videos" :key="index" class="video">
-              <SingleVideo :singleVideo="item" />
-            </div>
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="用户" name="users">
-          <div class="users">
-            <PersonList :users="users" :ListType="1" :pageSize="7"/>
-          </div>
-        </el-tab-pane>
-      </el-tabs>
+  <div style="width: 100%; ">
+    <div class="list_wrap">
+      <PersonList :users="users" :listType="2" :pageSize="3"/>
     </div>
   </div>
 </template>
 <script>
-// import Header from "@/components/HomePage/HeaderPage.vue";
-import SingleVideo from "@/components/VideoDetail/VideoCover.vue";
 import PersonList from "@/components/PC/PersonList.vue";
 export default {
-  components: {  SingleVideo, PersonList },
+  components: { PersonList },
   data() {
     return {
-      videos: [
-        {
-          id: 1,
-          watch: 1111,
-          comments: 2357,
-          distance: "15:07",
-          title: "标题1",
-          follow: true,
-          sender: "Harbour",
-          video_url: "/assets/debug/cover1.jepg",
-        },
-        {
-          id: 1,
-          watch: 3330,
-          comments: 2222,
-          distance: "10:07",
-          title: "标题2",
-          follow: true,
-          sender: "Siri",
-          video_url: "/assets/debug/cover2.jpg",
-        },
-        {
-          id: 1,
-          watch: 3330,
-          comments: 2357,
-          distance: "15:07",
-          title: "标题3",
-          follow: false,
-          sender: "桥哥",
-          video_url: "/assets/debug/cover1.jepg",
-        },
-        {
-          id: 1,
-          watch: 4440,
-          comments: 5557,
-          distance: "12:07",
-          title: "标题4",
-          follow: true,
-          sender: "Zhoues",
-          video_url: "/assets/debug/cover2.jpg",
-        },
-        {
-          id: 1,
-          watch: 3330,
-          comments: 2357,
-          distance: "15:07",
-          title: "标题5",
-          follow: true,
-          sender: "骁儿",
-          video_url: "/assets/debug/cover1.jepg",
-        },
-        {
-          id: 1,
-          watch: 5555,
-          comments: 6666,
-          distance: "3:07",
-          title: "这里是标题",
-          follow: true,
-          sender: "Harbour",
-          video_url: "/assets/debug/cover2.jpg",
-        },
-        {
-          id: 1,
-          watch: 5555,
-          comments: 6666,
-          distance: "3:07",
-          title: "这里是标题",
-          follow: true,
-          sender: "Harbour",
-          video_url: "/assets/debug/cover2.jpg",
-        },
-        {
-          id: 1,
-          watch: 5555,
-          comments: 6666,
-          distance: "3:07",
-          title: "这里是标题",
-          follow: true,
-          sender: "Harbour",
-          video_url: "/assets/debug/cover2.jpg",
-        },
-      ],
       users: [
         {
           id: "1",
@@ -245,25 +148,13 @@ export default {
           videos: 7,
         },
       ],
-      activeName: "videos",
     };
-  },
-  methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
   },
 };
 </script>
 <style scoped>
-.videos{
-    display: flex;
-    flex-wrap: wrap;
-}
-.video{
-    margin: 10px 10px 10px 10px;
-}
-.users{
-  padding: 0 15% 0;
+.list_wrap{
+    width: 100%;
+    position: relative;
 }
 </style>

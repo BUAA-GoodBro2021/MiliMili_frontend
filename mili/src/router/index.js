@@ -15,14 +15,21 @@ const routes = [
         component: () => import('../views/HomePage/IndexView.vue'), //逼格界面
       },
       {
-        path: '/PersonalHomePage',
-        name: 'PersonalHomePage',
-        component: () => import('../views/PersonalHomePage/PHP.vue'),
-      },
-      {
         path: '/PersonalInformation',
         name: 'PersonalInformation',
         component: () => import('../views/PersonalHomePage/PIFM.vue'),
+      },
+      {
+        path: '/PersonalHomePage',
+        name: 'PersonalHomePage',
+        component: () => import('../views/PersonalHomePage/PHP.vue'),
+        children:[
+          {
+            path:'/followers',
+            name: 'FollowerPage',
+            component: () => import('../views/PersonalHomePage/PHP_ChildrenPage/FollowersPage.vue'),
+          }
+        ]
       },
       {
         path: '/PersonalContribution',

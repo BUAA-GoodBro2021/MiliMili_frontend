@@ -11,8 +11,9 @@
             mode="horizontal"
             @select="handleSelect"
             active-text-color="rgb(206, 160, 36)"
+            :router="true"
           >
-            <a href="/PersonalInfromation">
+            <a href="/PersonalInformation">
               <el-avatar :size="60" :src="ava"></el-avatar>
               <p class="Uname" v-text="name"></p>
               <p v-text="introduce" class="Uintro"></p>
@@ -25,7 +26,7 @@
               <span class="icomoon sc icohead"></span
               ><span class="catalogue"> 收藏</span>
             </el-menu-item>
-            <el-menu-item index="3" class="headcol">
+            <el-menu-item index="/followers" class="headcol">
               <span class="icomoon sz icohead"></span
               ><span class="catalogue"> 粉丝</span>
             </el-menu-item>
@@ -40,7 +41,9 @@
         <!-- 主体 -->
         <el-container>
           <!-- 视频 -->
-          <el-main class="box"></el-main>
+          <el-main class="box">
+            <router-view />
+          </el-main>
           <!-- 间隔 -->
           <el-aside width="1.5vh"></el-aside>
           <!-- 个人资料+创作中心+公告 -->
@@ -127,8 +130,14 @@ export default {
       name: "ZQRui",
       introduce: "whatever",
       textarea: "",
+      activeIndex: '1',
     };
   },
+  methods:{
+    handleSelect(tab, event) {
+      console.log(tab, event);
+    },
+  }
 };
 </script>
 
