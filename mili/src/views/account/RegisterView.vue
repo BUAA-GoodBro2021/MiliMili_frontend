@@ -69,7 +69,7 @@
             </el-form-item>
           </el-form>
           <div class="btn">
-            <el-button type="warning" plain>注册</el-button>
+            <el-button type="warning" plain @click="register()">注册</el-button>
           </div>
         </div>
       </div>
@@ -135,6 +135,20 @@ export default {
       console.log("losefocus");
       this.imgFocus = false;
     },
+    register(){
+      this.$ref['form'].validate((validate) => {
+        if(validate){
+          this.$axios({
+            method: 'post',
+            data: this.user,
+            url:'/user/register',
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          })
+        }
+      })
+    }
   },
   components: { Header },
 };

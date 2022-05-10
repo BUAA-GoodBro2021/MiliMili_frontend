@@ -57,6 +57,7 @@
 </template>
 <script>
 import Header from "@/components/HomePage/HeaderPage.vue";
+import qs from 'qs'
 export default {
   data() {
     return {
@@ -104,10 +105,8 @@ export default {
           this.$axios({
             method: "post",
             url: "/user/login",
-            data: this.user,
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
+            data: qs.stringify(this.user),
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
           }).then((res) => {
             console.log(res);
             if (res.data.result == 1) {
