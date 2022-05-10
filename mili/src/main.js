@@ -12,6 +12,8 @@ Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 
+axios.defaults.baseURL = 'https://milimili.super2021.com/api/'
+
 new Vue({
   router,
   store,
