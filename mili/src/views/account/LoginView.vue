@@ -99,20 +99,40 @@ export default {
       this.imgFocus = false;
     },
     login: function () {
-      this.$axios({
-        method: "post",
-        url:'/user/login',
-        data: this.user,
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }).then((res) => {
-        console.log(res)
-      })
+      this.$refs["form"].validate((validate, failedMessage) => {
+        if (validate) {
+          this.$axios({
+            method: "post",
+            url: "/user/login",
+            data: this.user,
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }).then((res) => {
+            console.log(res);
+            if (res.data.result == 1) {
+              this.$message({
+                type: "success",
+                message: "登录成功！",
+              });
+            }else{
+              this.$message({
+                type: "error",
+                message: res.data.message,
+              });
+            }
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "填的有问题哦！",
+          });
+        }
+      });
     },
-    register(){
-      route.push('/register')
-    }
+    register() {
+      this.$router.push("/register");
+    },
   },
   components: { Header },
 };
