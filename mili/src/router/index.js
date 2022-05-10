@@ -15,21 +15,23 @@ const routes = [
         component: () => import('../views/HomePage/IndexView.vue'), //逼格界面
       },
       {
-        path: '/PersonalInformation',
-        name: 'PersonalInformation',
-        component: () => import('../views/PersonalHomePage/PIFM.vue'),
-      },
-      {
         path: '/PersonalHomePage',
         name: 'PersonalHomePage',
         component: () => import('../views/PersonalHomePage/PHP.vue'),
-        children:[
-          {
-            path:'/followers',
-            name: 'FollowerPage',
-            component: () => import('../views/PersonalHomePage/PHP_ChildrenPage/FollowersPage.vue'),
-          }
-        ]
+        children: [{
+          path: '/PersonalHomePage/Main',
+          name: '/PersonalHomePage/Main',
+          component: () => import('../components/PHP/PHPMain.vue')
+        }, {
+          path: '/followers',
+          name: 'FollowerPage',
+          component: () => import('../views/PersonalHomePage/PHP_ChildrenPage/FollowersPage.vue'),
+        }]
+      },
+      {
+        path: '/PersonalInformation',
+        name: 'PersonalInformation',
+        component: () => import('../views/PersonalHomePage/PIFM.vue'),
       },
       {
         path: '/PersonalContribution',
