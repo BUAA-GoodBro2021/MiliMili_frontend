@@ -26,7 +26,7 @@ const routes = [
         }, {
           path: '/followers',
           name: 'FollowerPage',
-          component: () => import('../views/PersonalHomePage/PHP_ChildrenPage/FollowersPage.vue'),
+          component: () => import('../views/PersonalHomePage/PHP/FollowersPage.vue'),
         }]
       },
       {

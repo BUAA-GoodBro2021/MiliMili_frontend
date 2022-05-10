@@ -2,7 +2,7 @@
   <div>
     <div class="video_warp">
       <div class="cover_warp">
-        <router-link to="" style="text-decoration: none;">
+        <router-link to="" style="text-decoration: none">
           <img
             width="238px"
             height="134px"
@@ -15,19 +15,21 @@
           />
           <div class="cover_footer">
             <ul>
-              <li><i class="el-icon-video-play" />{{ singleVideo.watch }}</li>
               <li>
-                <i class="el-icon-chat-line-square" />{{ singleVideo.comments }}
+                <i class="el-icon-video-play" />{{ singleVideo.view_num }}
+              </li>
+              <li>
+                <i class="el-icon-chat-line-square" />{{ singleVideo.like_num }}
               </li>
               <li style="float: right; margin-right: 10px">
-                {{ singleVideo.distance }}
+                {{ singleVideo.updated_time }}
               </li>
             </ul>
           </div>
         </router-link>
       </div>
       <div class="title">
-        <router-link to="" style="text-decoration: none;">
+        <router-link to="" style="text-decoration: none">
           {{ singleVideo.title }}
         </router-link>
       </div>
@@ -40,9 +42,9 @@
           plain
           >已关注</el-tag
         >
-        <router-link to="" style="text-decoration: none;">
-          <span class="name" style="float: left; font-size: 1px; color: grey;">{{
-            singleVideo.sender
+        <router-link to="" style="text-decoration: none">
+          <span class="name" style="float: left; font-size: 1px; color: grey">{{
+            singleVideo.user.username
           }}</span>
         </router-link>
       </div>
@@ -56,13 +58,21 @@ export default {
       type: Object,
       default() {
         return {
+          // id: 1,
+          // watch: 3330,
+          // comments: 2357,
+          // distance: "15:07",
+          // title: "这里是标题",
+          // follow: true,
+          // sender: "Harbour",
+          // video_url: "@/assets/debug/cover1.jepg",
           id: 1,
-          watch: 3330,
-          comments: 2357,
-          distance: "15:07",
+          view_num: 3330,
+          like_num: 2357,
+          updated_time: "15:07",
           title: "这里是标题",
-          follow: true,
-          sender: "Harbour",
+          // follow: true,
+          user: {},
           video_url: "@/assets/debug/cover1.jepg",
         };
       },

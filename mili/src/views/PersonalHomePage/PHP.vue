@@ -133,14 +133,14 @@ export default {
       name: "ZQRui",
       introduce: "whatever",
       textarea: "",
-      activeIndex: '1',
+      activeIndex: "1",
     };
   },
-  methods:{
+  methods: {
     handleSelect(tab, event) {
       console.log(tab, event);
     },
-  }
+  },
 };
 </script>
 
