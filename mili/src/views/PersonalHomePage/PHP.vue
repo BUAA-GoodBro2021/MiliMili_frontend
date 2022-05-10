@@ -11,11 +11,7 @@
             mode="horizontal"
             @select="handleSelect"
             active-text-color="rgb(206, 160, 36)"
-<<<<<<< HEAD
-            router="true"
-=======
             :router="true"
->>>>>>> 758f6024fbd771b54476003f6704b8d7763984d8
           >
             <a href="/PersonalInformation">
               <el-avatar :size="60" :src="ava"></el-avatar>
@@ -137,14 +133,14 @@ export default {
       name: "ZQRui",
       introduce: "whatever",
       textarea: "",
-      activeIndex: '1',
+      activeIndex: "1",
     };
   },
-  methods:{
+  methods: {
     handleSelect(tab, event) {
       console.log(tab, event);
     },
-  }
+  },
 };
 </script>
 
