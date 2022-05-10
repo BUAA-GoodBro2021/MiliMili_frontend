@@ -2,43 +2,49 @@
   <div>
     <div class="video_warp">
       <div class="cover_warp">
-        <img
-          width="238px"
-          height="134px"
-          src="@/assets/debug/cover2.jpg"
-          style="
-            border-radius: 10px;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-          "
-        />
-        <div class="cover_footer">
-          <ul>
-            <li><i class="el-icon-video-play" />{{ singleVideo.watch }}</li>
-            <li>
-              <i class="el-icon-chat-line-square" />{{ singleVideo.comments }}
-            </li>
-            <li style="float: right; margin-right: 10px;">
-              {{ singleVideo.distance }}
-            </li>
-          </ul>
-        </div>
+        <router-link to="" style="text-decoration: none;">
+          <img
+            width="238px"
+            height="134px"
+            src="@/assets/debug/cover2.jpg"
+            style="
+              border-radius: 10px;
+              -webkit-border-radius: 10px;
+              -moz-border-radius: 10px;
+            "
+          />
+          <div class="cover_footer">
+            <ul>
+              <li><i class="el-icon-video-play" />{{ singleVideo.watch }}</li>
+              <li>
+                <i class="el-icon-chat-line-square" />{{ singleVideo.comments }}
+              </li>
+              <li style="float: right; margin-right: 10px">
+                {{ singleVideo.distance }}
+              </li>
+            </ul>
+          </div>
+        </router-link>
       </div>
       <div class="title">
-        {{ singleVideo.title }}
+        <router-link to="" style="text-decoration: none;">
+          {{ singleVideo.title }}
+        </router-link>
       </div>
       <div class="sender">
         <el-tag
           v-if="true"
           type="warning"
           size="mini"
-          style="float: left; margin-right:5px;"
+          style="float: left; margin-right: 5px"
           plain
           >已关注</el-tag
         >
-        <span class="name" style="float: left; font-size: 1px; color: grey;">{{
-          singleVideo.sender
-        }}</span>
+        <router-link to="" style="text-decoration: none;">
+          <span class="name" style="float: left; font-size: 1px; color: grey;">{{
+            singleVideo.sender
+          }}</span>
+        </router-link>
       </div>
     </div>
   </div>
@@ -75,7 +81,7 @@ export default {
   width: 238px;
 }
 .cover_warp {
-    position: relative;
+  position: relative;
   height: 134px;
   width: 238px;
   border-radius: 10px;
@@ -110,6 +116,7 @@ export default {
   display: block;
   word-break: break-all;
   word-wrap: break-word;
+  color: black;
 }
 .sender {
   height: 20px;

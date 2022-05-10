@@ -20,9 +20,18 @@ const routes = [
         component: () => import('../views/PersonalHomePage/PHP.vue'),
         children: [{
           path: '/PersonalHomePage/Main',
+<<<<<<< HEAD
           name: 'PersonalHomePage/Main',
           component: () => import('../components/PHP/PHPMain.vue'),
           hidden: true,
+=======
+          name: '/PersonalHomePage/Main',
+          component: () => import('../components/PHP/PHPMain.vue')
+        }, {
+          path: '/followers',
+          name: 'FollowerPage',
+          component: () => import('../views/PersonalHomePage/PHP_ChildrenPage/FollowersPage.vue'),
+>>>>>>> 758f6024fbd771b54476003f6704b8d7763984d8
         }]
       },
       {

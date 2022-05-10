@@ -11,9 +11,13 @@
             mode="horizontal"
             @select="handleSelect"
             active-text-color="rgb(206, 160, 36)"
+<<<<<<< HEAD
             router="true"
+=======
+            :router="true"
+>>>>>>> 758f6024fbd771b54476003f6704b8d7763984d8
           >
-            <a href="/PersonalInfromation">
+            <a href="/PersonalInformation">
               <el-avatar :size="60" :src="ava"></el-avatar>
               <p class="Uname" v-text="name"></p>
               <p v-text="introduce" class="Uintro"></p>
@@ -26,7 +30,7 @@
               <span class="icomoon sc icohead"></span
               ><span class="catalogue"> 收藏</span>
             </el-menu-item>
-            <el-menu-item index="3" class="headcol">
+            <el-menu-item index="/followers" class="headcol">
               <span class="icomoon sz icohead"></span
               ><span class="catalogue"> 粉丝</span>
             </el-menu-item>
@@ -133,8 +137,14 @@ export default {
       name: "ZQRui",
       introduce: "whatever",
       textarea: "",
+      activeIndex: '1',
     };
   },
+  methods:{
+    handleSelect(tab, event) {
+      console.log(tab, event);
+    },
+  }
 };
 </script>
 
