@@ -6,7 +6,7 @@
           <img
             width="238px"
             height="134px"
-            src="@/assets/debug/cover2.jpg"
+            :src="singleVideo.avatar_url"
             style="
               border-radius: 10px;
               -webkit-border-radius: 10px;
@@ -72,8 +72,24 @@ export default {
           updated_time: "15:07",
           title: "这里是标题",
           // follow: true,
-          user: {},
+          user: {
+            username: 'harboue'
+          },
           video_url: "@/assets/debug/cover1.jepg",
+          tag1: '',
+          tag2: '',
+          tag3: '',
+          tag4: '',
+          tag5: '',
+          video_url: '',
+          zone: '',
+          need_verify: '',
+          isAudit: 1,
+          description: '',
+          avater_url: '',
+          created_time: '',
+          collect_num: '',
+
         };
       },
     },

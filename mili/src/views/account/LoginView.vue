@@ -57,7 +57,7 @@
 </template>
 <script>
 import Header from "@/components/HomePage/HeaderPage.vue";
-import qs from 'qs'
+import qs from "qs";
 export default {
   data() {
     return {
@@ -106,7 +106,7 @@ export default {
             method: "post",
             url: "/user/login",
             data: qs.stringify(this.user),
-            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            headers: { "content-type": "application/x-www-form-urlencoded" },
           }).then((res) => {
             console.log(res);
             if (res.data.result == 1) {
@@ -114,7 +114,16 @@ export default {
                 type: "success",
                 message: "登录成功！",
               });
-            }else{
+              //跳转路由的判断
+              var history_pth = localStorage.getItem("preRoute");
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register")
+                  this.$router.push("/homepage");
+                else this.$router.push({ path: history_pth });
+              }, 1000);
+
+              localStorage.setItem('loginMessage',JSON.stringify(res.data))
+            } else {
               this.$message({
                 type: "error",
                 message: res.data.message,

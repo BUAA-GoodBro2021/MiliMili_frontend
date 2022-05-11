@@ -39,14 +39,13 @@
               <el-input
                 class="input"
                 v-model="user.email"
-                show-password
                 auto-complete="false"
               ></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="password" class="el-form_item">
+            <el-form-item label="密码" prop="password1" class="el-form_item">
               <el-input
                 class="input"
-                v-model="user.password"
+                v-model="user.password1"
                 show-password
                 @input="getFocus()"
                 @blur="loseFocus()"
@@ -55,12 +54,12 @@
             </el-form-item>
             <el-form-item
               label="确认密码"
-              prop="cpassword"
+              prop="password2"
               class="el-form_item"
             >
               <el-input
                 class="input"
-                v-model="user.cpassword"
+                v-model="user.password2"
                 show-password
                 @input="getFocus()"
                 @blur="loseFocus()"
@@ -78,14 +77,15 @@
 </template>
 <script>
 import Header from "@/components/HomePage/HeaderPage.vue";
+import qs from "qs";
 export default {
   data() {
     return {
       imgFocus: false,
       user: {
         username: "",
-        password: "",
-        cpassword: "",
+        password1: "",
+        password2: "",
         email: "",
       },
       addFormRules: {
@@ -135,20 +135,37 @@ export default {
       console.log("losefocus");
       this.imgFocus = false;
     },
-    register(){
-      this.$ref['form'].validate((validate) => {
-        if(validate){
+    register() {
+      this.$refs["form"].validate((validate,failedMessage) => {
+        if (validate) {
           this.$axios({
-            method: 'post',
-            data: this.user,
-            url:'/user/register',
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-          })
+            method: "post",
+            data: qs.stringify(this.user),
+            headers: { "content-type": "application/x-www-form-urlencoded" },
+            url: "/user/register",
+          }).then((res) => {
+            console.log(res);
+            if (res.data.result == 1) {
+              this.$message({
+                type: "success",
+                message: "注册成功，请到邮箱中点击认证！",
+              });
+              this.$router.push('/login')
+            } else {
+              this.$message({
+                type: "error",
+                message: res.data.message,
+              });
+            }
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "填的有问题哦！",
+          });
         }
-      })
-    }
+      });
+    },
   },
   components: { Header },
 };
