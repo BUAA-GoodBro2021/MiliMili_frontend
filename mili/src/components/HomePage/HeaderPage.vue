@@ -30,7 +30,7 @@
         router
         :ellipsis="false"
       >
-        <el-menu-item index="message">
+        <el-menu-item index="/PCMessage">
           <div
             class="message jump"
             :class="[headerMode ? 'text-transparent' : '']"
@@ -54,7 +54,7 @@
             <span>上传稿件</span>
           </div>
         </el-menu-item>
-        <el-submenu index="user" class="jump">
+        <el-submenu index="user" class="jump" >
           <template slot="title">
             <img class="avatar" /><i
               class="el-icon-user"
@@ -64,11 +64,11 @@
               >用户信息</span
             >
           </template>
-          <el-menu-item index="2-1" @click="change()">登录</el-menu-item>
-          <el-menu-item index="2-2">注册</el-menu-item>
-          <el-menu-item index="2-4-1">个人中心</el-menu-item>
-          <el-menu-item index="2-4-2">发布视频</el-menu-item>
-          <el-menu-item index="2-4-3">登出</el-menu-item>
+          <el-menu-item index="/login" v-if="!islogin"  >登录</el-menu-item>
+          <el-menu-item index="/register" v-if="!islogin">注册</el-menu-item>
+          <el-menu-item index="/PersonalHomePage/Main" v-if="islogin">个人中心</el-menu-item>
+          <el-menu-item index="/upload" v-if="islogin">发布视频</el-menu-item>
+          <el-menu-item index="/homepage" @click="logout()" v-if="islogin">登出</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
@@ -87,12 +87,19 @@ export default {
   data() {
     return {
       inputContext: "",
+      islogin: localStorage.getItem('loginMessage') != null
     };
   },
   methods: {
     searchContext: function () {
       console.log(this.inputContext);
+      localStorage.setItem('searchContent',this.inputContext)
+      this.$router.push('/search')
     },
+    logout: function(){
+      localStorage.removeItem('loginMessage')
+      this.islogin = false
+    }
   },
   watch: {
     headerMode(newName, oldName) {
@@ -154,6 +161,7 @@ export default {
 }
 .jump:hover {
   transform: translate(0, -3px);
+  border: none;
 }
 .el-menu-item:hover {
   background-color: transparent !important;

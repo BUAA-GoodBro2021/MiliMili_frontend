@@ -19,7 +19,7 @@ const routes = [
           component: () => import('../components/PHP/PHPMain.vue'),
           hidden: true,
         }, {
-          path: '/followers',
+          path: '/PersonalHomePage/followers',
           name: 'FollowerPage',
           component: () => import('../views/PersonalHomePage/PHP/FollowersPage.vue'),
         }]

@@ -22,7 +22,7 @@
                 <i class="el-icon-chat-line-square" />{{ singleVideo.like_num }}
               </li>
               <li style="float: right; margin-right: 10px">
-                {{ singleVideo.updated_time }}
+                {{ singleVideo.updated_time.split('T')[0] }}
               </li>
             </ul>
           </div>
