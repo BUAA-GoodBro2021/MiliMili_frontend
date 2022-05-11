@@ -1,12 +1,14 @@
 <template>
   <div>
     <div :class="[headerMode ? 'header-transparent' : 'header']">
-      <img
-        src="@/assets/logo/logo.png"
-        width="150px"
-        height="61px"
-        style="margin-right: 190px; margin-left: 100px"
-      />
+      <router-link to="/homepage">
+        <img
+          src="@/assets/logo/logo.png"
+          width="150px"
+          height="61px"
+          style="margin-right: 190px; margin-left: 100px"
+        />
+      </router-link>
       <div class="search">
         <el-input
           clearable

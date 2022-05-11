@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div style="overflow: hidden; padding: 0;">
     <div class="whole_wrap">
       <Header />
-      <img class="background" src="@/assets/PHP/BG5.png" />
+      <img class="background" src="@/assets/PCM/BG7.jpg" />
       <div class="login_wrap">
         <div class="banner">
           <div class="img_wrap">
@@ -174,7 +174,7 @@ export default {
 .whole_wrap {
   width: 100vw;
   height: 100vh;
-  position: relative;
+  /* position: relative; */
 }
 .background {
   width: 100%;
