@@ -1,8 +1,9 @@
 <template>
-  <div>
+  <div style="overflow: hidden;">
     <div class="whole_wrap">
-      <Header />
-      <img class="background" src="@/assets/PHP/BG5.png" />
+      <!-- <Header :headerMode="true"/> -->
+      <Header/>
+      <img class="background" src="@/assets/PCM/BG7.jpg" />
       <div class="login_wrap">
         <div class="banner">
           <div class="img_wrap">
@@ -47,8 +48,8 @@
             </el-form-item>
           </el-form>
           <div class="btn">
-            <el-button type="warning" plain>登录</el-button>
-            <el-button type="warning" plain>注册</el-button>
+            <el-button type="warning" plain @click="login()">登录</el-button>
+            <el-button type="warning" plain @click="register()">注册</el-button>
           </div>
         </div>
       </div>
@@ -57,6 +58,7 @@
 </template>
 <script>
 import Header from "@/components/HomePage/HeaderPage.vue";
+import qs from "qs";
 export default {
   data() {
     return {
@@ -98,6 +100,48 @@ export default {
       console.log("losefocus");
       this.imgFocus = false;
     },
+    login: function () {
+      this.$refs["form"].validate((validate, failedMessage) => {
+        if (validate) {
+          this.$axios({
+            method: "post",
+            url: "/user/login",
+            data: qs.stringify(this.user),
+            headers: { "content-type": "application/x-www-form-urlencoded" },
+          }).then((res) => {
+            console.log(res);
+            if (res.data.result == 1) {
+              this.$message({
+                type: "success",
+                message: "登录成功！",
+              });
+              //跳转路由的判断
+              var history_pth = localStorage.getItem("preRoute");
+              setTimeout(() => {
+                if (history_pth == null || history_pth === "/register")
+                  this.$router.push("/homepage");
+                else this.$router.push({ path: history_pth });
+              }, 1000);
+
+              localStorage.setItem('loginMessage',JSON.stringify(res.data))
+            } else {
+              this.$message({
+                type: "error",
+                message: res.data.message,
+              });
+            }
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: "填的有问题哦！",
+          });
+        }
+      });
+    },
+    register() {
+      this.$router.push("/register");
+    },
   },
   components: { Header },
 };
@@ -106,7 +150,8 @@ export default {
 .whole_wrap {
   width: 100vw;
   height: 100vh;
-  position: relative;
+  overflow: hidden;
+  /* position: relative; */
 }
 .background {
   width: 100%;

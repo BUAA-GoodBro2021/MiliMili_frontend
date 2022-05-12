@@ -1,148 +1,406 @@
 <template>
   <div>
-    <div class="video_warp">
-      <div class="cover_warp">
-        <router-link to="" style="text-decoration: none">
-          <img
-            width="238px"
-            height="134px"
-            src="@/assets/debug/cover2.jpg"
-            style="
-              border-radius: 10px;
-              -webkit-border-radius: 10px;
-              -moz-border-radius: 10px;
-            "
-          />
-          <div class="cover_footer">
-            <ul>
-              <li>
-                <i class="el-icon-video-play" />{{ singleVideo.view_num }}
-              </li>
-              <li>
-                <i class="el-icon-chat-line-square" />{{ singleVideo.like_num }}
-              </li>
-              <li style="float: right; margin-right: 10px">
-                {{ singleVideo.updated_time }}
-              </li>
-            </ul>
+    <div class="block_wrap">
+      <div class="block">
+        <div class="title">
+          <ul>
+            <li style="font-size: 20px">{{ block.name }}</li>
+            <li style="float: right; margin-right: 30px; font-size: 20px">
+              <el-button size="small"
+                >查看更多<i class="el-icon-arrow-right el-icon--right"></i
+              ></el-button>
+            </li>
+          </ul>
+        </div>
+        <div class="videos">
+          <div
+            v-for="(item, index) in videos"
+            :key="index"
+            style="margin-left: 10px; margin-top: 10px"
+          >
+            <Video :singleVideo="item" />
           </div>
-        </router-link>
+        </div>
       </div>
-      <div class="title">
-        <router-link to="" style="text-decoration: none">
-          {{ singleVideo.title }}
-        </router-link>
-      </div>
-      <div class="sender">
-        <el-tag
-          v-if="true"
-          type="warning"
-          size="mini"
-          style="float: left; margin-right: 5px"
-          plain
-          >已关注</el-tag
-        >
-        <router-link to="" style="text-decoration: none">
-          <span class="name" style="float: left; font-size: 1px; color: grey">{{
-            singleVideo.user.uesername
-          }}</span>
-        </router-link>
+      <div class="sort">
+        <Sort />
       </div>
     </div>
   </div>
 </template>
 <script>
+import Video from "@/components/VideoDetail/VideoCover.vue";
+import Sort from "@/components/HomePage/SortView.vue";
 export default {
   props: {
-    singleVideo: {
+    block: {
       type: Object,
       default() {
         return {
-          id: 1,
-          view_num: 3330,
-          like_num: 2357,
-          updated_time: "15:07",
-          title: "这里是标题",
-          // follow: true,
-          user: {},
-          video_url: "@/assets/debug/cover1.jepg",
-          //     title: "",
-          //     description: "",
-          //     video_url: "",
-          //     avatar_url: "",
-          //     like_num: 0,
-          //     collect_num: 0,
-          //     view_num: 0,
-          //     zone: "嘻哈",
-          //     tag1: "",
-          //     tag2: "",
-          //     tag3: "",
-          //     tag4: "",
-          //     tag5: "",
-          //     user: {},
-          //     created_time: "",
-          //     updated_time: "",
-          //     isAudit: 0,
-          //     need_verify: 0,
+          name: "鬼畜区",
         };
       },
     },
-  },
-  methods: {
-    handle: function (url) {
-      return require(url);
+    videos: {
+      type: Array,
+      default() {
+        return [
+          {
+            id: 35,
+            title: "MC石头",
+            description: "就是喊！",
+            video_url:
+              "https://video-1309504341.cos.ap-beijing.myqcloud.com/35.mp4",
+            avatar_url:
+              "https://cover-1309504341.cos.ap-beijing.myqcloud.com/35.png",
+            like_num: 0,
+            collect_num: 0,
+            view_num: 0,
+            zone: "嘻哈",
+            tag1: "",
+            tag2: "",
+            tag3: "",
+            tag4: "",
+            tag5: "",
+            user: {
+              id: 20,
+              username: "super2021",
+              email: "2868470542@qq.com",
+              location: "中国大陆",
+              video_num: 11,
+              like_num: 1,
+              collect_num: 1,
+              favorite_num: 2,
+              fan_num: 0,
+              follow_num: 1,
+              avatar_url:
+                "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+              created_time: "2022-04-11T09:29:13.850Z",
+              updated_time: "2022-04-29T08:20:49.298Z",
+              isSuperAdmin: true,
+            },
+            created_time: "2022-04-21T10:14:21.723Z",
+            updated_time: "2022-04-21T10:14:51.286Z",
+            isAudit: 1,
+            need_verify: 0,
+          },
+          {
+            id: 34,
+            title: "PPAP",
+            description: "I have an apple!",
+            video_url:
+              "https://video-1309504341.cos.ap-beijing.myqcloud.com/34.mp4",
+            avatar_url:
+              "https://cover-1309504341.cos.ap-beijing.myqcloud.com/34.png",
+            like_num: 0,
+            collect_num: 0,
+            view_num: 0,
+            zone: "鬼畜",
+            tag1: "",
+            tag2: "",
+            tag3: "",
+            tag4: "",
+            tag5: "",
+            user: {
+              id: 20,
+              username: "super2021",
+              email: "2868470542@qq.com",
+              location: "中国大陆",
+              video_num: 11,
+              like_num: 1,
+              collect_num: 1,
+              favorite_num: 2,
+              fan_num: 0,
+              follow_num: 1,
+              avatar_url:
+                "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+              created_time: "2022-04-11T09:29:13.850Z",
+              updated_time: "2022-04-29T08:20:49.298Z",
+              isSuperAdmin: true,
+            },
+            created_time: "2022-04-21T10:12:45.266Z",
+            updated_time: "2022-04-21T10:13:20.920Z",
+            isAudit: 1,
+            need_verify: 0,
+          },
+          {
+            id: 32,
+            title: "AIPCtest3",
+            description: "测试3",
+            video_url:
+              "https://video-1309504341.cos.ap-beijing.myqcloud.com/32.mp4",
+            avatar_url:
+              "https://cover-1309504341.cos.ap-beijing.myqcloud.com/32.png",
+            like_num: 0,
+            collect_num: 0,
+            view_num: 0,
+            zone: "鬼畜",
+            tag1: "",
+            tag2: "",
+            tag3: "",
+            tag4: "",
+            tag5: "",
+            user: {
+              id: 20,
+              username: "super2021",
+              email: "2868470542@qq.com",
+              location: "中国大陆",
+              video_num: 11,
+              like_num: 1,
+              collect_num: 1,
+              favorite_num: 2,
+              fan_num: 0,
+              follow_num: 1,
+              avatar_url:
+                "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+              created_time: "2022-04-11T09:29:13.850Z",
+              updated_time: "2022-04-29T08:20:49.298Z",
+              isSuperAdmin: true,
+            },
+            created_time: "2022-04-21T09:34:36.468Z",
+            updated_time: "2022-04-21T09:35:13.607Z",
+            isAudit: 1,
+            need_verify: 0,
+          },
+          {
+            id: 29,
+            title: "AIPCtest1",
+            description: "测试1",
+            video_url:
+              "https://video-1309504341.cos.ap-beijing.myqcloud.com/29.mp4",
+            avatar_url:
+              "https://cover-1309504341.cos.ap-beijing.myqcloud.com/29.png",
+            like_num: 0,
+            collect_num: 0,
+            view_num: 0,
+            zone: "鬼畜",
+            tag1: "",
+            tag2: "",
+            tag3: "",
+            tag4: "",
+            tag5: "",
+            user: {
+              id: 20,
+              username: "super2021",
+              email: "2868470542@qq.com",
+              location: "中国大陆",
+              video_num: 11,
+              like_num: 1,
+              collect_num: 1,
+              favorite_num: 2,
+              fan_num: 0,
+              follow_num: 1,
+              avatar_url:
+                "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+              created_time: "2022-04-11T09:29:13.850Z",
+              updated_time: "2022-04-29T08:20:49.298Z",
+              isSuperAdmin: true,
+            },
+            created_time: "2022-04-21T08:50:39.609Z",
+            updated_time: "2022-04-21T08:51:17.591Z",
+            isAudit: 1,
+            need_verify: 0,
+          },
+          {
+            id: 28,
+            title: "####",
+            description: "测试1",
+            video_url:
+              "https://video-1309504341.cos.ap-beijing.myqcloud.com/28.mp4",
+            avatar_url:
+              "https://cover-1309504341.cos.ap-beijing.myqcloud.com/28.png",
+            like_num: 0,
+            collect_num: 0,
+            view_num: 0,
+            zone: "鬼畜",
+            tag1: "",
+            tag2: "",
+            tag3: "",
+            tag4: "",
+            tag5: "",
+            user: {
+              id: 20,
+              username: "super2021",
+              email: "2868470542@qq.com",
+              location: "中国大陆",
+              video_num: 11,
+              like_num: 1,
+              collect_num: 1,
+              favorite_num: 2,
+              fan_num: 0,
+              follow_num: 1,
+              avatar_url:
+                "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+              created_time: "2022-04-11T09:29:13.850Z",
+              updated_time: "2022-04-29T08:20:49.298Z",
+              isSuperAdmin: true,
+            },
+            created_time: "2022-04-21T08:17:34.475Z",
+            updated_time: "2022-04-21T08:18:14.368Z",
+            isAudit: 1,
+            need_verify: 0,
+          },
+         {
+            id: 32,
+            title: "AIPCtest3",
+            description: "测试3",
+            video_url:
+              "https://video-1309504341.cos.ap-beijing.myqcloud.com/32.mp4",
+            avatar_url:
+              "https://cover-1309504341.cos.ap-beijing.myqcloud.com/32.png",
+            like_num: 0,
+            collect_num: 0,
+            view_num: 0,
+            zone: "鬼畜",
+            tag1: "",
+            tag2: "",
+            tag3: "",
+            tag4: "",
+            tag5: "",
+            user: {
+              id: 20,
+              username: "super2021",
+              email: "2868470542@qq.com",
+              location: "中国大陆",
+              video_num: 11,
+              like_num: 1,
+              collect_num: 1,
+              favorite_num: 2,
+              fan_num: 0,
+              follow_num: 1,
+              avatar_url:
+                "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+              created_time: "2022-04-11T09:29:13.850Z",
+              updated_time: "2022-04-29T08:20:49.298Z",
+              isSuperAdmin: true,
+            },
+            created_time: "2022-04-21T09:34:36.468Z",
+            updated_time: "2022-04-21T09:35:13.607Z",
+            isAudit: 1,
+            need_verify: 0,
+          },
+          {
+            id: 29,
+            title: "AIPCtest1",
+            description: "测试1",
+            video_url:
+              "https://video-1309504341.cos.ap-beijing.myqcloud.com/29.mp4",
+            avatar_url:
+              "https://cover-1309504341.cos.ap-beijing.myqcloud.com/29.png",
+            like_num: 0,
+            collect_num: 0,
+            view_num: 0,
+            zone: "鬼畜",
+            tag1: "",
+            tag2: "",
+            tag3: "",
+            tag4: "",
+            tag5: "",
+            user: {
+              id: 20,
+              username: "super2021",
+              email: "2868470542@qq.com",
+              location: "中国大陆",
+              video_num: 11,
+              like_num: 1,
+              collect_num: 1,
+              favorite_num: 2,
+              fan_num: 0,
+              follow_num: 1,
+              avatar_url:
+                "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+              created_time: "2022-04-11T09:29:13.850Z",
+              updated_time: "2022-04-29T08:20:49.298Z",
+              isSuperAdmin: true,
+            },
+            created_time: "2022-04-21T08:50:39.609Z",
+            updated_time: "2022-04-21T08:51:17.591Z",
+            isAudit: 1,
+            need_verify: 0,
+          },
+          {
+            id: 28,
+            title: "####",
+            description: "测试1",
+            video_url:
+              "https://video-1309504341.cos.ap-beijing.myqcloud.com/28.mp4",
+            avatar_url:
+              "https://cover-1309504341.cos.ap-beijing.myqcloud.com/28.png",
+            like_num: 0,
+            collect_num: 0,
+            view_num: 0,
+            zone: "鬼畜",
+            tag1: "",
+            tag2: "",
+            tag3: "",
+            tag4: "",
+            tag5: "",
+            user: {
+              id: 20,
+              username: "super2021",
+              email: "2868470542@qq.com",
+              location: "中国大陆",
+              video_num: 11,
+              like_num: 1,
+              collect_num: 1,
+              favorite_num: 2,
+              fan_num: 0,
+              follow_num: 1,
+              avatar_url:
+                "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+              created_time: "2022-04-11T09:29:13.850Z",
+              updated_time: "2022-04-29T08:20:49.298Z",
+              isSuperAdmin: true,
+            },
+            created_time: "2022-04-21T08:17:34.475Z",
+            updated_time: "2022-04-21T08:18:14.368Z",
+            isAudit: 1,
+            need_verify: 0,
+          },
+        ];
+      },
     },
   },
   components: { Video, Sort },
 };
 </script>
 <style scoped>
-.video_warp {
-  height: 236px;
-  width: 238px;
+.block_wrap {
+  display: flex;
+  width: 100%;
 }
-.cover_warp {
-  position: relative;
-  height: 134px;
-  width: 238px;
-  border-radius: 10px;
-}
-.cover_footer {
-  width: 238px;
-  line-height: 18px;
-  font-size: 13px;
-  position: absolute;
-  z-index: 2;
-  bottom: 5px;
-}
-.cover_footer ul {
-  line-height: 18px;
-  padding-left: 10px;
-  color: white;
-}
-.cover_footer li {
-  line-height: 18px;
-  display: inline-block;
-  float: left;
-  margin-right: 25px;
-  list-style: none;
-  vertical-align: middle;
+.block {
+  width: 75%;
+  height: 550px;
+  margin-left: 3%;
 }
 .title {
-  height: 44px;
-  width: 238px;
-  line-height: 44px;
-  font-size: 17px;
-  text-align: left;
-  display: block;
-  word-break: break-all;
-  word-wrap: break-word;
-  color: black;
+  width: 100%;
+  height: 40px;
 }
-.sender {
-  height: 20px;
-  width: 238px;
-  line-height: 20px;
+.videos {
+  width: 100%;
+  height: 470px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.title ul {
+  line-height: 40px;
+  padding-left: 17px;
+}
+.title li {
+  line-height: 40px;
+  display: inline-block;
+  float: left;
+  list-style: none;
+  margin-right: 30px;
   vertical-align: middle;
+}
+.sort {
+  width: 22%;
+  height: 550px;
+  padding-top: 10px;
+  margin-left: 40px;
 }
 </style>

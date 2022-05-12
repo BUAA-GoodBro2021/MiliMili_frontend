@@ -6,14 +6,9 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/index',
+    redirect: '/homepage',
     component: () => import('../views/HomePage/HeadView.vue'),
     children: [
-      {
-        path: '/index',
-        name: 'IndexPage',
-        component: () => import('../views/HomePage/IndexView.vue'), //逼格界面
-      },
       {
         path: '/PersonalHomePage',
         name: 'PersonalHomePage',
@@ -29,7 +24,7 @@ const routes = [
           component: () => import('../components/PHP/PHPStar.vue'),
           hidden: true,
         }, {
-          path: '/followers',
+          path: '/PersonalHomePage/followers',
           name: 'FollowerPage',
           component: () => import('../views/PersonalHomePage/PHP/FollowersPage.vue'),
         }]
@@ -73,6 +68,11 @@ const routes = [
       //在这里填写的路由都将获得不透明header
     ]
   },
+  // {
+  //   path: '/index',
+  //   name: 'IndexPage',
+  //   component: () => import('../views/HomePage/IndexView.vue'), //逼格界面
+  // },
   {
     path: '/login',
     name: 'LoginPage',

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="block">
-      <el-pagination layout="prev, pager,next" :total="50"> </el-pagination>
+      <div>
         <div
           v-for="(item, index) in VideoArray"
           :key="index"
@@ -10,6 +10,7 @@
           <Video :singleVideo="item" />
         </div>
       </div>
+      <el-pagination layout="prev, next" :total="50"> </el-pagination>
     </div>
   </div>
 </template>
@@ -54,21 +55,21 @@ export default {
       });
   },
   methods: {
-    singleVideo: {
-      type: Object,
-      default() {
-        return {
-          id: 0,
-          view_num: 0,
-          like_num: 0,
-          updated_time: "",
-          title: "",
-          // follow: true,
-          user: {},
-          video_url: "@/assets/debug/cover1.jepg",
-        };
-      },
-    },
+    // singleVideo: {
+    //   type: Object,
+    //   default() {
+    //     return {
+    //       id: 0,
+    //       view_num: 0,
+    //       like_num: 0,
+    //       updated_time: "",
+    //       title: "",
+    //       // follow: true,
+    //       user: {},
+    //       video_url: "@/assets/debug/cover1.jepg",
+    //     };
+    //   },
+    // },
   },
   components: { Video },
 };

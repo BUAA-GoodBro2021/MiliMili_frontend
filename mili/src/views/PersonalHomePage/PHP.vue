@@ -26,7 +26,7 @@
               <span class="icomoon sc icohead"></span
               ><span class="catalogue"> 收藏</span>
             </el-menu-item>
-            <el-menu-item index="/followers" class="headcol">
+            <el-menu-item index="/PersonalHomePage/followers" class="headcol">
               <span class="icomoon sz icohead"></span
               ><span class="catalogue"> 粉丝</span>
             </el-menu-item>
