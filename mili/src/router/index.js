@@ -24,6 +24,11 @@ const routes = [
           component: () => import('../components/PHP/PHPMain.vue'),
           hidden: true,
         }, {
+          path: '/PersonalHomePage/Star',
+          name: 'PersonalHomePage/Star',
+          component: () => import('../components/PHP/PHPStar.vue'),
+          hidden: true,
+        }, {
           path: '/followers',
           name: 'FollowerPage',
           component: () => import('../views/PersonalHomePage/PHP/FollowersPage.vue'),

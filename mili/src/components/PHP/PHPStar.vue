@@ -23,13 +23,14 @@ export default {
       jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
       VideoArray: [],
       len: 0,
+      group: 0,
     };
   },
   created() {
     var that = this;
     this.$axios({
       method: "post",
-      url: "https://milimili.super2021.com/api/user/video-list",
+      url: "https://milimili.super2021.com/api/user/favorite-list",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
       },
@@ -48,6 +49,8 @@ export default {
         console.log(this.VideoArray);
         that.len = this.VideoArray.length;
         console.log(that.len);
+        that.group = Math.ceil(that.len / 6);
+        console.log(that.group);
       })
       .catch((err) => {
         console.log(err);

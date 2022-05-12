@@ -22,7 +22,7 @@
               <span class="icomoon zy icohead"></span
               ><span class="catalogue"> 主页</span>
             </el-menu-item>
-            <el-menu-item index="2" class="headcol">
+            <el-menu-item index="/PersonalHomePage/Star" class="headcol">
               <span class="icomoon sc icohead"></span
               ><span class="catalogue"> 收藏</span>
             </el-menu-item>
