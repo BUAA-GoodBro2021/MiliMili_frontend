@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="block">
-      <div>
+      <el-pagination layout="prev, pager,next" :total="50"> </el-pagination>
         <div
           v-for="(item, index) in VideoArray"
           :key="index"
@@ -10,7 +10,6 @@
           <Video :singleVideo="item" />
         </div>
       </div>
-      <el-pagination layout="prev, next" :total="50"> </el-pagination>
     </div>
   </div>
 </template>
@@ -24,13 +23,14 @@ export default {
       jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
       VideoArray: [],
       len: 0,
+      group: 0,
     };
   },
   created() {
     var that = this;
     this.$axios({
       method: "post",
-      url: "https://milimili.super2021.com/api/user/video-list",
+      url: "https://milimili.super2021.com/api/user/favorite-list",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
       },
@@ -49,27 +49,29 @@ export default {
         console.log(this.VideoArray);
         that.len = this.VideoArray.length;
         console.log(that.len);
+        that.group = Math.ceil(that.len / 6);
+        console.log(that.group);
       })
       .catch((err) => {
         console.log(err);
       });
   },
   methods: {
-    // singleVideo: {
-    //   type: Object,
-    //   default() {
-    //     return {
-    //       id: 0,
-    //       view_num: 0,
-    //       like_num: 0,
-    //       updated_time: "",
-    //       title: "",
-    //       // follow: true,
-    //       user: {},
-    //       video_url: "@/assets/debug/cover1.jepg",
-    //     };
-    //   },
-    // },
+    singleVideo: {
+      type: Object,
+      default() {
+        return {
+          id: 0,
+          view_num: 0,
+          like_num: 0,
+          updated_time: "",
+          title: "",
+          // follow: true,
+          user: {},
+          video_url: "@/assets/debug/cover1.jepg",
+        };
+      },
+    },
   },
   components: { Video },
 };
