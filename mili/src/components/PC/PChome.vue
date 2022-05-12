@@ -176,4 +176,10 @@ export default {
 .el-tabs__active-bar {
   background-color: #9446fa;
 }
+.el-menu {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.el-card {
+  background-color: rgba(255, 255, 255, 0.8);
+}
 </style>

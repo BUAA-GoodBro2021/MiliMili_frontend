@@ -4,15 +4,13 @@
       <div slot="header" class="clearfix">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="全部稿件" name="first">
-            <div>
-              <div class="block">
-                <div
-                  v-for="(item, index) in VideoArrayAll"
-                  :key="index"
-                  style="margin-left: 10px; margin-top: 10px"
-                >
-                  <Video :singleVideo="item" />
-                </div>
+            <div class="vv">
+              <div
+                v-for="(item, index) in VideoArrayMain"
+                :key="index"
+                style="margin-left: 10px; margin-top: 10px"
+              >
+                <Video :singleVideo="item" />
               </div>
             </div>
           </el-tab-pane>
@@ -33,7 +31,7 @@ export default {
     return {
       activeName: "first",
       jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
-      VideoArrayAll: [],
+      VideoArrayMain: [],
     };
   },
   created() {
@@ -42,7 +40,7 @@ export default {
       method: "post",
       url: "https://milimili.super2021.com/api/user/video-list",
       headers: {
-        "content-type": "application/x-www-form-urlenAllcoded",
+        "content-type": "application/x-www-form-urlencoded",
       },
       data: qs.stringify({
         JWT: that.jwt,
@@ -51,34 +49,16 @@ export default {
       .then((res) => {
         console.log(res);
         console.log(res.data.video_list);
-        // for (item in res.data.video_list) {
-        //   that.VideoArrayAll[i] = item;
-        //   this.i++;
-        // }
-        that.VideoArrayAll = res.data.video_list;
-        console.log(this.VideoArrayAll);
+        that.VideoArrayMain = res.data.video_list;
+        console.log(this.VideoArrayMain);
+        that.len = this.VideoArrayMain.length;
+        console.log(that.len);
       })
       .catch((err) => {
         console.log(err);
       });
   },
-  methods: {
-    singleVideo: {
-      type: Object,
-      default() {
-        return {
-          id: 0,
-          view_num: 0,
-          like_num: 0,
-          updated_time: "",
-          title: "",
-          // follow: true,
-          user: {},
-          video_url: "@/assets/debug/cover1.jepg",
-        };
-      },
-    },
-  },
+  methods: {},
   components: { Video },
 };
 </script>
@@ -90,5 +70,16 @@ export default {
 }
 .el-tabs__active-bar {
   background-color: #9446fa;
+}
+
+.vv {
+  width: 100%;
+  height: 50vh;
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+}
+.data-card {
+  background-color: rgba(255, 255, 255, 0.726);
 }
 </style>

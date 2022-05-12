@@ -41,10 +41,6 @@ export default {
       .then((res) => {
         console.log(res);
         console.log(res.data.video_list);
-        // for (item in res.data.video_list) {
-        //   that.VideoArray[i] = item;
-        //   this.i++;
-        // }
         that.VideoArray = res.data.video_list;
         console.log(this.VideoArray);
         that.len = this.VideoArray.length;

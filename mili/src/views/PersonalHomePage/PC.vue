@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="bbody">
     <el-container>
       <el-head>
         <div style="text-align: left">
@@ -163,7 +163,6 @@ body {
   font-size: 14px;
   color: #46c1fa;
 }
-
 @font-face {
   font-family: "icomoon";
   src: url("../../assets/fonts/icomoon.eot?7kkyc2");
@@ -179,6 +178,21 @@ body {
   font-family: icomoon;
 }
 
+.el-radio-button__inner {
+  width: 6vh;
+  height: 6vh;
+  border-radius: 50% !important;
+  text-align: left;
+  margin-top: 5vh;
+  padding: 2.2vh 0 0 1vh;
+  background: rgba(255, 255, 255, 0.4);
+}
+.el-radio-button__inner:hover {
+  background-color: #fdf3e5e5;
+  color: #606266;
+}
+</style>
+<style scoped>
 .el-menu {
   background-color: rgba(255, 255, 255, 0.4);
 }
@@ -226,11 +240,13 @@ body {
   background-color: #46c1fa;
 }
 
-body {
+#bbody {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
+  height: 90vh;
+  width: 100vw;
 }
 .opa {
   opacity: 80%;
