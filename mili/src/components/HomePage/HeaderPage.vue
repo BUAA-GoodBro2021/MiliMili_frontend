@@ -93,6 +93,14 @@ export default {
   methods: {
     searchContext: function () {
       console.log(this.inputContext);
+      if(this.inputContext == ''){
+        this.$message({
+              type: "error",
+              message: '输入点东西呀QAQ',
+         });
+         return
+      }
+      localStorage.removeItem('searchContent') //每次搜索到结果之后将旧的搜索结果删除存入新的搜索结果
       localStorage.setItem('searchContent',this.inputContext)
       this.$router.push('/search')
     },
@@ -106,6 +114,10 @@ export default {
       console.log(oldName + "->" + newName);
     },
   },
+  created(){
+    // var content = localStorage.getItem('searchContent')
+    // if(content != null) this.inputContext = content
+  }
 };
 </script>
 <style scoped>

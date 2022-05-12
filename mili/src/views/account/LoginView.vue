@@ -130,7 +130,13 @@ export default {
                 message: res.data.message,
               });
             }
+          }).catch((err) => {
+            console.log(err)
+             this.$message({
+            type: "error",
+            message: "服务器被玩坏了QAQ！",
           });
+          })
         } else {
           this.$message({
             type: "error",

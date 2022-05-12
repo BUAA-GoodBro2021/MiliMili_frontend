@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="body" >
     <el-container>
       <el-head>
         <div style="text-align: left">
@@ -90,79 +90,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* 内外边距清零 */
-* {
-  margin: 0;
-  padding: 0;
-}
-/* em和i斜体清除 */
-em,
-i {
-  font-style: normal;
-}
-/* 去掉li的小圆点 */
-li {
-  list-style: none;
-}
-img {
-  /* 照顾低版本浏览器 如果图片外边包含了链接 会有边框的问题 */
-  border: 0;
-  /* 取消图片底侧有空白缝隙的问题 */
-  vertical-align: middle;
-}
 
-button {
-  /* 当鼠标经过button按钮时 鼠标变成小手 */
-  cursor: pointer;
-}
-
-a {
-  color: #666;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #666;
-}
-
-button,
-input {
-  font-family: Microsoft Yahei, Heiti SC, arial, Hiragino Sans GB, "\5B8B\4F53",
-    sans-serif;
-  color: #666;
-}
-
-body {
-  /* 抗锯齿 让文字更加清晰 */
-  -webkit-font-smoothing: antialiased;
-  background-color: #fff;
-  font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB,
-    "\5B8B\4F53", sans-serif;
-  color: #666;
-}
-
-.hide,
-.none {
-  display: none;
-}
-/* 清除浮动 */
-.clearfix:after {
-  visibility: hidden;
-  clear: both;
-  display: block;
-  content: ".";
-  height: 0;
-}
-
-.clearfix {
-  *zoom: 1;
-}
-
-.mod_price {
-  font-size: 14px;
-  color: #46c1fa;
-}
 
 @font-face {
   font-family: "icomoon";
@@ -226,11 +156,14 @@ body {
   background-color: #46c1fa;
 }
 
-body {
+#body {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
 }
 .opa {
   opacity: 80%;

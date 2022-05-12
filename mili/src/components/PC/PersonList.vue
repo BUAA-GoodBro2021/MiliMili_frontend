@@ -27,7 +27,8 @@
         <el-pagination
           hide-on-single-page
           background
-          :page-size="pageSize"
+          :page-size="pagesize"
+          :page-sizes="[1,2,3,4,5,6,7]"
           layout="prev, pager, next"
           :total="users.length"
           @current-change="topicInit"
@@ -199,20 +200,28 @@ export default {
   data() {
     return {
       usersShow: [],
+      pagesize: 7,
     };
   },
   methods: {
     topicInit: function (page) {
       if (this.users.length <= 0) return;
       this.usersShow = this.users.slice(
-        this.pageSize * (page - 1),
-        this.pageSize * page
+        this.pagesize * (page - 1),
+        this.pagesize * page
       );
+      console.log(this.pagesize)
+      console.log(this.usersShow)
     },
+  },
+  watch:{
+    users(oldName,newName){
+      this.pagesize = this.pageSize < newName.length ? this.pageSize: newName.length
+      this.topicInit(1);
+    }
   },
   created() {
     this.topicInit(1);
-    console.log("listType:" + this.listType);
   },
   components: {
     UserCard,

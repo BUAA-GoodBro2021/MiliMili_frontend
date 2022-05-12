@@ -22,7 +22,7 @@
                 <i class="el-icon-chat-line-square" />{{ singleVideo.like_num }}
               </li>
               <li style="float: right; margin-right: 10px">
-                {{ singleVideo.updated_time.split('T')[0] }}
+                {{ handle_time(singleVideo.updated_time) }}
               </li>
             </ul>
           </div>
@@ -44,7 +44,7 @@
         >
         <router-link to="" style="text-decoration: none">
           <span class="name" style="float: left; font-size: 1px; color: grey">{{
-            singleVideo.user.username
+            singleVideo.user_id
           }}</span>
         </router-link>
       </div>
@@ -98,6 +98,10 @@ export default {
     handle: function (url) {
       return require(url);
     },
+    handle_time(ans){
+      if(ans == null) return 'null'
+       return ans.split('T')[0]
+    }
   },
 };
 </script>

@@ -169,11 +169,11 @@ export default {
   text-align: center;
   border-radius: 1vh;
 }
-.el-tabs__item.is-active,
+/* .el-tabs__item.is-active,
 .el-tabs__item:hover {
   color: #9446fa;
 }
 .el-tabs__active-bar {
   background-color: #9446fa;
-}
+} */
 </style>

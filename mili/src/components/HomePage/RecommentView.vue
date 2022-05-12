@@ -135,8 +135,8 @@ export default {
   height: 100%;
 }
 .video_warp {
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-content: center;
   justify-content: center;

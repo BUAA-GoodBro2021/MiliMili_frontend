@@ -12,8 +12,8 @@
           </li>
           <li>
             <div class="title_profile">
-              <span class="name">{{user.name}}</span>
-              <span class="profile">{{user.profile}}</span>
+              <span class="name">{{user.username}}</span>
+              <span class="profile">{{user.signatrue}}</span>
             </div>
           </li>
           <li style="float: right; vertical-align: middle; line-height: 50px">
@@ -21,7 +21,7 @@
               ><i class="el-icon-s-promotion" />进去瞄一眼</el-button
             >
           </li>
-          <li
+          <!-- <li
             v-if="listType != 3 && user.isfollow == true"
             style="float: right; vertical-align: middle; line-height: 50px"
           >
@@ -32,16 +32,28 @@
             style="float: right; vertical-align: middle; line-height: 50px"
           >
             <el-button size="small" plain type="warning">关注</el-button>
+          </li> -->
+          <li
+            v-if="listType != 3 "
+            style="float: right; vertical-align: middle; line-height: 50px"
+          >
+            <span class="follow">已关注 <i class="el-icon-check" /></span>
+          </li>
+          <li
+            v-if="listType != 3 "
+            style="float: right; vertical-align: middle; line-height: 50px"
+          >
+            <el-button size="small" plain type="warning">关注</el-button>
           </li>
         </ul>
       </div>
       <div class="card_footer">
         <ul>
           <li>
-            <span class="foot_text"> 粉丝数量: {{ user.followers }} </span>
+            <span class="foot_text"> 粉丝数量: {{ user.fan_num }} </span>
           </li>
           <li>
-            <span class="foot_text"> 视频数量: {{ user.videos }} </span>
+            <span class="foot_text"> 视频数量: {{ user.video_num }} </span>
           </li>
           <li style="float: right;">
             <i class="el-icon-date" /><span class="foot_text"> 入会时间: {{ "2022-1-30" }} </span>
