@@ -1,10 +1,27 @@
 <template>
   <div>
+    <Header :headerInput="true" />
+    <el-footer style="height: 61px; width: 100%"></el-footer>
+    <router-view />
     <div class="wrap">
+      <div class="search_wrap">
+        <el-input
+          clearable
+          placeholder="请输入您要搜索的内容"
+          class="input"
+          v-model="searchContent"
+        >
+        </el-input>
+        <i
+          class="el-icon-search"
+          @click="searchData()"
+          style="cursor: pointer; margin-left: 10px"
+        />
+      </div>
       <el-tabs v-model="activeName" @tab-click="handleClick" type="border-card">
         <el-tab-pane label="视频" name="videos">
-          <div class="empty" v-if="videos.length == 0" >
-            <span class="empty_title"> 找不到捏QAQ</span>
+          <div class="empty" v-if="videos.length == 0">
+            <span class="empty_title"> 去用户页看看吧~</span>
           </div>
           <div class="videos" v-if="videos.length != 0">
             <div v-for="(item, index) in videos" :key="index" class="video">
@@ -13,10 +30,10 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="用户" name="users">
-          <div class="empty" v-if="users.length == 0" >
-            <span class="empty_title"> 找不到捏QAQ</span>
+          <div class="empty" v-if="users.length == 0">
+            <span class="empty_title"> 去视频页看看吧~</span>
           </div>
-          <div class="users" v-if="users.length != 0" >
+          <div class="users" v-if="users.length != 0">
             <PersonList :users="users" :ListType="1" :pageSize="7" />
           </div>
         </el-tab-pane>
@@ -28,9 +45,10 @@
 // import Header from "@/components/HomePage/HeaderPage.vue";
 import SingleVideo from "@/components/VideoDetail/VideoCover.vue";
 import PersonList from "@/components/PC/PersonList.vue";
+import Header from "@/components/HomePage/HeaderPage.vue";
 import qs from "qs";
 export default {
-  components: { SingleVideo, PersonList },
+  components: { SingleVideo, PersonList, Header },
   data() {
     return {
       videos: [
@@ -253,31 +271,31 @@ export default {
         },
       ],
       activeName: "videos",
+      searchContent: "",
     };
   },
   methods: {
     getVideos(order) {
-      var data = localStorage.getItem("searchContent");
+      var data = this.searchContent;
+      this.searchContent = data;
       return this.$axios({
         method: "post",
-        data: 
-        qs.stringify({
+        data: qs.stringify({
           search_str: data,
           order: order,
-        },),
+        }),
         headers: { "content-type": "application/x-www-form-urlencoded" },
         url: "/index/video",
       });
     },
     getUsers(order) {
-      var data = localStorage.getItem("searchContent");
+      var data = this.searchContent;
       return this.$axios({
         method: "post",
-        data: 
-        qs.stringify({
+        data: qs.stringify({
           search_str: data,
           order: order,
-        },),
+        }),
         headers: { "content-type": "application/x-www-form-urlencoded" },
         url: "/index/user",
       });
@@ -285,39 +303,52 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+    searchData(order) {
+      if (this.searchContent == "") {
+        this.$message({
+          type: "error",
+          message: "输入点东西呀QAQ",
+        });
+        return;
+      }
+      localStorage.removeItem('searchContent')
+      localStorage.setItem('searchContent', this.searchContent)
+      var that = this;
+      this.$axios
+        .all([this.getVideos(order), this.getUsers(order)])
+        .then(
+          this.$axios.spread(function (res1, res2) {
+            console.log(res1);
+            console.log(res2);
+            if (res1.data.result != 1 || res2.data.result != 1) {
+              that.$message({
+                type: "error",
+                message: "出错啦",
+              });
+              console.log(res1 + res2);
+            } else {
+              that.users = res2.data.list;
+              console.log("father list length" + that.users.length);
+              that.videos = res1.data.list;
+              that.$message({
+                type: "success",
+                message: "搜索成功！",
+              });
+            }
+          })
+        )
+        .catch((err) => {
+          console.log(err);
+          that.$message({
+            type: "error",
+            message: "服务器被玩坏了QAQ！",
+          });
+        });
+    },
   },
   created() {
-    var that = this
-    this.$axios
-      .all([this.getVideos('time'), this.getUsers('time')])
-      .then(
-        this.$axios.spread(function (res1, res2) {
-          console.log(res1);
-          console.log(res2);
-          if (res1.data.result != 1 || res2.data.result != 1) {
-            that.$message({
-              type: "error",
-              message: "出错啦",
-            });
-            console.log(res1 + res2);
-          } else {
-            that.users = res2.data.list;
-            console.log('father list length'+that.users.length)
-            that.videos = res1.data.list;
-            that.$message({
-              type: "success",
-              message: "搜索成功！",
-            });
-          }
-        })
-      )
-      .catch((err) => {
-        console.log(err);
-        that.$message({
-          type: "error",
-          message: "服务器被玩坏了QAQ！",
-        });
-      });
+    this.searchContent = localStorage.getItem("searchContent");
+    this.searchData("time");
   },
 };
 </script>
@@ -332,8 +363,19 @@ export default {
 .users {
   padding: 0 15% 0;
 }
-.empty_title{
+.empty_title {
   font-size: 25px;
   color: grey;
+}
+.search_wrap {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  margin: 7px 0px 10px 0px;
+}
+.input {
+  width: 50%;
 }
 </style>

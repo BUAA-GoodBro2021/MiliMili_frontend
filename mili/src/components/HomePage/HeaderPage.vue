@@ -9,7 +9,7 @@
           style="margin-right: 190px; margin-left: 100px"
         />
       </router-link>
-      <div class="search">
+      <div class="search" v-show="!headerInput">
         <el-input
           clearable
           placeholder="请输入您要搜索的内容"
@@ -83,6 +83,12 @@ export default {
         return false; //true时候透明 false时候不透明
       },
     },
+    headerInput:{
+      type: Boolean,
+      default(){
+        return false;
+      }
+    }
   },
   data() {
     return {
