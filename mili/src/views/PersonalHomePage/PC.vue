@@ -159,10 +159,9 @@ export default {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: 100% 100%;
-  width: 100vw;
-  height: 100vh;
-  overflow-x: hidden;
+  background-size: 98%;
+  width: 99vw;
+  height: 89vh;
 }
 .opa {
   opacity: 80%;
