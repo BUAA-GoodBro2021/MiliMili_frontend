@@ -1,9 +1,5 @@
 <template>
-<<<<<<< HEAD
-  <div id="bbody">
-=======
   <div id="body" >
->>>>>>> Harbour
     <el-container>
       <el-head>
         <div style="text-align: left">
