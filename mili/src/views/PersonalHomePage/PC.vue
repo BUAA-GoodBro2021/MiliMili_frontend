@@ -109,29 +109,29 @@ export default {
   font-family: icomoon;
 }
 
-/deep/ .el-menu {
+::v-deep .el-menu {
   background-color: rgba(255, 255, 255, 0.4);
 }
-/deep/ .el-card {
+::v-deep .el-card {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-/deep/ .el-menu-vertical-demo:not(.el-menu--collapse) {
+::v-deep .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
 }
-/deep/ .el-menu-item,
+::v-deep .el-menu-item,
 .el-submenu {
   text-align: left;
   background-color: rgba(255, 255, 255, 0.4);
 }
-/deep/ .el-menu-item:hover,
+::v-deep .el-menu-item:hover,
 .el-menu-item:active,
 .el-submenu__title:hover,
 .el-submenu__title:active {
   background-color: #fdf3e5e5;
 }
-/deep/ .el-radio-button__inner {
+::v-deep .el-radio-button__inner {
   width: 6vh;
   height: 6vh;
   border-radius: 50% !important;
@@ -140,19 +140,19 @@ export default {
   padding: 2.2vh 0 0 1vh;
   background: rgba(255, 255, 255, 0.4);
 }
-/deep/ .el-radio-button__inner:hover {
+::v-deep .el-radio-button__inner:hover {
   background-color: #fdf3e5e5;
   color: #606266;
 }
-/deep/ .el-menu-item.is-active {
+::v-deep .el-menu-item.is-active {
   color: #46c1fa;
 }
 
-/deep/ .el-tabs__item.is-active,
+::v-deep .el-tabs__item.is-active,
 .el-tabs__item:hover {
   color: #46c1fa;
 }
-/deep/ .el-tabs__active-bar {
+::v-deep .el-tabs__active-bar {
   background-color: #46c1fa;
 }
 

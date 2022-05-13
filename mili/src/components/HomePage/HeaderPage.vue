@@ -184,7 +184,7 @@ export default {
 .el-menu-item:hover {
   background-color: transparent !important;
 }
-/deep/ .el-submenu__title:hover {
+::v-deep .el-submenu__title:hover {
   background-color: transparent !important;
 }
 </style>
