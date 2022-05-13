@@ -1,7 +1,7 @@
 <template>
   <div id="body" >
     <el-container>
-      <el-head>
+      <el-aside>
         <div style="text-align: left">
           <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
             <el-radio-button
@@ -43,7 +43,7 @@
             <span slot="title">私信管理</span>
           </el-menu-item>
         </el-menu>
-      </el-head>
+      </el-aside>
       <el-aside width="40vh"></el-aside>
       <el-main>
         <el-col :span="24" class="content-wrapper">

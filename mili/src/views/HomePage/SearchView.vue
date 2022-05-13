@@ -18,7 +18,7 @@
           style="cursor: pointer; margin-left: 10px"
         />
       </div>
-      <el-tabs v-model="activeName" @tab-click="handleClick" type="border-card">
+      <el-tabs v-model="activeName" @tab-click="handleClick()" type="border-card">
         <el-tab-pane label="视频" name="videos">
           <div class="empty" v-if="videos.length == 0">
             <span class="empty_title"> 去用户页看看吧~</span>
@@ -315,7 +315,7 @@ export default {
       localStorage.setItem('searchContent', this.searchContent)
       var that = this;
       this.$axios
-        .all([this.getVideos(order), this.getUsers(order)])
+        .all([that.getVideos(order), that.getUsers(order)])
         .then(
           this.$axios.spread(function (res1, res2) {
             console.log(res1);

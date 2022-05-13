@@ -6,7 +6,7 @@
           <li style="vertical-align: middle; line-height: 50px">
             <el-avatar
               :size="50"
-              src="http://n.sinaimg.cn/sinacn10116/581/w633h748/20190612/95d6-hyeztyt1927097.jpg"
+              :src="user.avatar_url"
             >
             </el-avatar>
           </li>
