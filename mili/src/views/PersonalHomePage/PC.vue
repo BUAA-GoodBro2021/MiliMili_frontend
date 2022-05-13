@@ -44,8 +44,7 @@
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <!-- <el-aside width="5vw"></el-aside> -->
-      <el-main width="30vw">
+      <el-main>
         <el-col :span="24" class="content-wrapper">
           <transition name="fade" mode="out-in">
             <router-view></router-view>
@@ -126,7 +125,7 @@ export default {
   background-color: #fdf3e5e5;
 }
 ::v-deep .el-radio-button__inner {
-  width: 4vw;
+  width: 6vh;
   height: 6vh;
   border-radius: 50% !important;
   text-align: left;
@@ -149,6 +148,19 @@ export default {
 ::v-deep .el-tabs__active-bar {
   background-color: #46c1fa;
 }
+::v-deep .el-submenu__title:hover {
+  background-color: #fdf3e5e5;
+}
+::v-deep .el-menu-item:active {
+  color: #46c1fa;
+}
+::v-deep .el-menu-item:focus,
+.el-menu-item:hover {
+  background-color: #fdf3e5e5;
+}
+::v-deep .el-tabs__item:hover {
+  color: #46c1fa;
+}
 
 #body {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
@@ -157,7 +169,6 @@ export default {
   background-size: 98%;
   width: 99vw;
   height: 89vh;
-  overflow-x: hidden;
 }
 .opa {
   opacity: 80%;

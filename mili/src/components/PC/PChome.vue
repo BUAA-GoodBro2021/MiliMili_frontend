@@ -194,11 +194,11 @@ export default {
 .icomoon {
   font-family: icomoon;
 }
-::v-deep .el-tabs__item.is-active,
+ .el-tabs__item.is-active,
 .el-tabs__item:hover {
   color: #9446fa;
 }
-::v-deep .el-tabs__active-bar {
+ .el-tabs__active-bar {
   background-color: #9446fa;
 }
 .el-menu {
