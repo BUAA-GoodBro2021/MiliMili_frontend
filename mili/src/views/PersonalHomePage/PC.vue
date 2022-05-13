@@ -6,13 +6,13 @@
           <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
             <el-radio-button
               :label="false"
-              style="margin-left: 1.3vh"
+              style="margin-left: 1.1vw"
               v-show="isCollapse"
               >展开</el-radio-button
             >
             <el-radio-button
               :label="true"
-              style="margin-left: 1.3vh"
+              style="margin-left: 1.28vh"
               v-show="!isCollapse"
               >收起</el-radio-button
             >
@@ -168,7 +168,7 @@ export default {
   background-attachment: fixed;
   background-size: 98%;
   width: 99vw;
-  height: 89vh;
+  height: 85vh;
 }
 .opa {
   opacity: 80%;
