@@ -163,7 +163,7 @@ export default {
   color: #666;
 }
 .VideoData {
-  font-size: 1.5em;
+  font-size: 1.3em;
   /* background: linear-gradient(-60deg, #fceabb70, #f8b60070); */
   /* background-color: rgba(167, 230, 255, 0.445); */
   background-color: #fdf6ecc0;
@@ -171,11 +171,11 @@ export default {
   border: #faecd8 1px solid;
   /* rgba(202, 235, 16, 0.2) */
   /* background-color: rgba(0, 220, 236, 0.2); */
-  width: 25vh;
-  margin-left: 5.5vh;
-  margin-top: 3vh;
-  margin-bottom: 2vh;
-  line-height: 4.5vh;
+  width: 14vw;
+  margin-left: 2.7vw;
+  margin-top: 2.5vh;
+  margin-bottom: 1.8vh;
+  line-height: 1vh;
   text-align: center;
   border-radius: 1vh;
 }
@@ -184,11 +184,11 @@ export default {
 .icomoon {
   font-family: icomoon;
 }
- .el-tabs__item.is-active,
+.el-tabs__item.is-active,
 .el-tabs__item:hover {
   color: #9446fa;
 }
- .el-tabs__active-bar {
+.el-tabs__active-bar {
   background-color: #9446fa;
 }
 .el-menu {

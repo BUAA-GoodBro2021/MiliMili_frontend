@@ -1,18 +1,18 @@
 <template>
   <div id="body">
     <el-container>
-      <el-aside>
+      <el-aside width="20vw">
         <div style="text-align: left">
           <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
             <el-radio-button
               :label="false"
-              style="margin-left: 1.3vh"
+              style="margin-left: 1.1vw"
               v-show="isCollapse"
               >展开</el-radio-button
             >
             <el-radio-button
               :label="true"
-              style="margin-left: 1.3vh"
+              style="margin-left: 1.28vh"
               v-show="!isCollapse"
               >收起</el-radio-button
             >
@@ -44,7 +44,6 @@
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-aside width="40vh"></el-aside>
       <el-main>
         <el-col :span="24" class="content-wrapper">
           <transition name="fade" mode="out-in">
@@ -52,17 +51,12 @@
           </transition>
         </el-col>
         <!-- 首页 -->
-
         <!-- 内容管理 -->
         <!-- 稿件管理() -->
-
         <!-- 申诉管理() -->
-
         <!-- 私信管理界面 -->
-
-        <!-- 我的关注 -->
       </el-main>
-      <el-aside width="40vh"></el-aside>
+      <el-aside width="20vw"></el-aside>
     </el-container>
   </div>
 </template>
@@ -140,6 +134,19 @@ export default {
 ::v-deep .el-tabs__active-bar {
   background-color: #46c1fa;
 }
+::v-deep .el-submenu__title:hover {
+  background-color: #fdf3e5e5;
+}
+::v-deep .el-menu-item:active {
+  color: #46c1fa;
+}
+::v-deep .el-menu-item:focus,
+.el-menu-item:hover {
+  background-color: #fdf3e5e5;
+}
+::v-deep .el-tabs__item:hover {
+  color: #46c1fa;
+}
 
 
 #body {
@@ -147,8 +154,8 @@ export default {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 98%;
-  width: 100vw;
-  height: 100vh;
+  width: 99vw;
+  height: 85vh;
 }
 .opa {
   opacity: 80%;
