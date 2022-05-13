@@ -110,6 +110,7 @@ export default {
   width: 98%;
   display: flex;
   flex-wrap: wrap;
+  margin-left: 1.5vw;
   /* justify-content: space-between; */
 }
 .data-card {

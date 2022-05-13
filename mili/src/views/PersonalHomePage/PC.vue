@@ -44,7 +44,7 @@
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-main>
+      <el-main width="60vw">
         <el-col :span="24" class="content-wrapper">
           <transition name="fade" mode="out-in">
             <router-view></router-view>
@@ -100,6 +100,10 @@ export default {
 }
 .icomoon {
   font-family: icomoon;
+}
+
+::v-deep .el-aside {
+  height: 89vh;
 }
 
 ::v-deep .el-menu {
@@ -166,9 +170,7 @@ export default {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: 98%;
-  width: 99vw;
-  height: 85vh;
+  background-size: 100%;
 }
 .opa {
   opacity: 80%;
