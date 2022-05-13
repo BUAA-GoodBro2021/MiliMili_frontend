@@ -8,7 +8,9 @@
               <div class="VDBox">
                 <div class="VideoData">
                   <p>
-                    <a href="#" class="aData"> <span class="icomoon"></span> 净增粉丝> </a>
+                    <a href="#" class="aData">
+                      <span class="icomoon"></span> 净增粉丝>
+                    </a>
                   </p>
                   <p v-text="fansNum"></p>
                 </div>
@@ -16,7 +18,9 @@
               <div class="VDBox">
                 <div class="VideoData">
                   <p>
-                    <a href="#" class="aData"> <span class="icomoon"></span> 播放量> </a>
+                    <a href="#" class="aData">
+                      <span class="icomoon"></span> 播放量>
+                    </a>
                   </p>
                   <p v-text="fansNum"></p>
                 </div>
@@ -70,7 +74,9 @@
               <div class="VDBox">
                 <div class="VideoData">
                   <p>
-                    <a href="#" class="aData"> <span class="icomoon"></span> 粉丝数> </a>
+                    <a href="#" class="aData">
+                      <span class="icomoon"></span> 粉丝数>
+                    </a>
                   </p>
                   <p v-text="fansNum"></p>
                 </div>
@@ -152,7 +158,7 @@ export default {
   float: left;
   transform: 0.2s;
 }
-.aData{
+.aData {
   text-decoration: none;
   color: #666;
 }
@@ -188,11 +194,17 @@ export default {
 .icomoon {
   font-family: icomoon;
 }
-/deep/ .el-tabs__item.is-active,
+::v-deep .el-tabs__item.is-active,
 .el-tabs__item:hover {
   color: #9446fa;
 }
-/deep/ .el-tabs__active-bar {
+::v-deep .el-tabs__active-bar {
   background-color: #9446fa;
+}
+.el-menu {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.el-card {
+  background-color: rgba(255, 255, 255, 0.8);
 }
 </style>

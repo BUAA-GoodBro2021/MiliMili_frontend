@@ -1,5 +1,9 @@
 <template>
+<<<<<<< HEAD
+  <div id="bbody">
+=======
   <div id="body" >
+>>>>>>> Harbour
     <el-container>
       <el-head>
         <div style="text-align: left">
@@ -92,7 +96,6 @@ export default {
 
 <style scoped>
 /* 内外边距清零 */
-
 
 @font-face {
   font-family: "icomoon";

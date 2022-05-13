@@ -11,7 +11,7 @@
             v-infinite-scroll="loadCommits()"
             style="overflow: auto"
           >
-            <li v-for="(item,index) in commits" :key="index">{{ item }}</li>
+            <li v-for="(item, index) in commits" :key="index">{{ item }}</li>
           </ul>
         </div>
       </el-tab-pane>
@@ -25,7 +25,7 @@
             v-infinite-scroll="loadAts()"
             style="overflow: auto"
           >
-            <li v-for="(item,index) in ats" :key="index">{{ item }}</li>
+            <li v-for="(item, index) in ats" :key="index">{{ item }}</li>
           </ul>
         </div>
       </el-tab-pane>
@@ -39,7 +39,7 @@
             v-infinite-scroll="loadSupports()"
             style="overflow: auto"
           >
-            <li v-for="(item,index) in supports" :key="index">{{ item }}</li>
+            <li v-for="(item, index) in supports" :key="index">{{ item }}</li>
           </ul>
         </div>
       </el-tab-pane>
@@ -53,7 +53,7 @@
             v-infinite-scroll="loadNotices()"
             style="overflow: auto"
           >
-            <li v-for="(item,index) in notices" :key="index">{{ item }}</li>
+            <li v-for="(item, index) in notices" :key="index">{{ item }}</li>
           </ul>
         </div>
       </el-tab-pane>
@@ -67,7 +67,7 @@
             v-infinite-scroll="loadMessages()"
             style="overflow: auto"
           >
-            <li v-for="(item,index) in messages" :key="index">{{ item }}</li>
+            <li v-for="(item, index) in messages" :key="index">{{ item }}</li>
           </ul>
         </div>
       </el-tab-pane>
@@ -81,7 +81,7 @@
             v-infinite-scroll="loadMessages()"
             style="overflow: auto"
           >
-            <li v-for="(item,index) in messages" :key="index">{{ item }}</li>
+            <li v-for="(item, index) in messages" :key="index">{{ item }}</li>
           </ul>
         </div>
       </el-tab-pane>
@@ -164,7 +164,7 @@ export default {
 .tabs >>> .el-tabs__header {
   background-color: rgba(255, 255, 255, 0.4);
   border: none;
-  height: 87vh;
+  height: 80vh;
 }
 .tabs >>> .el-tabs--border-card {
   background: rgba(255, 255, 255, 0.3);
