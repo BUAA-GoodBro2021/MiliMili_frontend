@@ -180,17 +180,7 @@ export default {
   border-radius: 1vh;
 }
 
-@font-face {
-  font-family: "icomoon";
-  src: url("../../assets/fonts/icomoon.eot?7kkyc2");
-  src: url("../../assets/fonts/icomoon.eot?7kkyc2#iefix")
-      format("embedded-opentype"),
-    url("../../assets/fonts/icomoon.ttf?7kkyc2") format("truetype"),
-    url("../../assets/fonts/icomoon.woff?7kkyc2") format("woff"),
-    url("../../assets/fonts/icomoon.svg?7kkyc2") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
+
 .icomoon {
   font-family: icomoon;
 }
