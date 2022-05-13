@@ -1,5 +1,5 @@
 <template>
-  <div id="body" >
+  <div id="body">
     <el-container>
       <el-aside>
         <div style="text-align: left">
@@ -141,11 +141,12 @@ export default {
   background-color: #46c1fa;
 }
 
+
 #body {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: 100vw,100vh;
+  background-size: 98%;
   width: 100vw;
   height: 100vh;
 }

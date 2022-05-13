@@ -54,7 +54,7 @@
             <span>上传稿件</span>
           </div>
         </el-menu-item>
-        <el-submenu index="user" class="jump" >
+        <el-submenu index="user" class="jump">
           <template slot="title">
             <img class="avatar" /><i
               class="el-icon-user"
@@ -64,11 +64,15 @@
               >用户信息</span
             >
           </template>
-          <el-menu-item index="/login" v-if="!islogin"  >登录</el-menu-item>
+          <el-menu-item index="/login" v-if="!islogin">登录</el-menu-item>
           <el-menu-item index="/register" v-if="!islogin">注册</el-menu-item>
-          <el-menu-item index="/PersonalHomePage/Main" v-if="islogin">个人中心</el-menu-item>
+          <el-menu-item index="/PersonalHomePage/Main" v-if="islogin"
+            >个人中心</el-menu-item
+          >
           <el-menu-item index="/upload" v-if="islogin">发布视频</el-menu-item>
-          <el-menu-item index="/homepage" @click="logout()" v-if="islogin">登出</el-menu-item>
+          <el-menu-item index="/homepage" @click="logout()" v-if="islogin"
+            >登出</el-menu-item
+          >
         </el-submenu>
       </el-menu>
     </div>
@@ -83,47 +87,47 @@ export default {
         return false; //true时候透明 false时候不透明
       },
     },
-    headerInput:{
+    headerInput: {
       type: Boolean,
-      default(){
+      default() {
         return false;
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       inputContext: "",
-      islogin: localStorage.getItem('loginMessage') != null
+      islogin: localStorage.getItem("loginMessage") != null,
     };
   },
   methods: {
     searchContext: function () {
       console.log(this.inputContext);
-      if(this.inputContext == ''){
+      if (this.inputContext == "") {
         this.$message({
-              type: "error",
-              message: '输入点东西呀QAQ',
-         });
-         return
+          type: "error",
+          message: "输入点东西呀QAQ",
+        });
+        return;
       }
-      localStorage.removeItem('searchContent') //每次搜索到结果之后将旧的搜索结果删除存入新的搜索结果
-      localStorage.setItem('searchContent',this.inputContext)
-      this.$router.push('/search')
+      localStorage.removeItem("searchContent"); //每次搜索到结果之后将旧的搜索结果删除存入新的搜索结果
+      localStorage.setItem("searchContent", this.inputContext);
+      this.$router.push("/search");
     },
-    logout: function(){
-      localStorage.removeItem('loginMessage')
-      this.islogin = false
-    }
+    logout: function () {
+      localStorage.removeItem("loginMessage");
+      this.islogin = false;
+    },
   },
   watch: {
     headerMode(newName, oldName) {
       console.log(oldName + "->" + newName);
     },
   },
-  created(){
+  created() {
     // var content = localStorage.getItem('searchContent')
     // if(content != null) this.inputContext = content
-  }
+  },
 };
 </script>
 <style scoped>
