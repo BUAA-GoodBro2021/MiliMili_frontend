@@ -215,12 +215,13 @@ export default {
     },
   },
   watch:{
-    users(oldName,newName){
+    users(oldName,newName){ //异步问题的解决
       this.pagesize = this.pageSize < newName.length ? this.pageSize: newName.length
       this.topicInit(1);
     }
   },
   created() {
+    this.pagesize = this.pageSize < this.users.length ? this.pageSize: this.users.length
     this.topicInit(1);
   },
   components: {

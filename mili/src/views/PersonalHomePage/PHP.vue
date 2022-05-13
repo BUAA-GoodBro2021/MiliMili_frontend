@@ -26,11 +26,11 @@
               <span class="icomoon sc icohead"></span
               ><span class="catalogue"> 收藏</span>
             </el-menu-item>
-            <el-menu-item index="/PersonalHomePage/followers" class="headcol">
+            <el-menu-item index="/PersonalHomePage/fans" class="headcol">
               <span class="icomoon sz icohead"></span
               ><span class="catalogue"> 粉丝</span>
             </el-menu-item>
-            <el-menu-item index="4" class="headcol">
+            <el-menu-item index="/PersonalHomePage/followings" class="headcol">
               <i class="el-icon-magic-stick sc icohead"></i>
               <span class="catalogue"> 关注</span>
             </el-menu-item>

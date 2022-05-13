@@ -1,7 +1,7 @@
 <template>
   <div id="body">
     <el-container>
-      <el-head>
+      <el-aside width="20vw">
         <div style="text-align: left">
           <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
             <el-radio-button
@@ -43,26 +43,21 @@
             <span slot="title">私信管理</span>
           </el-menu-item>
         </el-menu>
-      </el-head>
-      <el-aside width="40vh"></el-aside>
-      <el-main>
+      </el-aside>
+      <!-- <el-aside width="5vw"></el-aside> -->
+      <el-main width="30vw">
         <el-col :span="24" class="content-wrapper">
           <transition name="fade" mode="out-in">
             <router-view></router-view>
           </transition>
         </el-col>
         <!-- 首页 -->
-
         <!-- 内容管理 -->
         <!-- 稿件管理() -->
-
         <!-- 申诉管理() -->
-
         <!-- 私信管理界面 -->
-
-        <!-- 我的关注 -->
       </el-main>
-      <el-aside width="40vh"></el-aside>
+      <el-aside width="20vw"></el-aside>
     </el-container>
   </div>
 </template>
@@ -131,7 +126,7 @@ export default {
   background-color: #fdf3e5e5;
 }
 ::v-deep .el-radio-button__inner {
-  width: 6vh;
+  width: 4vw;
   height: 6vh;
   border-radius: 50% !important;
   text-align: left;
@@ -159,9 +154,9 @@ export default {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: 100% 100%;
-  width: 100vw;
-  height: 100vh;
+  background-size: 98%;
+  width: 99vw;
+  height: 89vh;
   overflow-x: hidden;
 }
 .opa {
