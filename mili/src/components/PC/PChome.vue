@@ -8,7 +8,9 @@
               <div class="VDBox">
                 <div class="VideoData">
                   <p>
-                    <a href="#"> <span class="icomoon"></span> 净增粉丝> </a>
+                    <a href="#" class="aData">
+                      <span class="icomoon"></span> 净增粉丝>
+                    </a>
                   </p>
                   <p v-text="fansNum"></p>
                 </div>
@@ -16,7 +18,9 @@
               <div class="VDBox">
                 <div class="VideoData">
                   <p>
-                    <a href="#"> <span class="icomoon"></span> 播放量> </a>
+                    <a href="#" class="aData">
+                      <span class="icomoon"></span> 播放量>
+                    </a>
                   </p>
                   <p v-text="fansNum"></p>
                 </div>
@@ -70,7 +74,9 @@
               <div class="VDBox">
                 <div class="VideoData">
                   <p>
-                    <a href="#"> <span class="icomoon"></span> 粉丝数> </a>
+                    <a href="#" class="aData">
+                      <span class="icomoon"></span> 粉丝数>
+                    </a>
                   </p>
                   <p v-text="fansNum"></p>
                 </div>
@@ -152,6 +158,10 @@ export default {
   float: left;
   transform: 0.2s;
 }
+.aData {
+  text-decoration: none;
+  color: #666;
+}
 .VideoData {
   font-size: 1.5em;
   /* background: linear-gradient(-60deg, #fceabb70, #f8b60070); */
@@ -169,11 +179,26 @@ export default {
   text-align: center;
   border-radius: 1vh;
 }
-.el-tabs__item.is-active,
+
+@font-face {
+  font-family: "icomoon";
+  src: url("../../assets/fonts/icomoon.eot?7kkyc2");
+  src: url("../../assets/fonts/icomoon.eot?7kkyc2#iefix")
+      format("embedded-opentype"),
+    url("../../assets/fonts/icomoon.ttf?7kkyc2") format("truetype"),
+    url("../../assets/fonts/icomoon.woff?7kkyc2") format("woff"),
+    url("../../assets/fonts/icomoon.svg?7kkyc2") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+.icomoon {
+  font-family: icomoon;
+}
+::v-deep .el-tabs__item.is-active,
 .el-tabs__item:hover {
   color: #9446fa;
 }
-.el-tabs__active-bar {
+::v-deep .el-tabs__active-bar {
   background-color: #9446fa;
 }
 .el-menu {

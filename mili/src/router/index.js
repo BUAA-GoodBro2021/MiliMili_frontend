@@ -60,11 +60,6 @@ const routes = [
           hidden: true
         }]
       },
-      {
-        path: '/search',
-        name: 'SearchPage',
-        component: () => import('../views/HomePage/SearchView.vue')
-      },
       //在这里填写的路由都将获得不透明header
     ]
   },
@@ -87,6 +82,11 @@ const routes = [
     path: '/homepage',
     name: 'HomePage',
     component: () => import('../views/HomePage/HomeView.vue'), //视频主页
+  },
+  {
+    path: '/search',
+    name: 'SearchPage',
+    component: () => import('../views/HomePage/SearchView.vue')
   },
 ]
 

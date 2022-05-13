@@ -9,7 +9,7 @@
           style="margin-right: 190px; margin-left: 100px"
         />
       </router-link>
-      <div class="search">
+      <div class="search" v-show="!headerInput">
         <el-input
           clearable
           placeholder="请输入您要搜索的内容"
@@ -83,6 +83,12 @@ export default {
         return false; //true时候透明 false时候不透明
       },
     },
+    headerInput:{
+      type: Boolean,
+      default(){
+        return false;
+      }
+    }
   },
   data() {
     return {
@@ -93,6 +99,14 @@ export default {
   methods: {
     searchContext: function () {
       console.log(this.inputContext);
+      if(this.inputContext == ''){
+        this.$message({
+              type: "error",
+              message: '输入点东西呀QAQ',
+         });
+         return
+      }
+      localStorage.removeItem('searchContent') //每次搜索到结果之后将旧的搜索结果删除存入新的搜索结果
       localStorage.setItem('searchContent',this.inputContext)
       this.$router.push('/search')
     },
@@ -106,6 +120,10 @@ export default {
       console.log(oldName + "->" + newName);
     },
   },
+  created(){
+    // var content = localStorage.getItem('searchContent')
+    // if(content != null) this.inputContext = content
+  }
 };
 </script>
 <style scoped>

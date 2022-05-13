@@ -1,5 +1,9 @@
 <template>
+<<<<<<< HEAD
   <div id="bbody">
+=======
+  <div id="body" >
+>>>>>>> Harbour
     <el-container>
       <el-head>
         <div style="text-align: left">
@@ -24,7 +28,7 @@
           @open="handleOpen"
           @close="handleClose"
           :collapse="isCollapse"
-          router="true"
+          :router="true"
         >
           <el-menu-item index="/PChome">
             <i class="el-icon-menu"></i>
@@ -90,79 +94,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* 内外边距清零 */
-* {
-  margin: 0;
-  padding: 0;
-}
-/* em和i斜体清除 */
-em,
-i {
-  font-style: normal;
-}
-/* 去掉li的小圆点 */
-li {
-  list-style: none;
-}
-img {
-  /* 照顾低版本浏览器 如果图片外边包含了链接 会有边框的问题 */
-  border: 0;
-  /* 取消图片底侧有空白缝隙的问题 */
-  vertical-align: middle;
-}
 
-button {
-  /* 当鼠标经过button按钮时 鼠标变成小手 */
-  cursor: pointer;
-}
-
-a {
-  color: #666;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #666;
-}
-
-button,
-input {
-  font-family: Microsoft Yahei, Heiti SC, arial, Hiragino Sans GB, "\5B8B\4F53",
-    sans-serif;
-  color: #666;
-}
-
-body {
-  /* 抗锯齿 让文字更加清晰 */
-  -webkit-font-smoothing: antialiased;
-  background-color: #fff;
-  font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB,
-    "\5B8B\4F53", sans-serif;
-  color: #666;
-}
-
-.hide,
-.none {
-  display: none;
-}
-/* 清除浮动 */
-.clearfix:after {
-  visibility: hidden;
-  clear: both;
-  display: block;
-  content: ".";
-  height: 0;
-}
-
-.clearfix {
-  *zoom: 1;
-}
-
-.mod_price {
-  font-size: 14px;
-  color: #46c1fa;
-}
 @font-face {
   font-family: "icomoon";
   src: url("../../assets/fonts/icomoon.eot?7kkyc2");
@@ -178,44 +112,29 @@ body {
   font-family: icomoon;
 }
 
-.el-radio-button__inner {
-  width: 6vh;
-  height: 6vh;
-  border-radius: 50% !important;
-  text-align: left;
-  margin-top: 5vh;
-  padding: 2.2vh 0 0 1vh;
-  background: rgba(255, 255, 255, 0.4);
-}
-.el-radio-button__inner:hover {
-  background-color: #fdf3e5e5;
-  color: #606266;
-}
-</style>
-<style scoped>
-.el-menu {
+::v-deep .el-menu {
   background-color: rgba(255, 255, 255, 0.4);
 }
-.el-card {
+::v-deep .el-card {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-.el-menu-vertical-demo:not(.el-menu--collapse) {
+::v-deep .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
 }
-.el-menu-item,
+::v-deep .el-menu-item,
 .el-submenu {
   text-align: left;
   background-color: rgba(255, 255, 255, 0.4);
 }
-.el-menu-item:hover,
+::v-deep .el-menu-item:hover,
 .el-menu-item:active,
 .el-submenu__title:hover,
 .el-submenu__title:active {
   background-color: #fdf3e5e5;
 }
-.el-radio-button__inner {
+::v-deep .el-radio-button__inner {
   width: 6vh;
   height: 6vh;
   border-radius: 50% !important;
@@ -224,29 +143,30 @@ body {
   padding: 2.2vh 0 0 1vh;
   background: rgba(255, 255, 255, 0.4);
 }
-.el-radio-button__inner:hover {
+::v-deep .el-radio-button__inner:hover {
   background-color: #fdf3e5e5;
   color: #606266;
 }
-.el-menu-item.is-active {
+::v-deep .el-menu-item.is-active {
   color: #46c1fa;
 }
 
-.el-tabs__item.is-active,
+::v-deep .el-tabs__item.is-active,
 .el-tabs__item:hover {
   color: #46c1fa;
 }
-.el-tabs__active-bar {
+::v-deep .el-tabs__active-bar {
   background-color: #46c1fa;
 }
 
-#bbody {
+#body {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
-  height: 90vh;
   width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
 }
 .opa {
   opacity: 80%;
