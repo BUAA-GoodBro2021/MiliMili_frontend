@@ -24,10 +24,16 @@ const routes = [
           component: () => import('../components/PHP/PHPStar.vue'),
           hidden: true,
         }, {
-          path: '/PersonalHomePage/followers',
+          path: '/PersonalHomePage/fans',
           name: 'FollowerPage',
           component: () => import('../views/PersonalHomePage/PHP/FollowersPage.vue'),
-        }]
+        },
+        {
+          path: '/PersonalHomePage/followings',
+          name: 'FollowerPage',
+          component: () => import('../views/PersonalHomePage/PHP/FollowingPage.vue'),
+        }
+        ]
       },
       {
         path: '/PersonalInformation',
