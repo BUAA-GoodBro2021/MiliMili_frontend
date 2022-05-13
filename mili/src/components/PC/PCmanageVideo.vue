@@ -2,7 +2,7 @@
   <div class="home">
     <el-card class="data-card">
       <div slot="header" class="clearfix">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="handleClick()">
           <el-tab-pane label="全部稿件" name="first">
             <div class="vv">
               <div
@@ -92,7 +92,11 @@ export default {
         console.log(err);
       });
   },
-  methods: {},
+  methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+  },
   components: { Video },
 };
 </script>

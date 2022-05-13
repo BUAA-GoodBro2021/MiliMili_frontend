@@ -2,7 +2,7 @@
   <div class="home">
     <el-card class="data-card">
       <div slot="header" class="clearfix">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="handleClick()">
           <el-tab-pane label="视频数据" name="first">
             <div>
               <div class="VDBox">
@@ -149,7 +149,11 @@ export default {
       fansNum: 0,
     };
   },
-  methods: {},
+  methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+  },
 };
 </script>
 
@@ -180,7 +184,17 @@ export default {
   border-radius: 1vh;
 }
 
-
+@font-face {
+  font-family: "icomoon";
+  src: url("../../assets/fonts/icomoon.eot?7kkyc2");
+  src: url("../../assets/fonts/icomoon.eot?7kkyc2#iefix")
+      format("embedded-opentype"),
+    url("../../assets/fonts/icomoon.ttf?7kkyc2") format("truetype"),
+    url("../../assets/fonts/icomoon.woff?7kkyc2") format("woff"),
+    url("../../assets/fonts/icomoon.svg?7kkyc2") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
 .icomoon {
   font-family: icomoon;
 }

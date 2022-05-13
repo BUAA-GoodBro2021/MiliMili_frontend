@@ -9,14 +9,18 @@
     <div class="blocks">
       <div class="ip">
         <div class="ip_wrap">
-          <span class="ip_content">{{'地区: '+ip.nation+" "+ip.province+" "+ip.city}}</span>
-          <span class="ip_content">{{"经度: "+ip.lng+" 纬度: "+ip.lat}}</span>
+          <span class="ip_content">{{
+            "地区: " + ip.nation + " " + ip.province + " " + ip.city
+          }}</span>
+          <span class="ip_content">{{
+            "经度: " + ip.lng + " 纬度: " + ip.lat
+          }}</span>
         </div>
       </div>
       <div class="block_tags">
         <div v-for="(item, index) in blocks" :key="index">
           <!-- todo加个click跳转到对应的item路由 -->
-          <router-link :to="'/blockpage/' + item">
+          <router-link :to="'/blockpage/' + index">
             <el-tag
               style="margin: 7px 10px 10px 10px; width: 90px"
               :type="tagColor[index]"
@@ -71,20 +75,34 @@ export default {
   data() {
     return {
       headMode: true,
+      blocks2id: {
+        鬼畜: 1,
+        科技: 2,
+        户外: 3,
+        动漫: 4,
+        影视: 5,
+        音乐: 6,
+        汽车: 7,
+        教育: 8,
+        游戏: 9,
+        时事: 10,
+        生活: 11,
+        军事: 12,
+      }, //需要商定
       blocks: [
-        "鬼畜",
-        "美食",
-        "运动",
-        "生活",
-        "影视",
-        "知识",
-        "咨询",
-        "生活",
-        "娱乐",
-        "汽车",
-        "影视",
-        "知识",
-      ], //需要商定
+        '鬼畜',
+        '科技',
+        '户外',
+        '动漫',
+        '影视',
+        '音乐',
+        '汽车',
+        '教育',
+        '游戏',
+        '时事',
+        '生活',
+        '军事',
+      ],
       tagColor: [
         "warning",
         "info",
@@ -150,7 +168,7 @@ export default {
   width: 15%;
   height: 100px;
 }
-.ip_wrap{
+.ip_wrap {
   width: 90%;
   height: 100px;
   border-radius: 10px;
@@ -162,7 +180,7 @@ export default {
   justify-content: space-around;
   align-content: center;
 }
-.ip_content{
+.ip_content {
   font-size: 13px;
   text-align: left;
   margin-left: 20px;
