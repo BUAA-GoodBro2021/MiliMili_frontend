@@ -356,7 +356,7 @@ body {
   text-align: center;
   line-height: 4vh;
 }
-.el-dropdown-link[data-v-c20dba9a] {
+.el-dropdown-link {
   cursor: pointer;
   color: #666;
 }
