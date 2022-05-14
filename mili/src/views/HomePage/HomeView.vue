@@ -7,16 +7,6 @@
     <!-- 分区总览和快捷键 -->
     <el-footer style="height: 20px; width: 100%"></el-footer>
     <div class="blocks">
-      <div class="ip">
-        <div class="ip_wrap">
-          <span class="ip_content">{{
-            "地区: " + ip.nation + " " + ip.province + " " + ip.city
-          }}</span>
-          <span class="ip_content">{{
-            "经度: " + ip.lng + " 纬度: " + ip.lat
-          }}</span>
-        </div>
-      </div>
       <div class="block_tags">
         <div v-for="(item, index) in blocks" :key="index">
           <!-- todo加个click跳转到对应的item路由 -->
@@ -53,7 +43,33 @@
             >
           </router-link>
         </div>
+        <div class="card" style="background: rgb(230, 180, 80)">
+          <div class="ip_up">
+            <i class="el-icon-location-information" />
+            <span class="_up">
+            {{  ip.province + " " + ip.city }}</span
+          >
+          </div>
+          <span class="text_ip">
+            {{
+               ip.lng + " °E " 
+          }}
+          </span>
+          <span class="text_ip">
+            {{ip.lat + "°N"}}
+          </span>
+        </div>
       </div>
+      <!-- <div class="ip">
+        <div class="ip_wrap">
+          <span class="ip_content">{{
+            "地区: " + ip.nation + " " + ip.province + " " + ip.city
+          }}</span>
+          <span class="ip_content">{{
+            "经度: " + ip.lng + " 纬度: " + ip.lat
+          }}</span>
+        </div>
+      </div> -->
     </div>
     <!-- 幻灯片 -->
     <Recommend />
@@ -90,18 +106,18 @@ export default {
         军事: 12,
       }, //需要商定
       blocks: [
-        '鬼畜',
-        '科技',
-        '户外',
-        '动漫',
-        '影视',
-        '音乐',
-        '汽车',
-        '教育',
-        '游戏',
-        '时事',
-        '生活',
-        '军事',
+        "鬼畜",
+        "科技",
+        "户外",
+        "动漫",
+        "影视",
+        "音乐",
+        "汽车",
+        "教育",
+        "游戏",
+        "时事",
+        "生活",
+        "军事",
       ],
       tagColor: [
         "warning",
@@ -193,10 +209,21 @@ export default {
   flex-wrap: wrap;
 }
 .block_others {
-  width: 33%;
+  width: 45%;
   height: 100px;
   display: flex;
   align-content: space-between;
+}
+.text_ip{
+  color: white;
+  margin-top: 2px;
+  font-size: 15px;
+  display: block;
+}
+.ip_up{
+  color: white;
+  margin-top: 15px;
+  font-size: 15px;
 }
 .card {
   margin-top: 8px;

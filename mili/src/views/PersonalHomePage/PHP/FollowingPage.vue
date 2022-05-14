@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%; ">
     <div class="list_wrap">
-      <PersonList :users="users" :listType="3" :pageSize="3"/>
+      <PersonList :users="users" :listType="3" :pageSize="3" v-on:cancelfollow="cancelfollow"/>
     </div>
   </div>
 </template>
@@ -11,6 +11,7 @@ export default {
   components: { PersonList },
   data() {
     return {
+      deleteFlag: -1,
       users: [
         {
           id: "1",
@@ -150,6 +151,14 @@ export default {
       ],
     };
   },
+  methods:{
+    cancelfollow(val){
+      this.deleteFlag = val
+      console.log('子组件传值为: '+this.deleteFlag)
+      //TODO getListAgain
+    }
+  }
+
 };
 </script>
 <style scoped>
