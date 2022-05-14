@@ -40,7 +40,6 @@
         <el-footer style="height: 5vh; width: 100%"></el-footer>
         <!-- 主体 -->
         <el-container>
-          <!-- 视频 -->
           <el-col :span="24" class="content-wrapper">
             <transition name="fade" mode="out-in">
               <router-view></router-view>
