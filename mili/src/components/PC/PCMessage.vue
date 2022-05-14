@@ -6,7 +6,7 @@
           <div class="TabTitle"><span>回复我的</span></div>
         </div>
         <div
-          style="height: 1.5vh; width: 100%; backgroung-color: transparent"
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
         ></div>
         <div class="mm">
           <div
@@ -26,7 +26,7 @@
           <div class="TabTitle"><span>收到的赞</span></div>
         </div>
         <div
-          style="height: 1.5vh; width: 100%; backgroung-color: transparent"
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
         ></div>
         <div class="mm">
           <div
@@ -46,7 +46,7 @@
           <div class="TabTitle"><span>收藏</span></div>
         </div>
         <div
-          style="height: 1.5vh; width: 100%; backgroung-color: transparent"
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
         ></div>
         <div class="mm">
           <div
@@ -66,7 +66,7 @@
           <div class="TabTitle"><span>系统通知</span></div>
         </div>
         <div
-          style="height: 1.5vh; width: 100%; backgroung-color: transparent"
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
         ></div>
         <div>
           <div
@@ -85,7 +85,7 @@
           <div class="TabTitle"><span>我的消息</span></div>
         </div>
         <div
-          style="height: 1.5vh; width: 100%; backgroung-color: transparent"
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
         ></div>
         <div>
           <div
@@ -104,7 +104,7 @@
           <div class="TabTitle"><span>新增粉丝</span></div>
         </div>
         <div
-          style="height: 1.5vh; width: 100%; backgroung-color: transparent"
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
         ></div>
         <div>
           <div
@@ -140,7 +140,6 @@ export default {
   },
   created() {
     var that = this;
-    let items = {};
     this.$axios({
       method: "post",
       url: "https://milimili.super2021.com/api/sending/message/list-message-detail",

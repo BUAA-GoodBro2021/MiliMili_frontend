@@ -41,79 +41,11 @@
         <!-- 主体 -->
         <el-container>
           <!-- 视频 -->
-          <el-main class="box">
-            <el-col :span="24" class="content-wrapper">
-              <transition name="fade" mode="out-in">
-                <router-view></router-view>
-              </transition> </el-col
-          ></el-main>
-          <!-- 间隔 -->
-          <el-aside width="1.5vh"></el-aside>
-          <!-- 个人资料+创作中心+公告 -->
-          <el-aside width="50vh">
-            <div style="width=100%">
-              <!-- 个人资料 -->
-              <el-card class="box-card asd box">
-                <div slot="header" class="clearfix">
-                  <span class="UserTitle">个人资料</span>
-                  <el-button
-                    style="float: right; padding: 0.1vh 0; margin-right: 2vh"
-                    type="text"
-                    class="UserChange"
-                    >修改资料</el-button
-                  >
-                </div>
-                <div class="text item">
-                  <span class="UserContext">UID: </span
-                  ><span class="UserContext">xxxxxx</span>
-                  <span class="UserContext">生日: </span
-                  ><span class="UserContext">xxxxxx</span>
-                  <span class="UserContext">性别: </span
-                  ><span class="UserContext">xxxxxx</span>
-                </div>
-              </el-card>
-              <!-- 间隔 -->
-              <el-footer style="height: 2vh; width: 100%"></el-footer>
-              <!-- 创作中心 -->
-              <div class="asd box Ucreate">
-                <div class="UcreateTitle">
-                  <i class="el-icon-s-opportunity"></i><span>创作中心</span>
-                </div>
-                <div class="UcreateItem">
-                  <a
-                    href="#"
-                    target="_blank"
-                    class="UcreateItem1 UserCreateItem"
-                    ><span class="el-icon-upload2"></span
-                    ><span class="i-m-text"> 视频投稿</span></a
-                  ><a
-                    href="#"
-                    target="_blank"
-                    class="UcreateItem2 UserCreateItem"
-                    ><span class="el-icon-menu"></span
-                    ><span class="i-m-text"> 内容管理</span></a
-                  >
-                </div>
-              </div>
-              <!-- 间隔 -->
-              <el-footer style="height: 2vh; width: 100%"></el-footer>
-              <!-- 公告 -->
-              <div style="width: 49vh">
-                <div class="NoticeTitle">公告</div>
-                <div>
-                  <el-input
-                    type="textarea"
-                    placeholder="请输入内容"
-                    v-model="textarea"
-                    maxlength="150"
-                    show-word-limit
-                    class="NoticeText"
-                  >
-                  </el-input>
-                </div>
-              </div>
-            </div>
-          </el-aside>
+          <el-col :span="24" class="content-wrapper">
+            <transition name="fade" mode="out-in">
+              <router-view></router-view>
+            </transition>
+          </el-col>
         </el-container>
       </el-container>
       <el-aside width="130px"></el-aside>

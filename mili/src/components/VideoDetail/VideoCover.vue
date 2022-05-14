@@ -73,23 +73,22 @@ export default {
           title: "这里是标题",
           // follow: true,
           user: {
-            username: 'harboue'
+            username: "harboue",
           },
           video_url: "@/assets/debug/cover1.jepg",
-          tag1: '',
-          tag2: '',
-          tag3: '',
-          tag4: '',
-          tag5: '',
-          video_url: '',
-          zone: '',
-          need_verify: '',
+          tag1: "",
+          tag2: "",
+          tag3: "",
+          tag4: "",
+          tag5: "",
+          video_url: "",
+          zone: "",
+          need_verify: "",
           isAudit: 1,
-          description: '',
-          avater_url: '',
-          created_time: '',
-          collect_num: '',
-
+          description: "",
+          avater_url: "",
+          created_time: "",
+          collect_num: "",
         };
       },
     },
@@ -98,10 +97,10 @@ export default {
     handle: function (url) {
       return require(url);
     },
-    handle_time(ans){
-      if(ans == null) return 'null'
-       return ans.split('T')[0]
-    }
+    handle_time(ans) {
+      if (ans == null) return "null";
+      return ans.split("T")[0];
+    },
   },
 };
 </script>

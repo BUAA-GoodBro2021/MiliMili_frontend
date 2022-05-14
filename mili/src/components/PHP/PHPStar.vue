@@ -1,14 +1,13 @@
 <template>
   <div>
     <div class="block">
-      <el-pagination layout="prev, pager,next" :total="50"> </el-pagination>
-        <div
+        <!-- <div
           v-for="(item, index) in VideoArray"
           :key="index"
           style="margin-left: 10px; margin-top: 10px"
         >
           <Video :singleVideo="item" />
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -21,7 +20,7 @@ export default {
   data() {
     return {
       jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
-      VideoArray: [],
+      AllStars: [],
       len: 0,
       group: 0,
     };
@@ -41,16 +40,7 @@ export default {
       .then((res) => {
         console.log(res);
         console.log(res.data.video_list);
-        // for (item in res.data.video_list) {
-        //   that.VideoArray[i] = item;
-        //   this.i++;
-        // }
-        that.VideoArray = res.data.video_list;
-        console.log(this.VideoArray);
-        that.len = this.VideoArray.length;
-        console.log(that.len);
-        that.group = Math.ceil(that.len / 6);
-        console.log(that.group);
+        that.AllStars = res.data.favorite_list_detail;
       })
       .catch((err) => {
         console.log(err);
@@ -76,3 +66,6 @@ export default {
   components: { Video },
 };
 </script>
+
+<style scoped>
+</style>
