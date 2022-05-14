@@ -10,7 +10,9 @@
                 :key="index"
                 style="margin-left: 10px; margin-top: 10px"
               >
-                <Video :singleVideo="item" />
+                <div class="vvv">
+                  <Video :singleVideo="item" />
+                </div>
               </div>
             </div>
           </el-tab-pane>
@@ -21,7 +23,9 @@
                 :key="index"
                 style="margin-left: 10px; margin-top: 10px"
               >
-                <Video :singleVideo="item" />
+                <div class="vvv">
+                  <Video :singleVideo="item" />
+                </div>
               </div></div
           ></el-tab-pane>
           <el-tab-pane label="人工审核" name="third">
@@ -31,7 +35,9 @@
                 :key="index"
                 style="margin-left: 10px; margin-top: 10px"
               >
-                <Video :singleVideo="item" />
+                <div class="vvv">
+                  <Video :singleVideo="item" />
+                </div>
               </div></div
           ></el-tab-pane>
           <el-tab-pane label="已通过" name="fourth">
@@ -41,7 +47,9 @@
                 :key="index"
                 style="margin-left: 10px; margin-top: 10px"
               >
-                <Video :singleVideo="item" />
+                <div class="vvv">
+                  <Video :singleVideo="item" />
+                </div>
               </div></div
           ></el-tab-pane>
         </el-tabs>
@@ -115,5 +123,9 @@ export default {
 }
 .data-card {
   background-color: rgba(255, 255, 255, 0.726);
+}
+.vvv {
+  height: 20vh;
+  width: 16vw;
 }
 </style>
