@@ -14,9 +14,13 @@
             :router="true"
           >
             <a href="/PersonalInformation">
-              <el-avatar :size="60" :src="ava"></el-avatar>
-              <p class="Uname" v-text="name"></p>
-              <p v-text="introduce" class="Uintro"></p>
+              <el-avatar
+                :size="60"
+                :src="user.avatar_url"
+                class="ava"
+              ></el-avatar>
+              <p class="Uname" v-text="user.username"></p>
+              <p v-text="user.signature" class="Uintro"></p>
             </a>
             <el-menu-item index="/PersonalHomePage/Main" class="headcol">
               <span class="icomoon zy icohead"></span
@@ -54,23 +58,45 @@
 
 <script>
 // import video from "../../components/VideoDetail/VideoCover.vue";
+import qs from "qs";
 export default {
   // components: {
   //   video,
   // },
   data() {
     return {
-      ava: "http://n.sinaimg.cn/sinacn10116/581/w633h748/20190612/95d6-hyeztyt1927097.jpg",
-      name: "ZQRui",
-      introduce: "whatever",
+      jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
       textarea: "",
       activeIndex: "1",
+      user: {},
     };
   },
   methods: {
     handleSelect(tab, event) {
-      console.log(tab, event);
+      // console.log(tab, event);
     },
+  },
+  created() {
+    var that = this;
+    this.$axios({
+      method: "post",
+      url: "https://milimili.super2021.com/api/user/all-list",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      data: qs.stringify({
+        JWT: that.jwt,
+      }),
+    })
+      .then((res) => {
+        console.log("user");
+        console.log(res);
+        console.log(res.data.user);
+        that.user = res.data.user;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>
@@ -219,7 +245,7 @@ body {
   font-size: 2em;
   color: rgb(61, 56, 50);
   text-align: center;
-  margin-top: -6vh;
+  margin-top: -2.5vh;
 }
 .Uintro {
   font-size: 0.4em;
@@ -332,5 +358,10 @@ body {
 }
 .NoticeText {
   height: 100%;
+}
+
+.ava {
+  position: absolute;
+  left: 16vw;
 }
 </style>

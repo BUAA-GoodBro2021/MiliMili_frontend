@@ -28,16 +28,18 @@
                 style="float: right; padding: 0.1vh 0; margin-right: 2vh"
                 type="text"
                 class="UserChange"
-                >修改资料</el-button
+                ><a href="/PersonalInformation" class="CMsg"
+                  >修改资料</a
+                ></el-button
               >
             </div>
             <div class="text item">
               <span class="UserContext">UID: </span
-              ><span class="UserContext">xxxxxx</span>
+              ><span class="UserContext" v-text="user.id"></span>
               <span class="UserContext">生日: </span
-              ><span class="UserContext">xxxxxx</span>
+              ><span class="UserContext" v-text="user.birthday"></span>
               <span class="UserContext">性别: </span
-              ><span class="UserContext">xxxxxx</span>
+              ><span class="UserContext" v-text="user.sex"></span>
             </div>
           </el-card>
           <!-- 间隔 -->
@@ -48,10 +50,16 @@
               <i class="el-icon-s-opportunity"></i><span>创作中心</span>
             </div>
             <div class="UcreateItem">
-              <a href="#" target="_blank" class="UcreateItem1 UserCreateItem"
+              <a
+                href="/PChome"
+                target="_blank"
+                class="UcreateItem1 UserCreateItem"
                 ><span class="el-icon-upload2"></span
                 ><span class="i-m-text"> 视频投稿</span></a
-              ><a href="#" target="_blank" class="UcreateItem2 UserCreateItem"
+              ><a
+                href="/PCmanageVideo"
+                target="_blank"
+                class="UcreateItem2 UserCreateItem"
                 ><span class="el-icon-menu"></span
                 ><span class="i-m-text"> 内容管理</span></a
               >
@@ -89,6 +97,7 @@ export default {
       jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
       VideoArray: [],
       len: 0,
+      user: {},
     };
   },
   created() {
@@ -110,6 +119,7 @@ export default {
         console.log(this.VideoArray);
         that.len = this.VideoArray.length;
         console.log(that.len);
+        that.user = res.data.user;
       })
       .catch((err) => {
         console.log(err);
@@ -391,5 +401,10 @@ body {
 }
 .NoticeText {
   height: 100%;
+}
+.CMsg:hover,
+.CMsg:focus,
+.CMsg:active {
+  color: #6d757a;
 }
 </style>
