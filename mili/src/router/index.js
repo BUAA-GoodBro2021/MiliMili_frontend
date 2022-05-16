@@ -25,7 +25,7 @@ const routes = [
           hidden: true,
         }, {
           path: '/PersonalHomePage/fans',
-          name: 'FollowerPage',
+          name: 'FanPage',
           component: () => import('../views/PersonalHomePage/PHP/FollowersPage.vue'),
         },
         {
@@ -94,7 +94,13 @@ const routes = [
     name: 'SearchPage',
     component: () => import('../views/HomePage/SearchView.vue')
   },
+  {
+    path: '/block/:blockid',
+    name: 'BlockPage',
+    component: () => import('../views/HomePage/SingleBlockView.vue')
+  },
 ]
+
 
 const router = new VueRouter({
   mode: 'history',

@@ -18,11 +18,9 @@
               <li>
                 <i class="el-icon-video-play" />{{ singleVideo.view_num }}
               </li>
-              <li>
-                <i class="el-icon-chat-line-square" />{{ singleVideo.like_num }}
-              </li>
+              <li><i class="el-icon-thumb" />{{ singleVideo.like_num }}</li>
               <li style="float: right; margin-right: 10px">
-                {{ handle_time(singleVideo.updated_time) }}
+                {{ singleVideo.updated_time.split("T")[0] }}
               </li>
             </ul>
           </div>
@@ -97,10 +95,6 @@ export default {
     handle: function (url) {
       return require(url);
     },
-    handle_time(ans) {
-      if (ans == null) return "null";
-      return ans.split("T")[0];
-    },
   },
 };
 </script>
@@ -121,7 +115,14 @@ export default {
   font-size: 13px;
   position: absolute;
   z-index: 2;
-  bottom: 5px;
+  bottom: 0px;
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .cover_footer ul {
   line-height: 18px;
@@ -139,8 +140,8 @@ export default {
 .title {
   height: 44px;
   width: 238px;
-  line-height: 44px;
-  font-size: 17px;
+
+  font-size: 15px;
   text-align: left;
   display: block;
   word-break: break-all;

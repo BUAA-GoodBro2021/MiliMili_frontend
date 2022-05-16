@@ -2,7 +2,7 @@
   <div class="home">
     <el-card class="data-card">
       <div slot="header" class="clearfix">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="handleClick()">
           <el-tab-pane label="全部稿件" name="first"> </el-tab-pane>
           <el-tab-pane label="进行中" name="second"> </el-tab-pane>
           <el-tab-pane label="已完成" name="third"> </el-tab-pane>
@@ -19,7 +19,11 @@ export default {
       activeName: "first",
     };
   },
-  methods: {},
+  methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+  },
 };
 </script>
 

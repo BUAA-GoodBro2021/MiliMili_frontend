@@ -87,20 +87,6 @@ export default {
 <style scoped>
 /* 内外边距清零 */
 
-@font-face {
-  font-family: "icomoon";
-  src: url("../../assets/fonts/icomoon.eot?7kkyc2");
-  src: url("../../assets/fonts/icomoon.eot?7kkyc2#iefix")
-      format("embedded-opentype"),
-    url("../../assets/fonts/icomoon.ttf?7kkyc2") format("truetype"),
-    url("../../assets/fonts/icomoon.woff?7kkyc2") format("woff"),
-    url("../../assets/fonts/icomoon.svg?7kkyc2") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-.icomoon {
-  font-family: icomoon;
-}
 
 ::v-deep .el-aside {
   height: 89vh;
@@ -165,6 +151,7 @@ export default {
 ::v-deep .el-tabs__item:hover {
   color: #46c1fa;
 }
+
 
 #body {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/

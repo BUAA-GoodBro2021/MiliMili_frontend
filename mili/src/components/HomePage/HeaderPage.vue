@@ -40,6 +40,8 @@
               :class="[headerMode ? 'text-transparent' : '']"
             />
             <span>私信管理</span>
+            <div class="not-read" v-if="islogin == 1 && notRead == true">
+            </div>
           </div>
         </el-menu-item>
         <el-menu-item index="upload">
@@ -98,6 +100,7 @@ export default {
     return {
       inputContext: "",
       islogin: localStorage.getItem("loginMessage") != null,
+      notRead: true,
     };
   },
   methods: {
@@ -131,6 +134,20 @@ export default {
 };
 </script>
 <style scoped>
+.not-read{
+  position: absolute;
+  top: 20px;
+  left: 15px;
+  z-index: 11;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: red;
+
+}
+.message{
+  position: relative;
+}
 .header {
   margin: 0;
   position: fixed;

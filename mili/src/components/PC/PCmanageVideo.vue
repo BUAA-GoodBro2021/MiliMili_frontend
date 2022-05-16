@@ -2,56 +2,32 @@
   <div class="home">
     <el-card class="data-card">
       <div slot="header" class="clearfix">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="handleClick()">
           <el-tab-pane label="全部稿件" name="first">
             <div class="vv">
-              <div
-                v-for="(item, index) in VideoArrayMain"
-                :key="index"
-                style="margin-left: 10px; margin-top: 10px"
-              >
-                <div class="vvv">
-                  <Video :singleVideo="item" />
-                </div>
-              </div>
+              <VideoList :videos="VideoArrayMain" :pageSize="3" />
             </div>
           </el-tab-pane>
           <el-tab-pane label="自动审核" name="second">
             <div class="vv">
-              <div
-                v-for="(item, index) in VideoArrayAuditing"
-                :key="index"
-                style="margin-left: 10px; margin-top: 10px"
-              >
-                <div class="vvv">
-                  <Video :singleVideo="item" />
-                </div>
-              </div></div
+              <VideoList :videos="VideoArrayAuditing" :pageSize="3" /></div
           ></el-tab-pane>
           <el-tab-pane label="人工审核" name="third">
             <div class="vv">
-              <div
-                v-for="(item, index) in VideoArrayAudit"
-                :key="index"
-                style="margin-left: 10px; margin-top: 10px"
-              >
-                <div class="vvv">
-                  <Video :singleVideo="item" />
-                </div>
-              </div></div
+              <VideoList :videos="VideoArrayAudit" :pageSize="3" /></div
           ></el-tab-pane>
           <el-tab-pane label="已通过" name="fourth">
             <div class="vv">
-              <div
+              <VideoList :videos="VideoArrayAudited" :pageSize="3" />
+              <!-- <div
                 v-for="(item, index) in VideoArrayAudited"
                 :key="index"
                 style="margin-left: 10px; margin-top: 10px"
               >
-                <div class="vvv">
-                  <Video :singleVideo="item" />
-                </div>
-              </div></div
-          ></el-tab-pane>
+                <Video :singleVideo="item" />
+              </div> -->
+            </div></el-tab-pane
+          >
         </el-tabs>
       </div>
     </el-card>
@@ -59,17 +35,166 @@
 </template>
 
 <script>
-import Video from "@/components/VideoDetail/VideoCover.vue";
+import VideoList from "@/components/PC/VideoList.vue";
 import qs from "qs";
 export default {
   data() {
+    //四个video数组要赋初值 否则会出问题
     return {
       activeName: "first",
       jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
-      VideoArrayMain: [],
-      VideoArrayAudited: [],
-      VideoArrayAuditing: [],
-      VideoArrayAudit: [],
+      VideoArrayMain: [
+        {
+          id: 28,
+          title: "",
+          description: "",
+          video_url: "",
+          avatar_url: "",
+          like_num: 0,
+          collect_num: 0,
+          view_num: 0,
+          zone: "",
+          tag1: "",
+          tag2: "",
+          tag3: "",
+          tag4: "",
+          tag5: "",
+          user: {
+            id: 0,
+            username: "",
+            email: "",
+            location: "",
+            video_num: 0,
+            like_num: 0,
+            collect_num: 0,
+            favorite_num: 0,
+            fan_num: 0,
+            follow_num: 0,
+            avatar_url: "",
+            created_time: "",
+            updated_time: "",
+            isSuperAdmin: true,
+          },
+          created_time: "Z",
+          updated_time: "",
+          isAudit: 1,
+          need_verify: 0,
+        },
+      ],
+      VideoArrayAudited: [
+        {
+          id: 28,
+          title: "",
+          description: "",
+          video_url: "",
+          avatar_url: "",
+          like_num: 0,
+          collect_num: 0,
+          view_num: 0,
+          zone: "",
+          tag1: "",
+          tag2: "",
+          tag3: "",
+          tag4: "",
+          tag5: "",
+          user: {
+            id: 0,
+            username: "",
+            email: "",
+            location: "",
+            video_num: 0,
+            like_num: 0,
+            collect_num: 0,
+            favorite_num: 0,
+            fan_num: 0,
+            follow_num: 0,
+            avatar_url: "",
+            created_time: "",
+            updated_time: "",
+            isSuperAdmin: true,
+          },
+          created_time: "Z",
+          updated_time: "",
+          isAudit: 1,
+          need_verify: 0,
+        },
+      ],
+      VideoArrayAuditing: [
+        {
+          id: 28,
+          title: "",
+          description: "",
+          video_url: "",
+          avatar_url: "",
+          like_num: 0,
+          collect_num: 0,
+          view_num: 0,
+          zone: "",
+          tag1: "",
+          tag2: "",
+          tag3: "",
+          tag4: "",
+          tag5: "",
+          user: {
+            id: 0,
+            username: "",
+            email: "",
+            location: "",
+            video_num: 0,
+            like_num: 0,
+            collect_num: 0,
+            favorite_num: 0,
+            fan_num: 0,
+            follow_num: 0,
+            avatar_url: "",
+            created_time: "",
+            updated_time: "",
+            isSuperAdmin: true,
+          },
+          created_time: "Z",
+          updated_time: "",
+          isAudit: 1,
+          need_verify: 0,
+        },
+      ],
+      VideoArrayAudit: [
+        {
+          id: 28,
+          title: "",
+          description: "",
+          video_url: "",
+          avatar_url: "",
+          like_num: 0,
+          collect_num: 0,
+          view_num: 0,
+          zone: "",
+          tag1: "",
+          tag2: "",
+          tag3: "",
+          tag4: "",
+          tag5: "",
+          user: {
+            id: 0,
+            username: "",
+            email: "",
+            location: "",
+            video_num: 0,
+            like_num: 0,
+            collect_num: 0,
+            favorite_num: 0,
+            fan_num: 0,
+            follow_num: 0,
+            avatar_url: "",
+            created_time: "",
+            updated_time: "",
+            isSuperAdmin: true,
+          },
+          created_time: "Z",
+          updated_time: "",
+          isAudit: 1,
+          need_verify: 0,
+        },
+      ],
     };
   },
   created() {
@@ -94,14 +219,17 @@ export default {
         console.log(this.VideoArrayMain);
         console.log(this.VideoArrayAudited);
         that.len = this.VideoArrayMain.length;
-        console.log(that.len);
       })
       .catch((err) => {
         console.log(err);
       });
   },
-  methods: {},
-  components: { Video },
+  methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+  },
+  components: { VideoList },
 };
 </script>
 

@@ -19,7 +19,7 @@
       </div>
       <div class="listCard">
         <div class="a_block" v-for="(item, index) in usersShow" :key="index">
-          <UserCard :user="item" :listType="listType"></UserCard>
+          <UserCard :user="item" :listType="listType" v-on:cancelfollow="cancelfollow"></UserCard>
         </div>
       </div>
       <!-- 页码 -->
@@ -201,6 +201,7 @@ export default {
     return {
       usersShow: [],
       pagesize: 7,
+      deleteFlag: -1, //不为-1取消关注
     };
   },
   methods: {
@@ -213,9 +214,14 @@ export default {
       console.log(this.pagesize)
       console.log(this.usersShow)
     },
+    cancelfollow(val){
+      this.deleteFlag = val
+      console.log('Personlist接收到的val为:'+val)
+      this.$emit('cancelfollow',this.deleteFlag)
+    }
   },
   watch:{
-    users(oldName,newName){ //异步问题的解决
+    users(newName,oldName){ //异步问题的解决
       this.pagesize = this.pageSize < newName.length ? this.pageSize: newName.length
       this.topicInit(1);
     }

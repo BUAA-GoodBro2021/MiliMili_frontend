@@ -45,6 +45,12 @@
           >
             <el-button size="small" plain type="warning">关注</el-button>
           </li>
+          <li
+            v-if="listType == 3 "
+            style="float: right; vertical-align: middle; line-height: 50px"
+          >
+            <el-button size="small" plain type="warning" @click="cancelFollow()">取消关注</el-button>
+          </li>
         </ul>
       </div>
       <div class="card_footer">
@@ -88,6 +94,17 @@ export default {
       },
     },
   },
+  data(){
+    return{
+      deleteFlag: 0, //1的时候为删除
+    }
+  },
+  methods:{
+    cancelFollow(){
+      this.deleteFlag = 1;
+      this.$emit('cancelfollow',this.deleteFlag)
+    }
+  }
 };
 </script>
 <style scoped>

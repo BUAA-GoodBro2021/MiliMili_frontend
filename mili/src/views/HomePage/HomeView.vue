@@ -7,16 +7,10 @@
     <!-- 分区总览和快捷键 -->
     <el-footer style="height: 20px; width: 100%"></el-footer>
     <div class="blocks">
-      <div class="ip">
-        <div class="ip_wrap">
-          <span class="ip_content">{{'地区: '+ip.nation+" "+ip.province+" "+ip.city}}</span>
-          <span class="ip_content">{{"经度: "+ip.lng+" 纬度: "+ip.lat}}</span>
-        </div>
-      </div>
       <div class="block_tags">
         <div v-for="(item, index) in blocks" :key="index">
           <!-- todo加个click跳转到对应的item路由 -->
-          <router-link :to="'/blockpage/' + item">
+          <router-link :to="'/blockpage/' + index">
             <el-tag
               style="margin: 7px 10px 10px 10px; width: 90px"
               :type="tagColor[index]"
@@ -49,7 +43,33 @@
             >
           </router-link>
         </div>
+        <div class="card" style="background: rgb(230, 180, 80)">
+          <div class="ip_up">
+            <i class="el-icon-location-information" />
+            <span class="_up">
+            {{  ip.province + " " + ip.city }}</span
+          >
+          </div>
+          <span class="text_ip">
+            {{
+               ip.lng + " °E " 
+          }}
+          </span>
+          <span class="text_ip">
+            {{ip.lat + "°N"}}
+          </span>
+        </div>
       </div>
+      <!-- <div class="ip">
+        <div class="ip_wrap">
+          <span class="ip_content">{{
+            "地区: " + ip.nation + " " + ip.province + " " + ip.city
+          }}</span>
+          <span class="ip_content">{{
+            "经度: " + ip.lng + " 纬度: " + ip.lat
+          }}</span>
+        </div>
+      </div> -->
     </div>
     <!-- 幻灯片 -->
     <Recommend />
@@ -71,20 +91,34 @@ export default {
   data() {
     return {
       headMode: true,
+      blocks2id: {
+        鬼畜: 1,
+        科技: 2,
+        户外: 3,
+        动漫: 4,
+        影视: 5,
+        音乐: 6,
+        汽车: 7,
+        教育: 8,
+        游戏: 9,
+        时事: 10,
+        生活: 11,
+        军事: 12,
+      }, //需要商定
       blocks: [
         "鬼畜",
-        "美食",
-        "运动",
-        "生活",
+        "科技",
+        "户外",
+        "动漫",
         "影视",
-        "知识",
-        "咨询",
-        "生活",
-        "娱乐",
+        "音乐",
         "汽车",
-        "影视",
-        "知识",
-      ], //需要商定
+        "教育",
+        "游戏",
+        "时事",
+        "生活",
+        "军事",
+      ],
       tagColor: [
         "warning",
         "info",
@@ -150,7 +184,7 @@ export default {
   width: 15%;
   height: 100px;
 }
-.ip_wrap{
+.ip_wrap {
   width: 90%;
   height: 100px;
   border-radius: 10px;
@@ -162,7 +196,7 @@ export default {
   justify-content: space-around;
   align-content: center;
 }
-.ip_content{
+.ip_content {
   font-size: 13px;
   text-align: left;
   margin-left: 20px;
@@ -175,10 +209,21 @@ export default {
   flex-wrap: wrap;
 }
 .block_others {
-  width: 33%;
+  width: 45%;
   height: 100px;
   display: flex;
   align-content: space-between;
+}
+.text_ip{
+  color: white;
+  margin-top: 2px;
+  font-size: 15px;
+  display: block;
+}
+.ip_up{
+  color: white;
+  margin-top: 15px;
+  font-size: 15px;
 }
 .card {
   margin-top: 8px;
