@@ -3,7 +3,7 @@
     <div class="whole_wrap">
       <!-- <Header :headerMode="true"/> -->
       <Header/>
-      <img class="background" src="@/assets/PCM/BG7.jpg" />
+      <!-- <img class="background" src="@/assets/PCM/BG7.jpg" /> -->
       <div class="login_wrap">
         <div class="banner">
           <div class="img_wrap">
@@ -176,7 +176,8 @@ export default {
   height: 320px;
   border-radius: 0 0 10px 10px;
   border-top: solid 1px;
-  background-color: rgba(255, 255, 255, 0.51);
+  background-color: #fdf6ec;
+  border: solid 1px #faecd8;
 }
 .login_form {
   margin-top: 20px;
