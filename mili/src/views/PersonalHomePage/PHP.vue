@@ -308,18 +308,19 @@ body {
   border-radius: 0.9vh;
 }
 .el-menu-item {
-  height: 3.5em;
+  height: 10.5vh;
 }
 
 .headcol {
-  line-height: 3em;
+  line-height: 9vh;
+  margin-top: -1vh;
 }
 .headcol:hover {
   color: rgb(206, 160, 36) !important;
 }
 
 .catalogue {
-  line-height: 3em;
+  line-height: 9vh;
   text-align: center;
   transform: 0.2s;
 }
@@ -330,14 +331,15 @@ body {
 }
 
 .Uname {
-  font-size: 2.5em;
+  font-size: 4vh;
   color: rgb(61, 56, 50);
   text-align: center;
   margin-top: -5.3vh;
   margin-left: -1.5vw;
+  line-height: 6vh;
 }
 .Uintro {
-  font-size: 0.5em;
+  font-size: 1.5vh;
   text-align: center;
   color: #b8b8b8;
   float: left;
@@ -345,8 +347,8 @@ body {
 }
 
 .icohead {
-  font-size: 2em;
-  line-height: 2em;
+  font-size: 4vh;
+  line-height: 3vh;
 }
 .zy {
   color: rgb(39, 207, 81);
@@ -403,7 +405,7 @@ body {
   height: 13vh;
 }
 .UcreateTitle {
-  font-size: 1.5em;
+  font-size: 2vh;
   line-height: 6.5vh;
 }
 .UcreateItem {
