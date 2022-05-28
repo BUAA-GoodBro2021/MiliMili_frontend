@@ -16,9 +16,9 @@
           <el-pagination layout="prev, next" :total="50"> </el-pagination></div
       ></el-main>
       <!-- 间隔 -->
-      <el-aside width="1.5vh"></el-aside>
+      <el-aside width="1vw"></el-aside>
       <!-- 个人资料+创作中心+公告 -->
-      <el-aside width="50vh">
+      <el-aside width="24.21vw">
         <div style="width=100%">
           <!-- 个人资料 -->
           <el-card class="box-card asd box">
@@ -245,6 +245,7 @@ body {
   justify-content: space-between;
   background: white;
   box-shadow: 0 1px 4px 0 rgb(58 62 81 / 20%);
+  border-radius: 5px;
 }
 .el-menu {
   position: relative;

@@ -216,7 +216,7 @@ body {
 
 .tabs >>> .el-tabs__nav-wrap,
 .tabs >>> .el-tabs__header {
-  background-color: rgba(255, 255, 255, 0.4);
+  /* background-color: rgba(255, 255, 255, 0.4); */
   border: none;
   width: 8vw;
 }

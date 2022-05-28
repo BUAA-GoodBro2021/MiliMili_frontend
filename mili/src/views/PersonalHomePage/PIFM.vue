@@ -193,8 +193,8 @@ export default {
   height: 7vh;
   box-sizing: border-box;
   border-radius: 50%;
-  background: #9446fa;
-  border: 1px solid #9446fa;
+  background: #46c1fac7;
+  border: 1px solid #46c1fac7;
   position: absolute;
   left: -3.5vh;
   top: 50%;
@@ -206,8 +206,8 @@ export default {
   height: 7vh;
   box-sizing: border-box;
   border-radius: 50%;
-  background: #9446fa;
-  border: 1px solid #9446fa;
+  background: #46c1fac7;
+  border: 1px solid #46c1fac7;
   position: absolute;
   right: -3.5vh;
   top: 50%;
@@ -279,8 +279,8 @@ export default {
 }
 
 .el-button {
-  background-color: #9446fa;
-  border-color: #9446fa;
+  background-color: #46c1fac7;
+  border-color: #46c1fac7;
   margin-left: -8vh;
 }
 
