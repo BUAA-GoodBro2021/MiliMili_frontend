@@ -182,6 +182,7 @@ export default {
   line-height: 4.1vh;
   text-align: center;
   border-radius: 1vh;
+  color: rgba(255, 250, 250, 0.7);
 }
 
 @font-face {

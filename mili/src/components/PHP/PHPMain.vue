@@ -34,12 +34,11 @@
               >
             </div>
             <div class="text item">
-              <span class="UserContext">UID: </span
-              ><span class="UserContext" v-text="user.id"></span>
-              <span class="UserContext">生日: </span
-              ><span class="UserContext" v-text="user.birthday"></span>
-              <span class="UserContext">性别: </span
-              ><span class="UserContext" v-text="user.sex"></span>
+              <span class="UserContext">UID: {{ user.id }}</span>
+              <span class="UserContext"
+                >生日: {{ user.birthday.substring(0, 10) }}</span
+              >
+              <span class="UserContext">性别: {{ user.sex }}</span>
             </div>
           </el-card>
           <!-- 间隔 -->
