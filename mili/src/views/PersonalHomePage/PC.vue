@@ -6,13 +6,13 @@
           <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
             <el-radio-button
               :label="false"
-              style="margin-left: 1.1vw"
+              style="margin-left: 0.75vw"
               v-show="isCollapse"
               >展开</el-radio-button
             >
             <el-radio-button
               :label="true"
-              style="margin-left: 1.28vh"
+              style="margin-left: 0.75vw"
               v-show="!isCollapse"
               >收起</el-radio-button
             >
@@ -44,7 +44,7 @@
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <el-main>
+      <el-main width="60vw">
         <el-col :span="24" class="content-wrapper">
           <transition name="fade" mode="out-in">
             <router-view></router-view>
@@ -87,6 +87,10 @@ export default {
 <style scoped>
 /* 内外边距清零 */
 
+
+::v-deep .el-aside {
+  height: 89vh;
+}
 
 ::v-deep .el-menu {
   background-color: rgba(255, 255, 255, 0.4);
@@ -153,9 +157,7 @@ export default {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-size: 98%;
-  width: 99vw;
-  height: 85vh;
+  background-size: 100%;
 }
 .opa {
   opacity: 80%;

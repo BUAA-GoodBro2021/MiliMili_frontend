@@ -5,84 +5,117 @@
         <div>
           <div class="TabTitle"><span>回复我的</span></div>
         </div>
-        <div class="TabCard">
-          <ul
-            class="infinite-list"
-            v-infinite-scroll="loadCommits()"
-            style="overflow: auto"
+        <div
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
+        ></div>
+        <div class="mm">
+          <div
+            v-for="(item, index) in replys"
+            :key="index"
+            style="margin-left: 10px; margin-top: 10px"
           >
-            <li v-for="(item, index) in commits" :key="index">{{ item }}</li>
-          </ul>
+            <div class="mmm">
+              <MsgBox :msg="item" />
+            </div>
+            <div class="line"></div>
+          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="收到的赞">
         <div>
           <div class="TabTitle"><span>收到的赞</span></div>
         </div>
-        <div class="TabCard">
-          <ul
-            class="infinite-list"
-            v-infinite-scroll="loadAts()"
-            style="overflow: auto"
+        <div
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
+        ></div>
+        <div class="mm">
+          <div
+            v-for="(item, index) in likes"
+            :key="index"
+            style="margin-left: 10px; margin-top: 10px"
           >
-            <li v-for="(item, index) in ats" :key="index">{{ item }}</li>
-          </ul>
+            <div class="mmm">
+              <MsgBox :msg="item" />
+            </div>
+            <div class="line"></div>
+          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="收藏">
         <div>
           <div class="TabTitle"><span>收藏</span></div>
         </div>
-        <div class="TabCard">
-          <ul
-            class="infinite-list"
-            v-infinite-scroll="loadSupports()"
-            style="overflow: auto"
+        <div
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
+        ></div>
+        <div class="mm">
+          <div
+            v-for="(item, index) in collects"
+            :key="index"
+            style="margin-left: 10px; margin-top: 10px"
           >
-            <li v-for="(item, index) in supports" :key="index">{{ item }}</li>
-          </ul>
+            <div class="mmm">
+              <MsgBox :msg="item" />
+            </div>
+            <div class="line"></div>
+          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="系统通知">
         <div>
           <div class="TabTitle"><span>系统通知</span></div>
         </div>
-        <div class="TabCard">
-          <ul
-            class="infinite-list"
-            v-infinite-scroll="loadNotices()"
-            style="overflow: auto"
+        <div
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
+        ></div>
+        <div>
+          <div
+            v-for="(item, index) in sysmsg"
+            :key="index"
+            style="margin-left: 10px; margin-top: 10px"
           >
-            <li v-for="(item, index) in notices" :key="index">{{ item }}</li>
-          </ul>
+            <div class="mmm">
+              <MsgBox :msg="item" />
+            </div>
+          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="我的消息">
         <div>
           <div class="TabTitle"><span>我的消息</span></div>
         </div>
-        <div class="TabCard">
-          <ul
-            class="infinite-list"
-            v-infinite-scroll="loadMessages()"
-            style="overflow: auto"
+        <div
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
+        ></div>
+        <div>
+          <div
+            v-for="(item, index) in messages"
+            :key="index"
+            style="margin-left: 10px; margin-top: 10px"
           >
-            <li v-for="(item, index) in messages" :key="index">{{ item }}</li>
-          </ul>
+            <div class="mmm">
+              <MsgBox :msg="item" />
+            </div>
+          </div>
         </div>
       </el-tab-pane>
       <el-tab-pane label="新增粉丝">
         <div>
           <div class="TabTitle"><span>新增粉丝</span></div>
         </div>
-        <div class="TabCard">
-          <ul
-            class="infinite-list"
-            v-infinite-scroll="loadMessages()"
-            style="overflow: auto"
+        <div
+          style="height: 2vh; width: 100%; backgroung-color: transparent"
+        ></div>
+        <div>
+          <div
+            v-for="(item, index) in fans"
+            :key="index"
+            style="margin-left: 10px; margin-top: 10px"
           >
-            <li v-for="(item, index) in messages" :key="index">{{ item }}</li>
-          </ul>
+            <div class="mmm">
+              <MsgBox :msg="item" />
+            </div>
+          </div>
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -90,33 +123,50 @@
 </template>
 
 <script>
+import MsgBox from "@/components/Message/Message.vue";
+import qs from "qs";
 export default {
   data() {
     return {
-      commits: 0,
-      ats: 0,
-      supports: 0,
-      notices: 0,
-      messages: 0,
+      comments: [],
+      replys: [],
+      likes: [],
+      collects: [],
+      sysmsg: [],
+      messages: [],
+      fans: [],
+      jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
     };
   },
-  methods: {
-    loadCommits() {
-      this.commits = 10; //传输回来的评论
-    },
-    loadAts() {
-      this.ats = 10; //传输回来的@
-    },
-    loadSupports() {
-      this.supports = 10; //传输回来的赞
-    },
-    loadNotices() {
-      this.notices = 10; //传输回来的系统通知
-    },
-    loadMessages() {
-      this.messages = 10; //传输回来的消息
-    },
+  created() {
+    var that = this;
+    this.$axios({
+      method: "post",
+      url: "https://milimili.super2021.com/api/sending/message/list-message-detail",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      data: qs.stringify({
+        JWT: that.jwt,
+      }),
+    })
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        that.replys = res.data.replys;
+        that.likes = res.data.message_like;
+        that.collects = res.data.message_collect;
+        that.sysmsg = res.data.message_sys;
+        that.messages = res.data.message_self;
+        that.fans = res.data.message_fan;
+        console.log(that.likes);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
+  components: { MsgBox },
+  methods: {},
 };
 </script>
 
@@ -128,7 +178,7 @@ export default {
   top: 11.4vh;
 }
 .TabTitle {
-  height: 42px;
+  height: 6vh;
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px 0 rgb(121 146 185 / 54%);
   box-shadow: 0 2px 4px 0 rgb(121 146 185 / 54%);
@@ -186,5 +236,19 @@ export default {
 .tabs >>> .el-tabs--border-card > .el-tabs__header .el-tabs__item {
   text-align: center;
   font-weight: bold;
+}
+
+.mm {
+  background-color: #fff;
+  min-height: 10vh;
+}
+
+.line {
+  content: "";
+  display: block;
+  width: 80vh;
+  height: 1px;
+  border-bottom: 1px solid #e5e9ef;
+  margin-left: 4.5vw;
 }
 </style>

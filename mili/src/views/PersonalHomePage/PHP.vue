@@ -14,9 +14,13 @@
             :router="true"
           >
             <a href="/PersonalInformation">
-              <el-avatar :size="60" :src="ava"></el-avatar>
-              <p class="Uname" v-text="name"></p>
-              <p v-text="introduce" class="Uintro"></p>
+              <el-avatar
+                :size="60"
+                :src="user.avatar_url"
+                class="ava"
+              ></el-avatar>
+              <p class="Uname" v-text="user.username"></p>
+              <p v-text="user.signature" class="Uintro"></p>
             </a>
             <el-menu-item index="/PersonalHomePage/Main" class="headcol">
               <span class="icomoon zy icohead"></span
@@ -40,80 +44,11 @@
         <el-footer style="height: 5vh; width: 100%"></el-footer>
         <!-- 主体 -->
         <el-container>
-          <!-- 视频 -->
-          <el-main class="box">
-            <el-col :span="24" class="content-wrapper">
-              <transition name="fade" mode="out-in">
-                <router-view></router-view>
-              </transition> </el-col
-          ></el-main>
-          <!-- 间隔 -->
-          <el-aside width="1.5vh"></el-aside>
-          <!-- 个人资料+创作中心+公告 -->
-          <el-aside width="50vh">
-            <div style="width=100%">
-              <!-- 个人资料 -->
-              <el-card class="box-card asd box">
-                <div slot="header" class="clearfix">
-                  <span class="UserTitle">个人资料</span>
-                  <el-button
-                    style="float: right; padding: 0.1vh 0; margin-right: 2vh"
-                    type="text"
-                    class="UserChange"
-                    >修改资料</el-button
-                  >
-                </div>
-                <div class="text item">
-                  <span class="UserContext">UID: </span
-                  ><span class="UserContext">xxxxxx</span>
-                  <span class="UserContext">生日: </span
-                  ><span class="UserContext">xxxxxx</span>
-                  <span class="UserContext">性别: </span
-                  ><span class="UserContext">xxxxxx</span>
-                </div>
-              </el-card>
-              <!-- 间隔 -->
-              <el-footer style="height: 2vh; width: 100%"></el-footer>
-              <!-- 创作中心 -->
-              <div class="asd box Ucreate">
-                <div class="UcreateTitle">
-                  <i class="el-icon-s-opportunity"></i><span>创作中心</span>
-                </div>
-                <div class="UcreateItem">
-                  <a
-                    href="#"
-                    target="_blank"
-                    class="UcreateItem1 UserCreateItem"
-                    ><span class="el-icon-upload2"></span
-                    ><span class="i-m-text"> 视频投稿</span></a
-                  ><a
-                    href="#"
-                    target="_blank"
-                    class="UcreateItem2 UserCreateItem"
-                    ><span class="el-icon-menu"></span
-                    ><span class="i-m-text"> 内容管理</span></a
-                  >
-                </div>
-              </div>
-              <!-- 间隔 -->
-              <el-footer style="height: 2vh; width: 100%"></el-footer>
-              <!-- 公告 -->
-              <div style="width: 49vh">
-                <div class="NoticeTitle">公告</div>
-                <div>
-                  <el-input
-                    type="textarea"
-                    placeholder="请输入内容"
-                    v-model="textarea"
-                    maxlength="150"
-                    show-word-limit
-                    class="NoticeText"
-                  >
-                  </el-input>
-                </div>
-              </div>
-            </div>
-          </el-aside>
+          <el-col :span="24" class="content-wrapper">
+            <transition name="fade" mode="out-in">
+              <router-view></router-view>
+            </transition>
+          </el-col>
         </el-container>
       </el-container>
       <el-aside width="130px"></el-aside>
@@ -123,23 +58,45 @@
 
 <script>
 // import video from "../../components/VideoDetail/VideoCover.vue";
+import qs from "qs";
 export default {
   // components: {
   //   video,
   // },
   data() {
     return {
-      ava: "http://n.sinaimg.cn/sinacn10116/581/w633h748/20190612/95d6-hyeztyt1927097.jpg",
-      name: "ZQRui",
-      introduce: "whatever",
+      jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
       textarea: "",
       activeIndex: "1",
+      user: {},
     };
   },
   methods: {
     handleSelect(tab, event) {
-      console.log(tab, event);
+      // console.log(tab, event);
     },
+  },
+  created() {
+    var that = this;
+    this.$axios({
+      method: "post",
+      url: "https://milimili.super2021.com/api/user/all-list",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      data: qs.stringify({
+        JWT: that.jwt,
+      }),
+    })
+      .then((res) => {
+        console.log("user");
+        console.log(res);
+        console.log(res.data.user);
+        that.user = res.data.user;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>
@@ -288,7 +245,7 @@ body {
   font-size: 2em;
   color: rgb(61, 56, 50);
   text-align: center;
-  margin-top: -6vh;
+  margin-top: -2.5vh;
 }
 .Uintro {
   font-size: 0.4em;
@@ -401,5 +358,10 @@ body {
 }
 .NoticeText {
   height: 100%;
+}
+
+.ava {
+  position: absolute;
+  left: 16vw;
 }
 </style>

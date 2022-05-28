@@ -167,7 +167,7 @@ export default {
   color: #666;
 }
 .VideoData {
-  font-size: 1.3em;
+  font-size: 1.5em;
   /* background: linear-gradient(-60deg, #fceabb70, #f8b60070); */
   /* background-color: rgba(167, 230, 255, 0.445); */
   background-color: #fdf6ecc0;
@@ -179,7 +179,7 @@ export default {
   margin-left: 2.7vw;
   margin-top: 2.5vh;
   margin-bottom: 1.8vh;
-  line-height: 1vh;
+  line-height: 4.1vh;
   text-align: center;
   border-radius: 1vh;
 }
