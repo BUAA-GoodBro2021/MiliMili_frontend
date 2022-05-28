@@ -21,7 +21,7 @@
               v-on:canplay="canplay"
             >
               <source
-                src="https://prod-streaming-video-msn-com.akamaized.net/9752d732-2354-483f-a678-a6d0cd2c22b7/1a5ed13a-43f5-4e85-95c8-6579065c4d7c.mp4"
+                src="https://global-1309504341.cos.ap-beijing.myqcloud.com/default-background.mp4"
                 type="video/mp4"
               />
             </video>
@@ -308,19 +308,19 @@ body {
   border-radius: 0.9vh;
 }
 .el-menu-item {
-  height: 10.5vh;
+  height: 5.6vh;
 }
 
 .headcol {
-  line-height: 9vh;
-  margin-top: -1vh;
+  line-height: 4vh;
+  margin-top: 1.5vh;
 }
 .headcol:hover {
   color: rgb(206, 160, 36) !important;
 }
 
 .catalogue {
-  line-height: 9vh;
+  line-height: 4vh;
   text-align: center;
   transform: 0.2s;
 }
