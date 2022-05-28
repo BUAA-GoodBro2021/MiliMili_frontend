@@ -36,7 +36,7 @@
                   <span class="el-dropdown-link">播放
                     <i class="el-icon-arrow-down el-icon--right"></i>
                   </span>
-                  <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-menu slot="dropdown" v-if="item.favorite_list_video_detail.length">
                     <el-dropdown-item 
                     v-for="(itemP, indexP) in item.favorite_list_video_detail"
                     :key="indexP"

@@ -172,7 +172,7 @@ export default {
 .video-container {
   position: fixed;
   left: -1vw;
-  height: 91.5vh;
+  height: 92vh;
   width: 102vw;
   overflow: hidden;
 }
@@ -185,7 +185,7 @@ export default {
 .video-container .filter {
   z-index: 1;
   position: absolute;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0);
   width: 100%;
 }
 

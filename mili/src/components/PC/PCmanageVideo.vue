@@ -5,20 +5,36 @@
         <el-tabs v-model="activeName" @tab-click="handleClick()">
           <el-tab-pane label="全部稿件" name="first">
             <div class="vv">
-              <VideoList :videos="VideoArrayMain" :pageSize="3" />
+              <VideoList
+                :videos="VideoArrayMain"
+                :pageSize="3"
+                v-if="VideoArrayMain.length"
+              />
             </div>
           </el-tab-pane>
           <el-tab-pane label="自动审核" name="second">
             <div class="vv">
-              <VideoList :videos="VideoArrayAuditing" :pageSize="3" /></div
+              <VideoList
+                :videos="VideoArrayAuditing"
+                :pageSize="3"
+                v-if="VideoArrayAuditing.length"
+              /></div
           ></el-tab-pane>
           <el-tab-pane label="人工审核" name="third">
             <div class="vv">
-              <VideoList :videos="VideoArrayAudit" :pageSize="3" /></div
+              <VideoList
+                :videos="VideoArrayAudit"
+                :pageSize="3"
+                v-if="VideoArrayAudit.length"
+              /></div
           ></el-tab-pane>
           <el-tab-pane label="已通过" name="fourth">
             <div class="vv">
-              <VideoList :videos="VideoArrayAudited" :pageSize="3" />
+              <VideoList
+                :videos="VideoArrayAudited"
+                :pageSize="3"
+                v-if="VideoArrayAudited.length"
+              />
               <!-- <div
                 v-for="(item, index) in VideoArrayAudited"
                 :key="index"
@@ -246,7 +262,7 @@ export default {
   width: 98%;
   display: flex;
   flex-wrap: wrap;
-  margin-left: 1.5vw;
+  margin-left: 0.5vw;
   /* justify-content: space-between; */
 }
 .data-card {
