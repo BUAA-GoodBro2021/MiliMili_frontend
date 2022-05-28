@@ -21,7 +21,7 @@
               v-on:canplay="canplay"
             >
               <source
-                src="../../assets/PHP/default-background.mp4"
+                src="https://prod-streaming-video-msn-com.akamaized.net/9752d732-2354-483f-a678-a6d0cd2c22b7/1a5ed13a-43f5-4e85-95c8-6579065c4d7c.mp4"
                 type="video/mp4"
               />
             </video>
