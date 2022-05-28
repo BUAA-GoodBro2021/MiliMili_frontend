@@ -80,11 +80,6 @@ const routes = [
     component: () => import('../views/account/LoginView.vue'),
   },
   {
-    path: '/register',
-    name: 'RegisterPage',
-    component: () => import('../views/account/RegisterView.vue'),
-  },
-  {
     path: '/homepage',
     name: 'HomePage',
     component: () => import('../views/HomePage/HomeView.vue'), //视频主页

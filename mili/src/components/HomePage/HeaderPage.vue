@@ -66,8 +66,7 @@
               >用户信息</span
             >
           </template>
-          <el-menu-item index="/login" v-if="!islogin">登录</el-menu-item>
-          <el-menu-item index="/register" v-if="!islogin">注册</el-menu-item>
+          <el-menu-item index="/login" v-if="!islogin">登录/注册</el-menu-item>
           <el-menu-item index="/PersonalHomePage/Main" v-if="islogin"
             >个人中心</el-menu-item
           >
