@@ -8,7 +8,7 @@
         <div
           style="height: 2vh; width: 100%; backgroung-color: transparent"
         ></div>
-        <div class="mm">
+        <div class="mm" v-if="collects.length">
           <div
             v-for="(item, index) in replys"
             :key="index"
@@ -17,7 +17,6 @@
             <div class="mmm">
               <MsgBox :msg="item" />
             </div>
-            <div class="line"></div>
           </div>
         </div>
       </el-tab-pane>
@@ -28,7 +27,7 @@
         <div
           style="height: 2vh; width: 100%; backgroung-color: transparent"
         ></div>
-        <div class="mm">
+        <div class="mm" v-if="collects.length">
           <div
             v-for="(item, index) in likes"
             :key="index"
@@ -37,7 +36,6 @@
             <div class="mmm">
               <MsgBox :msg="item" />
             </div>
-            <div class="line"></div>
           </div>
         </div>
       </el-tab-pane>
@@ -48,7 +46,7 @@
         <div
           style="height: 2vh; width: 100%; backgroung-color: transparent"
         ></div>
-        <div class="mm">
+        <div class="mm" v-if="collects.length">
           <div
             v-for="(item, index) in collects"
             :key="index"
@@ -57,7 +55,6 @@
             <div class="mmm">
               <MsgBox :msg="item" />
             </div>
-            <div class="line"></div>
           </div>
         </div>
       </el-tab-pane>
@@ -241,14 +238,5 @@ export default {
 .mm {
   background-color: #fff;
   min-height: 10vh;
-}
-
-.line {
-  content: "";
-  display: block;
-  width: 80vh;
-  height: 1px;
-  border-bottom: 1px solid #e5e9ef;
-  margin-left: 4.5vw;
 }
 </style>

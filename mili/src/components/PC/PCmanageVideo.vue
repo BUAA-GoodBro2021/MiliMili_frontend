@@ -18,8 +18,9 @@
                 :videos="VideoArrayAuditing"
                 :pageSize="3"
                 v-if="VideoArrayAuditing.length"
-              /></div
-          ></el-tab-pane>
+              />
+            </div>
+          </el-tab-pane>
           <el-tab-pane label="人工审核" name="third">
             <div class="vv">
               <VideoList
