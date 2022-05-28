@@ -72,7 +72,7 @@
           </el-col>
           <el-footer
             style="
-              height: 3vh;
+              height: 5vh;
               width: 10%;
               position: relative;
               bottom: 0;
