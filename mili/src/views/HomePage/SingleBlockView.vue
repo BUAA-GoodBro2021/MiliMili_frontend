@@ -1079,7 +1079,7 @@ export default {
   padding-top: 20px;
 }
 .video {
-  margin-left: 10px;
+  margin-left: 35px;
   margin-right: 20px;
 }
 .sort_wrap {

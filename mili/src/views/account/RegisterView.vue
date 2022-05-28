@@ -2,7 +2,7 @@
   <div style="overflow: hidden; padding: 0;">
     <div class="whole_wrap">
       <Header />
-      <img class="background" src="@/assets/PCM/BG7.jpg" />
+      <!-- <img class="background" src="@/assets/PCM/BG7.jpg" /> -->
       <div class="login_wrap">
         <div class="banner">
           <div class="img_wrap">
@@ -193,6 +193,8 @@ export default {
   width: 400px;
   height: 480px;
   border-radius: 0 0 10px 10px;
+  background-color: #fdf6ec;
+  border: solid 1px #faecd8;
 }
 .login_body {
   width: 400px;

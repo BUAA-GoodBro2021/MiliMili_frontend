@@ -10,9 +10,9 @@
       <div class="block_tags">
         <div v-for="(item, index) in blocks" :key="index">
           <!-- todo加个click跳转到对应的item路由 -->
-          <router-link :to="'/blockpage/' + index">
+          <router-link :to="'/block/' + index">
             <el-tag
-              style="margin: 7px 10px 10px 10px; width: 90px"
+              style="margin: 7px 20px 10px 10px; width: 90px"
               :type="tagColor[index]"
               >{{ item }}</el-tag
             >
