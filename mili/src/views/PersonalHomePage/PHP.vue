@@ -4,10 +4,31 @@
       <el-aside width="130px"></el-aside>
       <el-container>
         <!-- 头部 -->
-        <el-header>
+        <el-header style="height: 100vh">
+          <!-- <video-background
+            src="../../assets/PHP/default-background.mp4"
+            style="max-height: 30vh; width: 100%"
+          >
+            <h1 style="color: black">Hello welcome!</h1>
+          </video-background> -->
+          <div class="video-container">
+            <video
+              :style="fixStyle"
+              autoplay
+              loop
+              muted
+              class="fillWidth"
+              v-on:canplay="canplay"
+            >
+              <source
+                src="https://global-1309504341.cos.ap-beijing.myqcloud.com/default-background.mp4"
+                type="video/mp4"
+              />
+            </video>
+          </div>
           <el-menu
             :default-active="activeIndex"
-            class="el-menu-demo"
+            class="el-menu-demo mmenu"
             mode="horizontal"
             @select="handleSelect"
             active-text-color="rgb(206, 160, 36)"
@@ -15,7 +36,7 @@
           >
             <a href="/PersonalInformation">
               <el-avatar
-                :size="60"
+                :size="80"
                 :src="user.avatar_url"
                 class="ava"
               ></el-avatar>
@@ -43,12 +64,21 @@
         <!-- 间隔 -->
         <el-footer style="height: 5vh; width: 100%"></el-footer>
         <!-- 主体 -->
-        <el-container>
-          <el-col :span="24" class="content-wrapper">
+        <el-container class="mmain">
+          <el-col :span="24" class="content-wrapper mainn">
             <transition name="fade" mode="out-in">
               <router-view></router-view>
             </transition>
           </el-col>
+          <el-footer
+            style="
+              height: 5vh;
+              width: 10%;
+              position: relative;
+              bottom: 0;
+              background-color: transparent;
+            "
+          ></el-footer>
         </el-container>
       </el-container>
       <el-aside width="130px"></el-aside>
@@ -59,21 +89,27 @@
 <script>
 // import video from "../../components/VideoDetail/VideoCover.vue";
 import qs from "qs";
+// import VideoBackground from "vue-responsive-video-background-player";
+// Vue.component("video-background", VideoBackground);
+
 export default {
-  // components: {
-  //   video,
-  // },
+  name: "Video",
   data() {
     return {
       jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
       textarea: "",
       activeIndex: "1",
       user: {},
+      vedioCanPlay: false,
+      fixStyle: "",
     };
   },
   methods: {
     handleSelect(tab, event) {
       // console.log(tab, event);
+    },
+    canplay() {
+      this.vedioCanPlay = true;
     },
   },
   created() {
@@ -98,11 +134,64 @@ export default {
         console.log(err);
       });
   },
+  mounted: function () {
+    //屏幕自适应
+    window.onresize = () => {
+      const windowWidth = document.body.clientWidth;
+      const windowHeight = document.body.clientHeight;
+      const windowAspectRatio = windowHeight / windowWidth;
+      let videoWidth;
+      let videoHeight;
+      if (windowAspectRatio < 0.5625) {
+        videoWidth = windowWidth;
+        videoHeight = videoWidth * 0.5625;
+        this.fixStyle = {
+          height: windowWidth * 0.5625 + "px",
+          width: windowWidth + "px",
+          "margin-bottom": (windowHeight - videoHeight) / 2 + "px",
+          "margin-left": "initial",
+        };
+      } else {
+        videoHeight = windowHeight;
+        videoWidth = videoHeight / 0.5625;
+        this.fixStyle = {
+          height: windowHeight + "px",
+          width: windowHeight / 0.5625 + "px",
+          "margin-left": (windowWidth - videoWidth) / 2 + "px",
+          "margin-bottom": "initial",
+        };
+      }
+    };
+    window.onresize();
+  },
 };
 </script>
 
-
 <style scoped>
+.homepage-hero-module,
+.video-container {
+  position: fixed;
+  left: -1vw;
+  height: 92vh;
+  width: 102vw;
+  overflow: hidden;
+}
+
+.video-container .poster img {
+  z-index: 0;
+  position: absolute;
+}
+
+.video-container .filter {
+  z-index: 1;
+  position: absolute;
+  background: rgba(0, 0, 0, 0);
+  width: 100%;
+}
+
+.fillWidth {
+  width: 100%;
+}
 /* 内外边距清零 */
 * {
   margin: 0;
@@ -193,7 +282,6 @@ body {
 .el-header {
   width: 100%;
   height: 30vh !important;
-  background-image: url("../../assets/PHP/BG5_2.png");
   background-size: 100%;
   background-repeat: no-repeat;
 }
@@ -207,7 +295,7 @@ body {
 .el-menu {
   position: relative;
   width: 99%;
-  height: 6.7vh;
+  height: 7.5vh;
   display: flex;
   justify-content: space-between;
   /* background: rgb(255, 254, 253); */
@@ -220,18 +308,19 @@ body {
   border-radius: 0.9vh;
 }
 .el-menu-item {
-  height: 3.5em;
+  height: 5.6vh;
 }
 
 .headcol {
-  line-height: 3em;
+  line-height: 4vh;
+  margin-top: 1.5vh;
 }
 .headcol:hover {
   color: rgb(206, 160, 36) !important;
 }
 
 .catalogue {
-  line-height: 3em;
+  line-height: 4vh;
   text-align: center;
   transform: 0.2s;
 }
@@ -242,21 +331,24 @@ body {
 }
 
 .Uname {
-  font-size: 2em;
+  font-size: 4vh;
   color: rgb(61, 56, 50);
   text-align: center;
-  margin-top: -2.5vh;
+  margin-top: -5.3vh;
+  margin-left: -1.5vw;
+  line-height: 6vh;
 }
 .Uintro {
-  font-size: 0.4em;
+  font-size: 1.5vh;
   text-align: center;
   color: #b8b8b8;
   float: left;
+  margin-left: -1.5vw;
 }
 
 .icohead {
-  font-size: 1.8em;
-  line-height: 2em;
+  font-size: 4vh;
+  line-height: 3vh;
 }
 .zy {
   color: rgb(39, 207, 81);
@@ -313,7 +405,7 @@ body {
   height: 13vh;
 }
 .UcreateTitle {
-  font-size: 1.5em;
+  font-size: 2vh;
   line-height: 6.5vh;
 }
 .UcreateItem {
@@ -363,5 +455,26 @@ body {
 .ava {
   position: absolute;
   left: 16vw;
+}
+
+.mmenu {
+  position: absolute;
+  top: 80vh !important;
+  left: 2.3vw !important;
+  width: 95vw;
+}
+
+.mmain {
+  position: absolute;
+  top: 90vh;
+  left: 10vw;
+  width: 80vw;
+  /* background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 5px; */
+}
+
+.mainn {
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 5px;
 }
 </style>
