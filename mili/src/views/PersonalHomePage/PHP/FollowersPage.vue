@@ -1,7 +1,7 @@
 <template>
-  <div style="width: 100%; ">
+  <div style="width: 100%">
     <div class="list_wrap">
-      <PersonList :users="users" :listType="2" :pageSize="3"/>
+      <PersonList :users="users" :listType="2" :pageSize="3" />
     </div>
   </div>
 </template>
@@ -153,8 +153,8 @@ export default {
 };
 </script>
 <style scoped>
-.list_wrap{
-    width: 100%;
-    position: relative;
+.list_wrap {
+  width: 100%;
+  position: relative;
 }
 </style>

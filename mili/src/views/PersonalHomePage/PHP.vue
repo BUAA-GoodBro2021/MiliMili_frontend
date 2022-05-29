@@ -96,7 +96,7 @@ export default {
   name: "Video",
   data() {
     return {
-      jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
+      jwt: JSON.parse(localStorage.getItem("loginMessage")).JWT,
       textarea: "",
       activeIndex: "1",
       user: {},
@@ -474,7 +474,7 @@ body {
 }
 
 .mainn {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.93);
   border-radius: 5px;
 }
 </style>
