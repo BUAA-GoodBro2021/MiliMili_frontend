@@ -5,7 +5,7 @@
         <el-tabs v-model="activeName" @tab-click="handleClick()">
           <el-tab-pane label="全部稿件" name="first"
             ><div class="vv">
-              <VideoList
+              <ComplainVideoList
                 :videos="VideoArrayAll"
                 :pageSize="3"
                 v-if="VideoArrayAll.length"
@@ -13,7 +13,7 @@
           ></el-tab-pane>
           <el-tab-pane label="进行中" name="second">
             <div class="vv">
-              <VideoList
+              <ComplainVideoList
                 :videos="VideoArrayAuditing"
                 :pageSize="3"
                 v-if="VideoArrayAuditing.length"
@@ -22,7 +22,7 @@
           </el-tab-pane>
           <el-tab-pane label="已完成" name="third">
             <div class="vv">
-              <VideoList
+              <ComplainVideoList
                 :videos="VideoArrayAudited"
                 :pageSize="3"
                 v-if="VideoArrayAudited.length"
@@ -37,6 +37,7 @@
 
 <script>
 import VideoList from "@/components/PC/VideoList.vue";
+import ComplainVideoList from "@/components/PC/ComplaintVideoList.vue"
 import qs from "qs";
 export default {
   data() {
@@ -187,7 +188,7 @@ export default {
       console.log(tab, event);
     },
   },
-  components: { VideoList },
+  components: { ComplainVideoList },
 };
 </script>
 

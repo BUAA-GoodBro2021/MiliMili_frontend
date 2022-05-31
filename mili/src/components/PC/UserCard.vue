@@ -7,49 +7,66 @@
             <el-avatar
               :size="50"
               :src="user.avatar_url"
+              @click="toUserHome(user.id)"
+              style="cursor: pointer"
             >
             </el-avatar>
           </li>
           <li>
             <div class="title_profile">
-              <span class="name">{{user.username}}</span>
-              <span class="profile">{{user.signatrue}}</span>
+              <span class="name" @click="toUserHome(user.id)">{{
+                user.username
+              }}</span>
+              <span class="profile">{{ user.signature }}</span>
             </div>
           </li>
           <li style="float: right; vertical-align: middle; line-height: 50px">
-            <el-button type="warning" size="small" plain
+            <el-button
+              type="warning"
+              size="small"
+              plain
+              @click="toUserHome(user.id)"
               ><i class="el-icon-s-promotion" />进去瞄一眼</el-button
             >
           </li>
-          <!-- <li
-            v-if="listType != 3 && user.isfollow == true"
+          <li
+            v-if="listType != 3 && isfollow == true"
             style="float: right; vertical-align: middle; line-height: 50px"
           >
             <span class="follow">已关注 <i class="el-icon-check" /></span>
           </li>
           <li
-            v-if="listType != 3 && user.isfollow == false"
+            v-if="listType != 3 && isfollow == false"
+            style="float: right; vertical-align: middle; line-height: 50px"
+          >
+            <el-button
+              size="small"
+              plain
+              type="warning"
+              @click="follow(user.id)"
+              >关注</el-button
+            >
+          </li>
+          <!-- <li
+            v-if="listType != 3 "
+            style="float: right; vertical-align: middle; line-height: 50px"
+          >
+            <span class="follow">已关注 <i class="el-icon-check" /></span>
+          </li>
+          <li
+            v-if="listType != 3 "
             style="float: right; vertical-align: middle; line-height: 50px"
           >
             <el-button size="small" plain type="warning">关注</el-button>
           </li> -->
           <li
-            v-if="listType != 3 "
+            v-if="listType == 3"
             style="float: right; vertical-align: middle; line-height: 50px"
           >
-            <span class="follow">已关注 <i class="el-icon-check" /></span>
-          </li>
-          <li
-            v-if="listType != 3 "
-            style="float: right; vertical-align: middle; line-height: 50px"
-          >
-            <el-button size="small" plain type="warning">关注</el-button>
-          </li>
-          <li
-            v-if="listType == 3 "
-            style="float: right; vertical-align: middle; line-height: 50px"
-          >
-            <el-button size="small" plain type="warning" @click="cancelFollow()">取消关注</el-button>
+            <el-button size="small" plain type="warning" @click="cancelFollow()"
+              >取消关注</el-button
+            >
+            <!-- 取消关注时向父组件传递id于cancelfollow中 -->
           </li>
         </ul>
       </div>
@@ -61,8 +78,10 @@
           <li>
             <span class="foot_text"> 视频数量: {{ user.video_num }} </span>
           </li>
-          <li style="float: right;">
-            <i class="el-icon-date" /><span class="foot_text"> 入会时间: {{ "2022-1-30" }} </span>
+          <li style="float: right">
+            <i class="el-icon-date" /><span class="foot_text">
+              入会时间: {{ "2022-1-30" }}
+            </span>
           </li>
         </ul>
       </div>
@@ -70,6 +89,7 @@
   </div>
 </template>
 <script>
+import qs from "qs";
 export default {
   props: {
     user: {
@@ -81,7 +101,7 @@ export default {
           profile:
             "就像叶子从痛苦的蜷缩不断舒展一样，人也要不假思索地从愚昧中挣脱，才能算是活着。",
           avatar_url: "@/assets/debug/avater1.jpg",
-          isfollow: true,
+          is_follow: true,
           followers: 12,
           videos: 23,
         };
@@ -94,15 +114,64 @@ export default {
       },
     },
   },
-  data(){
-    return{
+  data() {
+    return {
       deleteFlag: 0, //1的时候为删除
-    }
+      isfollow: false
+    };
   },
-  methods:{
-    cancelFollow(){
+  methods: {
+    cancelFollow() {
       this.deleteFlag = 1;
-      this.$emit('cancelfollow',this.deleteFlag)
+      this.$emit("cancelfollow", this.user.id);
+    },
+    toUserHome(id) {
+      this.$router.push({ name: "OtherHomePage/Main", params: id });
+    },
+    follow(id) {
+      if (localStorage.getItem("loginMessage") == null) {
+        ElMessage({
+          type: "warning",
+          message: "请先登录！",
+        });
+        return;
+      }
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      this.$axios({
+        method: "post",
+        url: "/user/follow",
+        data: qs.stringify({
+          JWT: jwt,
+          follow_id: id,
+        }),
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      }).then((res) => {
+        if (res.data.result == 1) {
+          this.$message({
+            type: "success",
+            message: res.data.message,
+          });
+          this.isfollow = true
+        }else{
+          this.$message({
+            type: "error",
+            message: res.data.message,
+          });
+        }
+      }).catch((err) => {
+        this.$message({
+            type: "error",
+            message: '寄了QAQ',
+          });
+      })
+    },
+  },
+  mounted(){
+    this.isfollow = this.user.is_follow
+  },
+  watch:{
+    user(newValue,oldValue){
+      this.isfollow = newValue.is_follow
     }
   }
 };
@@ -154,9 +223,9 @@ export default {
   word-break: break-all;
   word-wrap: break-word;
 }
-.follow{
-    font-size: 13px;
-    color: grey;
+.follow {
+  font-size: 13px;
+  color: grey;
 }
 .card_footer {
   height: 20px;

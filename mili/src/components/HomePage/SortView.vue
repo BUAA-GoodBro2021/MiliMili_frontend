@@ -2,9 +2,11 @@
   <div>
     <div id="hot-sort">
       <div id="hot-title">
-        <span  :class="[sortTitle == '排行榜' ? 'subtitle': 'center_title']">{{ sortTitle }}</span>
+        <span :class="[sortTitle == '排行榜' ? 'subtitle' : 'center_title']">{{
+          sortTitle
+        }}</span>
         <router-link to="" v-if="sortType == 1">
-          <span id="more">
+          <span id="more" @click="toBlock()">
             更多
             <i class="el-icon-arrow-right" />
           </span>
@@ -13,7 +15,7 @@
       <div id="hot-first">
         <div id="hot-head-figure">
           <div class="hot-head-topleft-number">1</div>
-          <img class="hot-head-img" :src="sortedvideos[1].avatar_url" />
+          <img class="hot-head-img" :src="sortedvideos[0].avatar_url" />
           <div class="hot-head-border"></div>
         </div>
         <div id="hot-head-txt">
@@ -498,13 +500,23 @@ export default {
         return 1;
       },
     },
+    block_id: {
+      type: Number,
+      default() {
+        return 0;
+      },
+    },
   },
   data() {
     return {
       videosExceptOne: [],
     };
   },
-  methods: {},
+  methods: {
+    toBlock() {
+      this.$router.push("/block/" + this.block_id);
+    },
+  },
   mounted() {
     this.videosExceptOne = this.sortedvideos;
     this.videosExceptOne.splice(0, 1);
@@ -512,8 +524,6 @@ export default {
 };
 </script>
 <style scoped>
-
-
 .hot-head-details {
   margin-left: 20px;
 }
@@ -575,7 +585,7 @@ export default {
   color: black;
 }
 
-.center_title{
+.center_title {
   font-size: 20px;
   text-align: center;
   margin-left: 100px;

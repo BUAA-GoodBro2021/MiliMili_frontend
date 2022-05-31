@@ -18,7 +18,11 @@
           style="cursor: pointer; margin-left: 10px"
         />
       </div>
-      <el-tabs v-model="activeName" @tab-click="handleClick()" type="border-card">
+      <el-tabs
+        v-model="activeName"
+        @tab-click="handleClick()"
+        type="border-card"
+      >
         <el-tab-pane label="视频" name="videos">
           <div class="empty" v-if="videos.length == 0">
             <span class="empty_title"> 去用户页看看吧~</span>
@@ -51,88 +55,47 @@ export default {
   components: { SingleVideo, PersonList, Header },
   data() {
     return {
-      videos: [
-        {
-          id: 1,
-          watch: 1111,
-          comments: 2357,
-          distance: "15:07",
-          title: "标题1",
-          follow: true,
-          sender: "Harbour",
-          video_url: "/assets/debug/cover1.jepg",
-        },
-        {
-          id: 1,
-          watch: 3330,
-          comments: 2222,
-          distance: "10:07",
-          title: "标题2",
-          follow: true,
-          sender: "Siri",
-          video_url: "/assets/debug/cover2.jpg",
-        },
-        {
-          id: 1,
-          watch: 3330,
-          comments: 2357,
-          distance: "15:07",
-          title: "标题3",
-          follow: false,
-          sender: "桥哥",
-          video_url: "/assets/debug/cover1.jepg",
-        },
-        {
-          id: 1,
-          watch: 4440,
-          comments: 5557,
-          distance: "12:07",
-          title: "标题4",
-          follow: true,
-          sender: "Zhoues",
-          video_url: "/assets/debug/cover2.jpg",
-        },
-        {
-          id: 1,
-          watch: 3330,
-          comments: 2357,
-          distance: "15:07",
-          title: "标题5",
-          follow: true,
-          sender: "骁儿",
-          video_url: "/assets/debug/cover1.jepg",
-        },
-        {
-          id: 1,
-          watch: 5555,
-          comments: 6666,
-          distance: "3:07",
-          title: "这里是标题",
-          follow: true,
-          sender: "Harbour",
-          video_url: "/assets/debug/cover2.jpg",
-        },
-        {
-          id: 1,
-          watch: 5555,
-          comments: 6666,
-          distance: "3:07",
-          title: "这里是标题",
-          follow: true,
-          sender: "Harbour",
-          video_url: "/assets/debug/cover2.jpg",
-        },
-        {
-          id: 1,
-          watch: 5555,
-          comments: 6666,
-          distance: "3:07",
-          title: "这里是标题",
-          follow: true,
-          sender: "Harbour",
-          video_url: "/assets/debug/cover2.jpg",
-        },
-      ],
+      videos: [{
+          id: 11,
+          title: "元宇宙下的长沙，科技感爆棚！元宇宙下的长沙，科技感爆棚！",
+          description: "在元宇宙下看长沙",
+          video_url:
+            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
+          avatar_url:
+            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+          like_num: 1,
+          collect_num: 1,
+          view_num: 0,
+          zone: "科技",
+          tag_list: [],
+          user: {
+            id: 20,
+            username: "super2021",
+            email: "2868470542@qq.com",
+            nickname: "Super2021!",
+            sex: "男",
+            signature: "Super2021 超乎你的想象!",
+            birthday: "2002-08-06",
+            location: "北京",
+            video_num: 11,
+            like_num: 1,
+            collect_num: 1,
+            favorite_num: 2,
+            fan_num: 0,
+            follow_num: 1,
+            avatar_url:
+              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+            created_time: "2022-04-11T09:29:13.850Z",
+            updated_time: "2022-05-11T13:23:56.738Z",
+            isSuperAdmin: true,
+          },
+          created_time: "2022-04-15T08:15:36.662Z",
+          updated_time: "2022-04-17T07:47:53.970Z",
+          isAudit: 1,
+          need_verify: 0,
+          distance: 11,
+          index_list: [0, 1],
+        }],
       users: [
         {
           id: "1",
@@ -277,6 +240,9 @@ export default {
   methods: {
     getVideos(order) {
       var data = this.searchContent;
+      if (localStorage.getItem("loginMessage") != null)
+        var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      else var jwt = null;
       this.searchContent = data;
       return this.$axios({
         method: "post",
@@ -290,11 +256,15 @@ export default {
     },
     getUsers(order) {
       var data = this.searchContent;
+      if (localStorage.getItem("loginMessage") != null)
+        var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      else var jwt = null;
       return this.$axios({
         method: "post",
         data: qs.stringify({
           search_str: data,
           order: order,
+          JWT: jwt,
         }),
         headers: { "content-type": "application/x-www-form-urlencoded" },
         url: "/index/user",
@@ -311,8 +281,8 @@ export default {
         });
         return;
       }
-      localStorage.removeItem('searchContent')
-      localStorage.setItem('searchContent', this.searchContent)
+      localStorage.removeItem("searchContent");
+      localStorage.setItem("searchContent", this.searchContent);
       var that = this;
       this.$axios
         .all([that.getVideos(order), that.getUsers(order)])

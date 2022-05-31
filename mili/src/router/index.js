@@ -80,10 +80,6 @@ const routes = [
     component: () => import('../views/account/LoginView.vue'),
   },
   {
-    path: '/register',
-    name: 'RegisterPage',
-    component: () => import('../views/account/RegisterView.vue'),
-  }, {
     path: '/ChangePassword',
     name: 'ChangePassword',
     component: () => import('../views/account/PSW.vue'),
