@@ -259,7 +259,6 @@ export default {
       if (localStorage.getItem("loginMessage") != null)
         var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       else var jwt = null;
-      console.log("userJWT:" + jwt);
       return this.$axios({
         method: "post",
         data: qs.stringify({

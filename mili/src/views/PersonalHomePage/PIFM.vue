@@ -10,6 +10,26 @@
             :src="form.user.avatar_url"
             class="Ava"
           ></el-avatar>
+          <div class="changeAvatar" >
+            <div>
+              <el-upload
+               ref="upload"
+               class="upload-demo"
+               action="https://milimili.super2021.com/api/user/upload-avatar"
+               :show-file-list="false"
+               
+               list-type="picture-card"
+               :on-change="handlePictureCardPreview"     
+               :on-remove="handleRemove"  
+               
+               :http-request="submitAvatarHttp"
+               accept=".jpg"
+              >
+              <i class="el-icon-refresh change_icon" />
+              <!-- <input type="text" placeholder="头像" class="input" id="Uavatar"  @focus="focusFuncUA" @on-blur="blurFuncUA"/> -->
+              </el-upload>
+            </div>
+          </div>
           <h2>MiliMili</h2>
           <div class="input-group" id="UNBox">
             <div>
@@ -42,19 +62,27 @@
             </div>
             <div v-show="!ffUD">
               <h5 v-if="ffUD">birthday</h5>
-              <input type="text" placeholder="您的降生之日哦！" class="input" id="Udate" v-model="form.user.birthday.substring(0,10)" @focus="focusFuncUD" @on-blur="blurFuncUD"/>
+              <input type="text" placeholder="您的降生之日哦！" class="input" id="Udate" v-model="form.user.birthday.split('T')[0]" @focus="focusFuncUD" @on-blur="blurFuncUD"/>
             </div>
           </div>
-          <!-- <div label="我的生日" class="box" style="margin-top: 5vh">
-            <span>我的生日</span>
-            <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="form.user.birthday"
-              style="width: 100%"
-            ></el-date-picker>
-        </div> -->
-          <input type="submit"  class="btn" value="submit" @click="onSubmit"></input>
+          <!-- <div class="input-group" id="UABox">
+            <div>
+              <h5 v-if="ffUA">avatar</h5>
+              <el-upload
+               class="upload-demo"
+               action="https://jsonplaceholder.typicode.com/posts/"
+               :show-file-list="false"
+               :auto-upload="false"
+               list-type="picture-card"
+               :on-change="handlePictureCardPreview"     
+               :on-remove="handleRemove"    
+              >
+              <i class="el-icon-refresh" />
+              <input type="text" placeholder="头像" class="input" id="Uavatar"  @focus="focusFuncUA" @on-blur="blurFuncUA"/>
+              </el-upload>
+            </div>
+          </div> -->
+          <input type="submit"  class="btn" value="submit" @click="onSubmit()"></input>
         </form>
       </div>
     </div>
@@ -78,6 +106,7 @@ export default {
           location: "",
         },
       },
+      avatarData: null,
       user_used: {
         username: "",
         avatar_url: "",
@@ -86,6 +115,8 @@ export default {
         birthday: "",
         location: "",
       },
+      head_pictrue: null,
+      fileList: null,
       ava: "http://n.sinaimg.cn/sinacn10116/581/w633h748/20190612/95d6-hyeztyt1927097.jpg",
       jwt: JSON.parse(localStorage.getItem("loginMessage")).JWT,
       trans: true,
@@ -97,6 +128,7 @@ export default {
       ffUS: false,
       ffUX: false,
       ffUD: false,
+      ffUA: false,
     };
   },
   mounted: function () {
@@ -109,6 +141,19 @@ export default {
     // });
   },
   methods: {
+    handleRemove(file, fileList) {
+      //console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      console.log("preview");
+      console.log(file.url);
+      this.form.user.avatar_url =
+        file == null ? this.form.user.avatar_url : file.url;
+      //this.dialogVisible = true;
+    },
+    change_head_picture() {
+      console.log("change_avatar");
+    },
     blurFuncUN() {
       var x = document.getElementById("UNBox");
       if (document.getElementById("Uname").value == "") {
@@ -157,8 +202,56 @@ export default {
       x.classList.add("focus");
       this.ffUD = true;
     },
+    blurFuncUA() {
+      var x = document.getElementById("UABox");
+      if (document.getElementById("Uavatar").value == "") {
+        x.classList.remove("focus");
+        this.ffUA = false;
+      }
+    },
+    focusFuncUA() {
+      var x = document.getElementById("UABox");
+      x.classList.add("focus");
+      this.ffUA = true;
+    },
+    submitAvatar() {
+      this.$refs.upload.submit();
+    },
+    submitAvatarHttp(val) {
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      let data = new FormData();
+      data.append("JWT", jwt);
+      data.append("avatar", val.file);
+      console.log("in!");
+      console.log(val.file);
+      this.$axios({
+        method: "post",
+        url: "/user/upload-avatar",
+        // headers: {
+        //   "content-type": "application/x-www-form-urlencoded",
+        // },
+        data: data,
+      })
+        .then((res) => {
+          if (res.data.result == 0) {
+            this.$message.error(res.data.message);
+          } else {
+            this.$message({
+              type: "success",
+              message: "上传成功！",
+            });
+          }
+          console.log(res);
+          console.log("avatar!");
+        })
+        .catch((err) => {
+          this.$message.error("网络寄了QAQ");
+          console.log(err);
+        });
+    },
     onSubmit() {
       var that = this;
+      console.log("birthday" + this.form.user.birthday);
       this.$axios({
         method: "post",
         url: "https://milimili.super2021.com/api/user/change-file",
@@ -221,8 +314,20 @@ export default {
   },
 };
 </script>
-
+ 
 <style scoped>
+::v-deep .el-upload--picture-card {
+  width: 20px;
+  height: 20px;
+  border: none;
+  font-size: 12px;
+}
+.change_icon {
+  font-size: 17px;
+  position: absolute;
+  right: 70px;
+  top: 20px;
+}
 @font-face {
   font-family: "icomoon";
   src: url("../../assets/fonts/icomoon.eot?7kkyc2");
@@ -259,6 +364,12 @@ form {
 }
 .Ava {
   width: 2vw;
+}
+.changeAvatar {
+  display: inline-block;
+  z-index: 2;
+  float: right;
+  position: relative;
 }
 form h2 {
   font-size: 3.8vh;
