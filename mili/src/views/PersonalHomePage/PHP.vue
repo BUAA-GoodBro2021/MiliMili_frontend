@@ -335,7 +335,7 @@ body {
   color: rgb(61, 56, 50);
   text-align: center;
   margin-top: -5.3vh;
-  margin-left: -1.5vw;
+  margin-left: -3.8vw;
   line-height: 6vh;
 }
 .Uintro {
