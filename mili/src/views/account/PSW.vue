@@ -20,13 +20,13 @@
           <div class="input-group" id="UPBox">
             <div>
               <h5 v-if="ffUP">password</h5>
-              <input type="text" placeholder="请输入密码- ( ゜- ゜)つロ" class="input" id="Upsw" v-model="form.user.psw1" @focus="focusFuncUP" @blur="blurFuncUP"/>
+              <input type="password" placeholder="请输入密码- ( ゜- ゜)つロ" class="input" id="Upsw" v-model="form.user.psw1" @focus="focusFuncUP" @blur="blurFuncUP"/>
             </div>
           </div>
           <div class="input-group" id="USBox">
             <div>
               <h5 v-if="ffUS">password again</h5>
-              <input type="text" placeholder="请输入密码- ( ゜- ゜)つロ" class="input" id="Usign" v-model="form.user.psw2" @focus="focusFuncUS" @blur="blurFuncUS"/>
+              <input type="password" placeholder="请再次输入密码- ( ゜- ゜)つロ" class="input" id="Usign" v-model="form.user.psw2" @focus="focusFuncUS" @blur="blurFuncUS"/>
             </div>
           </div>
           <input type="submit"  class="btn" value="submit" @click="onSubmit"></input>
@@ -217,7 +217,8 @@ form h2 {
   width: 50%;
 }
 
-.input {
+.input,
+.password {
   position: absolute;
   width: 100%;
   height: 100%;
