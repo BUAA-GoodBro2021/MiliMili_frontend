@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       activeName: "first",
-      jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
+      jwt: JSON.parse(localStorage.getItem("loginMessage")).JWT,
       VideoArrayAll: [
         {
           id: 28,

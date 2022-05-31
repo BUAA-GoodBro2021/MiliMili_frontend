@@ -1,73 +1,64 @@
 <template>
-  <div>
-    <el-card class="box-card">
-      <div slot="header" class="clearfix title">
-        <span class="title">个人信息</span>
-      </div>
-      <!-- 信息 -->
-      <!-- 表单 -->
-      <!-- 头像 -->
-      <div style="padding: 10px 0; margin-top: -3vh">
-        <div class="AvaBox">
-          <a href="#">
-            <div class="ChangeAva">
-              <span class="CAText">更换头像</span>
+    <div>
+      <div class="bbgg"></div>
+  <div id="body">
+    <div class="container">
+      <div class="message_box">
+        <form action="">
+          <el-avatar
+            :size="60"
+            :src="form.user.avatar_url"
+            class="Ava"
+          ></el-avatar>
+          <h2>MiliMili</h2>
+          <div class="input-group" id="UNBox">
+            <div>
+              <h5 v-if="ffUN">usrname</h5>
+              <input type="text" class="input" id="Uname" v-model="form.user.username" @focus="focusFuncUN" @blur="blurFuncUN"/>
             </div>
-          </a>
-          <div class="avatar">
-            <el-avatar
-              :size="90"
-              :src="form.user.avatar_url"
-              class="AvaImg"
-            ></el-avatar>
           </div>
-          <a href="#">
-            <div class="ViewAva">
-              <span class="VAText">查看头像</span>
+          <div class="input-group" id="USBox">
+            <div>
+              <h5 v-if="ffUS">signature</h5>
+              <input type="text"  placeholder="设置您的签名- ( ゜- ゜)つロ" class="input" id="Usign" v-model="form.user.signature" @focus="focusFuncUS" @on-blur="blurFuncUS"/>
             </div>
-          </a>
-        </div>
-      </div>
-      <el-form ref="form" :model="form" label-width="10vh">
-        <el-form-item label="昵称" class="box">
-          <el-input v-model="form.user.username" class="Fname"></el-input>
-        </el-form-item>
-        <el-form-item label="性别" class="box">
-          <el-radio-group v-model="form.user.sex" class="Fsex">
-            <el-radio label="男"></el-radio>
-            <el-radio label="女"></el-radio>
-            <el-radio label="秘密"></el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="我的签名" class="box">
-          <el-input
-            type="textarea"
-            placeholder="设置您的签名- ( ゜- ゜)つロ"
-            v-model="form.user.signature"
-            class="Fintroduce"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="我的生日" class="box" style="margin-top: 5vh">
-          <el-col :span="7">
+          </div>
+          <div class="input-group" id="UXBox">
+            <div>
+              <h5 v-if="ffUX">sex</h5>
+              <input type="text" placeholder="性别" class="input" id="Usex" v-model="form.user.sex" @focus="focusFuncUX" @on-blur="blurFuncUX"/>
+            </div>
+          </div>
+          <div class="input-group" id="UDBox">
+            <div style="height: 5.3vh" v-show="ffUD">
+              <h5 v-if="ffUD">birthday</h5>
+              <el-date-picker
+              type="date"
+              placeholder="选择日期"
+              v-model="form.user.birthday"
+              style="width: 100%; "
+              class="DateBox"
+            ></el-date-picker>
+            </div>
+            <div v-show="!ffUD">
+              <h5 v-if="ffUD">birthday</h5>
+              <input type="text" placeholder="您的降生之日哦！" class="input" id="Udate" v-model="form.user.birthday.substring(0,10)" @focus="focusFuncUD" @on-blur="blurFuncUD"/>
+            </div>
+          </div>
+          <!-- <div label="我的生日" class="box" style="margin-top: 5vh">
+            <span>我的生日</span>
             <el-date-picker
               type="date"
               placeholder="选择日期"
               v-model="form.user.birthday"
               style="width: 100%"
             ></el-date-picker>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="我的地址" class="box addBox">
-          <el-button @click="getAddress" class="address">获取地址</el-button>
-        </el-form-item>
-        <el-col class="CurAdd"
-          ><span>目前地址: </span><span v-text="form.user.location"></span
-        ></el-col>
-        <el-form-item>
-          <el-button type="primary" @click="onSubmit">保存</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+        </div> -->
+          <input type="submit"  class="btn" value="submit" @click="onSubmit"></input>
+        </form>
+      </div>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -87,15 +78,85 @@ export default {
           location: "",
         },
       },
+      user_used: {
+        username: "",
+        avatar_url: "",
+        sex: "",
+        signature: "",
+        birthday: "",
+        location: "",
+      },
       ava: "http://n.sinaimg.cn/sinacn10116/581/w633h748/20190612/95d6-hyeztyt1927097.jpg",
-      jwt: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU",
+      jwt: JSON.parse(localStorage.getItem("loginMessage")).JWT,
       trans: true,
       drawer: false,
       imageUrl: "",
       file: {},
+      inputs: [],
+      ffUN: false,
+      ffUS: false,
+      ffUX: false,
+      ffUD: false,
     };
   },
+  mounted: function () {
+    // console.log("listen");
+    // this.inputs = document.querySelectorAll(".input");
+    // console.log("listen");
+    // this.inputs.forEach((input) => {
+    //   input.addEventListener("focus", this.focusFunction);
+    //   input.addEventListener("blur", this.blurFunction);
+    // });
+  },
   methods: {
+    blurFuncUN() {
+      var x = document.getElementById("UNBox");
+      if (document.getElementById("Uname").value == "") {
+        x.classList.remove("focus");
+        this.ffUN = false;
+      }
+    },
+    focusFuncUN() {
+      var x = document.getElementById("UNBox");
+      x.classList.add("focus");
+      this.ffUN = true;
+    },
+    blurFuncUS() {
+      var x = document.getElementById("USBox");
+      if (document.getElementById("Usign").value == "") {
+        x.classList.remove("focus");
+        this.ffUS = false;
+      }
+    },
+    focusFuncUS() {
+      var x = document.getElementById("USBox");
+      x.classList.add("focus");
+      this.ffUS = true;
+    },
+    blurFuncUX() {
+      var x = document.getElementById("UXBox");
+      if (document.getElementById("Usex").value == "") {
+        x.classList.remove("focus");
+        this.ffUX = false;
+      }
+    },
+    focusFuncUX() {
+      var x = document.getElementById("UXBox");
+      x.classList.add("focus");
+      this.ffUX = true;
+    },
+    blurFuncUD() {
+      var x = document.getElementById("UDBox");
+      if (document.getElementById("Udate").value == "") {
+        x.classList.remove("focus");
+        this.ffUD = false;
+      }
+    },
+    focusFuncUD() {
+      var x = document.getElementById("UDBox");
+      x.classList.add("focus");
+      this.ffUD = true;
+    },
     onSubmit() {
       var that = this;
       this.$axios({
@@ -162,170 +223,182 @@ export default {
 </script>
 
 <style scoped>
-.box-card {
+@font-face {
+  font-family: "icomoon";
+  src: url("../../assets/fonts/icomoon.eot?7kkyc2");
+  src: url("../../assets/fonts/icomoon.eot?7kkyc2#iefix")
+      format("embedded-opentype"),
+    url("../../assets/fonts/icomoon.ttf?7kkyc2") format("truetype"),
+    url("../../assets/fonts/icomoon.woff?7kkyc2") format("woff"),
+    url("../../assets/fonts/icomoon.svg?7kkyc2") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+.icomoon {
+  font-family: icomoon;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+.container {
   position: absolute;
-  left: 20%;
-  top: 10.5%;
-  width: 60%;
-  /* background: linear-gradient(-60deg, #fceabb, #f8b500); */
-  background-image: url("../../assets/PHP/BG13_4.png");
-  background-repeat: no-repeat;
-  background-size: 100%;
-  border-color: white;
-  opacity: 75%;
-  height: 86%;
+  left: 60vw;
+  top: -5vh;
+  z-index: 2;
 }
-
-.title {
-  font-size: 1.2em;
+.message-box {
+  display: flex;
+  align-items: center;
+  text-align: center;
 }
-
-.AvaBox {
-  width: 25vh;
-  height: 25vh;
-  border: 1px solid #e5e9ef;
-  border-radius: 50%;
+form {
+  width: 20vw;
+}
+.Ava {
+  width: 2vw;
+}
+form h2 {
+  font-size: 3.8vh;
+  text-transform: uppercase;
+  margin: 1vw 0;
+  color: #999;
+}
+.input-group {
   position: relative;
-  margin: 0 auto;
-}
-.ChangeAva {
-  width: 7vh;
-  height: 7vh;
-  box-sizing: border-box;
-  border-radius: 50%;
-  background: #46c1fac7;
-  border: 1px solid #46c1fac7;
-  position: absolute;
-  left: -3.5vh;
-  top: 50%;
-  transform: translateY(-50%);
-  display: block;
-}
-.ViewAva {
-  width: 7vh;
-  height: 7vh;
-  box-sizing: border-box;
-  border-radius: 50%;
-  background: #46c1fac7;
-  border: 1px solid #46c1fac7;
-  position: absolute;
-  right: -3.5vh;
-  top: 50%;
-  transform: translateY(-50%);
-  display: block;
-}
-.CAText {
-  width: 2.2em;
-  font-size: 14px;
-  line-height: 18px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  color: rgb(255, 253, 247);
-  transform: translate(-50%, -50%);
-  /* font: 13px/1.5 Microsoft YaHei, tahoma, \\5b8b\4f53, sans-serif; */
-  font-family: MicrosoftYaHei;
-}
-.VAText {
-  width: 2.2em;
-  font-size: 14px !important;
-  line-height: 18px !important;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  color: rgb(255, 253, 247);
-  transform: translate(-50%, -50%);
-  font: 13px/1.5 Microsoft YaHei, tahoma, \\5b8b\4f53, sans-serif;
-  font-family: MicrosoftYaHei;
-}
-.avatar {
-  width: 5vh;
-  height: 5vh;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.AvaImg {
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: 1vw 0;
+  padding: 1vh 0;
+  border-bottom: 2px solid #d9d9d9;
 }
 
-.title {
-  border-color: rgb(255, 253, 247) !important;
+.input-group:nth-child(1) {
+  margin-bottom: 1vh;
+}
+.input-group:before,
+.input-group:after {
+  content: "";
+  position: absolute;
+  bottom: -0.2vh;
+  width: 0;
+  height: 0.2vh;
+  background-color: #38ced3;
+  transition: 0.3s;
+}
+.input-group:after {
+  right: 50%;
+}
+.input-group:before {
+  left: 50%;
+}
+
+.input-group > div {
+  position: relative;
+  height: 4vh;
+}
+.input-group > div > h5 {
+  position: absolute;
+  left: 1vw;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #d9d9d9;
+  font-size: 2vh;
+  transition: 0.3s;
+}
+
+.input-group.focus div h5 {
+  top: -0.5vh;
+  font-size: 1.5vh;
+}
+.input-group.focus:after,
+.input-group.focus:before {
+  width: 50%;
+}
+
+.input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0.5vw;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0.5vh 0.5vw;
+  color: #3f3f3f;
+  font-size: 2vh;
+  font-weight: 900;
+  height: 4vh;
+  font-family: "Roboto", sans-serif;
+}
+
+a {
+  display: block;
+  text-align: right;
+  text-decoration: none;
+  color: #999;
+  font-size: 0.9vh;
+  transition: 0.3s;
+}
+a:hover {
+  color: #38ced3;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  height: 5vh;
+  border-radius: 2.5vh;
+  margin: 1vh 0;
+  font-size: 1.2vh;
+  outline: none;
+  border: none;
+  background-image: linear-gradient(to right, #25b3eb, #38ced3, #27d2e9);
+  cursor: pointer;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: "Roboto", sans-serif;
+  background-size: 200%;
+  transition: 0.5s;
+}
+.btn:hover {
+  background-position: right;
 }
 .box {
   position: relative;
   left: 20%;
 }
-.Fname {
+
+#body {
   position: absolute;
-  left: 0;
-  width: 50%;
-}
-.Fsex {
-  position: absolute;
-  left: 0;
-  width: 30%;
-  top: 30%;
-}
-.Fintroduce {
-  position: absolute;
-  left: 0;
-  width: 60%;
+  top: 25vh;
+  height: 75vh;
+  width: 100vw;
+  background-image: url("../../assets/PIFM/bg.svg");
+  background-repeat: no-repeat;
+  background-size: 45% auto;
+  z-index: -1;
+  /* background-attachment: fixed; */
 }
 
-.el-button {
-  background-color: #46c1fac7;
-  border-color: #46c1fac7;
-  margin-left: -8vh;
-}
-
-.address {
-  color: #606266;
-  position: relative;
-  left: -39%;
-  background-color: #fff;
-  border-color: #dcdfe6;
-  height: 5vh;
-}
-.CurAdd {
-  position: relative;
-  left: 41%;
-  width: 10vw;
-  margin-top: -7vh;
-}
-
-.none {
-  width: 0;
-  height: 0;
-  background-color: transparent;
-  border: none;
-}
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
+.bbgg {
+  position: absolute;
+  height: 330vh;
+  width: 110vw;
+  background-image: linear-gradient(75deg, #51bfffda, #76fff4cb);
+  border-radius: 150vh;
+  background-size: contain;
+  top: -230vh;
+  left: -55vw;
   overflow: hidden;
+  z-index: -2;
+  background-color: transparent;
 }
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avat {
-  width: 178px;
-  height: 178px;
-  display: block;
+
+.DateBox {
+  position: relative;
+  top: 0.6vh;
+  border: none;
 }
 </style>

@@ -1,7 +1,12 @@
 <template>
-  <div style="width: 100%; ">
+  <div style="width: 100%">
     <div class="list_wrap">
-      <PersonList :users="users" :listType="3" :pageSize="3" v-on:cancelfollow="cancelfollow"/>
+      <PersonList
+        :users="users"
+        :listType="3"
+        :pageSize="3"
+        v-on:cancelfollow="cancelfollow"
+      />
     </div>
   </div>
 </template>
@@ -151,19 +156,18 @@ export default {
       ],
     };
   },
-  methods:{
-    cancelfollow(val){
-      this.deleteFlag = val
-      console.log('子组件传值为: '+this.deleteFlag)
+  methods: {
+    cancelfollow(val) {
+      this.deleteFlag = val;
+      console.log("子组件传值为: " + this.deleteFlag);
       //TODO getListAgain
-    }
-  }
-
+    },
+  },
 };
 </script>
 <style scoped>
-.list_wrap{
-    width: 100%;
-    position: relative;
+.list_wrap {
+  width: 100%;
+  position: relative;
 }
 </style>
