@@ -3,17 +3,30 @@
     <el-container>
       <!-- 视频 -->
       <el-main class="box">
-        <div class="block">
-          <div>
+        <div class="block_wrap">
+          <div class="pagination_personPage">
+            <el-pagination
+              hide-on-single-page
+              background
+              :page-size="pagesize"
+              :page-sizes="[1, 2, 3, 4, 5, 6]"
+              layout="prev, pager, next"
+              :total="VideoArray.length"
+              @current-change="topicInit"
+              style="float: right"
+            >
+            </el-pagination>
+          </div>
+          <div class="block">
             <div
-              v-for="(item, index) in VideoArray"
+              v-for="(item, index) in VideoArraySelected"
               :key="index"
-              style="margin-left: 10px; margin-top: 10px"
+              class="video"
+              style="margin-left: 30px; margin-top: 20px"
             >
               <Video :singleVideo="item" />
             </div>
-          </div>
-          <el-pagination layout="prev, next" :total="50"> </el-pagination></div
+          </div></div
       ></el-main>
       <!-- 间隔 -->
       <el-aside width="1vw"></el-aside>
@@ -97,6 +110,8 @@ export default {
       VideoArray: [],
       len: 0,
       user: {},
+      VideoArraySelected: [],
+      pagesize: 6,
     };
   },
   created() {
@@ -124,22 +139,26 @@ export default {
         console.log(err);
       });
   },
+  mounted(){
+    this.pagesize = 6 < VideoArray.length ? 6 : VideoArray.length
+     this.topicInit(1)
+  },
+  watch:{
+    VideoArray(newName,oldName){ //异步问题的解决
+      this.pagesize = 6 < newName.length ? 6: newName.length
+      this.topicInit(1);
+    }
+  },
   methods: {
-    // singleVideo: {
-    //   type: Object,
-    //   default() {
-    //     return {
-    //       id: 0,
-    //       view_num: 0,
-    //       like_num: 0,
-    //       updated_time: "",
-    //       title: "",
-    //       // follow: true,
-    //       user: {},
-    //       video_url: "@/assets/debug/cover1.jepg",
-    //     };
-    //   },
-    // },
+     topicInit: function(page) {
+      if (this.VideoArray.length <= 0) return;
+      this.VideoArraySelected = this.VideoArray.slice(
+        this.pagesize * (page - 1),
+        this.pagesize * page
+      );
+      console.log(this.pagesize)
+      //console.log(this.usersShow)
+    }
   },
   components: { Video },
 };
@@ -228,6 +247,17 @@ body {
     url("../../assets/fonts/icomoon.svg?7kkyc2") format("svg");
   font-weight: normal;
   font-style: normal;
+}
+.block_wrap {
+  width: 100%;
+}
+.block {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.pagination_personPage {
+  margin-right: 4%;
 }
 .icomoon {
   font-family: icomoon;

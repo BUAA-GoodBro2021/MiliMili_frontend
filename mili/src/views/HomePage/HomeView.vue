@@ -68,16 +68,22 @@
       </div> -->
     </div>
     <!-- 幻灯片 -->
-    <Recommend :video="recommend_list"/>
+    <Recommend :video="recommend_list" />
     <div class="block_detail">
       <!-- 分区 -->
-      <div v-for="(item,index) in zone_video_list" :key="index">
-        <Block :block="id2block(item.id)" :videos="item.recommend_list" :sortedVideos="item.rank_list" :block_id="item.id" />
+      <div v-for="(item, index) in zone_video_list" :key="index">
+        <Block
+          :block="id2block(item.id)"
+          :videos="item.recommend_list"
+          :sortedVideos="item.rank_list"
+          :block_id="item.id"
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
+import qs from "qs";
 import Recommend from "@/components/HomePage/RecommentView.vue";
 import Block from "@/components/HomePage/BlockView.vue";
 import DynamicBanner from "@/components/HomePage/DynamicBanner.vue";
@@ -271,7 +277,7 @@ export default {
           id: 1,
           zone: "鬼畜",
         },
-      ],//保险起见用后端传过来的map
+      ], //保险起见用后端传过来的map
     };
   },
   methods: {
@@ -284,27 +290,35 @@ export default {
         this.headMode = true;
       } else this.headMode = false;
     },
-    id2block(id){
-      for(var item in this.zone_list){
-        if(item.id == id) return item.zone
+    id2block(id) {
+      for (var item in this.zone_list) {
+        if (item.id == id) return item.zone;
       }
-    }
+    },
   },
   created() {
+    if (localStorage.getItem("loginMessage") == null) var jwt = null;
+    else var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
     this.$axios({
-      method: "get",
+      method: "post",
       url: "/index/",
+      data: qs.stringify({
+        JWT: jwt,
+      }),
+      headers: { "content-type": "application/x-www-form-urlencoded" },
     }).then((res) => {
+      console.log('主页视频')
+      console.log(res)
       this.recommend_list = res.data.recommend_list;
       this.zone_video_list = res.data.zone_video_list;
-      this.zone_list = res.data.zone_list
+      this.zone_list = res.data.zone_list;
     });
     this.$axios({
-       method: "get",
+      method: "get",
       url: "/index/ip_address",
     }).then((res) => {
-      this.ip = res.data.result
-    })
+      this.ip = res.data.result;
+    });
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
