@@ -59,6 +59,7 @@ export default {
       file: {},
       inputs: [],
       ffUN: false,
+      ffUP: false,
       ffUS: false,
       ffUX: false,
       ffUD: false,
