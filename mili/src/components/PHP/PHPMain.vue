@@ -31,7 +31,7 @@
       <!-- 间隔 -->
       <el-aside width="1vw"></el-aside>
       <!-- 个人资料+创作中心+公告 -->
-      <el-aside width="24.21vw">
+      <el-aside width="25vw">
         <div style="width=100%">
           <!-- 个人资料 -->
           <el-card class="box-card asd box">
@@ -139,26 +139,27 @@ export default {
         console.log(err);
       });
   },
-  mounted(){
-    this.pagesize = 6 < VideoArray.length ? 6 : VideoArray.length
-     this.topicInit(1)
+  mounted() {
+    this.pagesize = 6 < VideoArray.length ? 6 : VideoArray.length;
+    this.topicInit(1);
   },
-  watch:{
-    VideoArray(newName,oldName){ //异步问题的解决
-      this.pagesize = 6 < newName.length ? 6: newName.length
+  watch: {
+    VideoArray(newName, oldName) {
+      //异步问题的解决
+      this.pagesize = 6 < newName.length ? 6 : newName.length;
       this.topicInit(1);
-    }
+    },
   },
   methods: {
-     topicInit: function(page) {
+    topicInit: function (page) {
       if (this.VideoArray.length <= 0) return;
       this.VideoArraySelected = this.VideoArray.slice(
         this.pagesize * (page - 1),
         this.pagesize * page
       );
-      console.log(this.pagesize)
+      console.log(this.pagesize);
       //console.log(this.usersShow)
-    }
+    },
   },
   components: { Video },
 };
