@@ -46,17 +46,13 @@
         <div class="card" style="background: rgb(230, 180, 80)">
           <div class="ip_up">
             <i class="el-icon-location-information" />
-            <span class="_up">
-            {{  ip.province + " " + ip.city }}</span
-          >
+            <span class="_up"> {{ ip.province + " " + ip.city }}</span>
           </div>
           <span class="text_ip">
-            {{
-               ip.lng + " °E " 
-          }}
+            {{ ip.lng + " °E " }}
           </span>
           <span class="text_ip">
-            {{ip.lat + "°N"}}
+            {{ ip.lat + "°N" }}
           </span>
         </div>
       </div>
@@ -72,12 +68,12 @@
       </div> -->
     </div>
     <!-- 幻灯片 -->
-    <Recommend />
+    <Recommend :video="recommend_list"/>
     <div class="block_detail">
       <!-- 分区 -->
-      <Block />
-      <Block />
-      <Block />
+      <div v-for="(item,index) in zone_video_list" :key="index">
+        <Block :block="id2block(item.id)" :videos="item.recommend_list" :sortedVideos="item.rank_list" :block_id="item.id" />
+      </div>
     </div>
   </div>
 </template>
@@ -155,6 +151,127 @@ export default {
         lat: 39.90469,
         lng: 116.40717,
       },
+      recommend_list: [
+        {
+          id: 11,
+          title: "元宇宙下的长沙，科技感爆棚！",
+          description: "在元宇宙下看长沙",
+          video: "11.mp4",
+          avatar: "",
+          video_url:
+            "https://video-1309504341.cos.apbeijing.myqcloud.com/11.mp4",
+          avatar_url:
+            "https://cover-1309504341.cos.apbeijing.myqcloud.com/11.png",
+          like_num: 1,
+          collect_num: 0,
+          view_num: 0,
+          zone: "科技",
+          tag1: "",
+          tag2: "",
+          tag3: "",
+          tag4: "",
+          tag5: "",
+          user_id: 20,
+          created_time: "2022-04-15T08:15:36.662Z",
+          updated_time: "2022-04-17T07:47:53.970Z",
+          isAudit: 1,
+          need_verify: 0,
+        },
+      ],
+      zone_video_list: [
+        {
+          id: 1,
+          recommend_list: [
+            {
+              id: 24,
+              title: "####",
+              description: "测试",
+              video_url:
+                "https://video-1309504341.cos.ap-beijing.myqcloud.com/24.mp4",
+              avatar_url:
+                "https://cover-1309504341.cos.ap-beijing.myqcloud.com/24.png",
+              like_num: 0,
+              collect_num: 0,
+              view_num: 0,
+              zone: "鬼畜",
+              tag_list: [],
+              user: {
+                id: 20,
+                username: "super2021",
+                email: "2868470542@qq.com",
+                nickname: "super2021",
+                sex: "秘密",
+                signature: "我爱小姐姐！",
+                birthday: "2002-08-06",
+                location: "北京",
+                video_num: 11,
+                like_num: 1,
+                collect_num: 1,
+                favorite_num: 2,
+                fan_num: 1,
+                follow_num: 1,
+                avatar_url:
+                  "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+                created_time: "2022-04-11T09:29:13.850Z",
+                updated_time: "2022-05-14T22:46:12.578Z",
+                isSuperAdmin: true,
+              },
+              created_time: "2022-04-21T03:17:44.603Z",
+              updated_time: "2022-04-21T03:18:30.441Z",
+              isAudit: 1,
+              need_verify: 0,
+              distance: 100,
+            },
+          ],
+          rank_list: [
+            {
+              id: 34,
+              title: "PPAP",
+              description: "I have an apple!",
+              video_url:
+                "https://video-1309504341.cos.ap-beijing.myqcloud.com/34.mp4",
+              avatar_url:
+                "https://cover-1309504341.cos.ap-beijing.myqcloud.com/34.png",
+              like_num: 0,
+              collect_num: 0,
+              view_num: 0,
+              zone: "鬼畜",
+              tag_list: [],
+              user: {
+                id: 20,
+                username: "super2021",
+                email: "2868470542@qq.com",
+                nickname: "super2021",
+                sex: "秘密",
+                signature: "我爱小姐姐！",
+                birthday: "2002-08-06",
+                location: "北京",
+                video_num: 11,
+                like_num: 1,
+                collect_num: 1,
+                favorite_num: 2,
+                fan_num: 1,
+                follow_num: 1,
+                avatar_url:
+                  "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+                created_time: "2022-04-11T09:29:13.850Z",
+                updated_time: "2022-05-14T22:46:12.578Z",
+                isSuperAdmin: true,
+              },
+              created_time: "2022-04-21T10:12:45.266Z",
+              updated_time: "2022-04-21T10:13:20.920Z",
+              isAudit: 1,
+              need_verify: 0,
+            },
+          ],
+        },
+      ],
+      zone_list: [
+        {
+          id: 1,
+          zone: "鬼畜",
+        },
+      ],//保险起见用后端传过来的map
     };
   },
   methods: {
@@ -167,6 +284,27 @@ export default {
         this.headMode = true;
       } else this.headMode = false;
     },
+    id2block(id){
+      for(var item in this.zone_list){
+        if(item.id == id) return item.zone
+      }
+    }
+  },
+  created() {
+    this.$axios({
+      method: "get",
+      url: "/index/",
+    }).then((res) => {
+      this.recommend_list = res.data.recommend_list;
+      this.zone_video_list = res.data.zone_video_list;
+      this.zone_list = res.data.zone_list
+    });
+    this.$axios({
+       method: "get",
+      url: "/index/ip_address",
+    }).then((res) => {
+      this.ip = res.data.result
+    })
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
@@ -214,13 +352,13 @@ export default {
   display: flex;
   align-content: space-between;
 }
-.text_ip{
+.text_ip {
   color: white;
   margin-top: 2px;
   font-size: 15px;
   display: block;
 }
-.ip_up{
+.ip_up {
   color: white;
   margin-top: 15px;
   font-size: 15px;

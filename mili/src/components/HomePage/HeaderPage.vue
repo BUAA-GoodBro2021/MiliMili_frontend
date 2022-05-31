@@ -127,8 +127,12 @@ export default {
     },
   },
   created() {
-    // var content = localStorage.getItem('searchContent')
-    // if(content != null) this.inputContext = content
+    this.$axios({
+       method: "get",
+      url: "/index/ip_address",
+    }).then((res) => {
+      this.notRead = res.data.not_read
+    })
   },
 };
 </script>
