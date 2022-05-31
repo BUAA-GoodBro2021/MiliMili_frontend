@@ -184,7 +184,7 @@ form h2 {
   bottom: -0.2vh;
   width: 0;
   height: 0.2vh;
-  background-color: #38ced3;
+  background-color: #ffaf60;
   transition: 0.3s;
 }
 .input-group:after {
@@ -243,7 +243,7 @@ a {
   transition: 0.3s;
 }
 a:hover {
-  color: #38ced3;
+  color: #ffaf60;
 }
 
 .btn {
@@ -255,7 +255,12 @@ a:hover {
   font-size: 1.2vh;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #25b3eb, #38ced3, #27d2e9);
+  background-image: linear-gradient(
+    to right,
+    #ffaf60,
+    #ffd257,
+    rgb(255, 187, 0)
+  );
   cursor: pointer;
   color: #fff;
   text-transform: uppercase;
@@ -276,7 +281,7 @@ a:hover {
   top: 25vh;
   height: 75vh;
   width: 100vw;
-  background-image: url("../../assets/PIFM/bg.svg");
+  background-image: url("../../assets/psw/bg.svg");
   background-repeat: no-repeat;
   background-size: 45% auto;
   z-index: -1;
@@ -287,7 +292,7 @@ a:hover {
   position: absolute;
   height: 330vh;
   width: 110vw;
-  background-image: linear-gradient(75deg, #51bfffda, #76fff4cb);
+  background-image: linear-gradient(75deg, #ffa041da, #fad56ecb);
   border-radius: 150vh;
   background-size: contain;
   top: -230vh;
