@@ -18,8 +18,8 @@
               </div>
             </li>
             <li style="float: right; margin-right: 10px">
-              <el-tag style="cursor: pointer; width: 70px"
-                ><i class="el-icon-delete" /> 删除</el-tag
+              <el-tag style="cursor: pointer; width: 90px" @click="ReCheck()"
+                ><i class="el-icon-zoom-in" /> 重新审核</el-tag
               >
             </li>
           </ul>
@@ -61,6 +61,7 @@
   </div>
 </template>
 <script>
+import qs from 'qs'
 export default {
   props: {
     video: {
@@ -122,6 +123,39 @@ export default {
       }
     }
   },
+  methods:{
+    ReCheck(){
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      this.$axios({
+        method: "post",
+        data: qs.stringify({
+          JWT: jwt,
+          video_id: this.video.id
+        }),
+        url: "/super_admin/redo-audit-video",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      })
+        .then((res) => {
+          if (res.data.result == 1) {    
+              this.$message({
+                type: "success",
+                message: "重置成功！",
+              });
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.message,
+            });
+          }
+        })
+        .catch((err) => {
+          this.$message({
+            type: "error",
+            message: "网络出错QAQ",
+          });
+        });
+    }
+  }
 };
 </script>
 <style scoped>

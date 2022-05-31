@@ -13,10 +13,7 @@
             <span class="empty_title"> 没视频捏</span>
           </div>
           <div class="list_wrap" v-else>
-            <ComplainVideoList
-              :videos="videos"
-              :pageSize="3"
-            />
+            <ComplainVideoList :videos="videos" :pageSize="3" />
           </div>
         </el-tab-pane>
         <el-tab-pane label="待审核视频" name="2">
@@ -43,7 +40,7 @@
   </div>
 </template>
 <script>
-import qs from 'qs'
+import qs from "qs";
 import ComplainVideoList from "@/components/admin/CheckVideoList.vue";
 import Header from "@/components/HomePage/HeaderPage.vue";
 export default {
@@ -54,26 +51,30 @@ export default {
       pageSize: 3,
       videos: [
         {
-            "id": 15,
-            "title": "郑爽事件DISS-《一xxxx人》",
-            "description": "第一次通过说唱对此类事件发声，希望各位理性看待问题当然感性的一点是：我从未想过某一天有位母性散发的光辉竟然能让婴儿的啼哭声中满是伤悲.所以便有了这首diss",
-            "video_url": "https://video-1309504341.cos.ap-beijing.myqcloud.com/15.mp4",
-            "avatar_url": "https://cover-1309504341.cos.ap-beijing.myqcloud.com/15.png",
-            "like_num": 0,
-            "collect_num": 1,
-            "view_num": 102,
-            "zone": "嘻哈",
-            "tag_list": [],
-            "user": {
-                "id": 20,
-                "username": "super2021",
-                "avatar_url": "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png"
-            },
-            "created_time": "2022-04-19T12:08:36.190Z",
-            "updated_time": "2022-05-31T12:02:52.108Z",
-            "isAudit": 3
-        }
-    ], //第一个分页的列表
+          id: 15,
+          title: "郑爽事件DISS-《一xxxx人》",
+          description:
+            "第一次通过说唱对此类事件发声，希望各位理性看待问题当然感性的一点是：我从未想过某一天有位母性散发的光辉竟然能让婴儿的啼哭声中满是伤悲.所以便有了这首diss",
+          video_url:
+            "https://video-1309504341.cos.ap-beijing.myqcloud.com/15.mp4",
+          avatar_url:
+            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/15.png",
+          like_num: 0,
+          collect_num: 1,
+          view_num: 102,
+          zone: "嘻哈",
+          tag_list: [],
+          user: {
+            id: 20,
+            username: "super2021",
+            avatar_url:
+              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+          },
+          created_time: "2022-04-19T12:08:36.190Z",
+          updated_time: "2022-05-31T12:02:52.108Z",
+          isAudit: 3,
+        },
+      ], //第一个分页的列表
       videoDetail: [
         {
           id: 28,
@@ -177,9 +178,9 @@ export default {
       this.videoDetail.splice(0, 1);
       if (this.videoDetail.length != 0) this.videoSingle = this.videoDetail[0];
     },
-    getVideoList() {
+    getVideoList(val) {
       //TODO
-      var _this = this
+      var _this = this;
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
         method: "post",
@@ -192,10 +193,12 @@ export default {
         .then((res) => {
           if (res.data.result == 1) {
             _this.videos = res.data.video_list;
-            this.$message({
-              type: "success",
-              message: '获取成功！',
-            });
+            if (val == 1) {
+              this.$message({
+                type: "success",
+                message: "获取成功！",
+              });
+            }
           } else {
             this.$message({
               type: "error",
@@ -210,7 +213,7 @@ export default {
           });
         });
     },
-    getVideoDetail() {
+    getVideoDetail(val) {
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
         method: "post",
@@ -223,10 +226,12 @@ export default {
         .then((res) => {
           if (res.data.result == 1) {
             this.videoDetail = res.data.video_audit_list;
+            if (val == 1) {
             this.$message({
               type: "success",
-              message: '获取成功！',
+              message: "获取成功！",
             });
+            }
           } else {
             this.$message({
               type: "error",
@@ -246,17 +251,17 @@ export default {
       if (tab.name == "1") {
         console.log("change to one");
         //TODO
-        this.getVideoList()
+        this.getVideoList(0);
       } else {
         console.log("change to two");
         //TODO
-        this.getVideoDetail()
+        this.getVideoDetail(0);
       }
     },
   },
   mounted() {
-    this.getVideoList();
-   // this.getVideoDetail();
+    this.getVideoList(1);
+    // this.getVideoDetail();
   },
 };
 </script>

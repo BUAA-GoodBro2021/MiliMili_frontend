@@ -1012,6 +1012,9 @@ export default {
     changeContent() {
       this.changeType = !this.changeType;
     },
+    mounted(){
+      
+    }
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
