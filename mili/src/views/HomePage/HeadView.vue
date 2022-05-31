@@ -2,14 +2,16 @@
   <div>
     <DynamicBanner />
     <Header />
+    <VideoDetailPage/>
   </div>
 </template>
 <script>
 import Header from '@/components/HomePage/Header.vue'
 import DynamicBanner from '@/components/HomePage/DynamicBanner.vue';
+import VideoDetailPage from '@/components/VideoDetail/VideoDetailPage.vue';
 export default {
   name: "HeadView",
-  components:{ Header, DynamicBanner }
+  components:{ Header, DynamicBanner, VideoDetailPage }
 };
 </script>
 <style scoped>
