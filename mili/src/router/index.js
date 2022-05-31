@@ -66,6 +66,11 @@ const routes = [
           hidden: true
         }]
       },
+      {
+        path: '/admin',
+        name: 'AdminPage',
+        component: () => import('../views/admin/CheckVideo.vue'),
+      },
       //在这里填写的路由都将获得不透明header
     ]
   },

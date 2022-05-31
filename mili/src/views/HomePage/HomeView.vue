@@ -43,7 +43,7 @@
             >
           </router-link>
         </div>
-        <div class="card" style="background: rgb(230, 180, 80)">
+        <div class="card" style="background: rgb(230, 180, 80)" v-if="!isAdmin">
           <div class="ip_up">
             <i class="el-icon-location-information" />
             <span class="_up"> {{ ip.province + " " + ip.city }}</span>
@@ -54,6 +54,13 @@
           <span class="text_ip">
             {{ ip.lat + "°N" }}
           </span>
+        </div>
+        <div class="card" style="background: rgb(230, 180, 80)" v-if="isAdmin">
+          <router-link to="/admin" style="text-decoration: none">
+            <i class="el-icon-message-solid iconImg" /><span class="text">
+              审核管理</span
+            >
+          </router-link>
         </div>
       </div>
       <!-- <div class="ip">
@@ -92,6 +99,7 @@ export default {
   components: { Recommend, Block, DynamicBanner, Header },
   data() {
     return {
+      isAdmin: false,
       headMode: true,
       blocks2id: {
         鬼畜: 1,
@@ -298,7 +306,12 @@ export default {
   },
   created() {
     if (localStorage.getItem("loginMessage") == null) var jwt = null;
-    else var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+    else{
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      this.isAdmin = JSON.parse(localStorage.getItem("loginMessage")).user.isSuperAdmin
+      console.log('super'+JSON.parse(localStorage.getItem("loginMessage")).user.isSuperAdmin)
+      console.log(this.isAdmin)
+    }
     this.$axios({
       method: "post",
       url: "/index/",
