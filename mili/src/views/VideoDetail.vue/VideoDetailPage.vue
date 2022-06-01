@@ -92,11 +92,10 @@
                 user_id: (...)
                 username: (...)
                 video_id: (...)
-                -->
-              
+                -->              
               <div class="comment-item" v-for="(item,index) in commentList" :key="index">
                 <!-- 
-                  单条 **一级评论** 的界面
+                  单条 **一级评论** 的区域
                   会有若干条二级评论
                   -->
                 <div class="comment-in">
@@ -106,21 +105,24 @@
                   <div class="comment-right">
                     <div class="name">{{ item.comment_root.username }}</div>
                     <div class="comment-content">{{ item.comment_root.content }}</div>
-                    <div class="time">{{ item.comment_root.created_time }} <span class="reply" 
-                        @click="setReplyInfo('root', item)">回复</span>
+                    <div class="time">{{ item.comment_root.created_time.split(/[.]|T/)[0] + ' ' + item.comment_root.created_time.split(/[.]|T/)[1] }} 
+                      <span class="reply" @click="setReplyInfo('root', item)">回复</span>
+                      <span class="reply" v-if="item.comment_root.is_own === 1" @click="deleteComments(item.comment_root.id)">删除</span>
                     </div>
                     <!-- 遍历当前一级评论的二级评论列表 -->
-                    <div class="clild-comments" v-for="(child,childIndex) in item.child_list"
+                    <div class="child-comments" v-for="(child,childIndex) in item.child_list"
                       :key="'child_' + childIndex">
                       <img class="child-avatar" :src="child.avatar_url"
                         alt="">
                       <div class="child-user-info">
                         <div class="child-comment-info">
                           <span class="child-name">{{ child.username }}</span>
-                          <span class="child-comment"><span class="reply-name">{{ '回复 @：' + child.reply_username }}</span>{{ child.content }}</span>
+                          <!-- <a class="child-name" href="javascript:;">{{ child.username }}</a> -->
+                          <span class="child-comment"><span class="reply-name">{{ '回复 @' + child.reply_username + '：' }}</span>{{ child.content }}</span>
                         </div>
-                        <div class="child-time">{{ child.created_time }} <span class="child-reply"
-                            @click="setReplyInfo('child', item, child)">回复</span>
+                        <div class="child-time">{{ child.created_time.split(/[.]|T/)[0] + ' ' + child.created_time.split(/[.]|T/)[1] }} 
+                          <span class="child-reply" @click="setReplyInfo('child', item, child)">回复</span>
+                          <span class="child-reply" v-if="child.is_own === 1" @click="deleteComments(child.id)">删除</span>
                         </div>
                       </div>
                     </div>
@@ -543,7 +545,6 @@
             switch (res.data.result) {
               case 1:{
                 this.$message.success("回复评论成功！");
-                console.log(res);
                 /* 更新页面评论 */
                 this.commentList = res.data.comment;
                 /* 临时存放二级评论的文本要清空 */
@@ -572,7 +573,6 @@
             switch (res.data.result) {
               case 1:{
                 this.$message.success("评论成功！");
-                console.log(res);
                 /* 更新页面评论 */
                 this.commentList = res.data.comment;                
                 /* 临时存放一级评论的文本要清空 */
@@ -588,6 +588,47 @@
             console.log(err);
           })
 				}
+			},
+
+      async deleteComments(commentId) {
+				let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }
+        //#region 调试逻辑，要删除
+        this.isLogined = true;
+        jwt = this.TEST_JWT;
+        //#endregion
+        formData.append("JWT", jwt);
+        formData.append("comment_id", commentId);
+
+        this.$axios({
+          method: 'post',
+          url: 'https://milimili.super2021.com/api/video/del-comment',
+          data: formData,
+        })
+        .then(res => {
+          
+          console.log(res);
+          switch (res.data.result) {
+            case 1:{
+              this.$message.success("删除评论成功！");
+                /* 更新页面评论 */
+              this.commentList = res.data.comment;           
+              break;
+            }
+            default:
+              this.$message.warning("删除评论失败！");           
+              break;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+
 			},
     },
   }
@@ -819,31 +860,32 @@
 
     /* #endregion */
 
+    /* #region  评论区 */
 .video-detail-wrap .video-content .content-left .comment-wrap {
-  width: 100%;
+    width: 100%;
 }
-
+    /* 单条 一级评论 的具体页面 会有若干条二级评论 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list {
     width: 100%;
 }
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item {
     padding: 20px 0;
-    border-top: 1PX solid #eeeeee;
-    border-bottom: 1PX solid #eeeeee;
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
 }
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in {
     display: flex;
 }
-
+    /* 单条 一级评论 的头像 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .avatar {
     width: 60px;
     height: 60px;
     display: block;
     border-radius: 50%;
 }
-
+    /* 单条 一级评论 的评论正文 和 若干条二级评论 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-content {
     margin: 10px 0;
 }
@@ -874,55 +916,57 @@
     background-color: #666666;
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .clild-comments {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments {
     margin-top: 20px;
     display: flex;
     padding: 10px 0;
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .clild-comments .child-avatar {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-avatar {
     width: 30px;
     height: 30px;
     display: block;
     border-radius: 50%;
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .clild-comments .child-user-info {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info {
     margin-left: 10px;
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .clild-comments .child-user-info .child-comment-info {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info {
     padding-top: 5px;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .clild-comments .child-user-info .child-comment-info .child-name {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-name {
+    /* position: relative; */
     font-size: 14px;
     color: #74797A;
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .clild-comments .child-user-info .child-comment-info .child-comment {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment {
     margin-left: 10px;
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .clild-comments .child-user-info .child-comment-info .child-comment .reply-name {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name {
     margin-right: 5px;
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .clild-comments .child-user-info .child-time {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time {
+    margin-top: 10px;
     font-size: 12px;
     color: #666666;
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .clild-comments .child-user-info .child-time .child-reply {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time .child-reply {
     margin-left: 10px;
     cursor: pointer;
     border-radius: 5px;
     padding: 2px 3px;
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .clild-comments .child-user-info .child-time .child-reply:hover {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time .child-reply:hover {
     color: #fff;
     background-color: #666666;
 }
