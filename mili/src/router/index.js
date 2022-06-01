@@ -33,7 +33,31 @@ const routes = [
           name: 'FollowerPage',
           component: () => import('../views/PersonalHomePage/PHP/FollowingPage.vue'),
         }
-        ]
+        ],
+      }, {
+        path: '/OthersHomePage/:id',
+        name: 'OthersHomePage',
+        component: () => import('../views/OthersHomePage/OHP.vue'),
+        children: [{
+          path: '/OthersHomePage/Main/:id',
+          name: 'OthersHomePage/Main',
+          component: () => import('../components/OHP/OHPMain.vue'),
+          hidden: true,
+        }, {
+          path: '/OthersHomePage/Star/:id',
+          name: 'OthersHomePage/Star',
+          component: () => import('../components/OHP/OHPStar.vue'),
+          hidden: true,
+        }, {
+          path: '/OthersHomePage/fans/:id',
+          name: 'FanPage',
+          component: () => import('../views/OthersHomePage/OthersFollowersPage.vue'),
+        },
+        {
+          path: '/OthersHomePage/followings/:id',
+          name: 'FollowerPage',
+          component: () => import('../views/OthersHomePage/OthersFollowingPage.vue'),
+        }]
       },
       {
         path: '/PersonalInformation',
