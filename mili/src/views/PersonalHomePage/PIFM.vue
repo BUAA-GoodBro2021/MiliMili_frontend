@@ -227,9 +227,6 @@ export default {
       this.$axios({
         method: "post",
         url: "/user/upload-avatar",
-        // headers: {
-        //   "content-type": "application/x-www-form-urlencoded",
-        // },
         data: data,
       })
         .then((res) => {

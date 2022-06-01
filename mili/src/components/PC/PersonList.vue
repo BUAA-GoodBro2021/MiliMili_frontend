@@ -4,7 +4,7 @@
       <div :class="[listType == 1 ? 'listTop' : 'listTop_personPage ']">
         <span v-if="listType == 1">共有{{ users.length }}个搜索结果</span>
         <span v-if="listType == 2" style="text-align: left; margin-left:5%;">共有{{ users.length }}名粉丝</span>
-        <span v-if="listType == 3" style="text-align: left; margin-left:5%;" >共关注了{{ users.length }}人</span>
+        <span v-if="listType == 3 || listType == 4" style="text-align: left; margin-left:5%;" >共关注了{{ users.length }}人</span>
         <div class="pagination_personPage" v-if="listType != 1">
           <el-pagination
             hide-on-single-page
@@ -184,7 +184,7 @@ export default {
       },
     },
     listType: {
-      //1 视频查找返回结果  2 粉丝列表  3 关注列表
+      //1 视频查找返回结果  2 粉丝列表  3 关注列表 4别人的关注列表
       type: Number,
       default() {
         return 1;

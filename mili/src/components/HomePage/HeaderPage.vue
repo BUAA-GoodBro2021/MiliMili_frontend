@@ -82,6 +82,7 @@
             >个人中心</el-menu-item
           >
           <el-menu-item index="/upload" v-if="islogin">发布视频</el-menu-item>
+          <el-menu-item index="/ChangePassword" v-if="islogin">修改密码</el-menu-item>
           <el-menu-item index="/homepage" @click="logout()" v-if="islogin"
             >登出</el-menu-item
           >

@@ -30,13 +30,13 @@
             >
           </li>
           <li
-            v-if="listType != 3 && isfollow == true"
+            v-if="listType != 3 && listType != 4 && isfollow == true"
             style="float: right; vertical-align: middle; line-height: 50px"
           >
             <span class="follow">已关注 <i class="el-icon-check" /></span>
           </li>
           <li
-            v-if="listType != 3 && isfollow == false"
+            v-if="listType != 3 && listType != 4 && isfollow == false"
             style="float: right; vertical-align: middle; line-height: 50px"
           >
             <el-button
