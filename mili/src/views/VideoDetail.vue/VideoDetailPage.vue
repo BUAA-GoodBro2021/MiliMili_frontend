@@ -3,10 +3,8 @@
 	<div class="video-detail-wrap">
     <!-- 主页面左侧容器 -->
 		<div class="content-left">			
-			<!-- <div class="header-top">
-				<Bheader :showSearch="false"></Bheader>
-        预计 头部的位置
-			</div> -->
+			
+      <!-- 视频+视频交互组件+弹幕发送 -->
 			<div class="video-content">
 				<div class="content-left">
 					<div class="title">{{ videoInfo.video_url ? videoInfo.title : '' }}</div>
@@ -22,9 +20,9 @@
 						<div class="icon-item">
               <!-- 获取是否点赞，并在点击时切换状态和更新数量 -->
 							<img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
-								src="../../assets/video/icon_01.png" alt="">
+								src="../../src/assets/image/video/icon_01.png" alt="">
 							<img v-else class="img active" @click="postDisLike"
-								src="../../assets/video/icon_01_active.png" alt="">
+								src="../../src/assets/image/video/icon_01_active.png" alt="">
 							{{ videoInfo.like_num }}
 						</div>
 						<!-- <div class="icon-item">
@@ -138,7 +136,6 @@
           
 					<!-- <img class="comment-img" src="../../assets/image/video/comment.jpg" alt=""> -->
 				</div>
-
 
         <!-- 右侧的弹幕列表 -->
 				<!-- <div class="content-right">
@@ -481,7 +478,11 @@
             switch (res.data.result) {
               case 1:{
                 this.$message.success("回复评论成功！");
-                /* 视频本身的信息 */
+                console.log(res);
+                /* 更新页面评论 */
+                this.commentList = res.data.comment;
+                /* 临时存放二级评论的文本要清空 */
+                this.replyInfo.comment = '';
                 break;
               }
               default:
@@ -506,7 +507,11 @@
             switch (res.data.result) {
               case 1:{
                 this.$message.success("评论成功！");
-                /* 视频本身的信息 */  
+                console.log(res);
+                /* 更新页面评论 */
+                this.commentList = res.data.comment;                
+                /* 临时存放一级评论的文本要清空 */
+                this.comment = '';
                 break;
               }
               default:
@@ -566,12 +571,12 @@
     width: 100%;
 }
 
-/* .video-detail-wrap .content-left .header-top {
+.video-detail-wrap .content-left .header-top {
     width: 100%;
-    background: url(../../assets/image/header/header_bg.jpeg) no-repeat;
+    background: url(../../src/assets/image/header/header_bg.jpeg) no-repeat;
     background-size: cover;
     margin-bottom: 40px;
-} */
+}
 
 .video-detail-wrap .home-header {
     width: 100%;
