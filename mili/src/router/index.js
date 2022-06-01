@@ -85,6 +85,12 @@ const routes = [
     component: () => import('../views/account/LoginView.vue'),
   },
   {
+    path: '/ChangePassword',
+    name: 'ChangePassword',
+    component: () => import('../views/account/PSW.vue'),
+
+  },
+  {
     path: '/homepage',
     name: 'HomePage',
     component: () => import('../views/HomePage/HomeView.vue'), //视频主页
