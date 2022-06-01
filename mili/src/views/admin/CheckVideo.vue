@@ -13,10 +13,23 @@
             <span class="empty_title"> 没视频捏</span>
           </div>
           <div class="list_wrap" v-else>
-            <ComplainVideoList :videos="videos" :pageSize="3" />
+            <ComplainVideoList :videos="videos" :pageSize="3" :type="1" />
           </div>
         </el-tab-pane>
-        <el-tab-pane label="待审核视频" name="2">
+        <el-tab-pane label="投诉视频" name="2">
+          <div class="empty" v-if="videoComplain.length == 0">
+            <span class="empty_title"> 没视频捏</span>
+          </div>
+          <div class="list_wrap" v-else>
+            <ComplainVideoList
+              :videos="videoComplain"
+              :pageSize="3"
+              :type="2"
+              v-on:Delete="Delete"
+            />
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="待审核视频" name="3">
           <div class="empty" v-if="videoDetail.length == 0">
             <span class="empty_title"> 哈哈没活啦！</span>
           </div>
@@ -114,6 +127,33 @@ export default {
         },
       ], //第二个分页的列表
       videoSingle: null,
+      videoComplain: [
+        {
+          id: 3,
+          title: "涉及敏感元素",
+          description: "涉及代孕",
+          verify_result: 2,
+          video: {
+            id: 15,
+            title: "郑爽事件DISS-《一xxxx人》",
+            description:
+              "第一次通过说唱对此类事件发声，希望各位理性看待问题当然感性的一点是：我从未想过某一天有位母性散发的光辉竟然能让婴儿的啼哭声中满是伤悲.所以便有了这首diss",
+            video_url:
+              "https://video-1309504341.cos.ap-beijing.myqcloud.com/15.mp4",
+            avatar_url:
+              "https://cover-1309504341.cos.ap-beijing.myqcloud.com/15.png",
+            view_num: 233,
+            user: {
+              id: 20,
+              username: "super2021",
+              avatar_url:
+                "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
+            },
+            created_time: "2022-04-19T12:08:36.190Z",
+            updated_time: "2022-05-31T17:15:12.778Z",
+          },
+        },
+      ], //第三个分页的列表
     };
   },
   methods: {
@@ -174,6 +214,39 @@ export default {
         });
       next();
     },
+    Delete(val){
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      this.$axios({
+        method: "post",
+        data: qs.stringify({
+          JWT: jwt,
+          complain_id: val,
+          success: 0
+        }),
+        url: "/super_admin/verify-complain-video",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      })
+        .then((res) => {
+          if (res.data.result == 1) {
+            this.$message({
+              type: "success",
+              message: "下架成功！",
+            });
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.message,
+            });
+          }
+        })
+        .catch((err) => {
+          this.$message({
+            type: "error",
+            message: "网络出错QAQ",
+          });
+        });
+        this.getVideoDetail(0)
+    },
     next() {
       this.videoDetail.splice(0, 1);
       if (this.videoDetail.length != 0) this.videoSingle = this.videoDetail[0];
@@ -213,6 +286,7 @@ export default {
           });
         });
     },
+    //待审核视频
     getVideoDetail(val) {
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
@@ -226,11 +300,12 @@ export default {
         .then((res) => {
           if (res.data.result == 1) {
             this.videoDetail = res.data.video_audit_list;
+            this.videoComplain = res.data.video_complain_list;
             if (val == 1) {
-            this.$message({
-              type: "success",
-              message: "获取成功！",
-            });
+              this.$message({
+                type: "success",
+                message: "获取成功！",
+              });
             }
           } else {
             this.$message({

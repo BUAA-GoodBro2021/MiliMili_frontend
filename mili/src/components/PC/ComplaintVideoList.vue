@@ -4,7 +4,7 @@
       <div class="video_list">
         <div class="video_card" v-for="(item, index) in videoShow" :key="index">
           <!-- <el-tag type="danger" class="tag">{{item.description}}</el-tag> -->
-          <VideoCard :video="item.video" :description="item.description" :title="item.title"/>
+          <VideoCard :video="item.video" :description="item.description" :title="item.title" />
         </div>
       </div>
       <div class="video_top">

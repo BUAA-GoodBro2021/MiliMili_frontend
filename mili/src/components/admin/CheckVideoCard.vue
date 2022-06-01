@@ -18,8 +18,15 @@
               </div>
             </li>
             <li style="float: right; margin-right: 10px">
-              <el-tag style="cursor: pointer; width: 90px" @click="ReCheck()"
-                ><i class="el-icon-zoom-in" /> 重新审核</el-tag
+              <el-tag style="cursor: pointer; width: 70px;margin-right: 10px;" @click="ReCheck()"
+                ><i class="el-icon-zoom-in" /> 重审</el-tag
+              >
+              <el-tag
+                style="cursor: pointer; width: 70px"
+                @click="Delete()"
+                type="danger"
+                v-if="type == 2"
+                ><i class="el-icon-delete" /> 下架</el-tag
               >
             </li>
           </ul>
@@ -43,12 +50,12 @@
                 {{ video.collect_num }}</span
               >
             </li>
-            <!-- <li>
+            <li v-if="type==2">
               <el-tag type="danger" class="tag" >{{title}}</el-tag>
             </li>
-            <li>
+            <li v-if="type==2">
               <el-tag type="danger" class="tag" >{{description}}</el-tag>
-            </li> -->
+            </li>
             <li style="float: right; margin-right: 10px">
               <i class="el-icon-date text_icon" /><span class="text_footer">
                 上传时间: {{ video.created_time.split("T")[0] }}
@@ -61,7 +68,7 @@
   </div>
 </template>
 <script>
-import qs from 'qs'
+import qs from "qs";
 export default {
   props: {
     video: {
@@ -110,37 +117,47 @@ export default {
         };
       },
     },
-    description:{
+    description: {
       type: String,
-      default(){
-        return "涉及代孕"
-      }
+      default() {
+        return "涉及代孕";
+      },
     },
-    title:{
+    title: {
       type: String,
-      default(){
-        return "涉及代孕"
-      }
-    }
+      default() {
+        return "涉及代孕";
+      },
+    },
+    type: {
+      type: Number,
+      default() {
+        return 1;
+      },
+    },
   },
-  methods:{
-    ReCheck(){
+  methods: {
+    Delete() {
+      console.log("delete");
+      this.$emit("delete", this.video.id);
+    },
+    ReCheck() {
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
         method: "post",
         data: qs.stringify({
           JWT: jwt,
-          video_id: this.video.id
+          video_id: this.video.id,
         }),
         url: "/super_admin/redo-audit-video",
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
         .then((res) => {
-          if (res.data.result == 1) {    
-              this.$message({
-                type: "success",
-                message: "重置成功！",
-              });
+          if (res.data.result == 1) {
+            this.$message({
+              type: "success",
+              message: "重置成功！",
+            });
           } else {
             this.$message({
               type: "error",
@@ -154,8 +171,8 @@ export default {
             message: "网络出错QAQ",
           });
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -166,7 +183,7 @@ export default {
   border: solid 2px #d0dcdc9a;
   border-radius: 10px;
   padding: 10px 0 10px 0;
-  box-shadow: 0 0.5px 0 0.5px#e7f6f69a
+  box-shadow: 0 0.5px 0 0.5px#e7f6f69a;
 }
 .card_img {
   width: 26%;
@@ -249,7 +266,7 @@ export default {
   font-size: 13px;
   color: grey;
 }
-.tag{
+.tag {
   height: 15px;
   line-height: 12px;
   font-size: 12px;

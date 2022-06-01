@@ -82,7 +82,7 @@
               </el-upload>
             </div>
           </div> -->
-          <input type="submit"  class="btn" value="submit" @click="onSubmit()"></input>
+          <input type="submit"  class="btn" value="submit" @click="onSubmit()" />
         </form>
       </div>
     </div>

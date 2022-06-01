@@ -9,7 +9,7 @@
                 class="cover_img"
                 width="682.55px"
                 height="400px"
-                src="@/assets/debug/cover1.jpeg"
+                :src="item.avatar_url"
                 style="
                   border-radius: 30px;
                   -webkit-border-radius: 30px;
@@ -321,6 +321,7 @@ export default {
   line-height: 40px;
   font-size: 27px;
   display: block;
+  text-align: left;
   word-break: break-all;
   word-wrap: break-word;
 }

@@ -42,7 +42,7 @@
         >
         <router-link to="" style="text-decoration: none">
           <span class="name" style="float: left; font-size: 1px; color: grey">{{
-            singleVideo.user_id
+            singleVideo.user.usermame
           }}</span>
         </router-link>
       </div>
@@ -146,6 +146,7 @@ export default {
   display: block;
   word-break: break-all;
   word-wrap: break-word;
+  overflow: hidden;
   color: black;
 }
 .sender {

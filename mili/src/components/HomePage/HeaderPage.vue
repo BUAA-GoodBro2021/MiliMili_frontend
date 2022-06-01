@@ -10,13 +10,25 @@
         />
       </router-link>
       <div class="search" v-show="!headerInput">
-        <el-input
-          clearable
-          placeholder="请输入您要搜索的内容"
-          class="input"
-          v-model="inputContext"
-        >
-        </el-input>
+        <div class="input_wrap">
+          <el-input
+            clearable
+            placeholder="请输入您要搜索的内容"
+            class="input"
+            v-model="inputContext"
+            @focus="focusInput"
+            @on-blur="blurInput"
+          >
+          </el-input>
+          <!-- <div class="history_wrap" v-if="focusFlag && islogin">
+            <span class="history_title"> 搜索历史</span>
+            <div class="history_body">
+              <div class="history_tag" v-for="(item,index) in history_list" :key="index">
+                <el-tag>{{item.video.title}}</el-tag>
+              </div>
+            </div>
+          </div> -->
+        </div>
         <i
           class="el-icon-search"
           :class="[headerMode ? 'text-transparent' : '']"
@@ -40,8 +52,7 @@
               :class="[headerMode ? 'text-transparent' : '']"
             />
             <span>私信管理</span>
-            <div class="not-read" v-if="islogin == 1 && notRead == true">
-            </div>
+            <div class="not-read" v-if="islogin == 1 && notRead == true"></div>
           </div>
         </el-menu-item>
         <el-menu-item index="upload">
@@ -80,6 +91,7 @@
   </div>
 </template>
 <script>
+import qs from 'qs'
 export default {
   props: {
     headerMode: {
@@ -100,9 +112,17 @@ export default {
       inputContext: "",
       islogin: localStorage.getItem("loginMessage") != null,
       notRead: true,
+      focusFlag: false,
+      history_list: null,
     };
   },
   methods: {
+    focusInput() {
+      this.focusFlag = true;
+    },
+    blurInput() {
+      this.focusFlag = false;
+    },
     searchContext: function () {
       console.log(this.inputContext);
       if (this.inputContext == "") {
@@ -127,17 +147,27 @@ export default {
     },
   },
   created() {
-    this.$axios({
-       method: "get",
-      url: "/index/ip_address",
-    }).then((res) => {
-      this.notRead = res.data.not_read
-    })
+    if (this.islogin) var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+    else var jwt = null
+      this.$axios({
+        method: "post",
+        data: qs.stringify({
+          JWT: jwt,
+        }),
+        url: "/index/history",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      }).then((res) => {
+        if(res.data.result == 1){
+          this.history_list = res.data.history
+        }
+        this.notRead = res.data.not_read;
+      })
+    
   },
 };
 </script>
 <style scoped>
-.not-read{
+.not-read {
   position: absolute;
   top: 20px;
   left: 15px;
@@ -146,9 +176,8 @@ export default {
   height: 7px;
   border-radius: 50%;
   background-color: red;
-
 }
-.message{
+.message {
   position: relative;
 }
 .header {
@@ -182,7 +211,8 @@ export default {
   display: flex;
   align-items: center;
 }
-.input {
+.input_wrap {
+  width: 100%;
   margin-right: 10px;
 }
 .el-menu {
