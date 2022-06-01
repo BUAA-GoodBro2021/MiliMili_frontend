@@ -4,6 +4,16 @@
       <!-- 视频 -->
       <el-main class="box">
         <div class="block_wrap">
+          <div class="block">
+            <div
+              v-for="(item, index) in VideoArraySelected"
+              :key="index"
+              class="video"
+              style="margin-left: 30px; margin-top: 10px"
+            >
+              <Video :singleVideo="item" />
+            </div>
+          </div>
           <div class="pagination_personPage">
             <el-pagination
               hide-on-single-page
@@ -13,19 +23,9 @@
               layout="prev, pager, next"
               :total="VideoArray.length"
               @current-change="topicInit"
-              style="float: right"
+              style="float: right;margin-bottom: 10px;"
             >
             </el-pagination>
-          </div>
-          <div class="block">
-            <div
-              v-for="(item, index) in VideoArraySelected"
-              :key="index"
-              class="video"
-              style="margin-left: 30px; margin-top: 20px"
-            >
-              <Video :singleVideo="item" />
-            </div>
           </div></div
       ></el-main>
       <!-- 间隔 -->

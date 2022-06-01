@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #f8f8f7">
+  <div style="background-color: #f8f8f7" id="OHP_main">
     <el-container>
       <el-aside width="130px"></el-aside>
       <el-container>
@@ -173,6 +173,10 @@ export default {
 </script>
 
 <style scoped>
+#OHP_main {
+  text-align: center;
+  color: #2c3e50;
+}
 .homepage-hero-module,
 .video-container {
   position: fixed;

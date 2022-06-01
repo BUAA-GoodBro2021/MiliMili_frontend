@@ -40,7 +40,7 @@
           plain
           >作者</el-tag
         >
-        <router-link to="" style="text-decoration: none">
+        <router-link :to="'/OthersHomePage/Main/'+singleVideo.user.id" style="text-decoration: none">
           <span class="name" style="float: left; font-size: 2px; color: grey">{{
             singleVideo.user.username
           }}</span>
@@ -107,7 +107,7 @@ export default {
           break;
         }
         let code = str[i].charCodeAt();
-        if (code > 96 && code < 123) {
+        if ((code > 96 && code < 123) || (str[i] >= '0' && str[i] <= '9')) {
           sum += 0.5;
         } else sum++;
       }
@@ -121,7 +121,7 @@ export default {
 </script>
 <style scoped>
 .video_warp {
-  height: 236px;
+  height: auto;
   width: 238px;
 }
 .cover_warp {

@@ -126,7 +126,7 @@ export default {
       this.$emit("cancelfollow", this.user.id);
     },
     toUserHome(id) {
-      this.$router.push({ name: "OtherHomePage/Main", params: id });
+      this.$router.push('/OthersHomePage/Main/'+id );
     },
     follow(id) {
       if (localStorage.getItem("loginMessage") == null) {

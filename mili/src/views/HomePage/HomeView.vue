@@ -2527,7 +2527,7 @@ export default {
       method: "post",
       url: "/index/",
       data: qs.stringify({
-        jwt: jwt,
+        JWT: jwt,
       }),
       headers: { "content-type": "application/x-www-form-urlencoded" },
     }).then((res) => {
