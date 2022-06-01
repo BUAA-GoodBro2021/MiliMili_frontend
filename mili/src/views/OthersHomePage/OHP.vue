@@ -1,10 +1,16 @@
 <template>
-  <div style="background-color: #f8f8f7" id="PHP_main">
+  <div style="background-color: #f8f8f7">
     <el-container>
       <el-aside width="130px"></el-aside>
       <el-container>
         <!-- 头部 -->
         <el-header style="height: 100vh">
+          <!-- <video-background
+            src="../../assets/PHP/default-background.mp4"
+            style="max-height: 30vh; width: 100%"
+          >
+            <h1 style="color: black">Hello welcome!</h1>
+          </video-background> -->
           <div class="video-container">
             <video
               :style="fixStyle"
@@ -28,7 +34,7 @@
             active-text-color="rgb(206, 160, 36)"
             :router="true"
           >
-            <a href="/PersonalInformation">
+            <a href="#" style="cursor: auto">
               <el-avatar
                 :size="80"
                 :src="user.avatar_url"
@@ -37,19 +43,22 @@
               <p class="Uname" v-text="user.username"></p>
               <p v-text="user.signature" class="Uintro"></p>
             </a>
-            <el-menu-item index="/PersonalHomePage/Main" class="headcol">
+            <el-menu-item :index="'/OthersHomePage/Main/' + id" class="headcol">
               <span class="icomoon zy icohead"></span
               ><span class="catalogue"> 主页</span>
             </el-menu-item>
-            <el-menu-item index="/PersonalHomePage/Star" class="headcol">
+            <el-menu-item :index="'/OthersHomePage/Star/' + id" class="headcol">
               <span class="icomoon sc icohead"></span
               ><span class="catalogue"> 收藏</span>
             </el-menu-item>
-            <el-menu-item index="/PersonalHomePage/fans" class="headcol">
+            <el-menu-item :index="'/OthersHomePage/fans/' + id" class="headcol">
               <span class="icomoon sz icohead"></span
               ><span class="catalogue"> 粉丝</span>
             </el-menu-item>
-            <el-menu-item index="/PersonalHomePage/followings" class="headcol">
+            <el-menu-item
+              :index="'/OthersHomePage/followings/' + id"
+              class="headcol"
+            >
               <i class="el-icon-magic-stick sc icohead"></i>
               <span class="catalogue"> 关注</span>
             </el-menu-item>
@@ -90,12 +99,12 @@ export default {
   name: "Video",
   data() {
     return {
-      jwt: JSON.parse(localStorage.getItem("loginMessage")).JWT,
       textarea: "",
       activeIndex: "1",
       user: {},
       vedioCanPlay: false,
       fixStyle: "",
+      id: this.$route.params.id,
     };
   },
   methods: {
@@ -107,21 +116,23 @@ export default {
     },
   },
   created() {
+    var id = this.$route.params.id;
     var that = this;
     this.$axios({
       method: "post",
-      url: "https://milimili.super2021.com/api/user/all-list",
+      url: "https://milimili.super2021.com/api/user/up-all-list",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
       },
       data: qs.stringify({
-        JWT: that.jwt,
+        up_user_id: id,
       }),
     })
       .then((res) => {
         console.log("user");
         console.log(res);
         console.log(res.data.user);
+        console.log(that.index1);
         that.user = res.data.user;
       })
       .catch((err) => {
@@ -162,13 +173,6 @@ export default {
 </script>
 
 <style scoped>
-#PHP_main {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 .homepage-hero-module,
 .video-container {
   position: fixed;
@@ -336,7 +340,7 @@ body {
   color: rgb(61, 56, 50);
   text-align: center;
   margin-top: -5.3vh;
-  margin-left: -3.8vw;
+  margin-left: -1.5vw;
   line-height: 6vh;
 }
 .Uintro {

@@ -1,8 +1,8 @@
 <template>
   <div style="width: 100%">
-     <div class="empty" v-if="users.length == 0">
-            <span class="empty_title"> 空空如也orz</span>
-          </div>
+    <div class="empty" v-if="users.length == 0">
+      <span class="empty_title"> 空空如也orz</span>
+    </div>
     <div class="list_wrap">
       <PersonList
         :users="users"
@@ -21,143 +21,7 @@ export default {
   data() {
     return {
       deleteFlag: -1,
-      users: [
-        {
-          id: "1",
-          isfollow: false,
-          name: "Harbour",
-          avater_url: "@/assets/debug/avater1.jpg",
-          profile: "我爱五条悟！！！",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "桥哥",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: false,
-          name: "Siri",
-          profile: "我爱丽塔！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "Zhoues",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "骁儿",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "Harbour",
-          avater_url: "@/assets/debug/avater1.jpg",
-          profile: "我爱五条悟！！！",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "桥哥",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "Siri",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "Zhoues",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "骁儿",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "Harbour",
-          avater_url: "@/assets/debug/avater1.jpg",
-          profile: "我爱五条悟！！！",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "桥哥",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "Siri",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "Zhoues",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-        {
-          id: "1",
-          isfollow: true,
-          name: "骁儿",
-          profile: "我爱五条悟！！！",
-          avater_url: "@/assets/debug/avater1.jpg",
-          followers: 15,
-          videos: 7,
-        },
-      ],
+      users: [],
     };
   },
   methods: {
@@ -167,57 +31,61 @@ export default {
       //TODO getListAgain
     },
   },
-  mounted(){
-    if(this.$route.params.id == null){
-      var jwt = JSON.parse(localStorage.getItem('loginMessage')).JWT
+  mounted() {
+    if (this.$route.params.id == null) {
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
-        method: 'post',
+        method: "post",
         data: qs.stringify({
           JWT: jwt,
         }),
-        url: '/user/follow-list',
+        url: "/user/follow-list",
         headers: { "content-type": "application/x-www-form-urlencoded" },
-      }).then((res) => {
-        if(res.data.result == 1){
-          this.users = res.data.follow_list
-        }else{
-          this.$message({
-            type: 'error',
-            message: '请求出错QAQ'
-          })
-        }
-      }).catch((err) => {
-        this.$message({
-            type: 'error',
-            message: '网络出错QAQ'
-          })
       })
-    }else{
-      var id = this.$route.params.id
-       this.$axios({
-        method: 'post',
+        .then((res) => {
+          if (res.data.result == 1) {
+            this.users = res.data.follow_list;
+          } else {
+            this.$message({
+              type: "error",
+              message: "请求出错QAQ",
+            });
+          }
+        })
+        .catch((err) => {
+          this.$message({
+            type: "error",
+            message: "网络出错QAQ",
+          });
+        });
+    } else {
+      var id = this.$route.params.id;
+      this.$axios({
+        method: "post",
         data: qs.stringify({
           up_user_id: id,
         }),
-        url: '/user/up-follow-list',
+        url: "/user/up-follow-list",
         headers: { "content-type": "application/x-www-form-urlencoded" },
-      }).then((res) => {
-        if(res.data.result == 1){
-          this.users = res.data.follow_list
-        }else{
-          this.$message({
-            type: 'error',
-            message: '请求出错QAQ'
-          })
-        }
-      }).catch((err) => {
-        this.$message({
-            type: 'error',
-            message: '网络出错QAQ'
-          })
       })
+        .then((res) => {
+          if (res.data.result == 1) {
+            this.users = res.data.follow_list;
+          } else {
+            this.$message({
+              type: "error",
+              message: "请求出错QAQ",
+            });
+          }
+        })
+        .catch((err) => {
+          this.$message({
+            type: "error",
+            message: "网络出错QAQ",
+          });
+        });
     }
-  }
+  },
 };
 </script>
 <style scoped>

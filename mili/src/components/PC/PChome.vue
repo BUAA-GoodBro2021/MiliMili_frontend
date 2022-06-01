@@ -22,7 +22,7 @@
                       <span class="icomoon"></span> 播放量>
                     </a>
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="playNum"></p>
                 </div>
               </div>
               <div class="VDBox">
@@ -32,7 +32,7 @@
                       <span class="icomoon"></span> 评论</span
                     >
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="commentNum"></p>
                 </div>
               </div>
             </div>
@@ -44,7 +44,7 @@
                       <span class="icomoon"></span> 点赞</span
                     >
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="likeNum"></p>
                 </div>
               </div>
               <div class="VDBox">
@@ -54,7 +54,7 @@
                       <span class="icomoon"></span> 分享</span
                     >
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="shareNum"></p>
                 </div>
               </div>
               <div class="VDBox">
@@ -64,7 +64,7 @@
                       <span class="icomoon"></span> 收藏</span
                     >
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="starNum"></p>
                 </div>
               </div>
             </div>
@@ -78,7 +78,7 @@
                       <span class="icomoon"></span> 粉丝数>
                     </a>
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="allFansNum"></p>
                 </div>
               </div>
               <div class="VDBox">
@@ -88,7 +88,7 @@
                       <span class="icomoon"></span> 阅读量
                     </span>
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="readNum"></p>
                 </div>
               </div>
               <div class="VDBox">
@@ -98,7 +98,7 @@
                       <span class="icomoon"></span> 评论数
                     </span>
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="allCommentNum"></p>
                 </div>
               </div>
             </div>
@@ -110,7 +110,7 @@
                       <span class="icomoon"></span> 点赞数</span
                     >
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="allLikeNum"></p>
                 </div>
               </div>
               <div class="VDBox">
@@ -120,7 +120,7 @@
                       <span class="icomoon"></span> 分享数</span
                     >
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="allShareNum"></p>
                 </div>
               </div>
               <div class="VDBox">
@@ -130,7 +130,7 @@
                       <span class="icomoon"></span> 收藏数</span
                     >
                   </p>
-                  <p v-text="fansNum"></p>
+                  <p v-text="allStarNum"></p>
                 </div>
               </div>
             </div>
@@ -147,6 +147,17 @@ export default {
     return {
       activeName: "first",
       fansNum: 0,
+      playNum: 0,
+      commentNum: 0,
+      starNum: 0,
+      likeNum: 0,
+      shareNum: 0,
+      allFansNum: 0,
+      readNum: 0,
+      allCommentNum: 0,
+      allLikeNum: 0,
+      allShareNum: 0,
+      allStarNum: 0,
     };
   },
   methods: {
@@ -182,7 +193,7 @@ export default {
   line-height: 4.1vh;
   text-align: center;
   border-radius: 1vh;
-  color: rgba(255, 250, 250, 0.7);
+  color: rgba(32, 32, 32, 0.7);
 }
 
 @font-face {
