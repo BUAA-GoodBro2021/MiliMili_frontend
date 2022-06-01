@@ -12,7 +12,7 @@
 					<div class="title">{{ videoInfo.video_url ? videoInfo.title : '' }}</div>
 					<!-- <div class="play-info">68.7万播放 · 1641弹幕 2021-09-02 13:54:26</div> -->
 					<div class="play-info">
-              {{graceNumber(videoInfo.view_num)}}播放 · 1641弹幕  {{ createdDate }} {{ createdTime }}
+              {{graceNumber(videoInfo.view_num)}}播放 · 1641弹幕  {{ videoCreatedDate }} {{ videoCreatedTime }}
           </div>
           <!-- 嵌入的视频播放器，id是vs -->
 					<div id="vs" class="vs"></div>
@@ -50,26 +50,91 @@
 						</div> -->
 					</div>
 
-          <!-- 
-            由于恩申那边需要重构，接口差的比较多，所以暂时删除评论区
-            由于注解太多，xml里面无法整体注释，只能删除代码
-           -->
-
-
           <!-- 发送弹幕文本框 -->
-					<!-- <div class="danmu-content"> -->
-						<!-- <textarea rows="" cols="" class="input" placeholder="发一条弹幕" v-model="text"></textarea> -->
-						<!-- <div class="send-btn" @click="socketSend">发送弹幕</div> -->
-					<!-- </div> -->
-
-         
+					<!-- <div class="danmu-content">
+						<textarea rows="" cols="" class="input" placeholder="发一条弹幕" v-model="text"></textarea>
+						<div class="send-btn" @click="socketSend">发送弹幕</div>
+					</div> -->
           
           <!-- 发送评论文本框 -->
-					<!-- <div class="danmu-content"> -->
-						<!-- <textarea rows="" cols="" class="input" placeholder="发一条友善的评论" v-model="comment"></textarea> -->
-						<!-- <div class="send-btn" @click="postComments">发表评论</div> -->
-					<!-- </div> -->
+					<div class="danmu-content">
+						<textarea rows="" cols="" class="input" 
+              placeholder="发一条友善的评论" v-model="comment">
+              <!-- 这里其实绑定了 data中的 存放新增一级评论的字符串 comment  -->
+            </textarea>
+            <!-- 一级评论，无参调用postComments即可 -->
+						<div class="send-btn" @click="postComments">发表评论</div>
+					</div>
 
+          <!-- 评论列表容器 -->
+					<div class="comment-wrap">
+            <!-- 评论列表 -->
+						<div class="comment-list">
+              <!-- 
+                评论这里暂时用数量索引index作为列表渲染的key值，后续如果有问题，可能需要改为评论item的id
+                每一个 item 包括 comment_root 和 child_list
+                avatar_url: (...)
+                content: (...)
+                created_time: (...)
+                id: (...)
+                is_like: (...)
+                is_own: (...)
+                like_num: (...)
+                reply_comment_id: (...)
+                reply_username: "null"
+                root_id: (...)
+                updated_time: (...)
+                user_id: (...)
+                username: (...)
+                video_id: (...)
+               -->
+							<div class="comment-item" v-for="(item,index) in commentList" :key="index">
+                <!-- 
+                  单条 **一级评论** 的界面
+                  会有若干条二级评论
+                 -->
+								<div class="comment-in">
+                  <!-- 发出一级评论 用户的头像 -->
+                  <!-- FIXME: 这里的src要替换成相关API传递的值 -->
+									<img class="avatar" :src="item.comment_root.avatar_url" alt="">
+                  <!-- 一级评论的正文 -->
+									<div class="comment-right">
+										<div class="name">{{ item.comment_root.username }}</div>
+										<div class="comment-content">{{ item.comment_root.content }}</div>
+										<div class="time">{{ item.comment_root.created_time }} <span class="reply" 
+                        @click="setReplyInfo('root', item)">回复</span>
+                    </div>
+                    <!-- 遍历当前一级评论的二级评论列表 -->
+										<div class="clild-comments" v-for="(child,childIndex) in item.child_list"
+											:key="'child_' + childIndex">
+											<img class="child-avatar" :src="child.avatar_url"
+												alt="">
+											<div class="child-user-info">
+												<div class="child-comment-info">
+													<span class="child-name">{{ child.username }}</span>
+													<span class="child-comment"><span class="reply-name">{{ '回复 @：' + child.reply_username }}</span>{{ child.content }}</span>
+												</div>
+												<div class="child-time">{{ child.created_time }} <span class="child-reply"
+														@click="setReplyInfo('child', item, child)">回复</span>
+                        </div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+                <!-- 这里无论是点击一级评论的回复还是二级评论的回复，replyInfo.rootId都会被设置为一级评论的id -->
+								<div class="reply-input" v-if="replyInfo.rootId === item.comment_root.id">
+									<div class="danmu-content">
+										<textarea rows="" cols="" class="input"
+											:placeholder="'回复 @' + replyInfo.replyUserName + ':'"
+											v-model="replyInfo.comment"></textarea>
+                    <!-- 这里其实绑定了 data中的 用于存放新增二级评论的信息对象 replyInfo.comment -->
+										<div class="send-btn" @click="postComments('reply')">发表评论</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
           
 					<!-- <img class="comment-img" src="../../assets/image/video/comment.jpg" alt=""> -->
 				</div>
@@ -118,10 +183,26 @@
         // 页面播放器
         player: null,
         // 视频详细信息（视频文件+作者信息）
+        /**
+         * avatar_url: (...)
+            collect_num: (...)
+            created_time: (...)
+            description: (...)
+            id: (...)
+            isAudit: (...)
+            like_num: (...)
+            tag_list: (...)
+            title: (...)
+            updated_time: (...)
+            user: (...)
+            video_url: (...)
+            view_num: (...)
+            zone: (...)
+         */
 				videoInfo: {},
         // 视频投稿时间
-        createdDate: null,
-        createdTime: null,
+        videoCreatedDate: null,
+        videoCreatedTime: null,
         // 视频和用户已有的交互
         isLogined: false,
         boolSymbol: {
@@ -137,10 +218,14 @@
 				replyInfo: {
 					videoId: null,
 					rootId: null,
+          replyCommentId: null,
 					replyUserId: null,
 					replyUserName: '',
 					comment: ''
-				}
+				},
+
+        TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpc1N1cGVyQWRtaW4iOnRydWV9.ZJoduPgGiwUKhO3lnpePR5PQgf49wfc4sgxFPgQHH14',
+        // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU'
       }
     },
     created() {
@@ -175,7 +260,7 @@
         //     date: '09-20 15:30'
         //   }
         // })
-        // let _this = this;
+        let _this = this;
         this.player = new Player({
           id: 'vs',
           url: videoUrl,  // 传入视频参数
@@ -207,7 +292,7 @@
         }
         //#region 调试逻辑，要删除
         this.isLogined = true;
-        jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU';
+        jwt = this.TEST_JWT;
         //#endregion
         formData.append("JWT", jwt);
         // elementUI加载实例
@@ -234,17 +319,18 @@
               console.log("获取到的视频url是："+videoUrl);
 
               console.log(this.videoInfo.created_time);
-              this.createdDate = this.videoInfo.created_time.split(/[.]|T/)[0];
-              this.createdTime = this.videoInfo.created_time.split(/[.]|T/)[1];
+              this.videoCreatedDate = this.videoInfo.created_time.split(/[.]|T/)[0];
+              this.videoCreatedTime = this.videoInfo.created_time.split(/[.]|T/)[1];
               this.initPlayer(videoUrl);
               /* 当前获取到的视频和用户已有的交互 */
               this.boolSymbol.isLiked = res.data.is_like;
               this.boolSymbol.isCollectted = res.data.is_collect;
-              /* TODO 获取评论列表 */
+              /* 获取评论列表 */
+              console.log(res.data.comment_list);
+              this.commentList = res.data.comment_list;
+              /* 获取弹幕列表 */              
               break;
             }
-              
-            
             default:
               this.$message.warning("加载失败！");
               // TODO 可能需要填充获取不到视频的逻辑              
@@ -269,8 +355,8 @@
         let videoId = this.videoInfo.id;
         //#region 调试逻辑，要删除
         this.isLogined = true;
-        jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU';
-        // videoId = 15;
+        // jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU';
+        jwt = this.TEST_JWT;
         //#endregion
 
         formData.append("JWT", jwt);
@@ -307,13 +393,13 @@
         let jwt = null;
         if ( loginMessage != null){
           jwt = JSON.parse(loginMessage).JWT;
+          console.log("正确获得jwt")
           this.isLogined = true;
         }
         let videoId = this.videoInfo.id;
         //#region 调试逻辑，要删除
         this.isLogined = true;
-        jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU';
-        // videoId = 15;
+        jwt = this.TEST_JWT;
         //#endregion
 
         formData.append("JWT", jwt);
@@ -342,7 +428,97 @@
         .catch(err => {
           console.log(err);
         })
-      }
+      },
+
+      /**
+       * 设置二级评论临时信息
+       * @param {String} type 
+       * @param {*} root
+       * @param {*} child 
+       */
+      setReplyInfo(type, root, child) { // 这里 root 始终传进来的是一级评论 item，所以保证一个一级评论下的 rootId 一致
+				this.replyInfo.videoId = this.videoInfo.id;
+				if (type === 'root') {    // 回复一级评论的 二级评论
+					this.replyInfo.rootId = root.comment_root.id;
+          this.replyInfo.replyCommentId = root.comment_root.id;
+					this.replyInfo.replyUserId = root.comment_root.user_id;
+					this.replyInfo.replyUserName = root.comment_root.username;
+				} else {    // 回复其他 二级评论的 二级评论
+					this.replyInfo.rootId = root.comment_root.id;
+          this.replyInfo.replyCommentId = child.id;
+					this.replyInfo.replyUserId = child.userId;
+					this.replyInfo.replyUserName = child.username;
+				}
+			},
+
+      async postComments(type) {
+				let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }
+        //#region 调试逻辑，要删除
+        this.isLogined = true;
+        jwt = this.TEST_JWT;
+        //#endregion
+        formData.append("JWT", jwt);
+
+				if (type === 'reply') {// 二级评论
+					formData.append("video_id", this.replyInfo.videoId);
+          formData.append("content", this.replyInfo.comment);
+          formData.append("reply_comment_id", this.replyInfo.replyCommentId);
+          formData.append("reply_username", this.replyInfo.replyUserName);
+
+          this.$axios({
+            method: 'post',
+            url: 'https://milimili.super2021.com/api/video/reply-comment',
+            data: formData,
+          })
+          .then(res => {
+            console.log(res);
+            switch (res.data.result) {
+              case 1:{
+                this.$message.success("回复评论成功！");
+                /* 视频本身的信息 */
+                break;
+              }
+              default:
+                this.$message.warning("回复评论失败！");           
+                break;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          })
+
+				} else {  // 一级评论
+          formData.append("video_id", this.videoInfo.id);
+          formData.append("content", this.comment);
+          this.$axios({
+            method: 'post',
+            url: 'https://milimili.super2021.com/api/video/add-comment',
+            data: formData,
+          })
+          .then(res => {
+            console.log(res);
+            switch (res.data.result) {
+              case 1:{
+                this.$message.success("评论成功！");
+                /* 视频本身的信息 */  
+                break;
+              }
+              default:
+                this.$message.warning("评论失败！");           
+                break;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          })
+				}
+			},
     },
   }
 </script>
