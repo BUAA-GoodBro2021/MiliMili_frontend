@@ -37,7 +37,7 @@ const routes = [
         }
         ],
       }, {
-        path: '/OthersHomePage/:id',
+        path: '/OthersHomePage/',
         name: 'OthersHomePage',
         component: () => import('../views/OthersHomePage/OHP.vue'),
         children: [{

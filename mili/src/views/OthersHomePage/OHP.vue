@@ -42,6 +42,7 @@
               ></el-avatar>
               <p class="Uname" v-text="user.username"></p>
               <p v-text="user.signature" class="Uintro"></p>
+              
             </a>
             <el-menu-item :index="'/OthersHomePage/Main/' + id" class="headcol">
               <span class="icomoon zy icohead"></span
@@ -107,16 +108,15 @@ export default {
       id: this.$route.params.id,
     };
   },
-  methods: {
+  methods:{
     handleSelect(tab, event) {
       // console.log(tab, event);
     },
     canplay() {
       this.vedioCanPlay = true;
     },
-  },
-  created() {
-    var id = this.$route.params.id;
+    getInfo(){
+      var id = this.$route.params.id;
     var that = this;
     this.$axios({
       method: "post",
@@ -138,6 +138,17 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+    }
+  },
+  created() {
+    this.getInfo()
+  },
+  watch: {
+    "$route.params.id"(newval,oldval){
+        this.id = newval
+        console.log('change!');
+       this.getInfo() 
+    },
   },
   mounted: function () {
     //屏幕自适应
