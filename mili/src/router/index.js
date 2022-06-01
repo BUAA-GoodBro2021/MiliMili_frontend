@@ -6,6 +6,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    /* redirect 重定向 
+      执行/根目录路由地址时，就跳转执行/homepage路由地址 ，进而把对应的组件给显示出来。*/
     redirect: '/homepage',
     component: () => import('../views/HomePage/HeadView.vue'),
     children: [
