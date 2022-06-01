@@ -73,6 +73,11 @@ const routes = [
         name: 'AdminPage',
         component: () => import('../views/admin/CheckVideo.vue'),
       },
+      {
+        path: '/videodetail/:id',
+        name: 'VideoDetail',
+        component: () => import('../views/VideoDetail.vue/VideoDetailPage.vue'),
+      },
       //在这里填写的路由都将获得不透明header
     ]
   },

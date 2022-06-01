@@ -45,7 +45,9 @@
                 "还要审核" + videoDetail.length + "个视频就下班啦！"
               }}</span>
             </div>
-            <div class="video_detail"></div>
+            <div id="video_detail">
+              <!-- 创建与删除均在下方代码中 -->
+            </div>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -56,6 +58,7 @@
 import qs from "qs";
 import ComplainVideoList from "@/components/admin/CheckVideoList.vue";
 import Header from "@/components/HomePage/HeaderPage.vue";
+import Player from "xgplayer";
 export default {
   components: { ComplainVideoList, Header },
   data() {
@@ -125,7 +128,7 @@ export default {
           isAudit: 1,
           need_verify: 0,
         },
-      ], //第二个分页的列表
+      ], //第三个分页的列表
       videoSingle: null,
       videoComplain: [
         {
@@ -153,10 +156,30 @@ export default {
             updated_time: "2022-05-31T17:15:12.778Z",
           },
         },
-      ], //第三个分页的列表
+      ], //第二个分页的列表
+      player: null,
     };
   },
   methods: {
+    initPlayer(videoUrl) {
+      let _this = this;
+      this.player = new Player({
+        id: "vs",
+        url: videoUrl, // 传入视频参数
+        autoplay: false,
+        volume: 0.3,
+        danmu: {
+          // comments: danmuArr,
+          // area: {
+          //   start: 0,
+          //   end: 1
+          // }
+        },
+        height: 600,
+        width: 800,
+        whitelist: [""],
+      });
+    },
     pass() {
       //TODO
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
@@ -184,7 +207,7 @@ export default {
             message: "网络出错QAQ",
           });
         });
-      next();
+      this.next();
     },
     refuse() {
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
@@ -214,14 +237,14 @@ export default {
         });
       next();
     },
-    Delete(val){
+    Delete(val) {
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
         method: "post",
         data: qs.stringify({
           JWT: jwt,
           complain_id: val,
-          success: 0
+          success: 0,
         }),
         url: "/super_admin/verify-complain-video",
         headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -245,12 +268,22 @@ export default {
             message: "网络出错QAQ",
           });
         });
-        this.getVideoDetail(0)
+      this.getVideoDetail(0);
     },
     next() {
       this.videoDetail.splice(0, 1);
-      if (this.videoDetail.length != 0) this.videoSingle = this.videoDetail[0];
+      var wrap = document.getElementById("video_detail");
+      var video = document.getElementById("vs");
+      wrap.removeChild(video);
+      if (this.videoDetail.length != 0) {
+        this.videoSingle = this.videoDetail[0];
+        var child = document.createElement("div");
+        child.setAttribute("id", "vs");
+        wrap.appendChild(child);
+        this.initPlayer(this.videoSingle.video_url);
+      }
     },
+    //所有视频
     getVideoList(val) {
       //TODO
       var _this = this;
@@ -286,7 +319,7 @@ export default {
           });
         });
     },
-    //待审核视频
+    //待审核视频与被投诉的视频
     getVideoDetail(val) {
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
@@ -300,6 +333,8 @@ export default {
         .then((res) => {
           if (res.data.result == 1) {
             this.videoDetail = res.data.video_audit_list;
+            if (this.videoDetail.length != 0)
+              this.initPlayer(this.videoDetail[0].video_url);
             this.videoComplain = res.data.video_complain_list;
             if (val == 1) {
               this.$message({
@@ -325,10 +360,21 @@ export default {
       console.log(tab, event);
       if (tab.name == "1") {
         console.log("change to one");
-        //TODO
+        var wrap = document.getElementById("video_detail");
+        var video = document.getElementById("vs");
+        wrap.removeChild(video);
         this.getVideoList(0);
       } else {
         console.log("change to two");
+        var wrap = document.getElementById("video_detail");
+        if (tab.name == "3") {
+          var child = document.createElement("div");
+          child.setAttribute("id", "vs");
+          wrap.appendChild(child);
+        } else {
+          var video = document.getElementById("vs");
+          wrap.removeChild(video);
+        }
         //TODO
         this.getVideoDetail(0);
       }
@@ -365,5 +411,10 @@ export default {
   font-size: 15px;
   text-align: center;
   vertical-align: center;
+}
+#video_detail {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
 }
 </style>

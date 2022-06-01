@@ -20,9 +20,9 @@
 						<div class="icon-item">
               <!-- 获取是否点赞，并在点击时切换状态和更新数量 -->
 							<img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
-								src="../../src/assets/image/video/icon_01.png" alt="">
+								src="@/assets/video/icon_01.png" alt="">
 							<img v-else class="img active" @click="postDisLike"
-								src="../../src/assets/image/video/icon_01_active.png" alt="">
+								src="@/assets/video/icon_01_active.png" alt="">
 							{{ videoInfo.like_num }}
 						</div>
 						<!-- <div class="icon-item">
@@ -573,7 +573,7 @@
 
 .video-detail-wrap .content-left .header-top {
     width: 100%;
-    background: url(../../src/assets/image/header/header_bg.jpeg) no-repeat;
+    /* background: url(../../src/assets/header/header_bg.jpeg) no-repeat; */
     background-size: cover;
     margin-bottom: 40px;
 }
