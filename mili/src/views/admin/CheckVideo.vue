@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="Admin_main">
     <Header />
     <div class="main" style="padding-left: 20px">
       <el-tabs
@@ -46,7 +46,7 @@
               }}</span>
             </div>
             <div id="video_detail">
-              <!-- 创建与删除均在下方代码中 -->
+              <div id="vs"></div>
             </div>
           </div>
         </el-tab-pane>
@@ -387,6 +387,13 @@ export default {
 };
 </script>
 <style scoped>
+#Admin_main {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 .empty_title {
   font-size: 25px;
   color: grey;
@@ -411,6 +418,7 @@ export default {
   font-size: 15px;
   text-align: center;
   vertical-align: center;
+  color: black;
 }
 #video_detail {
   display: flex;

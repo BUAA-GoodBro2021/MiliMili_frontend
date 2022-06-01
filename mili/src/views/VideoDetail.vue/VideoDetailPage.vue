@@ -300,7 +300,7 @@
 
         this.$axios({
           method: 'post',
-          url: 'https://milimili.super2021.com/api/video/detail/15',
+          url: 'https://milimili.super2021.com/api/video/detail/'+this.$route.params.id,
           data: formData,
         })
         .then(res => {

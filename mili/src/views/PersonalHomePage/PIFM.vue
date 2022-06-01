@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="PIFM_main">
       <div class="bbgg"></div>
   <div id="body">
     <div class="container">
@@ -313,6 +313,13 @@ export default {
 </script>
  
 <style scoped>
+#PIFM_main {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 ::v-deep .el-upload--picture-card {
   width: 20px;
   height: 20px;

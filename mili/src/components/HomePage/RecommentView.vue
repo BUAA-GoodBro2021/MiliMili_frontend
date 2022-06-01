@@ -4,7 +4,7 @@
       <el-carousel :interval="4000" type="card" height="400px">
         <el-carousel-item v-for="(item, index) in videos" :key="index">
           <div class="video_warp">
-            <div class="cover_warp">
+            <div class="cover_warp" @click="toVideo(item.id)">
               <img
                 class="cover_img"
                 width="682.55px"
@@ -18,9 +18,9 @@
               />
               <div class="cover_footer">
                 <ul>
-                  <li class="title">{{ item.title }}</li>
+                  <li class="title">{{ item.title | ellipsis }}</li>
                   <li style="float: right; margin-right: 10px; font-size: 18px">
-                    {{ item.updated_time.split('T')[0] }}
+                    {{ item.updated_time.split("T")[0] }}
                   </li>
                   <li style="float: right; margin-right: 10px; font-size: 18px">
                     <i class="el-icon-video-play" />{{ item.view_num }}
@@ -253,9 +253,34 @@ export default {
       },
     },
   },
-
+  filters: {
+    ellipsis(str) {
+      if (!str) return "";
+      var sum = 0,
+        flag = 0;
+      for (let i in str) {
+        if (sum > 18) {
+          flag = i;
+          break;
+        }
+        let code = str[i].charCodeAt();
+        if (code > 96 && code < 123) {
+          sum += 0.5;
+        } else sum++;
+      }
+      if (sum > 18) {
+        return str.slice(0, flag - 1) + "...";
+      }
+      return str;
+    },
+  },
   created() {
     console.log(this.videos);
+  },
+  methods: {
+    toVideo(id) {
+      this.$router.push({ name: "VideoDetail", params: { id: id } });
+    },
   },
 };
 </script>
@@ -289,16 +314,23 @@ export default {
 .cover_warp {
   width: auto;
   height: auto;
-  border-radius: 50px;
+  border-radius: 30px;
   position: relative;
 }
 .cover_footer {
   width: 100%;
   line-height: 40px;
-  font-size: 28px;
+  font-size: 20px;
   position: absolute;
   z-index: 2;
-  bottom: 0;
+  bottom: 0px;
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  border-bottom-right-radius: 30px;
+  border-bottom-left-radius: 30px;
 }
 .cover_footer ul {
   line-height: 40px;
@@ -319,7 +351,7 @@ export default {
   height: 40px;
   width: 60%;
   line-height: 40px;
-  font-size: 27px;
+  font-size: 20px;
   display: block;
   text-align: left;
   word-break: break-all;

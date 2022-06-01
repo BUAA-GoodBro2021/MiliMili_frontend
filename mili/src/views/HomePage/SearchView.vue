@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="search_main">
     <Header :headerInput="true" />
     <el-footer style="height: 61px; width: 100%"></el-footer>
     <router-view />
@@ -323,6 +323,13 @@ export default {
 };
 </script>
 <style scoped>
+#search_main {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 .videos {
   display: flex;
   flex-wrap: wrap;

@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow-x: hidden">
+  <div style="overflow-x: hidden" id="home_main">
     <!-- 推荐部分 传递的值为六个视频的信息 -->
     <!-- 导航栏 浮动条 -->
     <Header :headerMode="headMode" />
@@ -2550,6 +2550,13 @@ export default {
 };
 </script>
 <style>
+#home_main {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 .blocks {
   width: 100%;
   height: 100px;

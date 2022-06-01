@@ -28,12 +28,12 @@
       <div class="empty ssort" v-if="blockContent.rank_list[0].length == 0">
         <span class="empty_title"> 空空如也QAQ</span>
       </div>
-      <div class="sort">
+      <div class="sort" v-else>
         <Sort
           :sortedvideos="blockContent.rank_list[0]"
           sortTitle="排行榜"
           :sortType="1"
-          :sortBlock="blockContent.id"
+          :block_id="blockContent.id"
         />
       </div>
     </div>
@@ -362,8 +362,8 @@ export default {
   },
   components: { Video, Sort },
   mounted() {
-    console.log("blocksort");
-    console.log(this.blockContent);
+    //console.log("blocksort");
+    //console.log(this.blockContent);
   },
   methods:{
     toBlock(){
@@ -409,6 +409,7 @@ export default {
   height: 550px;
   padding-top: 10px;
   margin-left: 40px;
+  margin-right: 20px;
 }
 .empty_title {
   font-size: 25px;

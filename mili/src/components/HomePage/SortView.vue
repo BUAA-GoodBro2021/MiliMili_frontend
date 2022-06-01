@@ -5,8 +5,8 @@
         <span :class="[sortTitle == '排行榜' ? 'subtitle' : 'center_title']">{{
           sortTitle
         }}</span>
-        <router-link to="" v-if="sortType == 1">
-          <span id="more" @click="toBlock()">
+        <router-link :to="'/block/' + block_id" v-if="sortType == 1">
+          <span id="more">
             更多
             <i class="el-icon-arrow-right" />
           </span>
@@ -14,22 +14,28 @@
       </div>
       <div id="hot-first">
         <div id="hot-head-figure">
-          <div class="hot-head-topleft-number">1</div>
-          <img class="hot-head-img" :src="sortedvideos[0].avatar_url" />
-          <div class="hot-head-border"></div>
+          <router-link :to="'/videodetail/' + first.id">
+            <div class="hot-head-topleft-number">1</div>
+            <img class="hot-head-img" :src="first.avatar_url" />
+            <div class="hot-head-border"></div>
+          </router-link>
         </div>
         <div id="hot-head-txt">
           <div class="hot-head-details">
-            <div class="hot-head-txt-title">{{ sortedvideos[0].title }}</div>
+            <div class="hot-head-txt-title">
+              <router-link :to="'/videodetail/' + first.id">
+                {{ first.title | ellipsisLong }}
+              </router-link>
+            </div>
             <div class="hot-head-txt-num">
               <span class="hot-number" v-if="sortType == 1 || sortType == 2"
-                >视频播放量: {{ sortedvideos[0].view_num }}</span
+                >视频播放量: {{ first.view_num }}</span
               >
               <span class="hot-number" v-if="sortType == 3"
-                >视频点赞量: {{ sortedvideos[0].like_num }}</span
+                >视频点赞量: {{ first.like_num }}</span
               >
               <span class="hot-number" v-if="sortType == 4"
-                >视频收藏量: {{ sortedvideos[0].collect_num }}</span
+                >视频收藏量: {{ first.collect_num }}</span
               >
             </div>
           </div>
@@ -40,7 +46,9 @@
           <span :class="'hot-order hot-order-' + (index + 2)">{{
             index + 2
           }}</span>
-          <span class="hot-content">{{ item.title | ellipsis }}</span>
+          <router-link :to="'/videodetail/' + item.id">
+            <span class="hot-content">{{ item.title | ellipsis }}</span>
+          </router-link>
           <span class="hot-right">
             <span class="hot-number" v-if="sortType == 1 || sortType == 2">{{
               item.view_num
@@ -142,40 +150,64 @@ export default {
     block_id: {
       type: Number,
       default() {
-        return 0;
+        return 1;
       },
     },
   },
   data() {
     return {
       videosExceptOne: [],
+      first: {},
     };
   },
   methods: {
     toBlock() {
+      console.log("more:" + this.block_id);
       this.$router.push("/block/" + this.block_id);
     },
   },
   mounted() {
     for (var item in this.sortedvideos)
       if (item != 0) this.videosExceptOne.push(this.sortedvideos[item]);
+    this.first = this.sortedvideos[0];
   },
   filters: {
     ellipsis(str) {
       if (!str) return "";
-      var sum = 0,flag=0;
+      var sum = 0,
+        flag = 0;
       for (let i in str) {
-        if(sum > 15){
-          flag = i 
-          break
+        if (sum > 15) {
+          flag = i;
+          break;
         }
         let code = str[i].charCodeAt();
         if (code > 96 && code < 123) {
-         sum += 0.5
-        }else sum++
+          sum += 0.5;
+        } else sum++;
       }
       if (sum > 15) {
-        return str.slice(0, flag-1) + "...";
+        return str.slice(0, flag - 1) + "...";
+      }
+      return str;
+    },
+
+    ellipsisLong(str) {
+      if (!str) return "";
+      var sum = 0,
+        flag = 0;
+      for (let i in str) {
+        if (sum > 27) {
+          flag = i;
+          break;
+        }
+        let code = str[i].charCodeAt();
+        if (code > 96 && code < 123) {
+          sum += 0.5;
+        } else sum++;
+      }
+      if (sum > 27) {
+        return str.slice(0, flag - 1) + "...";
       }
       return str;
     },
