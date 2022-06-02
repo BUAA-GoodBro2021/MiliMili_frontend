@@ -9,6 +9,7 @@
                 :videos="VideoArrayMain"
                 :pageSize="3"
                 v-if="VideoArrayMain.length"
+                v-on:deleteVideo="deleteVideo"
               />
             </div>
           </el-tab-pane>
@@ -18,6 +19,7 @@
                 :videos="VideoArrayAuditing"
                 :pageSize="3"
                 v-if="VideoArrayAuditing.length"
+                 v-on:deleteVideo="deleteVideo"
               />
             </div>
           </el-tab-pane>
@@ -27,6 +29,7 @@
                 :videos="VideoArrayAudit"
                 :pageSize="3"
                 v-if="VideoArrayAudit.length"
+                 v-on:deleteVideo="deleteVideo"
               /></div
           ></el-tab-pane>
           <el-tab-pane label="已通过" name="fourth">
@@ -35,6 +38,7 @@
                 :videos="VideoArrayAudited"
                 :pageSize="3"
                 v-if="VideoArrayAudited.length"
+                 v-on:deleteVideo="deleteVideo"
               />
               <!-- <div
                 v-for="(item, index) in VideoArrayAudited"
@@ -214,8 +218,40 @@ export default {
       ],
     };
   },
-  created() {
-    var that = this;
+  methods:{
+    deleteVideo(val){
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT
+      this.$axios({
+        method: "post",
+        url: "/video/del-video",
+        data: qs.stringify({
+          JWT: jwt,
+          video_id: val,
+        }),
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      }).then((res) => {
+        if (res.data.result == 1) {
+          this.$message({
+            type: "success",
+            message: res.data.message,
+          });
+          this.getVideo()
+        }else{
+          this.$message({
+            type: "error",
+            message: res.data.message,
+          });
+        }
+      }).catch((err) => {
+        this.$message({
+            type: "error",
+            message: '寄了QAQ',
+          });
+      })
+
+    },
+    getVideo(){
+       var that = this;
     this.$axios({
       method: "post",
       url: "https://milimili.super2021.com/api/user/video-audit-list",
@@ -240,11 +276,13 @@ export default {
       .catch((err) => {
         console.log(err);
       });
-  },
-  methods: {
+    },
     handleClick(tab, event) {
       console.log(tab, event);
     },
+  },
+  created() {
+   this.getVideo()
   },
   components: { VideoList },
 };
