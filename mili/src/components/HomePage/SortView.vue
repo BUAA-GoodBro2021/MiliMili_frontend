@@ -217,7 +217,7 @@ export default {
   },
   watch: {
     sortedvideos(newval, oldval) {
-      this.sortedvideos.splice(0)
+      this.videosExceptOne.splice(0)
       for (var item in newval)
         if (item != 0) this.videosExceptOne.push(newval[item]);
       this.first = this.sortedvideos[0];
