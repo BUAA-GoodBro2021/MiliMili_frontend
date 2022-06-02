@@ -165,11 +165,14 @@ export default {
       console.log("more:" + this.block_id);
       this.$router.push("/block/" + this.block_id);
     },
+    getSorted() {
+      for (var item in this.sortedvideos)
+        if (item != 0) this.videosExceptOne.push(this.sortedvideos[item]);
+      this.first = this.sortedvideos[0];
+    },
   },
   mounted() {
-    for (var item in this.sortedvideos)
-      if (item != 0) this.videosExceptOne.push(this.sortedvideos[item]);
-    this.first = this.sortedvideos[0];
+    this.getSorted();
   },
   filters: {
     ellipsis(str) {
@@ -210,6 +213,14 @@ export default {
         return str.slice(0, flag - 1) + "...";
       }
       return str;
+    },
+  },
+  watch: {
+    sortedvideos(newval, oldval) {
+      this.sortedvideos.splice(0)
+      for (var item in newval)
+        if (item != 0) this.videosExceptOne.push(newval[item]);
+      this.first = this.sortedvideos[0];
     },
   },
 };
