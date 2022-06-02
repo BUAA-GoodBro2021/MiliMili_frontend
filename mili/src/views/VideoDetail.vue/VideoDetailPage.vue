@@ -59,7 +59,7 @@
             <span>评论</span>
           </div>
           
-          <!-- 发送一级评论文本框，这里加[] 是为了表示[]里面的 字符串是真正的字符串 -->
+          <!-- 发送一级评论文本框 -->
           <div class="comment-send">
             <img class="comment-send-avatar" :src="[isLogined ? currentUserSimpleInfo.currentUserAvatar : DEFAULT_AVATAR]" alt="">
             <!-- <img class="comment-send-avatar" src="../assets/image/home/avatar_users.jpeg" alt=""> -->
@@ -106,6 +106,9 @@
                     <div class="name">{{ item.comment_root.username }}</div>
                     <div class="comment-content">{{ item.comment_root.content }}</div>
                     <div class="time">{{ item.comment_root.created_time.split(/[.]|T/)[0] + ' ' + item.comment_root.created_time.split(/[.]|T/)[1] }} 
+                      <i :class="[ item.comment_root.is_like === 1 ? 'liked-model' : 'common-model' ]"
+                          @click="postOrCancelCommentLike(item.comment_root.id, item.comment_root.is_like)"></i>
+                      <span> {{item.comment_root.like_num === 0? '': item.comment_root.like_num}} </span>
                       <span class="reply" @click="setReplyInfo('root', item)">回复</span>
                       <span class="reply" v-if="item.comment_root.is_own === 1" @click="deleteComments(item.comment_root.id)">删除</span>
                     </div>
@@ -121,6 +124,9 @@
                           <span class="child-comment"><span class="reply-name">{{ '回复 @' + child.reply_username + '：' }}</span>{{ child.content }}</span>
                         </div>
                         <div class="child-time">{{ child.created_time.split(/[.]|T/)[0] + ' ' + child.created_time.split(/[.]|T/)[1] }} 
+                          <i :class="[ child.is_like === 1 ? 'liked-model' : 'common-model' ]"
+                          @click="postOrCancelCommentLike(child.id, child.is_like)"></i>
+                          <span> {{child.like_num === 0? '': child.like_num}} </span>
                           <span class="child-reply" @click="setReplyInfo('child', item, child)">回复</span>
                           <span class="child-reply" v-if="child.is_own === 1" @click="deleteComments(child.id)">删除</span>
                         </div>
@@ -495,7 +501,7 @@
       },
 
       /**
-       * 设置二级评论临时信息
+       * 设置一/二级评论临时信息
        * @param {String} type 
        * @param {*} root
        * @param {*} child 
@@ -514,7 +520,10 @@
 					this.replyInfo.replyUserName = child.username;
 				}
 			},
-
+      /**
+       * 发送一/二级评论
+       * @param {String} type 
+       */
       async postComments(type) {
 				let formData = new FormData();
         let loginMessage = localStorage.getItem("loginMessage");
@@ -589,7 +598,10 @@
           })
 				}
 			},
-
+      /**
+       * 删除一/二级评论
+       * @param {int} commentId 
+       */
       async deleteComments(commentId) {
 				let formData = new FormData();
         let loginMessage = localStorage.getItem("loginMessage");
@@ -630,6 +642,54 @@
         })
 
 			},
+      /**
+       * 
+       * @param {int} commentId 
+       * @param {int} type  0 1
+       */
+      async postOrCancelCommentLike(commentId, type) {
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }
+        //#region 调试逻辑，要删除
+        this.isLogined = true;
+        jwt = this.TEST_JWT;
+        //#endregion
+        formData.append("JWT", jwt);
+        formData.append("comment_id", commentId);
+        let LIKE_URL = '';
+        if(type === 0) {
+          LIKE_URL = 'https://milimili.super2021.com/api/video/like-comment';
+        }else{
+          LIKE_URL = 'https://milimili.super2021.com/api/video/dislike-comment';
+        }
+        this.$axios({
+          method: 'post',
+          url: LIKE_URL,
+          data: formData,
+        })
+        .then(res => {          
+          console.log(res);
+          switch (res.data.result) {
+            case 1:{
+              this.$message.success("点赞/取消点赞评论成功！");
+              /* 更新页面评论 */
+              this.commentList = res.data.comment;         
+              break;
+            }
+            default:
+              this.$message.warning("点赞/取消点赞评论失败！");           
+              break;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      },
     },
   }
 </script>
@@ -869,17 +929,21 @@
     width: 100%;
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item {
+/* .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item {
     padding: 20px 0;
     border-top: 1px solid #eeeeee;
     border-bottom: 1px solid #eeeeee;
-}
+} */
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in {
     display: flex;
+    /* padding: 20px 0; */
+    /* border-top: 1px solid #000000; */
+    /* border-bottom: 1px solid #000000; */
 }
     /* 单条 一级评论 的头像 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .avatar {
+    margin-top: 20px;
     width: 60px;
     height: 60px;
     display: block;
@@ -891,8 +955,14 @@
 }
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right {
+    border-top: 1px solid #e5e9ef;
+    width: 100%;
+    padding: 20px 0;
     margin-left: 20px;
 }
+/* .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right:last-child {
+    border-bottom: 1px solid #e5e9ef;
+} */
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name {
     font-size: 14px;
@@ -901,8 +971,38 @@
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time {
     font-size: 12px;
-    color: #666666;
+    /* color: #666666; */
+    color: #99A2AA;
 }
+      /*  #region IMPORTANT 一级评论点赞图标样式位置 */
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time .common-model{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: text-top;
+    margin-right: 5px;
+    margin-left: 15px;
+    /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
+    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    background-position: -153px -25px;
+    cursor: pointer;
+}
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time .common-model:hover{
+    background-position: -218px -25px;
+}
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time .liked-model{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: text-top;
+    margin-right: 5px;
+    margin-left: 15px;
+    /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
+    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    background-position: -154px -89px;
+    cursor: pointer;
+}
+      /* #endregion */
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time .reply {
     margin-left: 10px;
@@ -956,9 +1056,39 @@
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time {
     margin-top: 10px;
     font-size: 12px;
-    color: #666666;
+    /* color: #666666; */
+    color: #99A2AA;    
 }
-
+      /*  #region IMPORTANT 二级评论点赞图标样式位置 */
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time .common-model{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: text-top;
+    margin-right: 5px;
+    margin-left: 15px;
+    /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
+    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    background-position: -153px -25px;
+    cursor: pointer;
+}
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time .common-model:hover{
+    background-position: -218px -25px;
+}
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time .liked-model{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: text-top;
+    margin-right: 5px;
+    margin-left: 15px;
+    /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
+    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    background-position: -154px -89px;
+    cursor: pointer;
+}
+      /* #endregion */
+      
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time .child-reply {
     margin-left: 10px;
     cursor: pointer;
