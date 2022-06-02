@@ -19,7 +19,7 @@
           <div
             v-for="(item, index) in blockContent.recommend_list"
             :key="index"
-            style="; margin-top: 10px"
+            style="margin-left: 30px; margin-top: 10px"
           >
             <Video :singleVideo="item" />
           </div>
@@ -391,7 +391,6 @@ export default {
   height: 470px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
 }
 .title ul {
   line-height: 40px;

@@ -2590,7 +2590,7 @@ export default {
   height: 100px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  
 }
 .block_others {
   width: 45%;

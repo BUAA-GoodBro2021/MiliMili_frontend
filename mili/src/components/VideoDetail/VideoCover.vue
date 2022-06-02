@@ -40,8 +40,8 @@
           plain
           >作者</el-tag
         >
-        <router-link :to="'/OthersHomePage/Main/'+singleVideo.user.id" style="text-decoration: none">
-          <span class="name" style="float: left; font-size: 2px; color: grey">{{
+        <router-link :to="'/OthersHomePage/Main/'+singleVideo.user.id" style="text-decoration: none;">
+          <span class="name" style="float: left; color: grey;">{{
             singleVideo.user.username
           }}</span>
         </router-link>
