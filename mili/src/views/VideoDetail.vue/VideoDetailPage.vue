@@ -17,9 +17,9 @@
           <div class="icon-item">
             <!-- 获取是否点赞，并在点击时切换状态和更新数量 -->
             <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
-              src="../../src/assets/image/video/icon_01.png" alt="">
+              src="../../assets/video/icon_01.png" alt="">
             <img v-else class="img active" @click="postDisLike"
-              src="../../src/assets/image/video/icon_01_active.png" alt="">
+              src="../../assets/video/icon_01_active.png" alt="">
             {{ videoInfo.like_num }}
           </div>
           <!-- <div class="icon-item">
@@ -983,7 +983,7 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
     background-position: -153px -25px;
     cursor: pointer;
 }
@@ -998,7 +998,7 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
     background-position: -154px -89px;
     cursor: pointer;
 }
@@ -1068,7 +1068,7 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
     background-position: -153px -25px;
     cursor: pointer;
 }
@@ -1083,7 +1083,7 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
     background-position: -154px -89px;
     cursor: pointer;
 }
