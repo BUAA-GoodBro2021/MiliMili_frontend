@@ -18,7 +18,7 @@
               </div>
             </li>
             <li style="float: right; margin-right: 10px">
-              <el-tag style="cursor: pointer; width: 70px"
+              <el-tag style="cursor: pointer; width: 70px" @click="deleteVideo()"
                 ><i class="el-icon-delete" /> 删除</el-tag
               >
             </li>
@@ -104,6 +104,11 @@ export default {
       },
     },
   },
+  methods: {
+    deleteVideo() {
+      this.$emit("deleteVideo", this.video.id);
+    },
+  },
 };
 </script>
 <style scoped>
@@ -114,7 +119,7 @@ export default {
   border: solid 2px #d0dcdc9a;
   border-radius: 10px;
   padding: 10px 0 10px 0;
-  box-shadow: 0 0.5px 0 0.5px#e7f6f69a
+  box-shadow: 0 0.5px 0 0.5px#e7f6f69a;
 }
 .card_img {
   width: 26%;

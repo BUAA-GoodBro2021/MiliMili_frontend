@@ -35,7 +35,31 @@ const routes = [
           name: 'FollowerPage',
           component: () => import('../views/PersonalHomePage/PHP/FollowingPage.vue'),
         }
-        ]
+        ],
+      }, {
+        path: '/OthersHomePage/',
+        name: 'OthersHomePage',
+        component: () => import('../views/OthersHomePage/OHP.vue'),
+        children: [{
+          path: '/OthersHomePage/Main/:id',
+          name: 'OthersHomePage/Main',
+          component: () => import('../components/OHP/OHPMain.vue'),
+          hidden: true,
+        }, {
+          path: '/OthersHomePage/Star/:id',
+          name: 'OthersHomePage/Star',
+          component: () => import('../components/OHP/OHPStar.vue'),
+          hidden: true,
+        }, {
+          path: '/OthersHomePage/fans/:id',
+          name: 'FanPage',
+          component: () => import('../views/OthersHomePage/OthersFollowersPage.vue'),
+        },
+        {
+          path: '/OthersHomePage/followings/:id',
+          name: 'FollowerPage',
+          component: () => import('../views/OthersHomePage/OthersFollowingPage.vue'),
+        }]
       },
       {
         path: '/PersonalInformation',
@@ -73,6 +97,11 @@ const routes = [
         name: 'AdminPage',
         component: () => import('../views/admin/CheckVideo.vue'),
       },
+      {
+        path: '/videodetail/:id',
+        name: 'VideoDetail',
+        component: () => import('../views/VideoDetail.vue/VideoDetailPage.vue'),
+      },
       //在这里填写的路由都将获得不透明header
     ]
   },
@@ -85,6 +114,12 @@ const routes = [
     path: '/login',
     name: 'LoginPage',
     component: () => import('../views/account/LoginView.vue'),
+  },
+  {
+    path: '/ChangePassword',
+    name: 'ChangePassword',
+    component: () => import('../views/account/PSW.vue'),
+
   },
   {
     path: '/homepage',

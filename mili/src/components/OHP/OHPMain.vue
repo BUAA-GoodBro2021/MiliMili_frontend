@@ -9,7 +9,7 @@
               v-for="(item, index) in VideoArraySelected"
               :key="index"
               class="video"
-              style="margin-left: 30px; margin-top: 20px"
+              style="margin-left: 30px; margin-top: 10px"
             >
               <Video :singleVideo="item" />
             </div>
@@ -23,7 +23,7 @@
               layout="prev, pager, next"
               :total="VideoArray.length"
               @current-change="topicInit"
-              style="float: right; margin-bottom: 10px;"
+              style="float: right;margin-bottom: 10px;"
             >
             </el-pagination>
           </div></div
@@ -37,14 +37,6 @@
           <el-card class="box-card asd box">
             <div slot="header" class="clearfix">
               <span class="UserTitle">个人资料</span>
-              <el-button
-                style="float: right; padding: 0.1vh 0; margin-right: 2vh"
-                type="text"
-                class="UserChange"
-                ><a href="/PersonalInformation" class="CMsg"
-                  >修改资料</a
-                ></el-button
-              >
             </div>
             <div class="text item">
               <span class="UserContext">UID: {{ user.id }}</span>
@@ -115,15 +107,16 @@ export default {
     };
   },
   created() {
+    var id = this.$route.params.id;
     var that = this;
     this.$axios({
       method: "post",
-      url: "https://milimili.super2021.com/api/user/video-list",
+      url: "https://milimili.super2021.com/api/user/up-video-list",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
       },
       data: qs.stringify({
-        JWT: that.jwt,
+        up_user_id: id,
       }),
     })
       .then((res) => {

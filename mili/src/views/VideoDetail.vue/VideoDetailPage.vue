@@ -19,11 +19,9 @@
             <!-- <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
               src="../../src/assets/image/video/icon_01.png" alt=""> -->
             <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
-              src="../../assets/video/icon_01.png" alt="">
-            <!-- <img v-else class="img active" @click="postDisLike"
-              src="../../src/assets/image/video/icon_01_active.png" alt=""> -->
+              src="@/assets/video/icon_01.png" alt="">
             <img v-else class="img active" @click="postDisLike"
-              src="../../assets/video/icon_01_active.png" alt="">
+              src="@/assets/video/icon_01_active.png" alt="">
             {{ videoInfo.like_num }}
           </div>
           <!-- <div class="icon-item">
@@ -383,7 +381,7 @@
 
         this.$axios({
           method: 'post',
-          url: 'https://milimili.super2021.com/api/video/detail/15',
+          url: 'https://milimili.super2021.com/api/video/detail/'+this.$route.params.id,
           data: formData,
         })
         .then(res => {

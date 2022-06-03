@@ -2,7 +2,7 @@
   <div>
     <div class="video_warp">
       <div class="cover_warp">
-        <router-link to="" style="text-decoration: none">
+        <router-link :to='"/videodetail/"+singleVideo.id' style="text-decoration: none">
           <img
             width="238px"
             height="134px"
@@ -27,8 +27,8 @@
         </router-link>
       </div>
       <div class="title">
-        <router-link to="" style="text-decoration: none">
-          {{ singleVideo.title }}
+        <router-link :to='"/videodetail/"+singleVideo.id' style="text-decoration: none">
+          {{ singleVideo.title | ellipsis }}
         </router-link>
       </div>
       <div class="sender">
@@ -38,11 +38,11 @@
           size="mini"
           style="float: left; margin-right: 5px"
           plain
-          >已关注</el-tag
+          >作者</el-tag
         >
-        <router-link to="" style="text-decoration: none">
-          <span class="name" style="float: left; font-size: 1px; color: grey">{{
-            singleVideo.user_id
+        <router-link :to="'/OthersHomePage/Main/'+singleVideo.user.id" style="text-decoration: none;">
+          <span class="name" style="float: left; color: grey;">{{
+            singleVideo.user.username
           }}</span>
         </router-link>
       </div>
@@ -96,11 +96,32 @@ export default {
       return require(url);
     },
   },
+  filters: {
+    ellipsis(str) {
+      if (!str) return "";
+      var sum = 0,
+        flag = 0;
+      for (let i in str) {
+        if (sum > 27) {
+          flag = i;
+          break;
+        }
+        let code = str[i].charCodeAt();
+        if ((code > 96 && code < 123) || (str[i] >= '0' && str[i] <= '9')) {
+          sum += 0.5;
+        } else sum++;
+      }
+      if (sum > 27) {
+        return str.slice(0, flag - 1) + "...";
+      }
+      return str;
+    },
+  },
 };
 </script>
 <style scoped>
 .video_warp {
-  height: 236px;
+  height: auto;
   width: 238px;
 }
 .cover_warp {
@@ -146,6 +167,7 @@ export default {
   display: block;
   word-break: break-all;
   word-wrap: break-word;
+  overflow: hidden;
   color: black;
 }
 .sender {

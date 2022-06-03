@@ -3,7 +3,7 @@
     <div class="main">
       <div class="video_list">
         <div class="video_card" v-for="(item, index) in videoShow" :key="index">
-          <VideoCard :video="item" />
+          <VideoCard :video="item" v-on:deleteVideo="deleteVideo" />
         </div>
       </div>
       <div class="video_top">
@@ -361,6 +361,9 @@ export default {
     };
   },
   methods: {
+    deleteVideo(val){
+      this.$emit('deleteVideo',val)
+    },
     topicInit(page) {
       if (this.videos.length <= 0) return;
       this.videoShow = this.videos.slice(

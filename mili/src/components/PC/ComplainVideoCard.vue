@@ -120,7 +120,7 @@ export default {
       default(){
         return "涉及代孕"
       }
-    }
+    },
   },
 };
 </script>
