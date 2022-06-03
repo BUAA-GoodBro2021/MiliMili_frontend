@@ -2537,7 +2537,6 @@ export default {
   height: 100px;
   display: flex;
   flex-wrap: wrap;
-  
 }
 .block_others {
   width: 45%;

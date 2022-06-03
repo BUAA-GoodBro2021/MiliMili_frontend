@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { Message } from 'element-ui';
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,9 @@ const routes = [
         path: '/PersonalHomePage',
         name: 'PersonalHomePage',
         component: () => import('../views/PersonalHomePage/PHP.vue'),
+        meta: {
+          requireAuth: true
+        },
         children: [{
           path: '/PersonalHomePage/Main',
           name: 'PersonalHomePage/Main',
@@ -64,37 +68,58 @@ const routes = [
       {
         path: '/PersonalInformation',
         name: 'PersonalInformation',
+        meta: {
+          requireAuth: true
+        },
         component: () => import('../views/PersonalHomePage/PIFM.vue'),
       },
       {
         path: '/PersonalContribution',
         name: 'PersonalContribution',
+        meta: {
+          requireAuth: true
+        },
         component: () => import('../views/PersonalHomePage/PC.vue'),
         children: [{
           path: '/PChome',
           name: 'PersonalContributionHome',
           component: () => import('../components/PC/PChome.vue'),
+          meta: {
+            requireAuth: true
+          },
           hidden: true
         }, {
           path: '/PCmanageVideo',
           name: 'PersonalContributionManageVideo',
           component: () => import('../components/PC/PCmanageVideo.vue'),
+          meta: {
+            requireAuth: true
+          },
           hidden: true
         }, {
           path: '/PCmanageComplaint',
           name: 'PersonalContributionManageComplaint',
           component: () => import('../components/PC/PCmanageComplaint.vue'),
+          meta: {
+            requireAuth: true
+          },
           hidden: true
         }, {
           path: '/PCMessage',
           name: 'PersonalContributionMessage',
           component: () => import('../components/PC/PCMessage.vue'),
+          meta: {
+            requireAuth: true
+          },
           hidden: true
         }]
       },
       {
         path: '/admin',
         name: 'AdminPage',
+        meta: {
+          requireAuth: true
+        },
         component: () => import('../views/admin/CheckVideo.vue'),
       },
       {
@@ -118,6 +143,9 @@ const routes = [
   {
     path: '/ChangePassword',
     name: 'ChangePassword',
+    meta: {
+      requireAuth: true
+    },
     component: () => import('../views/account/PSW.vue'),
 
   },
@@ -143,6 +171,24 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  // 通过 Vuex 获取用户登录信息（在实战篇中会介绍到）
+  const userInfo = localStorage.getItem('loginMessage')
+
+  // 若用户未登录且访问的页面需要登录，则跳转至登录页面
+  if (userInfo == null && to.meta.requireAuth) {
+    Message({
+      type: 'warning',
+      message: '请先登录！'
+    })
+    next({
+      name: 'LoginPage',
+    })
+  }
+
+  next()
 })
 
 export default router

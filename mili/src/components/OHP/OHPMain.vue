@@ -111,6 +111,7 @@ export default {
     if(localStorage.getItem('loginMessage') != null){
       var id = JSON.parse(localStorage.getItem('loginMessage')).user.id
       if(id == this.$route.params.id) this.$router.push('/PersonalHomePage/Main')
+      return
     }
     var id = this.$route.params.id;
     var that = this;
