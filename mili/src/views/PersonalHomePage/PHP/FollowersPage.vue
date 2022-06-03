@@ -20,7 +20,9 @@ export default {
   },
   methods: {},
   mounted() {
+    //要么是个人主页 要么是其他人的主页
     if (this.$route.params.id == null) {
+      //个人主页的列表 必定有jwt
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
         method: "post",
@@ -47,6 +49,7 @@ export default {
           });
         });
     } else {
+      //别人的列表 必定有id
       var id = this.$route.params.id;
       this.$axios({
         method: "post",

@@ -82,7 +82,9 @@
             >个人中心</el-menu-item
           >
           <el-menu-item index="/upload" v-if="islogin">发布视频</el-menu-item>
-          <el-menu-item index="/ChangePassword" v-if="islogin">修改密码</el-menu-item>
+          <el-menu-item index="/ChangePassword" v-if="islogin"
+            >修改密码</el-menu-item
+          >
           <el-menu-item index="/homepage" @click="logout()" v-if="islogin"
             >登出</el-menu-item
           >
@@ -92,7 +94,7 @@
   </div>
 </template>
 <script>
-import qs from 'qs'
+import qs from "qs";
 export default {
   props: {
     headerMode: {
@@ -141,15 +143,10 @@ export default {
       localStorage.removeItem("loginMessage");
       this.islogin = false;
     },
-  },
-  watch: {
-    headerMode(newName, oldName) {
-      console.log(oldName + "->" + newName);
-    },
-  },
-  created() {
-    if (this.islogin) var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
-    else var jwt = null
+    getHistory() {
+      if (this.islogin)
+        var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      else var jwt = null;
       this.$axios({
         method: "post",
         data: qs.stringify({
@@ -158,12 +155,29 @@ export default {
         url: "/index/history",
         headers: { "content-type": "application/x-www-form-urlencoded" },
       }).then((res) => {
-        if(res.data.result == 1){
-          this.history_list = res.data.history
+        if (res.data.result == 1) {
+          this.history_list = res.data.history;
         }
         this.notRead = res.data.not_read;
-      })
-    
+        console.log('是否含有未读消息:'+res.data.not_read)
+      });
+    },
+  },
+  watch: {
+    headerMode(newName, oldName) {
+      console.log(oldName + "->" + newName);
+      console.log(this.$route.name)
+    },
+    "$route.name": {
+      handler(){
+        console.log("pageheader route change");
+      this.getHistory();
+      },
+      immediate: true,
+    },
+  },
+  created() {
+    this.getHistory();
   },
 };
 </script>
@@ -172,7 +186,7 @@ export default {
   position: absolute;
   top: 20px;
   left: 15px;
-  z-index: 11;
+  z-index: 1001;
   width: 7px;
   height: 7px;
   border-radius: 50%;
@@ -184,7 +198,8 @@ export default {
 .header {
   margin: 0;
   position: fixed;
-  z-index: 10;
+  z-index: 1000;
+  /* xgplayr的z-index是115 */
   top: 0;
   width: 100%;
   display: flex;
@@ -197,7 +212,7 @@ export default {
 .header-transparent {
   margin: 0;
   position: fixed;
-  z-index: 10;
+  z-index: 1000;
   top: 0;
   width: 100%;
   display: flex;

@@ -4,7 +4,13 @@
       <div class="video_list">
         <div class="video_card" v-for="(item, index) in videoShow" :key="index">
           <!-- <el-tag type="danger" class="tag">{{item.description}}</el-tag> -->
-          <VideoCard :video="type==1?item:item.video" :description="item.description" :title="item.title" :type="type" v-on:Delete="Delete"/>
+          <VideoCard
+            :video="type == 1 ? item : item.video"
+            :description="item.description"
+            :title="item.title"
+            :type="type"
+            v-on:Delete="Delete"
+          />
         </div>
       </div>
       <div class="video_top">
@@ -31,11 +37,11 @@ export default {
   props: {
     //1 全部视频 没有直接删除的选项
     //2 投诉视频 有直接删除的选项
-    type:{
+    type: {
       type: Number,
-      default(){
-        return 1
-      }
+      default() {
+        return 1;
+      },
     },
     pageSize: {
       type: Number,
@@ -114,8 +120,9 @@ export default {
       console.log("videoShow:" + this.videoShow);
     },
     Delete(val) {
-      console.log("checklist_delete"+val);
-      this.$emit("delete", val);
+      //详情见card
+      console.log("checklist_delete" + val);
+      this.$emit("Delete", val);
     },
   },
   created() {
@@ -151,7 +158,7 @@ export default {
 .video_card {
   margin: 10px 0 10px 0;
 }
-.tag{
+.tag {
   margin-bottom: 10px;
   float: left;
 }

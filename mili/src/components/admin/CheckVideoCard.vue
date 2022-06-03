@@ -23,10 +23,9 @@
               >
               <el-tag
                 style="cursor: pointer; width: 70px"
-                @click="Delete()"
-                type="danger"
+                @click="Delete(0)"
                 v-if="type == 2"
-                ><i class="el-icon-delete" /> 下架</el-tag
+                ><i class="el-icon-delete" /> 通过</el-tag
               >
             </li>
           </ul>
@@ -137,11 +136,25 @@ export default {
     },
   },
   methods: {
-    Delete() {
-      console.log("delete");
-      this.$emit("delete", this.video.id);
+
+    Delete(val) {
+      ///val是0 表示投诉不通过 视频正常 否则是通过 转到审核列表
+      console.log("Delete");
+      var data = val == 0? {
+        success: 0,
+        id: this.video.id
+      }:{
+         success: 1,
+        id: this.video.id
+      }
+      this.$emit("Delete", this.video.id);
     },
     ReCheck() {
+      //投诉视频的重申 就是success为1 投诉通过 
+      if(this.type == 2){
+        this.Delete(1)
+        return
+      }
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
         method: "post",
