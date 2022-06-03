@@ -16,14 +16,14 @@
         <div class="forward-wrap">
           <div class="icon-item">
             <!-- 获取是否点赞，并在点击时切换状态和更新数量 -->
-            <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
-              src="../../src/assets/image/video/icon_01.png" alt="">
             <!-- <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
-              src="../../assets/video/icon_01.png" alt=""> -->
-            <img v-else class="img active" @click="postDisLike"
-              src="../../src/assets/image/video/icon_01_active.png" alt="">
+              src="../../src/assets/image/video/icon_01.png" alt=""> -->
+            <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
+              src="../../assets/video/icon_01.png" alt="">
             <!-- <img v-else class="img active" @click="postDisLike"
-              src="../../assets/video/icon_01_active.png" alt=""> -->
+              src="../../src/assets/image/video/icon_01_active.png" alt=""> -->
+            <img v-else class="img active" @click="postDisLike"
+              src="../../assets/video/icon_01_active.png" alt="">
             {{ videoInfo.like_num }}
           </div>
           <!-- <div class="icon-item">
@@ -66,7 +66,6 @@
           <!-- 发送一级评论文本框 -->
           <div class="comment-send">
             <img class="comment-send-avatar" :src="[isLogined ? currentUserSimpleInfo.currentUserAvatar : DEFAULT_AVATAR]" alt="">
-            <!-- <img class="comment-send-avatar" src="../assets/image/home/avatar_users.jpeg" alt=""> -->
             <textarea rows="" cols="" class="comment-send-input" 
               placeholder="发一条友善的评论" v-model="comment">
               <!-- 这里其实绑定了 data中的 存放新增一级评论的字符串 comment  -->
@@ -104,11 +103,11 @@
                   -->
                 <div class="comment-in">
                   <!-- 发出一级评论 用户的头像 -->
-                  <!-- TODO: 在这里加入跳转路由 -->
+                  <!-- TODO: 在这里加入跳转路由  item.comment_root.user_id -->
                   <img class="avatar" :src="item.comment_root.avatar_url" alt="">
                   <!-- 一级评论的正文 -->
                   <div class="comment-right">
-                    <!-- TODO: 在这里加入跳转路由 -->
+                    <!-- TODO: 在这里加入跳转路由 item.comment_root.user_id -->
                     <!-- <div class="name">{{ item.comment_root.username }}</div> -->
                     <div class="name-jump-space" >{{ item.comment_root.username }}</div>
                     <div class="comment-content">{{ item.comment_root.content }}</div>
@@ -122,15 +121,16 @@
                     <!-- 遍历当前一级评论的二级评论列表 -->
                     <div class="child-comments" v-for="(child,childIndex) in item.child_list"
                       :key="'child_' + childIndex">
-                      <img class="child-avatar" :src="child.avatar_url"
-                        alt="">
+                      <!-- TODO: 在这里加入跳转路由 child.user_id -->
+                      <img class="child-avatar" :src="child.avatar_url" alt="">
                       <div class="child-user-info">
                         <div class="child-comment-info">
                           <!-- <span class="child-name">{{ child.username }}</span> -->
                           <!-- <a class="name-jump-space" href="#">{{ child.username }}</a> -->
+                          <!-- TODO: 在这里加入跳转路由 child.user_id -->
                           <span class="name-jump-space" >{{ child.username }}</span>
-                          <!-- TODO: 在这里加入跳转路由 -->
                           <!-- <span class="child-comment"><span class="reply-name">{{ '回复 @' + child.reply_username + '：' }}</span>{{ child.content }}</span> -->
+                          <!-- TODO: 在这里  加入跳转路由 replyInfo.replyUserId -->
                           <span class="child-comment">回复 <span class="reply-name">@{{child.reply_username}}：</span>{{ child.content }}</span>
                         </div>
                         <div class="child-time">{{ child.created_time.split(/[.]|T/)[0] + ' ' + child.created_time.split(/[.]|T/)[1] }} 
@@ -1009,8 +1009,8 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
-    /* background: url('../../assets/video/milimili-icon-elf.png') no-repeat; */
+    /* background: url('../assets/image/video/milimili-icon-elf.png') no-repeat; */
+    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
     background-position: -153px -25px;
     cursor: pointer;
 }
@@ -1025,8 +1025,8 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
-    /* background: url('../../assets/video/milimili-icon-elf.png') no-repeat; */
+    /* background: url('../assets/image/video/milimili-icon-elf.png') no-repeat; */
+    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
     background-position: -154px -89px;
     cursor: pointer;
 }
@@ -1103,8 +1103,8 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
-    /* background: url('../../assets/video/milimili-icon-elf.png') no-repeat; */
+    /* background: url('../assets/image/video/milimili-icon-elf.png') no-repeat; */
+    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
     background-position: -153px -25px;
     cursor: pointer;
 }
@@ -1119,8 +1119,8 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
-    /* background: url('../../assets/video/milimili-icon-elf.png') no-repeat; */
+    /* background: url('../assets/image/video/milimili-icon-elf.png') no-repeat; */
+    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
     background-position: -154px -89px;
     cursor: pointer;
 }
