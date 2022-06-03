@@ -101,13 +101,13 @@
                   -->
                 <div class="comment-in">
                   <!-- 发出一级评论 用户的头像 -->
-                  <!-- TODO: 在这里加入跳转路由  item.comment_root.user_id -->
-                  <img class="avatar" :src="item.comment_root.avatar_url" alt="">
+                  <!-- 在这里加入跳转路由  item.comment_root.user_id -->
+                  <router-link :to="'/OthersHomePage/Main/'+item.comment_root.user_id"><img class="avatar" :src="item.comment_root.avatar_url" alt=""/></router-link>
                   <!-- 一级评论的正文 -->
                   <div class="comment-right">
-                    <!-- TODO: 在这里加入跳转路由 item.comment_root.user_id -->
                     <!-- <div class="name">{{ item.comment_root.username }}</div> -->
-                    <div class="name-jump-space" >{{ item.comment_root.username }}</div>
+                    <!-- 在这里加入跳转路由 item.comment_root.user_id -->
+                    <div class="name-jump-space" ><router-link :to="'/OthersHomePage/Main/'+ item.comment_root.user_id">{{ item.comment_root.username }}</router-link></div>
                     <div class="comment-content">{{ item.comment_root.content }}</div>
                     <div class="time">{{ item.comment_root.created_time.split(/[.]|T/)[0] + ' ' + item.comment_root.created_time.split(/[.]|T/)[1] }} 
                       <i :class="[ item.comment_root.is_like === 1 ? 'liked-model' : 'common-model' ]"
@@ -119,17 +119,17 @@
                     <!-- 遍历当前一级评论的二级评论列表 -->
                     <div class="child-comments" v-for="(child,childIndex) in item.child_list"
                       :key="'child_' + childIndex">
-                      <!-- TODO: 在这里加入跳转路由 child.user_id -->
-                      <img class="child-avatar" :src="child.avatar_url" alt="">
+                      <!-- 在这里加入跳转路由 child.user_id -->
+                      <router-link :to="'/OthersHomePage/Main/'+child.user_id"><img class="child-avatar" :src="child.avatar_url" alt=""/></router-link>
                       <div class="child-user-info">
                         <div class="child-comment-info">
                           <!-- <span class="child-name">{{ child.username }}</span> -->
                           <!-- <a class="name-jump-space" href="#">{{ child.username }}</a> -->
-                          <!-- TODO: 在这里加入跳转路由 child.user_id -->
-                          <span class="name-jump-space" >{{ child.username }}</span>
+                          <!-- 在这里加入跳转路由 child.user_id -->
+                          <span class="name-jump-space" ><router-link :to="'/OthersHomePage/Main/'+ child.user_id">{{ child.username }}</router-link></span>
                           <!-- <span class="child-comment"><span class="reply-name">{{ '回复 @' + child.reply_username + '：' }}</span>{{ child.content }}</span> -->
-                          <!-- TODO: 在这里  加入跳转路由 replyInfo.replyUserId -->
-                          <span class="child-comment">回复 <span class="reply-name">@{{child.reply_username}}：</span>{{ child.content }}</span>
+                          <!-- TODO: 在这里  加入跳转路由 child.reply_user_id -->
+                          <span class="child-comment">回复 <span class="reply-name"><router-link :to="'/OthersHomePage/Main/'+ child.reply_user_id">@{{child.reply_username}}：</router-link></span>{{ child.content }}</span>
                         </div>
                         <div class="child-time">{{ child.created_time.split(/[.]|T/)[0] + ' ' + child.created_time.split(/[.]|T/)[1] }} 
                           <i :class="[ child.is_like === 1 ? 'liked-model' : 'common-model' ]"
@@ -264,7 +264,8 @@
 					comment: ''
 				},
         // TEST_JWT: null,
-        TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpc1N1cGVyQWRtaW4iOnRydWV9.ZJoduPgGiwUKhO3lnpePR5PQgf49wfc4sgxFPgQHH14',
+        // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpc1N1cGVyQWRtaW4iOnRydWV9.ZJoduPgGiwUKhO3lnpePR5PQgf49wfc4sgxFPgQHH14',
+        TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1MCwiaXNTdXBlckFkbWluIjpmYWxzZX0.RycUhwt145ZMLtR_9qvRoLotuS8SbKOvCcfIYabsOGE',
         // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU'
       }
     },
@@ -295,10 +296,7 @@
           jwt = JSON.parse(loginMessage).JWT;
           this.isLogined = true;
         }
-        //#region 调试逻辑，要删除
-        this.isLogined = true;
-        jwt = this.TEST_JWT;
-        //#endregion
+        
         formData.append("JWT", jwt);
         this.$axios({
           method: 'post',
@@ -368,10 +366,7 @@
           jwt = JSON.parse(loginMessage).JWT;
           this.isLogined = true;
         }
-        //#region 调试逻辑，要删除
-        this.isLogined = true;
-        jwt = this.TEST_JWT;
-        //#endregion
+        console.log("当前用户的JWT是："+jwt);
         formData.append("JWT", jwt);
         // elementUI加载实例
         let loadingInstance = this.$loading({
@@ -431,11 +426,6 @@
           this.isLogined = true;
         }
         let videoId = this.videoInfo.id;
-        //#region 调试逻辑，要删除
-        this.isLogined = true;
-        // jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU';
-        jwt = this.TEST_JWT;
-        //#endregion
 
         formData.append("JWT", jwt);
         formData.append("video_id", videoId);
@@ -475,11 +465,6 @@
           this.isLogined = true;
         }
         let videoId = this.videoInfo.id;
-        //#region 调试逻辑，要删除
-        this.isLogined = true;
-        jwt = this.TEST_JWT;
-        //#endregion
-
         formData.append("JWT", jwt);
         formData.append("video_id", videoId);
 
@@ -540,10 +525,7 @@
           jwt = JSON.parse(loginMessage).JWT;
           this.isLogined = true;
         }
-        //#region 调试逻辑，要删除
-        this.isLogined = true;
-        jwt = this.TEST_JWT;
-        //#endregion
+        
         formData.append("JWT", jwt);
 
 				if (type === 'reply') {// 二级评论
@@ -618,10 +600,7 @@
           jwt = JSON.parse(loginMessage).JWT;
           this.isLogined = true;
         }
-        //#region 调试逻辑，要删除
-        this.isLogined = true;
-        jwt = this.TEST_JWT;
-        //#endregion
+        
         formData.append("JWT", jwt);
         formData.append("comment_id", commentId);
 
@@ -663,10 +642,7 @@
           jwt = JSON.parse(loginMessage).JWT;
           this.isLogined = true;
         }
-        //#region 调试逻辑，要删除
-        this.isLogined = true;
-        jwt = this.TEST_JWT;
-        //#endregion
+        
         formData.append("JWT", jwt);
         formData.append("comment_id", commentId);
         let LIKE_URL = '';
@@ -962,6 +938,7 @@
 }
     /* 单条 一级评论 的评论正文 和 若干条二级评论 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-content {
+    font-size: 14px;
     margin: 10px 0;
 }
 
@@ -991,6 +968,14 @@
     color: #00a1d6;
     cursor: pointer;
 }
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name-jump-space a:hover {
+    color: #00a1d6;
+    cursor: pointer;  
+}
+.router-active-class-1{
+    color: #00a1d6;
+    cursor: pointer;
+}
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time {
     font-size: 12px;
@@ -1005,6 +990,7 @@
     height: 14px;
     vertical-align: text-top;
     margin-right: 5px;
+    /* margin-right: 3px; */
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
     /* background: url('../assets/image/video/milimili-icon-elf.png') no-repeat; */
@@ -1021,6 +1007,7 @@
     height: 14px;
     vertical-align: text-top;
     margin-right: 5px;
+    /* margin-right: 3px; */
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
     /* background: url('../assets/image/video/milimili-icon-elf.png') no-repeat; */
@@ -1074,9 +1061,10 @@
 } */
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment {
+    font-size: 14px;
     margin-left: 10px;
 }
-
+/* 二级评论 回复的用户的昵称 通过路由点击事件 跳转个人空间的样式  */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name {
     margin-right: 5px;
 }
@@ -1084,7 +1072,10 @@
     color: #f25d8e;
     cursor: pointer;
 }
-
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name a:hover {
+    color: #f25d8e;
+    cursor: pointer;
+}
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time {
     margin-top: 10px;
