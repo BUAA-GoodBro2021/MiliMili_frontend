@@ -424,6 +424,10 @@
         if ( loginMessage != null){
           jwt = JSON.parse(loginMessage).JWT;
           this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
         }
         let videoId = this.videoInfo.id;
 
@@ -463,6 +467,10 @@
           jwt = JSON.parse(loginMessage).JWT;
           console.log("正确获得jwt")
           this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
         }
         let videoId = this.videoInfo.id;
         formData.append("JWT", jwt);
@@ -524,6 +532,10 @@
         if ( loginMessage != null){
           jwt = JSON.parse(loginMessage).JWT;
           this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
         }
         
         formData.append("JWT", jwt);
@@ -599,6 +611,10 @@
         if ( loginMessage != null){
           jwt = JSON.parse(loginMessage).JWT;
           this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
         }
         
         formData.append("JWT", jwt);
@@ -641,6 +657,10 @@
         if ( loginMessage != null){
           jwt = JSON.parse(loginMessage).JWT;
           this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
         }
         
         formData.append("JWT", jwt);
