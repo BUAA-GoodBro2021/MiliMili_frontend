@@ -17,9 +17,13 @@
           <div class="icon-item">
             <!-- 获取是否点赞，并在点击时切换状态和更新数量 -->
             <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
-              src="../../assets/video/icon_01.png" alt="">
+              src="../../src/assets/image/video/icon_01.png" alt="">
+            <!-- <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
+              src="../../assets/video/icon_01.png" alt=""> -->
             <img v-else class="img active" @click="postDisLike"
-              src="../../assets/video/icon_01_active.png" alt="">
+              src="../../src/assets/image/video/icon_01_active.png" alt="">
+            <!-- <img v-else class="img active" @click="postDisLike"
+              src="../../assets/video/icon_01_active.png" alt=""> -->
             {{ videoInfo.like_num }}
           </div>
           <!-- <div class="icon-item">
@@ -100,10 +104,13 @@
                   -->
                 <div class="comment-in">
                   <!-- 发出一级评论 用户的头像 -->
+                  <!-- TODO: 在这里加入跳转路由 -->
                   <img class="avatar" :src="item.comment_root.avatar_url" alt="">
                   <!-- 一级评论的正文 -->
                   <div class="comment-right">
-                    <div class="name">{{ item.comment_root.username }}</div>
+                    <!-- TODO: 在这里加入跳转路由 -->
+                    <!-- <div class="name">{{ item.comment_root.username }}</div> -->
+                    <div class="name-jump-space" >{{ item.comment_root.username }}</div>
                     <div class="comment-content">{{ item.comment_root.content }}</div>
                     <div class="time">{{ item.comment_root.created_time.split(/[.]|T/)[0] + ' ' + item.comment_root.created_time.split(/[.]|T/)[1] }} 
                       <i :class="[ item.comment_root.is_like === 1 ? 'liked-model' : 'common-model' ]"
@@ -119,9 +126,12 @@
                         alt="">
                       <div class="child-user-info">
                         <div class="child-comment-info">
-                          <span class="child-name">{{ child.username }}</span>
-                          <!-- <a class="child-name" href="javascript:;">{{ child.username }}</a> -->
-                          <span class="child-comment"><span class="reply-name">{{ '回复 @' + child.reply_username + '：' }}</span>{{ child.content }}</span>
+                          <!-- <span class="child-name">{{ child.username }}</span> -->
+                          <!-- <a class="name-jump-space" href="#">{{ child.username }}</a> -->
+                          <span class="name-jump-space" >{{ child.username }}</span>
+                          <!-- TODO: 在这里加入跳转路由 -->
+                          <!-- <span class="child-comment"><span class="reply-name">{{ '回复 @' + child.reply_username + '：' }}</span>{{ child.content }}</span> -->
+                          <span class="child-comment">回复 <span class="reply-name">@{{child.reply_username}}：</span>{{ child.content }}</span>
                         </div>
                         <div class="child-time">{{ child.created_time.split(/[.]|T/)[0] + ' ' + child.created_time.split(/[.]|T/)[1] }} 
                           <i :class="[ child.is_like === 1 ? 'liked-model' : 'common-model' ]"
@@ -949,6 +959,9 @@
     display: block;
     border-radius: 50%;
 }
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .avatar:hover{
+    cursor: pointer;
+}
     /* 单条 一级评论 的评论正文 和 若干条二级评论 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-content {
     margin: 10px 0;
@@ -964,9 +977,21 @@
     border-bottom: 1px solid #e5e9ef;
 } */
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name {
+/* .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name {
     font-size: 14px;
     color: #74797A;
+} */
+
+/*一级/二级评论的昵称(由于都在.comment-right 下，直接复用) 通过路由点击事件 跳转个人空间的样式  */
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name-jump-space {
+    font-size: 14px;
+    font-weight: bold;
+    color: #74797A;
+    text-decoration: none;
+}
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name-jump-space:hover {
+    color: #00a1d6;
+    cursor: pointer;
 }
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time {
@@ -974,6 +999,7 @@
     /* color: #666666; */
     color: #99A2AA;
 }
+
       /*  #region IMPORTANT 一级评论点赞图标样式位置 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time .common-model{
     display: inline-block;
@@ -983,7 +1009,8 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
+    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    /* background: url('../../assets/video/milimili-icon-elf.png') no-repeat; */
     background-position: -153px -25px;
     cursor: pointer;
 }
@@ -998,7 +1025,8 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
+    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    /* background: url('../../assets/video/milimili-icon-elf.png') no-repeat; */
     background-position: -154px -89px;
     cursor: pointer;
 }
@@ -1021,12 +1049,15 @@
     display: flex;
     padding: 10px 0;
 }
-
+    /* 单条 二级评论 的头像 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-avatar {
     width: 30px;
     height: 30px;
     display: block;
     border-radius: 50%;
+}
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-avatar:hover {
+    cursor: pointer;
 }
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info {
@@ -1039,11 +1070,10 @@
     /* align-items: center; */
 }
 
-.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-name {
-    /* position: relative; */
+/* .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-name {
     font-size: 14px;
     color: #74797A;
-}
+} */
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment {
     margin-left: 10px;
@@ -1052,6 +1082,11 @@
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name {
     margin-right: 5px;
 }
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name:hover {
+    color: #f25d8e;
+    cursor: pointer;
+}
+
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time {
     margin-top: 10px;
@@ -1068,7 +1103,8 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
+    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    /* background: url('../../assets/video/milimili-icon-elf.png') no-repeat; */
     background-position: -153px -25px;
     cursor: pointer;
 }
@@ -1083,7 +1119,8 @@
     margin-right: 5px;
     margin-left: 15px;
     /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
+    background: url('../assets/image/video/milimili-icon-elf.png') no-repeat;
+    /* background: url('../../assets/video/milimili-icon-elf.png') no-repeat; */
     background-position: -154px -89px;
     cursor: pointer;
 }
