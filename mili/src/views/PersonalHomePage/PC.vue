@@ -158,8 +158,7 @@ export default {
   color: #46c1fa;
 }
 
-
-#body {
+#PC_main {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;
