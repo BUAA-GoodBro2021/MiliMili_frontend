@@ -33,7 +33,7 @@
           <div class="empty" v-if="videoDetail.length == 0">
             <span class="empty_title"> 哈哈没活啦！</span>
           </div>
-          <div class="video_wrap" v-if="videoDetail.length != 0">
+          <div class="video_wrap" v-show="videoDetail.length != 0">
             <div class="video_title">
               <el-button type="danger" @click="refuse()" class="title_right"
                 >拒绝</el-button
@@ -46,7 +46,7 @@
               }}</span>
             </div>
             <div id="video_detail">
-              <div id="vs"></div>
+              
             </div>
           </div>
         </el-tab-pane>
@@ -368,24 +368,24 @@ export default {
         });
     },
     handleClick(tab, event) {
-      console.log(tab, event);
+      var wrap = document.getElementById("video_detail");
+      console.log(wrap)
       if (tab.name == "1") {
         console.log("change to one");
-        var wrap = document.getElementById("video_detail");
-        if (document.getElementById("vs")) {
+        if (document.getElementById("vs") != null) {
           var video = document.getElementById("vs");
           wrap.removeChild(video);
         }
         this.getVideoList(0);
       } else {
-        console.log("change to two");
-        var wrap = document.getElementById("video_detail");
         if (tab.name == "3") {
+          console.log("change to three");
           var child = document.createElement("div");
           child.setAttribute("id", "vs");
           wrap.appendChild(child);
         } else {
-          if (document.getElementById("vs")) {
+          console.log("change to two");
+          if (document.getElementById("vs") != null) {
             var video = document.getElementById("vs");
             wrap.removeChild(video);
           }
