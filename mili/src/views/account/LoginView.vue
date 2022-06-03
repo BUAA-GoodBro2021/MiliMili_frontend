@@ -202,7 +202,7 @@ export default {
       });
     },
     register() {
-      this.$refs["form"].validate((validate, failedMessage) => {
+      this.$refs["formR"].validate((validate, failedMessage) => {
         if (validate) {
           this.$axios({
             method: "post",
