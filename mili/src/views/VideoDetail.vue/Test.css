@@ -1,0 +1,199 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+/* 下面的代码既可以解决外边距重叠
+    又可以解决高度塌陷
+*/
+.clearfix::before,
+.clearfix::after{
+    content: '';
+    display: table;
+    clear: both;
+}
+/* html{
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+} */
+/* 
+body{
+    margin: 0;
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #222;
+    background-color: #fff;
+} */
+
+
+.bili-dialog-m{
+    background: rgba(0, 0, 0, 0.65);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10102;
+}
+
+.bili-dialog-bomb{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    box-sizing: border-box;
+    margin-bottom: 50px;
+}
+
+.collection-m{
+    width: 420px;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.collection-m .title{
+    position: relative;
+    padding: 0 20px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    color: #222;
+    border-bottom: 1px solid #e5e9ef;
+    text-align: center;
+}
+
+.collection-m .title .close {
+    position: absolute;
+    right: 20px;
+    line-height: 50px;
+    width: 12px;
+    height: 50px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAAXNSR0IArs4c6QAAAN1JREFUKBWdkjEOwjAMRe30QlyBMyBlAbFVlRBHQLCAOAFDK8FSugTYWRAn4EiNiVNcNSVlwIubH7/Y+SnAv1GU5pFXt/EvvqjMKC/Ni4hQcSGpZAu2NkMgA2DhrhD2iEgop3vAgaASnU0nT9EFQIRlOtNX1luIF30wBnxBXdCNsQGidbcD73MEnRoJoDhfFmTp4C68S+d6Jbpkb4QsOPuRXAcGLEIWMyeAgjtwB2dKzNV2vAD4uMSd++aw5qEhgAs4+qAfjywcYy41CIB/Nx61rk/8R3i9/ZCqgSx1bzXyhJUvBN//AAAAAElFTkSuQmCC) no-repeat center;
+    cursor: pointer;
+}
+
+.collection-m .content{
+    padding: 0 36px;
+    height: 300px;
+    /* overflow: auto 的效果是：
+    如果父元素尺寸小于子元素，那么会以父元素为可见区域创建滚动条，
+    子元素进行滚动，滚动时只会显示出父元素的大小
+    */
+    overflow: auto;
+}
+
+.collection-m .content .group-list {
+    max-height: 300px;
+    padding-bottom: 14px;
+}
+.collection-m .content .group-list ul{
+    position: relative;
+    margin-top: 24px;
+    min-height: 210px;
+    list-style: none;
+    outline: none;
+}
+.collection-m .content .group-list li{
+    padding-bottom: 24px;
+    font-size: 14px;
+    color: #222;
+    cursor: pointer;
+}
+.collection-m .content .group-list li:hover{
+    color: #00a1d6;
+}
+
+.collection-m .content .group-list li label{
+    cursor: pointer;
+    display: block;
+}
+.collection-m .content .group-list li label input{
+    box-sizing: border-box;
+    padding: 0;
+    
+    font-size: 18px;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+    vertical-align: middle;
+    display: none;
+}
+
+.collection-m .content .group-list li label input + i{  /* 兄弟元素选择器 */
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 18px;
+    vertical-align: middle;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAMZJREFUOBFjZACCY8cuSP/4+6ebkYHB4T8DgyRIjFgA1PMcqOcABzNLqZWVwVNGkGE///45w8DANIGZ898iOxOT58QaBlJ36MwZyb/fmeIYGP4VsDOzmDDuO3xmGSMD00VHW6NOUgxCV7v/8Lny/wz/9JlA3gS5DF0BqXyQGSCzGIAuBAYBdQDILCbqGIUwZdRARFiQyxoNQ3JDDqFvCIQhqDwDFUEIR5PHApkBMosJVDhCyjPyDILpApkBMov6BSzIBmpWAQCEVFxRmF8CTgAAAABJRU5ErkJggg==);
+}
+.collection-m .content .group-list li label input:hover + i {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAL5JREFUOBFjZACBVTelGb7/62ZgZHBg+P9fEixGLMHI+JzhP8MBBk6mUoYw9aeMEMP+nmFgYpgANGMRQ6zWc2LNAqtbfA3kgDiGfwwFDJzMJowMC68vY2D6fxFoUCdJBqErXnytnOEfoz4T2Jsgl1EOFkHMWnjtP+VmQU0AmsVENcOgBo0aSHmIjobhyAhDUHkGKYIo8y/IDKBZTODCEVSeUQ7iQGaxgEva78ACdvE1kJEUFrBMwAIWBKhYBQAAjRZDKb7Y9b8AAAAASUVORK5CYII=);
+}
+.collection-m .content .group-list li label input:checked + i,
+.collection-m .content .group-list li label input:checked:hover + i{/* 这里一定要加上，否则就会在选中的情况下，如果触发了hover，依然会是hover的样式 */
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAeJJREFUOBGtlEsvA1EUx/932ppqGtUKiVdFRaQSsbITQYsFiS9g5RvYdG/rWxCJWEpIvFmIjYV0UxKPaIkmNFUqqi/j3Dud1nikU9xF5/bO/f/OOf879zDwsXjWgnxuDgyDUJRGsWb0h7EoFOzDZA5gqvOGqbBskPQuo4wf9sVhsvRKIrO/w3gMF2dJoswfQla8TJZJFXtWiNJTK2PG60K9bCrFJf/NpX/GZ/5GG1aHWyGbJPQ4ZUwfRotiqTgzOOlvqMbKkArjkng6r1NWBOyrs2KNMrOZVdlRLIXZYOx3wF4qbcPvRk2V6lkw/oqx7QiSubfKgV5HFbZG3HAWDuAkkcbIVgQPGT2Mk3Uld5PwdNKDdV9r8fQ67BZsE6zeqp7fRTIDP8HuP3mnpakDjrfY0eWQMdZsFxnxMndG29Bks4j9kecsfJth3KZymv7Lk2E+pGirHsrmeKK96JOiKGCMidfRlywGNsI4T2a17d8+dRleUgbju9d4KRitwWKvOVFmORiPoAPyhYO7FCb3rpHOq4YnMnlxAKHHDH9dduhK/ribX60J8nT56gk8c6ODYeHk9rf3+UsQ6o3UHKg5/tcgliQ6LV3Jf2BSgzUHJN62eacF2BJ9I6W2YTSC0JCWM4j1DpU/mpmyFApZAAAAAElFTkSuQmCC);
+}
+
+.collection-m .content .group-list li .fav-title {
+    max-width: 220px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.collection-m .content .group-list li label .count {
+    float: right;
+    color: #6d757a;
+    font-size: 12px;
+}
+
+.collection-m .content .group-list .add-group {
+    margin-bottom: 5px;
+    width: 348px;
+}
+
+.collection-m .content .group-list .add-group .add-btn {
+    height: 34px;
+    line-height: 34px;
+    padding: 0 34px;
+    border: 1px solid #ccd0d7;
+    border-radius: 4px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAC5JREFUKBVjYMABZi5a9R+EcUgzMOGSICQ+EjQy4gs5fAFEduDgNHQ0HhnIT6sAudAOjNLnY/wAAAAASUVORK5CYII=) no-repeat 10px center;
+    font-size: 12px;
+    color: #6d757a;
+    cursor: pointer;
+}
+
+.collection-m .content .group-list .add-group .add-btn:hover {
+    border: 1px solid #00a1d6;
+}
+
+.collection-m .bottom {
+    height: 76px;
+    text-align: center;
+    margin: 0 36px;
+    border-top: 1px solid #e5e9ef;
+}
+.collection-m .bottom .btn-fav{
+    font-size: 14px;
+    width: 160px;
+    height: 40px;
+    margin-top: 18px;
+    background: #00a1d6;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+.collection-m .bottom .btn-fav:hover{
+    background: #00b5e5;
+}
+.collection-m .bottom .btn-fav.disable {
+    background-color: #e5e9ef;
+    color: #b8c0cc;
+}

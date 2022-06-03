@@ -3,6 +3,9 @@
 	<div class="video-detail-wrap">			
     <!-- 视频+视频交互组件+弹幕发送 -->
     <div class="video-content">
+
+
+      <!-- 左侧的视频主体+评论列表 -->
       <div class="content-left">
         <h1 class="title">{{ videoInfo.video_url ? videoInfo.title : '' }}</h1>
         <!-- <div class="play-info">68.7万播放 · 1641弹幕 2021-09-02 13:54:26</div> -->
@@ -32,14 +35,22 @@
             {{ coins.count || coins.count == 0 ? coins.count : 0 }}
           </div> -->
 
-          <!-- <div class="icon-item"> -->
+          <div class="icon-item">
             <!-- 获取是否收藏，并在点击时切换状态和更新数量 -->
-            <!-- <img class="img" v-if="!collections.like" @click="postCollections" -->
-              <!-- src="../../assets/image/video/icon_03.png" alt=""> -->
-            <!-- <img class="img" v-else @click="postCollections" -->
-              <!-- src="../../assets/image/video/icon_03_active.png" alt=""> -->
-            <!-- {{ collections.count }} -->
-          <!-- </div> -->
+            <!-- <img class="img" v-if="!collections.like" @click="postCollections"
+              src="../../assets/video/icon_03.png" alt="">
+            <img class="img" v-else @click="postCollections"
+              src="../../assets/video/icon_03_active.png" alt="">
+            {{ collections.count }} -->
+
+            <!-- <img class="img" @click="showTheCollectionWindow = true" src="../../assets/video/icon_03.png" alt=""/> -->
+            <img v-if="boolSymbol.isCollectted === 0" class="img" @click="openCollectionWindow" 
+              src="../../assets/video/icon_03.png" alt=""/>
+            <img v-else class="img" @click="openCollectionWindow" 
+              src="../../assets/video/icon_03_active.png" alt=""/>
+          </div>
+          
+          
           <!-- 留着后续功能开发 -->
           <!-- <div class="icon-item">
             <img class="img" src="../../assets/image/video/icon_04.png" alt="">
@@ -173,7 +184,7 @@
         </div>
       </div>
 
-      <!-- 右侧的弹幕列表 -->
+      <!-- 右侧的弹幕列表+推荐视频列表 -->
       <div class="content-right">
         <div class="danmu-list-wrap">
           <div class="danmu-list-header">
@@ -196,6 +207,56 @@
             </table>
           </div>
 
+        </div>
+      </div>
+
+      <!-- 收藏悬浮窗口 -->
+      <div class="bili-dialog-m" v-if="showTheCollectionWindow === true">
+        <div class="bili-dialog-bomb">
+          <div class="collection-m">
+            <div class="title">
+              添加到收藏夹
+              <!-- 关闭收藏的悬浮窗口 -->
+              <i class="close" @click="showTheCollectionWindow = false"></i>
+            </div>
+            <div class="content">
+              <div class="group-list">
+                <ul>
+                  <!-- <li>
+                    <label>
+                      <input type="checkbox"/>
+                      <i></i>
+                      <span title="默认收藏夹" class="fav-title">默认收藏夹</span>
+                      <span class="count">238</span>
+                    </label>
+                  </li> -->
+                  
+                  <!-- 
+                    这里采用一个额外的字段 updating_collection 去记录用户改变的收藏关系，
+                    updating_collection 原本和 is_collect 是一致的，当用户改变勾选框的状态时，
+                    它代替is_collect 记录 更新后的勾选框的选中状态。
+                    最终借由遍历一次收藏夹，比较 is_collect 和 updating_collection 的一致性来完成
+                    收藏关系的更新维护。
+                   -->
+                  <li v-for="(item, index) in collectionList" :key="index">
+                    <label>
+                      <input type="checkbox" :checked="item.is_collect===1" @change="item.updating_collection = 1-item.updating_collection"/>
+                      <i></i>
+                      <span :title="item.title" class="fav-title">{{item.title}}</span>
+                      <span class="count">{{item.video_num}}/1000</span>
+                    </label>
+                  </li>
+                </ul>
+
+                <div class="add-group clearfix">
+                    <div class="add-btn">新建收藏夹</div>
+                </div>
+              </div>
+            </div>
+            <div class="bottom">
+                <button class="btn-fav" @click="updateCollectionRelations">确定</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -248,6 +309,64 @@
           isCollectted: 0,
         },
 
+        // 收藏窗口是否展示
+        showTheCollectionWindow: false,
+        // showTheCollectionWindow: true,
+        // 即将增加收藏关系的 收藏夹id数组
+        addCollectionRelationArray: '',
+        // 即将删除收藏关系 收藏夹id数组
+        deleteCollectionRelationArray: '',
+        collectionList:[
+          // {
+          //   id: "1",
+          //   title: "自定义收藏夹1号",
+          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+          //   is_collect: 0,
+          //   updating_collection: 0,
+          //   video_num: 12
+          // },
+          // {
+          //   id: "2",
+          //   title: "自定义收藏夹2号",
+          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+          //   is_collect: 1,
+          //   updating_collection: 1,
+          //   video_num: 4
+          // },
+          // {
+          //   id: "3",
+          //   title: "自定义收藏夹3号",
+          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+          //   is_collect: 0,
+          //   updating_collection: 0,
+          //   video_num: 56
+          // },
+          // {
+          //   id: "4",
+          //   title: "自定义收藏夹4号",
+          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+          //   is_collect: 1,
+          //   updating_collection: 1,
+          //   video_num: 6
+          // },
+          // {
+          //   id: "5",
+          //   title: "自定义收藏夹5号",
+          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+          //   is_collect: 0,
+          //   updating_collection: 0,
+          //   video_num: 1
+          // },
+          // {
+          //   id: "6",
+          //   title: "自定义收藏夹6号",
+          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+          //   is_collect: 0,
+          //   updating_collection: 0,
+          //   video_num: 6
+          // },  
+        ],
+
         // 一个视频的总评论数目（包括一二级）
         totalCommentsNum: 0,
         // 视频一级评论列表
@@ -274,6 +393,130 @@
       this.getCurrentUserSimpleInfo();
     },
     methods: {
+      async openCollectionWindow(){
+        await this.getCollections();
+        await this.openCollectionWindowStatus();
+      },
+      async openCollectionWindowStatus(){
+        this.showTheCollectionWindow = true;
+      },
+      /**
+       * 获取 当前用户 对 该视频 的收藏详情
+       * !!!不可以放在created生命周期里
+       */
+      async getCollections(){
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        let videoId = this.videoInfo.id;
+
+        formData.append("JWT", jwt);
+        formData.append("video_id", videoId);
+
+        this.$axios({
+          method: 'post',
+          url: 'https://milimili.super2021.com/api/video/favorite-simple-list',
+          data: formData,
+        })
+        .then(res => {          
+          console.log(res);
+          switch (res.data.result) {
+            case 1:
+              this.$message.success("获取 当前用户 对 该视频 的收藏详情成功！");
+              /* 获取 当前用户 对 该视频 的收藏详情 */
+              this.collectionList = res.data.favorite_list_simple;
+            break;
+            
+            default:
+              this.$message.warning("获取 当前用户 对 该视频 的收藏详情失败！");              
+              break;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      },
+
+      async updateCollectionRelations(){
+        // 先关掉窗口
+        this.showTheCollectionWindow = false;
+
+        let len = this.collectionList.length;
+        let i = 0;
+        for (i = 0; i < len; i++){
+          if (this.collectionList[i].is_collect !== this.collectionList[i].updating_collection){
+            if (this.collectionList[i].is_collect===0 && this.collectionList[i].updating_collection===1){
+              this.addCollectionRelationArray = this.addCollectionRelationArray + this.collectionList[i].id + ' ';
+            }
+            else if (this.collectionList[i].is_collect===1 && this.collectionList[i].updating_collection===0){
+              this.deleteCollectionRelationArray = this.deleteCollectionRelationArray + this.collectionList[i].id + ' ';
+            }
+            else{
+              this.$message.warning("收藏逻辑有误！！！请检查");
+            }
+          }
+        }
+        //#region 测试部分，可删
+        console.log('要新增的收藏夹id');
+        console.log(this.addCollectionRelationArray);
+        console.log('要删除的收藏夹id');
+        console.log(this.deleteCollectionRelationArray);
+        //#endregion
+
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        let videoId = this.videoInfo.id;
+
+        formData.append("JWT", jwt);
+        formData.append("video_id", videoId);
+        formData.append("collect_id_list", this.addCollectionRelationArray);
+        formData.append("not_collect_id_list", this.deleteCollectionRelationArray);
+        this.$axios({
+          method: 'post',
+          url: 'https://milimili.super2021.com/api/video/collect-action',
+          data: formData,
+        })
+        .then(res => {    
+          console.log('???');      
+          console.log(res);
+          switch (res.data.result) {
+            case 1:
+              this.$message.success("更新收藏详情成功！");
+              // 无论成败，临时数组必须清空
+              this.boolSymbol.isCollectted = res.data.is_collect;
+              this.addCollectionRelationArray = '';
+              this.deleteCollectionRelationArray = '';
+            break;
+            
+            default:
+              this.$message.warning("更新收藏详情详情失败！"); 
+              // 无论成败，临时数组必须清空
+              this.addCollectionRelationArray = '';
+              this.deleteCollectionRelationArray = '';             
+              break;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      },
       /**
        * 优雅地显示数量
        * @param {int} number 
@@ -307,13 +550,13 @@
           console.log(res);
           switch (res.data.result) {
             case 1:{
-              this.$message.success("获取当前操作用户简要信息成功！");
+              this.$message.success("获取当前操作用户简要信息成功！");/* CAN_BE_Annotated */
               this.currentUserSimpleInfo.currentUserName = res.data.user.username;
               this.currentUserSimpleInfo.currentUserAvatar = res.data.user.avatar_url;
               break;
             }
             default:
-              this.$message.warning("获取当前操作用户简要信息失败！");
+              this.$message.warning("获取当前操作用户简要信息失败！");/* CAN_BE_Annotated */
               break;
           }
         })
@@ -924,7 +1167,7 @@
 
     /* #endregion */
 
-    /* #region  评论区 */
+    /* #region  评论主题区域 */
 .video-detail-wrap .video-content .content-left .comment-wrap {
     width: 100%;
 }
@@ -1146,8 +1389,188 @@
     color: #fff;
     background-color: #666666;
 }
-/* #endregion */
+    /* #endregion */
 
+  /* #endregion 评论区域结束*/
+
+/* #endregion 左侧容器部分结束*/
+
+
+/* #region 收藏浮窗部分 */
+.bili-dialog-m{
+    background: rgba(0, 0, 0, 0.65);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10102;
+}
+
+.bili-dialog-bomb{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    box-sizing: border-box;
+    margin-bottom: 50px;
+}
+
+.collection-m{
+    width: 420px;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.collection-m .title{
+    position: relative;
+    padding: 0 20px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    color: #222;
+    border-bottom: 1px solid #e5e9ef;
+    text-align: center;
+}
+
+.collection-m .title .close {
+    position: absolute;
+    right: 20px;
+    line-height: 50px;
+    width: 12px;
+    height: 50px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAAXNSR0IArs4c6QAAAN1JREFUKBWdkjEOwjAMRe30QlyBMyBlAbFVlRBHQLCAOAFDK8FSugTYWRAn4EiNiVNcNSVlwIubH7/Y+SnAv1GU5pFXt/EvvqjMKC/Ni4hQcSGpZAu2NkMgA2DhrhD2iEgop3vAgaASnU0nT9EFQIRlOtNX1luIF30wBnxBXdCNsQGidbcD73MEnRoJoDhfFmTp4C68S+d6Jbpkb4QsOPuRXAcGLEIWMyeAgjtwB2dKzNV2vAD4uMSd++aw5qEhgAs4+qAfjywcYy41CIB/Nx61rk/8R3i9/ZCqgSx1bzXyhJUvBN//AAAAAElFTkSuQmCC) no-repeat center;
+    cursor: pointer;
+}
+
+.collection-m .content{
+    padding: 0 36px;
+    height: 300px;
+    /* overflow: auto 的效果是：
+    如果父元素尺寸小于子元素，那么会以父元素为可见区域创建滚动条，
+    子元素进行滚动，滚动时只会显示出父元素的大小
+    */
+    overflow: auto;
+}
+
+.collection-m .content .group-list {
+    max-height: 300px;
+    padding-bottom: 14px;
+}
+.collection-m .content .group-list ul{
+    position: relative;
+    margin-top: 24px;
+    min-height: 210px;
+    list-style: none;
+    outline: none;
+}
+.collection-m .content .group-list li{
+    padding-bottom: 24px;
+    font-size: 14px;
+    color: #222;
+    cursor: pointer;
+}
+.collection-m .content .group-list li:hover{
+    color: #00a1d6;
+}
+
+.collection-m .content .group-list li label{
+    cursor: pointer;
+    display: block;
+}
+.collection-m .content .group-list li label input{
+    box-sizing: border-box;
+    padding: 0;
+    
+    font-size: 18px;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+    vertical-align: middle;
+    display: none;
+}
+
+.collection-m .content .group-list li label input + i{  /* 兄弟元素选择器 */
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 18px;
+    vertical-align: middle;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAMZJREFUOBFjZACCY8cuSP/4+6ebkYHB4T8DgyRIjFgA1PMcqOcABzNLqZWVwVNGkGE///45w8DANIGZ898iOxOT58QaBlJ36MwZyb/fmeIYGP4VsDOzmDDuO3xmGSMD00VHW6NOUgxCV7v/8Lny/wz/9JlA3gS5DF0BqXyQGSCzGIAuBAYBdQDILCbqGIUwZdRARFiQyxoNQ3JDDqFvCIQhqDwDFUEIR5PHApkBMosJVDhCyjPyDILpApkBMov6BSzIBmpWAQCEVFxRmF8CTgAAAABJRU5ErkJggg==);
+}
+.collection-m .content .group-list li label input:hover + i {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAL5JREFUOBFjZACBVTelGb7/62ZgZHBg+P9fEixGLMHI+JzhP8MBBk6mUoYw9aeMEMP+nmFgYpgANGMRQ6zWc2LNAqtbfA3kgDiGfwwFDJzMJowMC68vY2D6fxFoUCdJBqErXnytnOEfoz4T2Jsgl1EOFkHMWnjtP+VmQU0AmsVENcOgBo0aSHmIjobhyAhDUHkGKYIo8y/IDKBZTODCEVSeUQ7iQGaxgEva78ACdvE1kJEUFrBMwAIWBKhYBQAAjRZDKb7Y9b8AAAAASUVORK5CYII=);
+}
+.collection-m .content .group-list li label input:checked + i,
+.collection-m .content .group-list li label input:checked:hover + i{/* 这里一定要加上，否则就会在选中的情况下，如果触发了hover，依然会是hover的样式 */
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAeJJREFUOBGtlEsvA1EUx/932ppqGtUKiVdFRaQSsbITQYsFiS9g5RvYdG/rWxCJWEpIvFmIjYV0UxKPaIkmNFUqqi/j3Dud1nikU9xF5/bO/f/OOf879zDwsXjWgnxuDgyDUJRGsWb0h7EoFOzDZA5gqvOGqbBskPQuo4wf9sVhsvRKIrO/w3gMF2dJoswfQla8TJZJFXtWiNJTK2PG60K9bCrFJf/NpX/GZ/5GG1aHWyGbJPQ4ZUwfRotiqTgzOOlvqMbKkArjkng6r1NWBOyrs2KNMrOZVdlRLIXZYOx3wF4qbcPvRk2V6lkw/oqx7QiSubfKgV5HFbZG3HAWDuAkkcbIVgQPGT2Mk3Uld5PwdNKDdV9r8fQ67BZsE6zeqp7fRTIDP8HuP3mnpakDjrfY0eWQMdZsFxnxMndG29Bks4j9kecsfJth3KZymv7Lk2E+pGirHsrmeKK96JOiKGCMidfRlywGNsI4T2a17d8+dRleUgbju9d4KRitwWKvOVFmORiPoAPyhYO7FCb3rpHOq4YnMnlxAKHHDH9dduhK/ribX60J8nT56gk8c6ODYeHk9rf3+UsQ6o3UHKg5/tcgliQ6LV3Jf2BSgzUHJN62eacF2BJ9I6W2YTSC0JCWM4j1DpU/mpmyFApZAAAAAElFTkSuQmCC);
+}
+
+.collection-m .content .group-list li .fav-title {
+    max-width: 220px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.collection-m .content .group-list li label .count {
+    float: right;
+    color: #6d757a;
+    font-size: 12px;
+}
+
+.collection-m .content .group-list .add-group {
+    /* margin-bottom: 5px; */
+    padding-bottom: 1px;
+    width: 348px;
+}
+
+.collection-m .content .group-list .add-group .add-btn {
+    height: 34px;
+    line-height: 34px;
+    padding: 0 34px;
+    border: 1px solid #ccd0d7;
+    border-radius: 4px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAC5JREFUKBVjYMABZi5a9R+EcUgzMOGSICQ+EjQy4gs5fAFEduDgNHQ0HhnIT6sAudAOjNLnY/wAAAAASUVORK5CYII=) no-repeat 10px center;
+    font-size: 12px;
+    color: #6d757a;
+    cursor: pointer;
+}
+
+.collection-m .content .group-list .add-group .add-btn:hover {
+    border: 1px solid #00a1d6;
+}
+
+.collection-m .bottom {
+    height: 76px;
+    text-align: center;
+    margin: 0 36px;
+    border-top: 1px solid #e5e9ef;
+}
+
+.collection-m .bottom .btn-fav{
+    font-size: 14px;
+    width: 160px;
+    height: 40px;
+    margin-top: 18px;
+    background: #00a1d6;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+.collection-m .bottom .btn-fav:hover{
+    background: #00b5e5;
+}
+.collection-m .bottom .btn-fav.disable {
+    background-color: #e5e9ef;
+    color: #b8c0cc;
+}
+/* #endregion 收藏浮窗部分结束 */
 
 /* #region 右侧容器部分 */
 .video-detail-wrap .video-content .content-right {
