@@ -217,7 +217,8 @@
             <div class="title">
               添加到收藏夹
               <!-- 关闭收藏的悬浮窗口 -->
-              <i class="close" @click="showTheCollectionWindow = false"></i>
+              <!-- <i class="close" @click="showTheCollectionWindow = false"></i> -->
+              <i class="close" @click="closeCollectionWindow"></i>
             </div>
             <div class="content">
               <div class="group-list">
@@ -317,54 +318,54 @@
         // 即将删除收藏关系 收藏夹id数组
         deleteCollectionRelationArray: '',
         collectionList:[
-          // {
-          //   id: "1",
-          //   title: "自定义收藏夹1号",
-          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          //   is_collect: 0,
-          //   updating_collection: 0,
-          //   video_num: 12
-          // },
-          // {
-          //   id: "2",
-          //   title: "自定义收藏夹2号",
-          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          //   is_collect: 1,
-          //   updating_collection: 1,
-          //   video_num: 4
-          // },
-          // {
-          //   id: "3",
-          //   title: "自定义收藏夹3号",
-          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          //   is_collect: 0,
-          //   updating_collection: 0,
-          //   video_num: 56
-          // },
-          // {
-          //   id: "4",
-          //   title: "自定义收藏夹4号",
-          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          //   is_collect: 1,
-          //   updating_collection: 1,
-          //   video_num: 6
-          // },
-          // {
-          //   id: "5",
-          //   title: "自定义收藏夹5号",
-          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          //   is_collect: 0,
-          //   updating_collection: 0,
-          //   video_num: 1
-          // },
-          // {
-          //   id: "6",
-          //   title: "自定义收藏夹6号",
-          //   avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          //   is_collect: 0,
-          //   updating_collection: 0,
-          //   video_num: 6
-          // },  
+          {
+            id: "1",
+            title: "自定义收藏夹1号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 0,
+            updating_collection: 0,
+            video_num: 12
+          },
+          {
+            id: "2",
+            title: "自定义收藏夹2号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 1,
+            updating_collection: 1,
+            video_num: 4
+          },
+          {
+            id: "3",
+            title: "自定义收藏夹3号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 0,
+            updating_collection: 0,
+            video_num: 56
+          },
+          {
+            id: "4",
+            title: "自定义收藏夹4号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 1,
+            updating_collection: 1,
+            video_num: 6
+          },
+          {
+            id: "5",
+            title: "自定义收藏夹5号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 0,
+            updating_collection: 0,
+            video_num: 1
+          },
+          {
+            id: "6",
+            title: "自定义收藏夹6号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 0,
+            updating_collection: 0,
+            video_num: 6
+          },  
         ],
 
         // 一个视频的总评论数目（包括一二级）
@@ -393,56 +394,139 @@
       this.getCurrentUserSimpleInfo();
     },
     methods: {
+      /**
+       * 先获取收藏列表，再打开收藏窗口
+       */
       async openCollectionWindow(){
-        await this.getCollections();
-        await this.openCollectionWindowStatus();
+        const result1 = await this.getCollections();
+        console.log('result1 = ' + result1);
+        const result2 = await this.openCollectionWindowStatus();
+        console.log('result2 = ' + result2);
+        /**
+         * 下面的同步函数执行方式会导致，即使数据库已经更新，但是打开窗口以后，收藏夹列表还是要等一阵子才能更新，
+         * 但是此时，窗口已经开了，所以就会导致出现一个数据由旧到新的切换过程，很不雅观
+         */
+        // this.getCollections();
+        // this.openCollectionWindowStatus();
       },
+      /**
+       * 用户直接通过 点击×号关闭窗口，此时应该还原已经改变了的 updating_collection
+       * 似乎不需要，这里是保险
+       */
+      closeCollectionWindow(){
+        let len = this.collectionList.length;
+        let i = 0;
+        for (i = 0; i < len; i++){
+          if (this.collectionList[i].is_collect !== this.collectionList[i].updating_collection){
+            this.collectionList[i].updating_collection = this.collectionList[i].is_collect;
+          }
+        }
+        // 清除以后再关闭窗口
+        this.showTheCollectionWindow = false;
+      },
+
       async openCollectionWindowStatus(){
         this.showTheCollectionWindow = true;
+        return new Promise(resolve => {
+          resolve('开启收藏窗口');
+        })
       },
       /**
        * 获取 当前用户 对 该视频 的收藏详情
        * !!!不可以放在created生命周期里
+       * 这里保留一版之前的函数以供备用
        */
-      async getCollections(){
-        let formData = new FormData();
-        let loginMessage = localStorage.getItem("loginMessage");
-        let jwt = null;
-        if ( loginMessage != null){
-          jwt = JSON.parse(loginMessage).JWT;
-          this.isLogined = true;
-        }else {
-          this.$message.warning("请先登录！");
-          this.$router.push('/login');
-          return;
-        }
-        let videoId = this.videoInfo.id;
+      // async getCollections(){
+      //   let formData = new FormData();
+      //   let loginMessage = localStorage.getItem("loginMessage");
+      //   let jwt = null;
+      //   if ( loginMessage != null){
+      //     jwt = JSON.parse(loginMessage).JWT;
+      //     this.isLogined = true;
+      //   }else {
+      //     this.$message.warning("请先登录！");
+      //     this.$router.push('/login');
+      //     return;
+      //   }
+      //   let videoId = this.videoInfo.id;
 
-        formData.append("JWT", jwt);
-        formData.append("video_id", videoId);
+      //   formData.append("JWT", jwt);
+      //   formData.append("video_id", videoId);
 
-        this.$axios({
-          method: 'post',
-          url: 'https://milimili.super2021.com/api/video/favorite-simple-list',
-          data: formData,
-        })
-        .then(res => {          
-          console.log(res);
-          switch (res.data.result) {
-            case 1:
-              this.$message.success("获取 当前用户 对 该视频 的收藏详情成功！");
-              /* 获取 当前用户 对 该视频 的收藏详情 */
-              this.collectionList = res.data.favorite_list_simple;
-            break;
+      //   this.$axios({
+      //     method: 'post',
+      //     url: 'https://milimili.super2021.com/api/video/favorite-simple-list',
+      //     data: formData,
+      //   })
+      //   .then(res => {          
+      //     console.log(res);
+      //     switch (res.data.result) {
+      //       case 1:
+      //         this.$message.success("获取 当前用户 对 该视频 的收藏详情成功！");
+      //         /* 获取 当前用户 对 该视频 的收藏详情 */
+      //         this.collectionList = res.data.favorite_list_simple;
+      //       break;
             
-            default:
-              this.$message.warning("获取 当前用户 对 该视频 的收藏详情失败！");              
-              break;
+      //       default:
+      //         this.$message.warning("获取 当前用户 对 该视频 的收藏详情失败！");              
+      //         break;
+      //     }
+      //     // 这部分是为了封装成异步函数
+      //     return new Promise( resolve => {
+      //       resolve('获取收藏结束');
+      //     });
+
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   })
+      // },
+
+      async getCollections(){
+        return new Promise((resolve, reject) =>{
+          let formData = new FormData();
+          let loginMessage = localStorage.getItem("loginMessage");
+          let jwt = null;
+          if ( loginMessage != null){
+            jwt = JSON.parse(loginMessage).JWT;
+            this.isLogined = true;
+          }else {
+            this.$message.warning("请先登录！");
+            this.$router.push('/login');
+            // 这部分是为了封装成异步函数
+            reject('未登录不可以操作收藏夹');
+            return;
           }
-        })
-        .catch(err => {
-          console.log(err);
-        })
+          let videoId = this.videoInfo.id;
+
+          formData.append("JWT", jwt);
+          formData.append("video_id", videoId);
+
+          this.$axios({
+            method: 'post',
+            url: 'https://milimili.super2021.com/api/video/favorite-simple-list',
+            data: formData,
+          })
+          .then(res => {          
+            console.log(res);
+            switch (res.data.result) {
+              case 1:
+                this.$message.success("获取 当前用户 对 该视频 的收藏详情成功！");
+                /* 获取 当前用户 对 该视频 的收藏详情 */
+                this.collectionList = res.data.favorite_list_simple;
+              break;
+              
+              default:
+                this.$message.warning("获取 当前用户 对 该视频 的收藏详情失败！");              
+                break;
+            }
+            // 这部分是为了封装成异步函数
+            resolve('获取收藏结束');
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
       },
 
       async updateCollectionRelations(){
@@ -1088,6 +1172,7 @@
   margin-right: 15px;
 }
     /* #endregion */
+
 
     /* #region  一级/二级评论发布框 */
     /* 一级 */
