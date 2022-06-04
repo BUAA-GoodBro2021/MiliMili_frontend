@@ -82,7 +82,7 @@ export default {
     var that = this;
     this.$axios({
       method: "post",
-      url: "https://milimili.super2021.com/api/video/up-public-favorite",
+      url: "https://milimili.super2021.com/api/user/up-public-favorite",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
       },

@@ -56,20 +56,11 @@ export default {
       type: Object,
       default() {
         return {
-          // id: 1,
-          // watch: 3330,
-          // comments: 2357,
-          // distance: "15:07",
-          // title: "这里是标题",
-          // follow: true,
-          // sender: "Harbour",
-          // video_url: "@/assets/debug/cover1.jepg",
           id: 1,
           view_num: 3330,
           like_num: 2357,
           updated_time: "15:07",
           title: "这里是标题",
-          // follow: true,
           user: {
             username: "harboue",
           },

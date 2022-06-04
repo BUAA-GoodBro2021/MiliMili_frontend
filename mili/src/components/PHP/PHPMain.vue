@@ -48,7 +48,7 @@
             </div>
             <div class="text item">
               <span class="UserContext">UID: {{ user.id }}</span>
-              <span class="UserContext"
+              <span class="UserContext" v-if="user.birthday"
                 >生日: {{ user.birthday.substring(0, 10) }}</span
               >
               <span class="UserContext">性别: {{ user.sex }}</span>
@@ -80,7 +80,7 @@
           <!-- 间隔 -->
           <el-footer style="height: 2vh; width: 100%"></el-footer>
           <!-- 公告 -->
-          <div style="width: 49vh">
+          <!-- <div style="width: 49vh">
             <div class="NoticeTitle">公告</div>
             <div>
               <el-input
@@ -93,7 +93,7 @@
               >
               </el-input>
             </div>
-          </div>
+          </div> -->
         </div>
       </el-aside>
     </el-container>
@@ -140,7 +140,7 @@ export default {
       });
   },
   mounted() {
-    this.pagesize = 6 < VideoArray.length ? 6 : VideoArray.length;
+    this.pagesize = 6 < this.VideoArray.length ? 6 : this.VideoArray.length;
     this.topicInit(1);
   },
   watch: {
