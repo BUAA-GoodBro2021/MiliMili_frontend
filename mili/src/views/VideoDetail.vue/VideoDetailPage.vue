@@ -317,6 +317,15 @@
         addCollectionRelationArray: '',
         // 即将删除收藏关系 收藏夹id数组
         deleteCollectionRelationArray: '',
+        /**
+         * 阻止用户获取脏数据的变量，
+         *  >>>在用户成功打开一次窗口时，上锁（true）
+         *  
+         *  <<<在通过点击“叉号”退出时，立即解锁，因为并没有触发更新
+         *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
+         */
+        collectionLock: false,
+
         collectionList:[
           {
             id: "1",
@@ -398,10 +407,15 @@
        * 先获取收藏列表，再打开收藏窗口
        */
       async openCollectionWindow(){
-        const result1 = await this.getCollections();
-        console.log('result1 = ' + result1);
-        const result2 = await this.openCollectionWindowStatus();
-        console.log('result2 = ' + result2);
+        // 检查当前收藏夹浮窗是否可以打开
+        if(this.collectionLock === false){
+          const result1 = await this.getCollections();
+          console.log('result1 = ' + result1);
+          const result2 = await this.openCollectionWindowStatus();
+          console.log('result2 = ' + result2);
+        }
+        
+        
         /**
          * 下面的同步函数执行方式会导致，即使数据库已经更新，但是打开窗口以后，收藏夹列表还是要等一阵子才能更新，
          * 但是此时，窗口已经开了，所以就会导致出现一个数据由旧到新的切换过程，很不雅观
@@ -410,8 +424,9 @@
         // this.openCollectionWindowStatus();
       },
       /**
-       * 用户直接通过 点击×号关闭窗口，此时应该还原已经改变了的 updating_collection
-       * 似乎不需要，这里是保险
+       * 用户直接通过 点击×号关闭窗口，
+       *  此时应该还原已经改变了的 updating_collection  -->似乎这条不需要，这里是保险
+       *    并且应该解锁，使得用户可以再次打开该收藏窗口！
        */
       closeCollectionWindow(){
         let len = this.collectionList.length;
@@ -423,10 +438,13 @@
         }
         // 清除以后再关闭窗口
         this.showTheCollectionWindow = false;
+        // 解锁
+        this.collectionLock = false;  
       },
 
       async openCollectionWindowStatus(){
         this.showTheCollectionWindow = true;
+        this.collectionLock = true;   // 上锁
         return new Promise(resolve => {
           resolve('开启收藏窗口');
         })
@@ -528,7 +546,9 @@
           });
         });
       },
-
+      /**
+       * 更新用户的收藏夹和当前视频的交互关系
+       */
       async updateCollectionRelations(){
         // 先关掉窗口
         this.showTheCollectionWindow = false;
@@ -578,24 +598,23 @@
           data: formData,
         })
         .then(res => {    
-          console.log('???');      
+          console.log('收藏夹信息');      
           console.log(res);
           switch (res.data.result) {
             case 1:
               this.$message.success("更新收藏详情成功！");
-              // 无论成败，临时数组必须清空
               this.boolSymbol.isCollectted = res.data.is_collect;
-              this.addCollectionRelationArray = '';
-              this.deleteCollectionRelationArray = '';
             break;
             
             default:
-              this.$message.warning("更新收藏详情详情失败！"); 
-              // 无论成败，临时数组必须清空
-              this.addCollectionRelationArray = '';
-              this.deleteCollectionRelationArray = '';             
+              this.$message.warning("更新收藏详情详情失败！");           
               break;
           }
+          // 无论后端响应是否成功，都应该解锁，使得用户可以再次打开该收藏窗口！
+          this.collectionLock = false;      
+          // 无论成败，临时数组必须清空
+          this.addCollectionRelationArray = '';
+          this.deleteCollectionRelationArray = '';   
         })
         .catch(err => {
           console.log(err);
