@@ -15,66 +15,62 @@
           <div id="vs" class="vs-class"></div>
         </div>
 
-        <!-- 视频交互组件（点赞 收藏） -->
+        <!-- 视频交互组件（点赞 收藏 举报） -->
         <div class="forward-wrap">
-          <div class="icon-item">
-            <!-- 获取是否点赞，并在点击时切换状态和更新数量 -->
-            <!-- <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
-              src="../../src/assets/image/video/icon_01.png" alt=""> -->
-            <img 
-              v-if="boolSymbol.isLiked === 0"
-              class="img active"
-              @click="postLike"
-              src="@/assets/video/icon_01.png"
-              alt=""
-            />
-            <img
-              v-else
-              class="img active"
-              @click="postDisLike"
-              src="@/assets/video/icon_01_active.png"
-              alt=""
-            />
-            {{ videoInfo.like_num }}
-          </div>
-          <!-- <div class="icon-item">
-            <img class="img" v-if="!coins.like" @click="postCoins"
-              src="../../assets/image/video/icon_02.png" alt="">
-            <img class="img" v-else @click="postCoins" src="../../assets/image/video/icon_02_active.png"
-              alt="">
-            {{ coins.count || coins.count == 0 ? coins.count : 0 }}
-          </div> -->
+          <div class="tool-bar-left">
 
-          <div class="icon-item">
-            <!-- 获取是否收藏，并在点击时切换状态和更新数量 -->
-            <!-- <img class="img" v-if="!collections.like" @click="postCollections"
-              src="../../assets/video/icon_03.png" alt="">
-            <img class="img" v-else @click="postCollections"
-              src="../../assets/video/icon_03_active.png" alt="">
-            {{ collections.count }} -->
+            <div class="icon-item">
+              <!-- 获取是否点赞，并在点击时切换状态和更新数量 -->
+              <!-- <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
+                src="../../src/assets/image/video/icon_01.png" alt=""> -->
+              <img 
+                v-if="boolSymbol.isLiked === 0"
+                class="img active"
+                @click="postLike"
+                src="@/assets/video/icon_01.png"
+                alt=""
+              />
+              <img
+                v-else
+                class="img active"
+                @click="postDisLike"
+                src="@/assets/video/icon_01_active.png"
+                alt=""
+              />
+              {{ videoInfo.like_num }}
+            </div>
 
-            <!-- <img class="img" @click="showTheCollectionWindow = true" src="../../assets/video/icon_03.png" alt=""/> -->
-            <img
-              v-if="boolSymbol.isCollectted === 0"
-              class="img"
-              @click="openCollectionWindow"
-              src="../../assets/video/icon_03.png"
-              alt=""
-            />
-            <img
-              v-else
-              class="img"
-              @click="openCollectionWindow"
-              src="../../assets/video/icon_03_active.png"
-              alt=""
-            />
+            <div class="icon-item">
+              <!-- 获取是否收藏，并在点击时切换状态和更新数量 -->
+              <!-- <img class="img" v-if="!collections.like" @click="postCollections"
+                src="../../assets/video/icon_03.png" alt="">
+              <img class="img" v-else @click="postCollections"
+                src="../../assets/video/icon_03_active.png" alt="">
+              {{ collections.count }} -->
+
+              <!-- <img class="img" @click="showTheCollectionWindow = true" src="../../assets/video/icon_03.png" alt=""/> -->
+              <img
+                v-if="boolSymbol.isCollectted === 0"
+                class="img"
+                @click="openCollectionWindow"
+                src="../../assets/video/icon_03.png"
+                alt=""
+              />
+              <img
+                v-else
+                class="img"
+                @click="openCollectionWindow"
+                src="../../assets/video/icon_03_active.png"
+                alt=""
+              />
+            </div>
           </div>
 
-          <!-- 留着后续功能开发 -->
-          <!-- <div class="icon-item">
-            <img class="img" src="../../assets/image/video/icon_04.png" alt="">
-            365
-          </div> -->
+          <div class="tool-bar-right">
+            <div class="manuscript-report" @click="openComplaintWindow">
+              稿件投诉
+            </div>
+          </div>
         </div>
 
         <!-- 发送弹幕文本框 -->
@@ -225,7 +221,7 @@
         </div>
       </div>
 
-      <!-- 右侧的弹幕列表 -->
+      <!-- 右侧的UP主信息、弹幕列表和推荐视频列表 -->
       <!-- add by hb  -->
       <!-- 在弹幕的上方加上了个人信息 在弹幕的下方加上了推荐视频的列表 -->
       <!-- 右侧的弹幕列表+推荐视频列表 -->
@@ -329,6 +325,64 @@
           </div>
         </div>
       </div>
+
+      <div class="bili-dialog-m" v-if="showTheComplaintWindow === true">
+        <div class="bili-dialog-bomb">
+          <div class="appeal-box">
+            <div class="appeal-box-inner">
+              <div class="header">
+                <span class="title">稿件投诉</span>
+                <span class="close" @click="closeComplaintWindow"></span>
+              </div>
+
+              <div class="wrap">
+                <div class="container">
+                  <div class="textarea">
+                    <div class="memo">您觉得这个稿件主要有什么问题？</div>
+                    <!-- <div class="textarea-wrap">
+                      <textarea maxlength="20" placeholder="问题描述标题限定20字"></textarea>
+                      <div class="limit">0/20</div>
+                    </div> -->
+                    <el-input
+                      type="textarea"
+                      placeholder="问题描述标题限定20字"
+                      v-model="titleTextarea"
+                      maxlength="20"
+                      show-word-limit
+                    >
+                    </el-input>
+                  </div>
+
+                  <div class="textarea">
+                    <div class="memo">为帮助审核人员更快处理，请补充转载来源等和问题描述相关的详细信息。</div>
+                    <!-- <div class="textarea-wrap">
+                      <textarea maxlength="400" placeholder="详细信息限定400字"></textarea>
+                      <div class="limit">0/400</div>
+                    </div> -->
+                    <el-input
+                      type="textarea"
+                      placeholder="详细信息限定400字"
+                      v-model="descriptionTextarea"
+                      maxlength="400"
+                      show-word-limit
+                      :autosize="{ minRows: 4, maxRows: 8}"
+                    >
+                    </el-input>
+                  </div>
+                  <!-- FUTURE 如果之后投诉的时候，加图片上传，那么从这里开始 -->
+                </div>
+              </div>
+
+              <div class="submit">
+                <div class="cancel" @click="closeComplaintWindow">取消</div>
+                <div class="confirm" @click="postComplaintToVideo">提交</div>
+              </div>
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 可能需要的扩展部分 -->
@@ -393,7 +447,7 @@ export default {
       // 即将删除收藏关系 收藏夹id数组
       deleteCollectionRelationArray: '',
       /**
-       * 阻止用户获取脏数据的变量，
+       * 阻止用户获取脏数据的变量，collectionLock
        *  >>>在用户成功打开一次窗口时，上锁（true）
        *  
        *  <<<在通过点击“叉号”退出时，立即解锁，因为并没有触发更新
@@ -452,6 +506,20 @@ export default {
           },  
       ],
 
+      // 投诉窗口是否展示
+      showTheComplaintWindow: false,
+      /**
+       * 阻止用户获取脏数据的变量，complaint
+       *  >>>在用户成功打开一次窗口时，上锁（true）
+       *  
+       *  <<<在通过点击“叉号”或者点击“取消”退出时，立即解锁，因为并没有触发更新
+       *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
+       */
+      complaintLock: false,
+      titleTextarea:'',
+      descriptionTextarea:'',
+
+
       // 一个视频的总评论数目（包括一二级）
       totalCommentsNum: 0,
       // 视频一级评论列表
@@ -480,6 +548,74 @@ export default {
     this.getCurrentUserSimpleInfo();
   },
   methods: {
+      /**
+       * 打开审核浮窗
+       */
+      openComplaintWindow(){
+        if (this.complaintLock === false){
+          this.showTheComplaintWindow = true;
+          this.complaintLock = true;  // 只要开启浮窗，就对按钮上锁
+        }
+      },
+      /**
+       * 通过点击“叉号”或者点击“取消”退出时，立即解锁，因为并没有触发更新
+       */
+      closeComplaintWindow(){
+        this.showTheComplaintWindow = false;
+        this.complaintLock = false;
+        this.titleTextarea = '';
+        this.descriptionTextarea = '';
+      },
+      /**
+       * 通过点击“确定”，触发提交投诉事件
+       */
+      async postComplaintToVideo(){
+        // 立即关闭
+        this.showTheComplaintWindow = false;
+
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        let videoId = this.videoInfo.id;
+
+        formData.append("JWT", jwt);
+        formData.append("title", this.titleTextarea);
+        formData.append("description", this.descriptionTextarea);
+        formData.append("video_id", videoId);
+
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/video/complain-video",
+          data: formData,
+        })
+        .then((res) => {
+          console.log(res);
+          switch (res.data.result) {
+            case 1:
+              this.$message.success("投诉成功！您的投诉将会在7日内审理！");
+              break;
+
+            default:
+              this.$message.warning("投诉失败！离上次投诉的时间间隔小于1小时，请不要频繁投诉!");
+              break;
+          }
+          // 无论请求成败，都应该解锁按钮，清空缓存
+          this.complaintLock = false;
+          this.titleTextarea = '';
+          this.descriptionTextarea = '';
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      },
       /**
        * 先获取收藏列表，再打开收藏窗口
        */ 
@@ -1273,17 +1409,84 @@ export default {
 .video-detail-wrap .video-content .content-left .vs-class {
   width: 100%;
 }
-
+    /* #region 视频交互控件 */
 .video-detail-wrap .video-content .content-left .forward-wrap {
   /* width: 800px; */
   width: 100%;
+  /* display: flex; */ /* 这里的flex留到了左右两部分子容器再开 */
+  /* margin-top: 20px; */
+  /* padding-bottom: 10px; */
+  border-bottom: 1px solid #e5e9f0;/* #E3E5E7 */
+  /**------------- */
+  box-sizing: content-box;
+  padding-top: 16px;
+  padding-bottom: 12px;
+  height: 28px;
+  line-height: 28px;
+}
+/**
+ * 这里采用user-select: none; 使得用户无法选中 工具栏下的文本
+ * （这样用户就不能选择文本，只要点击就默认触发交互，点赞、收藏等）
+ */
+.video-detail-wrap .video-content .content-left .forward-wrap .tool-bar-left{
+  float: left;
+  position: relative;
+  user-select: none;
+  font-size: 13px;
+  color: #61666D;
+  font-family: PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif;
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
   display: flex;
-  margin-top: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e5e9f0;
+  align-items: center;
+  height: 100%;
+}
+.video-detail-wrap .video-content .content-left .forward-wrap .tool-bar-left .icon-item{
+  width: 92px;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  fill: #61666D;
+}
+.video-detail-wrap .video-content .content-left .forward-wrap .tool-bar-left .icon-item .img{
+  width: 30px;
+  height: 30px;
+  display: block;
+  margin-right: 10px;
+  cursor: pointer;
 }
 
-.video-detail-wrap .video-content .content-left .forward-wrap .icon-item {
+.video-detail-wrap .video-content .content-left .forward-wrap .tool-bar-right{
+  position: relative;
+  float: right;
+  display: flex;
+  align-items: center;
+  color: #61666D;
+  height: 100%;
+  font-size: 13px;
+}
+.video-detail-wrap .video-content .content-left .forward-wrap .tool-bar-right .manuscript-report {
+  box-sizing: content-box;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  fill: #61666D;
+  color: #61666D;
+
+  margin-right: 18px;
+}
+.video-detail-wrap .video-content .content-left .forward-wrap .tool-bar-right > div:hover {
+  color: #00AEEC;
+  fill: #00AEEC;
+}
+/* .video-detail-wrap .video-content .content-left .forward-wrap .icon-item {
   display: flex;
   align-items: center;
   font-size: 14px;
@@ -1297,7 +1500,10 @@ export default {
   display: block;
   margin-right: 10px;
   cursor: pointer;
-}
+} */
+
+    /* #endregion */
+
 /* #endregion */
 
 /* #region  评论区域 */
@@ -1684,6 +1890,7 @@ export default {
 
 /* #endregion 左侧容器部分结束*/
 
+/* #endregion 左侧容器部分结束 */
 
 /* #region 收藏浮窗部分 */
 .bili-dialog-m{
@@ -1705,7 +1912,7 @@ export default {
     box-sizing: border-box;
     margin-bottom: 50px;
 }
-
+    /* #region 收藏浮窗专属部分 */
 .collection-m{
     width: 420px;
     border-radius: 4px;
@@ -1859,9 +2066,169 @@ export default {
     background-color: #e5e9ef;
     color: #b8c0cc;
 }
+    /* #endregion 收藏浮窗专属部分结束 */
+
+    /* #region 举报浮窗专属部分 */
+.appeal-box{
+    width: 600px;
+    height: 560px;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+
+    margin: 0;
+    display: block;
+}
+.appeal-box .appeal-box-inner{
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    font-family: MicrosoftYaHei;
+}
+.appeal-box .appeal-box-inner .header{
+    position: relative;
+    width: 100%;
+    /* z-index: 100000; */
+    /* background: #fff; */
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #e5e9ef;
+    font-size: 16px;
+    text-align: center;
+}
+
+.appeal-box .appeal-box-inner .header .close{
+  /* 因为这次直接在父元素里声明了height和line-height，所以不用这里声明 */
+    position: absolute;
+    display: inline-block;
+    right: 20px;
+    top: 18px;
+    width: 13px;  /* 收藏里是12px */
+    height: 13px;
+    /* url 和 收藏不一样 */
+    background: url(data:image/svg+xml;base64,PHN2ZyBkYXRhLW5hbWU9IuWbvuWxgiAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNCAxNCI+PGRlZnM+PG1hc2sgaWQ9ImEiIHg9Ii0yIiB5PSItMiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBmaWxsPSIjZmZmIiBkPSJNLTItMmgxOHYxOEgtMnoiLz48L21hc2s+PC9kZWZzPjxnIG1hc2s9InVybCgjYSkiIGRhdGEtbmFtZT0iaWNvIGNsb3NlIj48cGF0aCBkPSJNNyA2LjI5TDEuMzUuNjVhLjUuNSAwIDAwLS43MSAwIC41LjUgMCAwMDAgLjcxTDYuMjkgNyAuNjUgMTIuNjVhLjUuNSAwIDAwLjcxLjcxTDcgNy43MWw1LjY1IDUuNjVhLjUuNSAwIDAwLjcxLS43MUw3LjcxIDdsNS42NS01LjY1YS41LjUgMCAwMDAtLjcxLjUuNSAwIDAwLS43MSAweiIgZmlsbD0iIzk5YTJhYSIvPjwvZz48L3N2Zz4=) no-repeat;
+    cursor: pointer;
+}
+.appeal-box .appeal-box-inner .header .close:hover{
+    background: url(data:image/svg+xml;base64,PHN2ZyBkYXRhLW5hbWU9IuWbvuWxgiAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNCAxNCI+PGRlZnM+PG1hc2sgaWQ9ImEiIHg9Ii0yIiB5PSItMiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBmaWxsPSIjZmZmIiBkPSJNLTItMmgxOHYxOEgtMnoiLz48L21hc2s+PC9kZWZzPjxnIG1hc2s9InVybCgjYSkiIGRhdGEtbmFtZT0iaWMgY2xvc2UgaG92ZXIiPjxwYXRoIGQ9Ik03IDYuMjlMMS4zNS42NWEuNS41IDAgMDAtLjcxIDAgLjUuNSAwIDAwMCAuNzFMNi4yOSA3IC42NSAxMi42NWEuNS41IDAgMDAuNzEuNzFMNyA3LjcxbDUuNjUgNS42NWEuNS41IDAgMDAuNzEtLjcxTDcuNzEgN2w1LjY1LTUuNjVhLjUuNSAwIDAwMC0uNzEuNS41IDAgMDAtLjcxIDB6IiBmaWxsPSIjMDBhMWQ2Ii8+PC9nPjwvc3ZnPg==) no-repeat;
+}
+
+    /* #region投诉框中间部分 */
+.appeal-box .appeal-box-inner .wrap {
+    width: 100%;
+    position: relative;
+    height: 428px;
+}
+
+.appeal-box .appeal-box-inner .container{
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    padding: 30px 40px;
+}
+
+
+
+/* .appeal-box .appeal-box-inner .question{
+    font-size: 14px;
+    color: #222;
+    margin-bottom: 18px;
+} */
+.appeal-box .appeal-box-inner .container .textarea{
+  margin-bottom: 30px;
+  /* border: 1px solid #000000; */
+}
+.appeal-box .appeal-box-inner .container .textarea .memo{
+    font-size: 14px;
+    margin-bottom: 18px;
+    color: #222222;
+}
+.appeal-box .appeal-box-inner .container .textarea .textarea-wrap{
+    width: 100%;
+    position: relative;
+}
+.appeal-box .appeal-box-inner .container .textarea .textarea-wrap textarea{
+  overflow: auto;
+    resize: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccd0d7;
+    width: 100%;
+    height: 108px;
+    font-size: 14px;
+}
+.appeal-box .appeal-box-inner .container .textarea .textarea-wrap .limit{
+    position: absolute;
+    color: #99a2aa;
+    font-size: 12px;
+    bottom: 11px;
+    right: -7px;
+}
+    /*#endregion */
+
+.appeal-box .appeal-box-inner .submit{
+    position: relative;
+    width: 100%;
+    background-color: #fff;
+    border-top: 1px solid #e5e9ef;
+    height: 80px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    text-align: center;
+}
+.appeal-box .appeal-box-inner .submit .cancel:hover {
+    color: #00a1d6;
+    border: 1px solid #00a1d6;
+}
+.appeal-box .appeal-box-inner .submit .cancel {
+  cursor: pointer;
+    font-size: 14px;
+    width: 140px;
+    background: #fff;
+    height: 40px;
+    margin-right: 20px;
+    line-height: 40px;
+    text-align: center;
+    color: #6d757a;
+    border-radius: 4px;
+    border: 1px solid #ccd0d7;
+}
+
+.appeal-box .appeal-box-inner .submit .confirm:hover {
+    background-color: #00b5e5;
+}
+.appeal-box .appeal-box-inner .submit .confirm {
+    cursor: pointer;
+    font-size: 14px;
+    width: 140px;
+    margin-right: 24px;
+    background: #00a1d6;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+    border-radius: 4px;
+}
+    /* #endregion 举报浮窗部分结束 */
 /* #endregion 收藏浮窗部分结束 */
 
-/*#endregion*/
 
 /* #region 右侧容器部分 */
 .video-detail-wrap .video-content .content-right {
