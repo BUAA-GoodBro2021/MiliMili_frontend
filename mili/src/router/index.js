@@ -164,6 +164,14 @@ const routes = [
     name: 'BlockPage',
     component: () => import('../views/HomePage/SingleBlockView.vue')
   },
+  {
+    path: '/history',
+    name: 'HistroyPage',
+    meta: {
+      requireAuth: true
+    },
+    component: () => import('../views/HomePage/WatchHistory.vue')
+  }
 ]
 
 

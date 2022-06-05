@@ -6,61 +6,71 @@
     <DynamicBanner />
     <!-- 分区总览和快捷键 -->
     <el-footer style="height: 20px; width: 100%"></el-footer>
-    <div class="blocks">
-      <div class="block_tags">
-        <div v-for="(item, index) in blocks" :key="index">
-          <!-- todo加个click跳转到对应的item路由 -->
-          <router-link :to="'/block/' + (index + 1)">
-            <el-tag
-              style="margin: 7px 20px 10px 10px; width: 90px"
-              :type="tagColor[index]"
-              >{{ item }}</el-tag
-            >
-          </router-link>
-        </div>
-      </div>
-      <div class="block_others">
-        <div class="card" style="background: #1ec1d9b1">
-          <router-link to="/upload" style="text-decoration: none">
-            <i class="el-icon-upload iconImg" />
-            <span class="text"> 上传视频</span>
-          </router-link>
-        </div>
-        <div class="card" style="background: #307ad5b1">
-          <router-link to="/PersonalHomePage" style="text-decoration: none">
-            <i class="el-icon-user iconImg" /><span class="text">
-              个人中心</span
-            >
-          </router-link>
-        </div>
-        <div class="card" style="background: #d94da6b1">
-          <router-link to="/PCMessage" style="text-decoration: none">
-            <i class="el-icon-chat-line-round iconImg" /><span class="text">
-              私信管理</span
-            >
-          </router-link>
-        </div>
-        <div class="card" style="background: rgb(230, 180, 80)" v-if="!isAdmin">
-          <div class="ip_up">
-            <i class="el-icon-location-information" />
-            <span class="_up"> {{ ip.province + " " + ip.city }}</span>
+    <div class="homepage_body_wrap">
+      <div class="homepage_body_content">
+        <div class="blocks">
+          <div class="block_tags">
+            <div v-for="(item, index) in blocks" :key="index">
+              <!-- todo加个click跳转到对应的item路由 -->
+              <router-link :to="'/block/' + (index + 1)">
+                <el-tag
+                  style="margin: 7px 20px 10px 10px; width: 90px"
+                  :type="tagColor[index]"
+                  >{{ item }}</el-tag
+                >
+              </router-link>
+            </div>
           </div>
-          <span class="text_ip">
-            {{ ip.lng + " °E " }}
-          </span>
-          <span class="text_ip">
-            {{ ip.lat + "°N" }}
-          </span>
-        </div>
-        <div class="card" style="background: rgb(230, 180, 80)" v-if="isAdmin">
-          <router-link to="/admin" style="text-decoration: none">
-            <i class="el-icon-message-solid iconImg" /><span class="text">
-              审核管理</span
+          <div class="block_others">
+            <div class="card" style="background: #1ec1d9b1">
+              <router-link to="/upload" style="text-decoration: none">
+                <i class="el-icon-upload iconImg" />
+                <span class="text"> 上传视频</span>
+              </router-link>
+            </div>
+            <div class="card" style="background: #307ad5b1">
+              <router-link to="/PersonalHomePage" style="text-decoration: none">
+                <i class="el-icon-user iconImg" /><span class="text">
+                  个人中心</span
+                >
+              </router-link>
+            </div>
+            <div class="card" style="background: #d94da6b1">
+              <router-link to="/PCMessage" style="text-decoration: none">
+                <i class="el-icon-chat-line-round iconImg" /><span class="text">
+                  私信管理</span
+                >
+              </router-link>
+            </div>
+            <div
+              class="card"
+              style="background: rgb(230, 180, 80)"
+              v-if="!isAdmin"
             >
-          </router-link>
-        </div>
-      </div>
-      <!-- <div class="ip">
+              <div class="ip_up">
+                <i class="el-icon-location-information" />
+                <span class="_up"> {{ ip.province + " " + ip.city }}</span>
+              </div>
+              <span class="text_ip">
+                {{ ip.lng + " °E " }}
+              </span>
+              <span class="text_ip">
+                {{ ip.lat + "°N" }}
+              </span>
+            </div>
+            <div
+              class="card"
+              style="background: rgb(230, 180, 80)"
+              v-if="isAdmin"
+            >
+              <router-link to="/admin" style="text-decoration: none">
+                <i class="el-icon-message-solid iconImg" /><span class="text">
+                  审核管理</span
+                >
+              </router-link>
+            </div>
+          </div>
+          <!-- <div class="ip">
         <div class="ip_wrap">
           <span class="ip_content">{{
             "地区: " + ip.nation + " " + ip.province + " " + ip.city
@@ -70,13 +80,15 @@
           }}</span>
         </div>
       </div> -->
-    </div>
-    <!-- 幻灯片 -->
-    <Recommend :videos="recommend_list" />
-    <div class="block_detail">
-      <!-- 分区 -->
-      <div v-for="(item, index) in zone_video_list" :key="index">
-        <Block :block="id2block(item.id)" :blockContent="item" />
+        </div>
+        <!-- 幻灯片 -->
+        <Recommend :videos="recommend_list" />
+        <div class="block_detail">
+          <!-- 分区 -->
+          <div v-for="(item, index) in zone_video_list" :key="index">
+            <Block :block="id2block(item.id)" :blockContent="item" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -87,8 +99,9 @@ import Recommend from "@/components/HomePage/RecommentView.vue";
 import Block from "@/components/HomePage/BlockView.vue";
 import DynamicBanner from "@/components/HomePage/DynamicBanner.vue";
 import Header from "@/components/HomePage/HeaderPage.vue";
+import ComplainVideoCard from "../../components/PC/ComplainVideoCard.vue";
 export default {
-  components: { Recommend, Block, DynamicBanner, Header },
+  components: { Recommend, Block, DynamicBanner, Header,ComplainVideoCard },
   data() {
     return {
       isAdmin: false,
@@ -2504,6 +2517,15 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+.homepage_body_wrap {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.homepage_body_content{
+  width: 1600px;
+}
+
 .blocks {
   width: 100%;
   height: 100px;

@@ -81,6 +81,9 @@
           <el-menu-item index="/PersonalHomePage/Main" v-if="islogin"
             >个人中心</el-menu-item
           >
+          <el-menu-item index="/history" v-if="islogin"
+            >观看历史</el-menu-item
+          >
           <el-menu-item index="/upload" v-if="islogin">发布视频</el-menu-item>
           <el-menu-item index="/ChangePassword" v-if="islogin"
             >修改密码</el-menu-item
