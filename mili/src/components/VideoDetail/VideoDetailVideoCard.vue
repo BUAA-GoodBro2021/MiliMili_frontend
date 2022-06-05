@@ -1,33 +1,31 @@
 <template>
   <div>
     <div class="card_wrap">
-      <div class="card_img">
-        <img :src="video.avatar_url" class="img" />
-      </div>
+      <!-- <router-link :to="'/videodetail/' + video.id"  style="text-decoration: none;"> -->
+        <div class="card_img"  @click="toVideo()" style="cursor: pointer;">
+          <img :src="video.avatar_url" class="img" />
+        </div>
+      <!--  -->
       <div class="card_body">
         <div class="card_up">
           <ul>
             <li style="width: 430px">
               <div class="title_profile">
-                <span class="title">
-                  {{ video.title }}
-                </span>
-                <span class="profile">
+                <router-link :to="'/videodetail/' + video.id" style="text-decoration: none;">
+                  <span class="title">
+                    {{ video.title }}
+                  </span>
+                </router-link>
+                <!-- <span class="profile">
                   {{ video.description }}
-                </span>
+                </span> -->
               </div>
             </li>
-            <li style="float: right; margin-right: 10px">
-              <el-tag style="cursor: pointer; width: 70px;margin-right: 10px;" @click="ReCheck()"
-                ><i class="el-icon-zoom-in" /> 重审</el-tag
+            <!-- <li style="float: right; margin-right: 10px">
+              <el-tag style="cursor: pointer; width: 70px" @click="toVideo()"
+                ><i class="el-icon-video-play" /> 查看</el-tag
               >
-              <el-tag
-                style="cursor: pointer; width: 70px"
-                @click="Delete(0)"
-                v-if="type == 2"
-                ><i class="el-icon-delete" /> 通过</el-tag
-              >
-            </li>
+            </li> -->
           </ul>
         </div>
         <div class="card_footer">
@@ -49,17 +47,11 @@
                 {{ video.collect_num }}</span
               >
             </li>
-            <li v-if="type==2">
-              <el-tag type="danger" class="tag" >{{title}}</el-tag>
-            </li>
-            <li v-if="type==2">
-              <el-tag type="danger" class="tag" >{{description}}</el-tag>
-            </li>
-            <li style="float: right; margin-right: 10px">
+            <!-- <li style="float: right; margin-right: 10px">
               <i class="el-icon-date text_icon" /><span class="text_footer">
                 上传时间: {{ video.created_time.split("T")[0] }}
               </span>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -67,7 +59,6 @@
   </div>
 </template>
 <script>
-import qs from "qs";
 export default {
   props: {
     video: {
@@ -116,74 +107,10 @@ export default {
         };
       },
     },
-    description: {
-      type: String,
-      default() {
-        return "涉及代孕";
-      },
-    },
-    title: {
-      type: String,
-      default() {
-        return "涉及代孕";
-      },
-    },
-    type: {
-      type: Number,
-      default() {
-        return 1;
-      },
-    },
   },
   methods: {
-
-    Delete(val) {
-      ///val是0 表示投诉不通过 视频正常 否则是通过 转到审核列表
-      console.log("Delete");
-      var data = val == 0? {
-        success: 0,
-        id: this.video.id
-      }:{
-         success: 1,
-        id: this.video.id
-      }
-      this.$emit("Delete", this.video.id);
-    },
-    ReCheck() {
-      //投诉视频的重申 就是success为1 投诉通过 
-      if(this.type == 2){
-        this.Delete(1)
-        return
-      }
-      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
-      this.$axios({
-        method: "post",
-        data: qs.stringify({
-          JWT: jwt,
-          video_id: this.video.id,
-        }),
-        url: "/super_admin/redo-audit-video",
-        headers: { "content-type": "application/x-www-form-urlencoded" },
-      })
-        .then((res) => {
-          if (res.data.result == 1) {
-            this.$message({
-              type: "success",
-              message: "重置成功！",
-            });
-          } else {
-            this.$message({
-              type: "error",
-              message: res.data.message,
-            });
-          }
-        })
-        .catch((err) => {
-          this.$message({
-            type: "error",
-            message: "网络出错QAQ",
-          });
-        });
+    toVideo() {
+      this.$router.push('/videodetail/'+this.video.id)
     },
   },
 };
@@ -192,14 +119,14 @@ export default {
 .card_wrap {
   display: flex;
   width: 100%;
-  height: 110px;
+  height: 80px;
   border: solid 2px #d0dcdc9a;
   border-radius: 10px;
   padding: 10px 0 10px 0;
   box-shadow: 0 0.5px 0 0.5px#e7f6f69a;
 }
 .card_img {
-  width: 26%;
+  width: 50%;
   height: 100%;
   border-radius: 10px;
   margin-left: 10px;
@@ -212,7 +139,7 @@ export default {
   -moz-border-radius: 10px;
 }
 .card_body {
-  width: 74%;
+  width: 50%;
   height: 100%;
 }
 .card_up {
@@ -231,12 +158,13 @@ export default {
   vertical-align: middle;
 }
 .title_profile {
-  height: 80px;
+  height: 60%;
 }
 .title {
-  font-size: 18px;
-  height: 50%;
-  line-height: 44px;
+  font-size: 13px;
+  width: 165px;
+  height: 100%;
+  line-height: 15px;
   cursor: pointer;
   text-align: left;
   display: block;
@@ -256,7 +184,7 @@ export default {
   overflow: hidden;
 }
 .card_footer {
-  height: 15%;
+  height: 40%;
 }
 .card_footer ul {
   line-height: 15px;
@@ -278,10 +206,5 @@ export default {
 .text_footer {
   font-size: 13px;
   color: grey;
-}
-.tag {
-  height: 15px;
-  line-height: 12px;
-  font-size: 12px;
 }
 </style>

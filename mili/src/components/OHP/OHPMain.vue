@@ -107,6 +107,12 @@ export default {
     };
   },
   created() {
+    //在登陆的情况下 如果id与登录id一样 就跳转到个人主页
+    if(localStorage.getItem('loginMessage') != null){
+      var id = JSON.parse(localStorage.getItem('loginMessage')).user.id
+      if(id == this.$route.params.id) this.$router.push('/PersonalHomePage/Main')
+      return
+    }
     var id = this.$route.params.id;
     var that = this;
     this.$axios({

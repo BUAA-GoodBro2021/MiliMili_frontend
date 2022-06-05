@@ -33,7 +33,7 @@
           <div class="empty" v-if="videoDetail.length == 0">
             <span class="empty_title"> 哈哈没活啦！</span>
           </div>
-          <div class="video_wrap" v-if="videoDetail.length != 0">
+          <div class="video_wrap" v-show="videoDetail.length != 0">
             <div class="video_title">
               <el-button type="danger" @click="refuse()" class="title_right"
                 >拒绝</el-button
@@ -46,7 +46,7 @@
               }}</span>
             </div>
             <div id="video_detail">
-              <div id="vs"></div>
+              
             </div>
           </div>
         </el-tab-pane>
@@ -187,74 +187,19 @@ export default {
         method: "post",
         data: qs.stringify({
           JWT: jwt,
+          video_id: this.videoDetail[0].id,
+          success: 1
         }),
-        url: "/user/fan-list",
-        headers: { "content-type": "application/x-www-form-urlencoded" },
-      })
-        .then((res) => {
-          if (res.data.result == 1) {
-            this.users = res.data.fan_list;
-          } else {
-            this.$message({
-              type: "error",
-              message: "请求出错QAQ",
-            });
-          }
-        })
-        .catch((err) => {
-          this.$message({
-            type: "error",
-            message: "网络出错QAQ",
-          });
-        });
-      this.next();
-    },
-    refuse() {
-      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
-      this.$axios({
-        method: "post",
-        data: qs.stringify({
-          JWT: jwt,
-        }),
-        url: "/user/fan-list",
-        headers: { "content-type": "application/x-www-form-urlencoded" },
-      })
-        .then((res) => {
-          if (res.data.result == 1) {
-            this.users = res.data.fan_list;
-          } else {
-            this.$message({
-              type: "error",
-              message: "请求出错QAQ",
-            });
-          }
-        })
-        .catch((err) => {
-          this.$message({
-            type: "error",
-            message: "网络出错QAQ",
-          });
-        });
-      next();
-    },
-    Delete(val) {
-      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
-      this.$axios({
-        method: "post",
-        data: qs.stringify({
-          JWT: jwt,
-          complain_id: val,
-          success: 0,
-        }),
-        url: "/super_admin/verify-complain-video",
+        url: "/super_admin/audit-video",
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
         .then((res) => {
           if (res.data.result == 1) {
             this.$message({
               type: "success",
-              message: "下架成功！",
+              message: res.data.message,
             });
+            this.next();
           } else {
             this.$message({
               type: "error",
@@ -268,7 +213,73 @@ export default {
             message: "网络出错QAQ",
           });
         });
-      this.getVideoDetail(0);
+    },
+    refuse() {
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      this.$axios({
+        method: "post",
+        data: qs.stringify({
+          JWT: jwt,
+          video_id: this.videoDetail[0].id,
+          success: 0
+        }),
+        url: "/super_admin/audit-video",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      })
+        .then((res) => {
+          if (res.data.result == 1) {
+            this.$message({
+              type: "success",
+              message: res.data.message,
+            });
+            this.next();
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.message,
+            });
+          }
+        })
+        .catch((err) => {
+          this.$message({
+            type: "error",
+            message: "网络出错QAQ",
+          });
+        });
+    },
+    Delete(val) {
+      //详情见card delete包含投诉处理的两个部分
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      this.$axios({
+        method: "post",
+        data: qs.stringify({
+          JWT: jwt,
+          complain_id: val.id, 
+          success: val.success,
+        }),
+        url: "/super_admin/verify-complain-video",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      })
+        .then((res) => {
+          if (res.data.result == 1) {
+            this.$message({
+              type: "success",
+              message: res.data.message,
+            });
+            this.getVideoDetail(0);
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.message,
+            });
+          }
+        })
+        .catch((err) => {
+          this.$message({
+            type: "error",
+            message: "网络出错QAQ",
+          });
+        });
     },
     next() {
       this.videoDetail.splice(0, 1);
@@ -333,7 +344,7 @@ export default {
         .then((res) => {
           if (res.data.result == 1) {
             this.videoDetail = res.data.video_audit_list;
-            if (this.videoDetail.length != 0)
+            if (this.videoDetail.length != 0 && this.activeName == '3')
               this.initPlayer(this.videoDetail[0].video_url);
             this.videoComplain = res.data.video_complain_list;
             if (val == 1) {
@@ -357,23 +368,27 @@ export default {
         });
     },
     handleClick(tab, event) {
-      console.log(tab, event);
+      var wrap = document.getElementById("video_detail");
+      console.log(wrap)
       if (tab.name == "1") {
         console.log("change to one");
-        var wrap = document.getElementById("video_detail");
-        var video = document.getElementById("vs");
-        wrap.removeChild(video);
+        if (document.getElementById("vs") != null) {
+          var video = document.getElementById("vs");
+          wrap.removeChild(video);
+        }
         this.getVideoList(0);
       } else {
-        console.log("change to two");
-        var wrap = document.getElementById("video_detail");
         if (tab.name == "3") {
+          console.log("change to three");
           var child = document.createElement("div");
           child.setAttribute("id", "vs");
           wrap.appendChild(child);
         } else {
-          var video = document.getElementById("vs");
-          wrap.removeChild(video);
+          console.log("change to two");
+          if (document.getElementById("vs") != null) {
+            var video = document.getElementById("vs");
+            wrap.removeChild(video);
+          }
         }
         //TODO
         this.getVideoDetail(0);
