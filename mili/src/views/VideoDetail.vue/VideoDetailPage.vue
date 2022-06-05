@@ -1,7 +1,7 @@
 <template>
   <!-- 页面中采用了西瓜播放器   npm install xgplayer -->
   <div class="video-detail-wrap">
-    <!-- 视频+视频交互组件+弹幕发送 -->
+    
     <div class="video-content">
       <!-- 左侧的视频主体+评论列表 -->
       <div class="content-left">
@@ -12,7 +12,7 @@
         </div>
         <!-- 嵌入的视频播放器，id是vs -->
         <div id="vs_tag">
-          <div id="vs" class="vs"></div>
+          <div id="vs" class="vs-class"></div>
         </div>
 
         <!-- 视频交互组件（点赞 收藏） -->
@@ -100,7 +100,7 @@
               placeholder="发一条友善的评论"
               v-model="comment"
             >
-              <!-- 这里其实绑定了 data中的 存放新增一级评论的字符串 comment  -->
+            <!-- 这里其实绑定了 data中的 存放新增一级评论的字符串 comment  -->
             </textarea>
             <!-- 一级评论，无参调用postComments即可 -->
             <div class="comment-send-btn" @click="postComments">发表评论</div>
@@ -400,7 +400,7 @@ export default {
        *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
        */
       collectionLock: false,
-
+      collectionNum: 0,
       collectionList:[
           {
             id: "1",
@@ -762,9 +762,11 @@ export default {
         let _this = this;
         this.player = new Player({
           id: "vs",
-          url: videoUrl, // 传入视频参数
-          autoplay: false,
-          volume: 0.3,
+          url: videoUrl,    // 传入视频参数
+          autoplay: false,  // 自动播放
+          volume: 0.3,      // 初始音量
+          playbackRate: [0.5, 0.75, 1, 1.5, 2],   // 当前播放速度
+          defaultPlaybackRate: 1,                 // 播放速度设置为1
           danmu: {
             // comments: danmuArr,
             // area: {
@@ -772,9 +774,11 @@ export default {
             //   end: 1
             // }
           },
-          height: 600,
-          width: 800,
-          whitelist: [""],
+          // height: 550,
+          // width: 800,
+          width: '100%',
+          height: '500px',
+          whitelist: [""],        
         });
       },
       /**
@@ -1200,23 +1204,43 @@ export default {
 
 /* 整个视频页面的 外层容器 */
 .video-detail-wrap {
-  width: 100%;
+  max-width: 2560px;
+  /* width: fit-content; */
+  min-width: 1100px;
+  /* width: 100vw; */
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 /* 整个视频页面的 内容容器 这里的宽度是B站的旧版网页数据 */
 .video-detail-wrap .video-content {
-  max-width: 1984px;
+
+  /* max-width: 1984px;
   min-width: 988px;
   margin: 0 auto;
   padding: 0 68px;
   padding-top: 27px;
   width: fit-content;
+  display: flex; */
+  /* max-width: 2540px; */
+  /* min-width: 1080px; */
+  max-width: 1984px;
+  min-width: 988px;
+  margin: 0 auto;
   display: flex;
+  justify-content: center;
+  box-sizing: content-box;
+  /* width: auto; */
+  /* width: fit-content; */
+  padding: 0 10px;
 }
 
-/* #region 左侧容器部分 */
+/* #region 左侧容器部分 统一宽度为全屏的60% */
 .video-detail-wrap .video-content .content-left {
-    width: 800px;
+    /* width: 800px; */
+    width: 60%;
+    min-width: 668px;
+    max-width: 850px;
     /*DELETE_ME*/
     /* border: 1px solid red; */
 }
@@ -1246,12 +1270,13 @@ export default {
   margin-bottom: 30px;
 }
 
-.video-detail-wrap .video-content .content-left .vs {
-  width: 1200px;
+.video-detail-wrap .video-content .content-left .vs-class {
+  width: 100%;
 }
 
 .video-detail-wrap .video-content .content-left .forward-wrap {
-  width: 800px;
+  /* width: 800px; */
+  width: 100%;
   display: flex;
   margin-top: 20px;
   padding-bottom: 10px;
@@ -1303,14 +1328,16 @@ export default {
     /* 一级 */
 .video-detail-wrap .video-content .content-left .comment-send{
     margin: 40px 0;
-    width: 800PX;
+    /* width: 800PX; */
+    width: 100%;
     height: 85px;
     display: flex;
     justify-content: space-between;
 }
 .video-detail-wrap .video-content .content-left .reply-send {
   margin: 20px 0;
-  width: 710px;
+  /* width: 710px; */
+  width: 100%;
   height: 85px;
   display: flex;
   justify-content: space-between;
@@ -1392,41 +1419,21 @@ export default {
     border-bottom: 1px solid #eeeeee;
 } */
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in {
   display: flex;
   /* padding: 20px 0; */
   /* border-top: 1px solid #000000; */
   /* border-bottom: 1px solid #000000; */
 }
 /* 单条 一级评论 的头像 */
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .avatar {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .avatar {
   margin-top: 20px;
   width: 60px;
   height: 60px;
   display: block;
   border-radius: 50%;
 }
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .avatar:hover {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .avatar:hover {
   cursor: pointer;
 }
     /* 单条 一级评论 的评论正文 和 若干条二级评论 */
@@ -1435,14 +1442,7 @@ export default {
     margin: 10px 0;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right {
   border-top: 1px solid #e5e9ef;
   width: 100%;
   padding: 20px 0;
@@ -1458,29 +1458,13 @@ export default {
 } */
 
 /*一级/二级评论的昵称(由于都在.comment-right 下，直接复用) 通过路由点击事件 跳转个人空间的样式  */
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .name-jump-space {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name-jump-space {
   font-size: 14px;
   font-weight: bold;
   color: #74797a;
   text-decoration: none;
 }
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .name-jump-space:hover {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name-jump-space:hover {
   color: #00a1d6;
   cursor: pointer;
 }
@@ -1488,20 +1472,12 @@ export default {
     color: #00a1d6;
     cursor: pointer;  
 }
-.router-active-class-1{
+/* .router-active-class-1{
     color: #00a1d6;
     cursor: pointer;
-}
+} */
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .time {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time {
   font-size: 12px;
   /* color: #666666; */
   color: #99a2aa;
@@ -1550,49 +1526,25 @@ export default {
 }
 /* #endregion */
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .time
-  .reply {
+/* 一级评论回复和删除按钮的样式 */
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time .reply {
   margin-left: 10px;
   cursor: pointer;
   border-radius: 5px;
   padding: 2px 3px;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .time
-  .reply:hover {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time .reply:hover {
   color: #fff;
   background-color: #666666;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments {
   margin-top: 20px;
   display: flex;
   padding: 10px 0;
 }
+
 /* 单条 二级评论 的头像 */
 .video-detail-wrap
   .video-content
@@ -1664,19 +1616,7 @@ export default {
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name {
     margin-right: 5px;
 }
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-user-info
-  .child-comment-info
-  .child-comment
-  .reply-name:hover {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name:hover {
   color: #f25d8e;
   cursor: pointer;
 }
@@ -1685,25 +1625,29 @@ export default {
     cursor: pointer;
 }
 
+/* 二级评论的时间 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time {
     margin-top: 10px;
     font-size: 12px;
     /* color: #666666; */
     color: #99A2AA;    
 }
+
+/* 一级评论回复和删除按钮的样式 */
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right  .child-comments .child-user-info .child-time .child-reply {
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 2px 3px;
+}
+
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time .child-reply:hover {
+  color: #fff;
+  background-color: #666666;
+}
+
 /*  #region IMPORTANT 二级评论点赞图标样式位置 */
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-user-info
-  .child-time
-  .common-model {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time .common-model {
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -1716,32 +1660,10 @@ export default {
   background-position: -153px -25px;
   cursor: pointer;
 }
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-user-info
-  .child-time
-  .common-model:hover {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time .common-model:hover {
   background-position: -218px -25px;
 }
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-user-info
-  .child-time
-  .liked-model {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time .liked-model {
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -1755,6 +1677,8 @@ export default {
   cursor: pointer;
 }
     /* #endregion */
+
+
 
   /* #endregion 评论区域结束*/
 
@@ -1937,11 +1861,14 @@ export default {
 }
 /* #endregion 收藏浮窗部分结束 */
 
+/*#endregion*/
+
 /* #region 右侧容器部分 */
 .video-detail-wrap .video-content .content-right {
   width: 350px;
 
   margin-left: 40px;
+  /* border: 1px solid yellow; */
 }
 
 .video-detail-wrap .video-content .content-right .danmu-list-wrap {
@@ -1958,6 +1885,7 @@ export default {
   border-radius: 2px;
   padding: 0 10px 0 16px;
   align-items: center;
+  box-sizing: border-box;
 }
 .video-detail-wrap .video-content .content-right .recommend_wrap .recommend-list-header {
   width: 100%;
@@ -1969,6 +1897,7 @@ export default {
   border-radius: 2px;
   padding: 0 10px 0 16px;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content {
