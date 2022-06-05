@@ -4,7 +4,6 @@
     <!-- 视频+视频交互组件+弹幕发送 -->
     <div class="video-content">
 
-
       <!-- 左侧的视频主体+评论列表 -->
       <div class="content-left">
         <h1 class="title">{{ videoInfo.video_url ? videoInfo.title : '' }}</h1>
