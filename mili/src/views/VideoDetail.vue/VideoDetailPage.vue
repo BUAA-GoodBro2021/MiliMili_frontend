@@ -330,6 +330,8 @@
         <div class="bili-dialog-bomb">
           <div class="appeal-box">
             <div class="appeal-box-inner">
+              <div class="toast" v-if="blankComplaintWarningShow === true">请填写投诉的问题描述和详细说明！</div>
+
               <div class="header">
                 <span class="title">稿件投诉</span>
                 <span class="close" @click="closeComplaintWindow"></span>
@@ -508,6 +510,8 @@ export default {
 
       // 投诉窗口是否展示
       showTheComplaintWindow: false,
+      // 阻止空白投诉
+      blankComplaintWarningShow: false,
       /**
        * 阻止用户获取脏数据的变量，complaint
        *  >>>在用户成功打开一次窗口时，上锁（true）
@@ -567,9 +571,14 @@ export default {
         this.descriptionTextarea = '';
       },
       /**
-       * 通过点击“确定”，触发提交投诉事件
+       * 通过点击“确定”，触发提交投诉事件，同时阻止空白投诉
        */
       async postComplaintToVideo(){
+        if(this.titleTextarea === '' || this.descriptionTextarea === ''){
+          this.blankComplaintWarningShow = true;
+          return;
+        }
+
         // 立即关闭
         this.showTheComplaintWindow = false;
 
@@ -1280,6 +1289,19 @@ export default {
       this.getVideoDetail();
       this.getCurrentUserSimpleInfo();
     },
+    /**
+     * 使得空白投诉提示框1秒后消失
+     * @param {*} newval 
+     * @param {*} oldval 
+     */
+    blankComplaintWarningShow(newval, oldval) {
+      // console.log("blankComplaintWarningShow", newval, oldval, this);
+      if(newval === true) {
+        setTimeout(() => {
+          this.blankComplaintWarningShow = false;
+        }, 1000);
+      }
+    }
   },
 };
 </script>
@@ -2080,7 +2102,7 @@ export default {
     display: block;
 }
 .appeal-box .appeal-box-inner{
-    overflow: hidden;
+  overflow: hidden;
     width: 100%;
     height: 100%;
     margin: 0;
@@ -2088,6 +2110,24 @@ export default {
     position: relative;
     font-family: MicrosoftYaHei;
 }
+.appeal-box .appeal-box-inner .toast{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 11111111;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    padding: 0 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #fff;
+    background-color: rgba(0,0,0,.8);
+}
+
+
 .appeal-box .appeal-box-inner .header{
     position: relative;
     width: 100%;
