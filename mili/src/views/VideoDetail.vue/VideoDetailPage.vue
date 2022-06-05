@@ -21,7 +21,7 @@
             <!-- 获取是否点赞，并在点击时切换状态和更新数量 -->
             <!-- <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
               src="../../src/assets/image/video/icon_01.png" alt=""> -->
-            <img
+            <img 
               v-if="boolSymbol.isLiked === 0"
               class="img active"
               @click="postLike"
@@ -92,11 +92,7 @@
 
           <!-- 发送一级评论文本框 -->
           <div class="comment-send">
-            <img
-              class="comment-send-avatar"
-              :src="[isLogined? currentUserSimpleInfo.currentUserAvatar : DEFAULT_AVATAR]"
-              alt=""
-            />
+            <img class="comment-send-avatar" :src="[isLogined? currentUserSimpleInfo.currentUserAvatar : DEFAULT_AVATAR]" alt=""/>
             <textarea
               rows=""
               cols=""
@@ -132,11 +128,7 @@
                 username: (...)
                 video_id: (...)
                 -->
-              <div
-                class="comment-item"
-                v-for="(item, index) in commentList"
-                :key="index"
-              >
+              <div class="comment-item" v-for="(item, index) in commentList" :key="index">
                 <!-- 
                   单条 **一级评论** 的区域
                   会有若干条二级评论
@@ -144,151 +136,73 @@
                 <div class="comment-in">
                   <!-- 发出一级评论 用户的头像 -->
                   <!-- 在这里加入跳转路由  item.comment_root.user_id -->
-                  <router-link
-                    :to="'/OthersHomePage/Main/' + item.comment_root.user_id"
-                    ><img
-                      class="avatar"
-                      :src="item.comment_root.avatar_url"
-                      alt=""
-                  /></router-link>
+                  <router-link :to="'/OthersHomePage/Main/' + item.comment_root.user_id">
+                    <img class="avatar" :src="item.comment_root.avatar_url" alt="" />
+                  </router-link>
                   <!-- 一级评论的正文 -->
                   <div class="comment-right">
-                    <!-- <div class="name">{{ item.comment_root.username }}</div> -->
                     <!-- 在这里加入跳转路由 item.comment_root.user_id -->
                     <div class="name-jump-space">
-                      <router-link
-                        :to="
-                          '/OthersHomePage/Main/' + item.comment_root.user_id
-                        "
-                        >{{ item.comment_root.username }}</router-link
-                      >
+                      <router-link :to="'/OthersHomePage/Main/' + item.comment_root.user_id">{{ item.comment_root.username }}</router-link>
                     </div>
                     <div class="comment-content">
                       {{ item.comment_root.content }}
                     </div>
+                    <!-- 一级评论的底部信息，时间，回复，删除 -->
                     <div class="time">
-                      {{
-                        item.comment_root.created_time.split(/[.]|T/)[0] +
-                        " " +
-                        item.comment_root.created_time.split(/[.]|T/)[1]
-                      }}
-                      <i
-                        :class="[
-                          item.comment_root.is_like === 1
-                            ? 'liked-model'
-                            : 'common-model',
-                        ]"
-                        @click="
-                          postOrCancelCommentLike(
-                            item.comment_root.id,
-                            item.comment_root.is_like
-                          )
-                        "
-                      ></i>
-                      <span>
-                        {{
-                          item.comment_root.like_num === 0
-                            ? ""
-                            : item.comment_root.like_num
-                        }}
-                      </span>
-                      <span class="reply" @click="setReplyInfo('root', item)"
-                        >回复</span
-                      >
-                      <span
-                        class="reply"
-                        v-if="item.comment_root.is_own === 1"
-                        @click="deleteComments(item.comment_root.id)"
-                        >删除</span
-                      >
+                      {{item.comment_root.created_time.split(/[.]|T/)[0] + " " + item.comment_root.created_time.split(/[.]|T/)[1]}}
+                      <!-- 评论点赞图标切换 -->
+                      <i :class="[item.comment_root.is_like === 1? 'liked-model' : 'common-model']"
+                        @click="postOrCancelCommentLike(item.comment_root.id, item.comment_root.is_like)"></i>
+                      <span>{{ item.comment_root.like_num === 0 ? "" : item.comment_root.like_num }}</span>
+                      <span class="reply" @click="setReplyInfo('root', item)">回复</span>
+                      <span class="reply" v-if="item.comment_root.is_own === 1" @click="deleteComments(item.comment_root.id)">删除</span>
                     </div>
+
                     <!-- 遍历当前一级评论的二级评论列表 -->
-                    <div
-                      class="child-comments"
-                      v-for="(child, childIndex) in item.child_list"
-                      :key="'child_' + childIndex"
-                    >
+                    <div class="child-comments" v-for="(child, childIndex) in item.child_list" :key="'child_' + childIndex">
                       <!-- 在这里加入跳转路由 child.user_id -->
-                      <router-link :to="'/OthersHomePage/Main/' + child.user_id"
-                        ><img
-                          class="child-avatar"
-                          :src="child.avatar_url"
-                          alt=""
-                      /></router-link>
+                      <router-link :to="'/OthersHomePage/Main/' + child.user_id">
+                        <img class="child-avatar" :src="child.avatar_url" alt=""/>
+                      </router-link>
                       <div class="child-user-info">
+                        <!-- 二级评论主体 -->
                         <div class="child-comment-info">
                           <!-- <span class="child-name">{{ child.username }}</span> -->
                           <!-- <a class="name-jump-space" href="#">{{ child.username }}</a> -->
                           <!-- 在这里加入跳转路由 child.user_id -->
-                          <span class="name-jump-space"
-                            ><router-link
-                              :to="'/OthersHomePage/Main/' + child.user_id"
-                              >{{ child.username }}</router-link
-                            ></span
-                          >
+                          <span class="name-jump-space">
+                            <router-link :to="'/OthersHomePage/Main/' + child.user_id">{{ child.username }}</router-link>
+                          </span>
                           <!-- <span class="child-comment"><span class="reply-name">{{ '回复 @' + child.reply_username + '：' }}</span>{{ child.content }}</span> -->
-                          <!-- TODO: 在这里  加入跳转路由 child.reply_user_id -->
-                          <span class="child-comment"
-                            >回复
-                            <span class="reply-name"
-                              ><router-link
-                                :to="
-                                  '/OthersHomePage/Main/' + child.reply_user_id
-                                "
-                                >@{{ child.reply_username }}：</router-link
-                              ></span
-                            >{{ child.content }}</span
-                          >
+                          <!-- 在这里  加入跳转路由 child.reply_user_id -->
+                          <span class="child-comment">
+                            回复
+                            <span class="reply-name">
+                              <router-link :to="'/OthersHomePage/Main/' + child.reply_user_id">@{{ child.reply_username }}：</router-link>
+                            </span>
+                            {{ child.content }}
+                          </span>
                         </div>
+                        <!-- 二级评论的底部信息，时间，回复，删除 -->
                         <div class="child-time">
-                          {{
-                            child.created_time.split(/[.]|T/)[0] +
-                            " " +
-                            child.created_time.split(/[.]|T/)[1]
-                          }}
-                          <i
-                            :class="[
-                              child.is_like === 1
-                                ? 'liked-model'
-                                : 'common-model',
-                            ]"
-                            @click="
-                              postOrCancelCommentLike(child.id, child.is_like)
-                            "
-                          ></i>
+                          {{child.created_time.split(/[.]|T/)[0] + " " + child.created_time.split(/[.]|T/)[1]}}
+                          <i :class="[ child.is_like === 1 ? 'liked-model' : 'common-model' ]"
+                            @click="postOrCancelCommentLike(child.id, child.is_like)"></i>
                           <span>
                             {{ child.like_num === 0 ? "" : child.like_num }}
                           </span>
-                          <span
-                            class="child-reply"
-                            @click="setReplyInfo('child', item, child)"
-                            >回复</span
-                          >
-                          <span
-                            class="child-reply"
-                            v-if="child.is_own === 1"
-                            @click="deleteComments(child.id)"
-                            >删除</span
-                          >
+                          <span class="child-reply" @click="setReplyInfo('child', item, child)">回复</span>
+                          <span class="child-reply" v-if="child.is_own === 1" @click="deleteComments(child.id)">删除</span>
                         </div>
                       </div>
                     </div>
 
+                    <!-- 发送二级评论文本框 -->
                     <!-- 这里无论是点击一级评论的回复还是二级评论的回复，replyInfo.rootId都会被设置为一级评论的id -->
-                    <!-- 这里 comment-send 不能复用了，需要改一下长度，reply-send -->
-                    <div
-                      class="reply-send"
-                      v-if="replyInfo.rootId === item.comment_root.id"
-                    >
-                      <img
-                        class="comment-send-avatar"
-                        :src="[
-                          isLogined
-                            ? currentUserSimpleInfo.currentUserAvatar
-                            : DEFAULT_AVATAR,
-                        ]"
-                        alt=""
-                      />
+                    <!--  comment-send 不能复用了，需要改一下长度，reply-send -->
+                    <div class="reply-send" v-if="replyInfo.rootId === item.comment_root.id">
+                      <img class="comment-send-avatar" :src="[isLogined ? currentUserSimpleInfo.currentUserAvatar : DEFAULT_AVATAR]" alt=""/>
                       <textarea
                         rows=""
                         cols=""
@@ -297,25 +211,12 @@
                         v-model="replyInfo.comment"
                       ></textarea>
                       <!-- 这里其实绑定了 data中的 用于存放新增二级评论的信息对象 replyInfo.comment -->
-                      <div
-                        class="comment-send-btn"
-                        @click="postComments('reply')"
-                      >
-                        发表评论
-                      </div>
+                      <div class="comment-send-btn" @click="postComments('reply')">发表评论</div>
                     </div>
+
                   </div>
                 </div>
-                <!-- 这里无论是点击一级评论的回复还是二级评论的回复，replyInfo.rootId都会被设置为一级评论的id -->
-                <!-- <div class="comment-send" v-if="replyInfo.rootId === item.comment_root.id">
-                  <img class="comment-send-avatar" :src="[isLogined ? currentUserSimpleInfo.currentUserAvatar : DEFAULT_AVATAR]" alt=""/>
-                  <div class="danmu-content">
-                    <textarea rows="" cols="" class="comment-send-input"
-                      :placeholder="'回复 @' + replyInfo.replyUserName + ':'"
-                      v-model="replyInfo.comment"></textarea>
-                    <div class="comment-send-btn" @click="postComments('reply')">发表评论</div>
-                  </div>
-                </div> -->
+
               </div>
             </div>
           </div>
@@ -568,7 +469,7 @@ export default {
       },
       // TEST_JWT: null,
       // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpc1N1cGVyQWRtaW4iOnRydWV9.ZJoduPgGiwUKhO3lnpePR5PQgf49wfc4sgxFPgQHH14',
-      TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1MCwiaXNTdXBlckFkbWluIjpmYWxzZX0.RycUhwt145ZMLtR_9qvRoLotuS8SbKOvCcfIYabsOGE',
+      // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1MCwiaXNTdXBlckFkbWluIjpmYWxzZX0.RycUhwt145ZMLtR_9qvRoLotuS8SbKOvCcfIYabsOGE',
       // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU'
       
     };
@@ -579,7 +480,7 @@ export default {
     this.getCurrentUserSimpleInfo();
   },
   methods: {
-    /**
+      /**
        * 先获取收藏列表，再打开收藏窗口
        */ 
       async openCollectionWindow(){
@@ -590,14 +491,12 @@ export default {
           const result2 = await this.openCollectionWindowStatus();
           console.log('result2 = ' + result2);
         }
-        
-        
         /**
          * 下面的同步函数执行方式会导致，即使数据库已经更新，但是打开窗口以后，收藏夹列表还是要等一阵子才能更新，
          * 但是此时，窗口已经开了，所以就会导致出现一个数据由旧到新的切换过程，很不雅观
          */
-        // this.getCollections();
-        // this.openCollectionWindowStatus();
+          // this.getCollections();
+          // this.openCollectionWindowStatus();
       },
       /**
        * 用户直接通过 点击×号关闭窗口，
@@ -796,38 +695,35 @@ export default {
           console.log(err);
         })
       },
-    /**
-     * 优雅地显示数量
-     * @param {int} number
-     */
-    graceNumber(number) {
-      if (number === 0) {
-        return "0";
-      } else if (number > 999 && number <= 9999) {
-        return (number / 1000).toFixed(1) + "千";
-      } else if (number > 9999 && number <= 99999) {
-        return (number / 10000).toFixed(1) + "万";
-      }
-      return number + "";
-    },
-    async getCurrentUserSimpleInfo() {
-      let formData = new FormData();
-      let loginMessage = localStorage.getItem("loginMessage");
-      let jwt = null;
-      if (loginMessage != null) {
-        jwt = JSON.parse(loginMessage).JWT;
-        this.isLogined = true;
-      }
-      //#region 调试逻辑，要删除
-      this.isLogined = true;
-      jwt = this.TEST_JWT;
-      //#endregion
-      formData.append("JWT", jwt);
-      this.$axios({
-        method: "post",
-        url: "https://milimili.super2021.com/api/user/simple-list",
-        data: formData,
-      })
+      /**
+       * 优雅地显示数量
+       * @param {int} number
+       */
+      graceNumber(number) {
+        if (number === 0) {
+          return "0";
+        } else if (number > 999 && number <= 9999) {
+          return (number / 1000).toFixed(1) + "千";
+        } else if (number > 9999 && number <= 99999) {
+          return (number / 10000).toFixed(1) + "万";
+        }
+        return number + "";
+      },
+      async getCurrentUserSimpleInfo() {
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if (loginMessage != null) {
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }
+
+        formData.append("JWT", jwt);
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/user/simple-list",
+          data: formData,
+        })
         .then((res) => {
           console.log(res);
           switch (res.data.result) {
@@ -847,66 +743,66 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-    },
+      },
 
-    /**
-     * 初始化视频播放器
-     * FIXME 弹幕逻辑
-     */
-    initPlayer(videoUrl) {
-      // let danmuArr = this.initDanmu();
-      // let danmuArr = [];
-      // this.danmuList = danmuArr.map((item) => {
-        // return {
-      //     time: '00:00',
-      //     content: item.txt,
-      //     date: '09-20 15:30'
-      //   }
-      // })
-      let _this = this;
-      this.player = new Player({
-        id: "vs",
-        url: videoUrl, // 传入视频参数
-        autoplay: true,
-        volume: 0.3,
-        danmu: {
-          // comments: danmuArr,
-          // area: {
-          //   start: 0,
-          //   end: 1
-          // }
-        },
-        height: 600,
-        width: 800,
-        whitelist: [""],
-      });
-    },
-    /**
-     * 获取视频信息
-     * 点赞数目 + 收藏数目 + 评论列表
-     */
-    async getVideoDetail() {
-      let formData = new FormData();
-      let loginMessage = localStorage.getItem("loginMessage");
-      let jwt = null;
-      if (loginMessage != null) {
-        jwt = JSON.parse(loginMessage).JWT;
-        this.isLogined = true;
-      }
-       console.log("当前用户的JWT是："+jwt);
-      formData.append("JWT", jwt);
+      /**
+       * 初始化视频播放器
+       * FIXME 弹幕逻辑
+       */
+      initPlayer(videoUrl) {
+        // let danmuArr = this.initDanmu();
+        // let danmuArr = [];
+        // this.danmuList = danmuArr.map((item) => {
+          // return {
+        //     time: '00:00',
+        //     content: item.txt,
+        //     date: '09-20 15:30'
+        //   }
+        // })
+        let _this = this;
+        this.player = new Player({
+          id: "vs",
+          url: videoUrl, // 传入视频参数
+          autoplay: false,
+          volume: 0.3,
+          danmu: {
+            // comments: danmuArr,
+            // area: {
+            //   start: 0,
+            //   end: 1
+            // }
+          },
+          height: 600,
+          width: 800,
+          whitelist: [""],
+        });
+      },
+      /**
+       * 获取视频信息
+       * 点赞数目 + 收藏数目 + 评论列表
+       */
+      async getVideoDetail() {
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if (loginMessage != null) {
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }
+        console.log("当前用户的JWT是："+jwt);
+        formData.append("JWT", jwt);
 
-      // FIND_ME elementUI加载实例
-      let loadingInstance = this.$loading({
-        target: "#main-body",
-        fullscreen: true,
-      });
+        // FIND_ME elementUI加载实例
+        let loadingInstance = this.$loading({
+          target: "#main-body",
+          fullscreen: true,
+        });
 
-      this.$axios({
-        method: "post",
-        url: "https://milimili.super2021.com/api/video/detail/" +this.$route.params.id,
-        data: formData,
-      })
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/video/detail/" +this.$route.params.id,
+          data: formData,
+        })
         .then((res) => {
           // FIND_ME 关闭加载实例
           loadingInstance.close();
@@ -947,7 +843,7 @@ export default {
         .catch((err) => {
           console.log(err);
         })
-			},
+      },
       /**
        * 更新点赞数量
        */
@@ -965,14 +861,14 @@ export default {
         }
         let videoId = this.videoInfo.id;
 
-      formData.append("JWT", jwt);
-      formData.append("video_id", videoId);
+        formData.append("JWT", jwt);
+        formData.append("video_id", videoId);
 
-      this.$axios({
-        method: "post",
-        url: "https://milimili.super2021.com/api/video/like",
-        data: formData,
-      })
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/video/like",
+          data: formData,
+        })
         .then((res) => {
           console.log(res);
           switch (res.data.result) {
@@ -991,7 +887,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-    },
+      },
 
       async postDisLike() {
         let formData = new FormData();
@@ -1033,7 +929,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-    },
+      },
 
       /**
        * 设置一/二级评论临时信息
@@ -1074,18 +970,18 @@ export default {
         
         formData.append("JWT", jwt);
 
-      if (type === "reply") {
-        // 二级评论
-        formData.append("video_id", this.replyInfo.videoId);
-        formData.append("content", this.replyInfo.comment);
-        formData.append("reply_comment_id", this.replyInfo.replyCommentId);
-        formData.append("reply_username", this.replyInfo.replyUserName);
+        if (type === "reply") {
+          // 二级评论
+          formData.append("video_id", this.replyInfo.videoId);
+          formData.append("content", this.replyInfo.comment);
+          formData.append("reply_comment_id", this.replyInfo.replyCommentId);
+          formData.append("reply_username", this.replyInfo.replyUserName);
 
-        this.$axios({
-          method: "post",
-          url: "https://milimili.super2021.com/api/video/reply-comment",
-          data: formData,
-        })
+          this.$axios({
+            method: "post",
+            url: "https://milimili.super2021.com/api/video/reply-comment",
+            data: formData,
+          })
           .then((res) => {
             console.log(res);
             switch (res.data.result) {
@@ -1105,15 +1001,15 @@ export default {
           .catch((err) => {
             console.log(err);
           });
-      } else {
-        // 一级评论
-        formData.append("video_id", this.videoInfo.id);
-        formData.append("content", this.comment);
-        this.$axios({
-          method: "post",
-          url: "https://milimili.super2021.com/api/video/add-comment",
-          data: formData,
-        })
+        } else {
+          // 一级评论
+          formData.append("video_id", this.videoInfo.id);
+          formData.append("content", this.comment);
+          this.$axios({
+            method: "post",
+            url: "https://milimili.super2021.com/api/video/add-comment",
+            data: formData,
+          })
           .then((res) => {
             console.log(res);
             switch (res.data.result) {
@@ -1155,11 +1051,11 @@ export default {
         formData.append("JWT", jwt);
         formData.append("comment_id", commentId);
 
-      this.$axios({
-        method: "post",
-        url: "https://milimili.super2021.com/api/video/del-comment",
-        data: formData,
-      })
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/video/del-comment",
+          data: formData,
+        })
         .then((res) => {
           console.log(res);
           switch (res.data.result) {
@@ -2052,11 +1948,7 @@ export default {
   width: 100%;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-list-header {
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-header {
   width: 100%;
   height: 46px;
   background-color: #f4f4f4;
@@ -2067,11 +1959,7 @@ export default {
   padding: 0 10px 0 16px;
   align-items: center;
 }
-.video-detail-wrap
-  .video-content
-  .content-right
-  .recommend_wrap
-  .recommend-list-header {
+.video-detail-wrap .video-content .content-right .recommend_wrap .recommend-list-header {
   width: 100%;
   height: 46px;
   background-color: #f4f4f4;
@@ -2083,32 +1971,18 @@ export default {
   align-items: center;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-list-content {
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content {
   width: 100%;
   height: 500px;
   overflow-y: scroll;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-list-content
-  .danmu-table {
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table {
   width: 100%;
   padding-left: 40px;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-list-content
-  .danmu-table
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
   tr
   th {
   font-size: 12px;
@@ -2118,35 +1992,20 @@ export default {
   padding: 10px 0;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-list-content
-  .danmu-table
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
   tr
   td {
   font-size: 12px;
   color: #222;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-list-content
-  .danmu-table
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
   tr
   .time {
   width: 20%;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-list-content
-  .danmu-table
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
   tr
   .date {
   width: 40%;
@@ -2157,11 +2016,7 @@ export default {
   padding-left: 40px;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-table
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
   tr
   th {
   font-size: 12px;
@@ -2171,32 +2026,20 @@ export default {
   padding: 10px 0;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-table
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
   tr
   td {
   font-size: 12px;
   color: #222;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-table
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
   tr
   .time {
   width: 20%;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-right
-  .danmu-list-wrap
-  .danmu-table
+.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
   tr
   .date {
   width: 30%;
