@@ -405,7 +405,7 @@
     methods: {
       /**
        * 先获取收藏列表，再打开收藏窗口
-       */
+       */ 
       async openCollectionWindow(){
         // 检查当前收藏夹浮窗是否可以打开
         if(this.collectionLock === false){
@@ -714,7 +714,8 @@
         }
         console.log("当前用户的JWT是："+jwt);
         formData.append("JWT", jwt);
-        // elementUI加载实例
+
+        // FIND_ME elementUI加载实例
         let loadingInstance = this.$loading({
           target: '#main-body',
           fullscreen: true,
@@ -726,7 +727,9 @@
           data: formData,
         })
         .then(res => {
+          // FIND_ME 关闭加载实例
           loadingInstance.close();
+          // 
           console.log(res);
           switch (res.data.result) {
             case 1:{
@@ -1106,8 +1109,10 @@
 
 /* 整个视频页面的 内容容器 这里的宽度是B站的旧版网页数据 */
 .video-detail-wrap .video-content {
-    max-width: 1984px;
-    min-width: 988px;
+    /* max-width: 1984px; */
+    max-width: 2540px;
+    /* min-width: 988px; */
+    min-width: 1080px;
     margin: 0 auto;
     padding: 0 68px;
     padding-top: 27px;
@@ -1118,7 +1123,8 @@
 /* #region 左侧容器部分 */
 .video-detail-wrap .video-content .content-left {
     width: 800px;
-    /* border: 1px solid red;DELETE_ME */
+    /*DELETE_ME*/
+    /* border: 1px solid red; */
 }
 
   /* #region  视频和视频控件 */
