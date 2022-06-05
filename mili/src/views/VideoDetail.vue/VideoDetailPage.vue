@@ -476,7 +476,7 @@ export default {
             zone: (...)
          */
       videoInfo: {},
-      //推荐视频列表
+      //推荐视频列表 hb
       recommendVidoes: [],
       // 视频投稿时间
       videoCreatedDate: null,
@@ -488,23 +488,24 @@ export default {
         isLiked: 0,
         isCollectted: 0,
       },
+      
       // 收藏窗口是否展示
-        showTheCollectionWindow: false,
-        // showTheCollectionWindow: true,
-        // 即将增加收藏关系的 收藏夹id数组
-        addCollectionRelationArray: '',
-        // 即将删除收藏关系 收藏夹id数组
-        deleteCollectionRelationArray: '',
-        /**
-         * 阻止用户获取脏数据的变量，
-         *  >>>在用户成功打开一次窗口时，上锁（true）
-         *  
-         *  <<<在通过点击“叉号”退出时，立即解锁，因为并没有触发更新
-         *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
-         */
-        collectionLock: false,
+      showTheCollectionWindow: false,
+      // showTheCollectionWindow: true,
+      // 即将增加收藏关系的 收藏夹id数组
+      addCollectionRelationArray: '',
+      // 即将删除收藏关系 收藏夹id数组
+      deleteCollectionRelationArray: '',
+      /**
+       * 阻止用户获取脏数据的变量，
+       *  >>>在用户成功打开一次窗口时，上锁（true）
+       *  
+       *  <<<在通过点击“叉号”退出时，立即解锁，因为并没有触发更新
+       *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
+       */
+      collectionLock: false,
 
-        collectionList:[
+      collectionList:[
           {
             id: "1",
             title: "自定义收藏夹1号",
@@ -553,7 +554,7 @@ export default {
             updating_collection: 0,
             video_num: 6
           },  
-        ],
+      ],
 
       // 一个视频的总评论数目（包括一二级）
       totalCommentsNum: 0,
@@ -570,10 +571,10 @@ export default {
         replyUserName: "",
         comment: "",
       },
-        // TEST_JWT: null,
-        // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpc1N1cGVyQWRtaW4iOnRydWV9.ZJoduPgGiwUKhO3lnpePR5PQgf49wfc4sgxFPgQHH14',
-        TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1MCwiaXNTdXBlckFkbWluIjpmYWxzZX0.RycUhwt145ZMLtR_9qvRoLotuS8SbKOvCcfIYabsOGE',
-        // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU'
+      // TEST_JWT: null,
+      // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpc1N1cGVyQWRtaW4iOnRydWV9.ZJoduPgGiwUKhO3lnpePR5PQgf49wfc4sgxFPgQHH14',
+      TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1MCwiaXNTdXBlckFkbWluIjpmYWxzZX0.RycUhwt145ZMLtR_9qvRoLotuS8SbKOvCcfIYabsOGE',
+      // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU'
       
     };
   },
@@ -585,7 +586,7 @@ export default {
   methods: {
     /**
        * 先获取收藏列表，再打开收藏窗口
-       */
+       */ 
       async openCollectionWindow(){
         // 检查当前收藏夹浮窗是否可以打开
         if(this.collectionLock === false){
@@ -861,7 +862,7 @@ export default {
       // let danmuArr = this.initDanmu();
       // let danmuArr = [];
       // this.danmuList = danmuArr.map((item) => {
-      // return {
+        // return {
       //     time: '00:00',
       //     content: item.txt,
       //     date: '09-20 15:30'
@@ -898,10 +899,9 @@ export default {
         this.isLogined = true;
       }
        console.log("当前用户的JWT是："+jwt);
-      jwt = this.TEST_JWT;
-      //#endregion
       formData.append("JWT", jwt);
-      // elementUI加载实例
+
+      // FIND_ME elementUI加载实例
       let loadingInstance = this.$loading({
         target: "#main-body",
         fullscreen: true,
@@ -909,19 +909,20 @@ export default {
 
       this.$axios({
         method: "post",
-        url:
-          "https://milimili.super2021.com/api/video/detail/" +
-          this.$route.params.id,
+        url: "https://milimili.super2021.com/api/video/detail/" +this.$route.params.id,
         data: formData,
       })
         .then((res) => {
+          // FIND_ME 关闭加载实例
           loadingInstance.close();
+          // 
           console.log(res);
           switch (res.data.result) {
             case 1: {
               this.$message.success("加载成功！");
               /* 视频本身的信息 */
               this.videoInfo = res.data.video_info;
+              //获取推荐视频 hb
               this.recommendVidoes = res.data.recommended_video;
               // console.log(this.videoInfo);
               let videoUrl = res.data.video_info.video_url;
@@ -1233,7 +1234,9 @@ export default {
         });
     },
   },
+  //推荐视频组件 个人展示卡片组件 hb
   components: { UserCard, VideoList },
+  //路由变化 改变dom
   watch: {
     "$route.params.id"(newval, oldval) {
       console.log("video detail router changed");
@@ -1322,8 +1325,9 @@ export default {
 
 /* #region 左侧容器部分 */
 .video-detail-wrap .video-content .content-left {
-  width: 800px;
-  /* border: 1px solid red;DELETE_ME */
+    width: 800px;
+    /*DELETE_ME*/
+    /* border: 1px solid red; */
 }
 
 /* #region  视频和视频控件 */
