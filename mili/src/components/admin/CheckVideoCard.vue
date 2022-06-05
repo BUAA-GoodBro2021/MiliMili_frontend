@@ -52,9 +52,9 @@
             <li v-if="type==2">
               <el-tag type="danger" class="tag" >{{title}}</el-tag>
             </li>
-            <li v-if="type==2">
+            <!-- <li v-if="type==2">
               <el-tag type="danger" class="tag" >{{description}}</el-tag>
-            </li>
+            </li> -->
             <li style="float: right; margin-right: 10px">
               <i class="el-icon-date text_icon" /><span class="text_footer">
                 上传时间: {{ video.created_time.split("T")[0] }}

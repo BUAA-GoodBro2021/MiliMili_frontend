@@ -12,21 +12,25 @@
           <div class="empty" v-if="videos.length == 0">
             <span class="empty_title"> 没视频捏</span>
           </div>
-          <div class="list_wrap" v-else>
+          <div class="list_box"  v-else>
+          <div class="list_wrap">
             <ComplainVideoList :videos="videos" :pageSize="3" :type="1" />
+          </div>
           </div>
         </el-tab-pane>
         <el-tab-pane label="投诉视频" name="2">
           <div class="empty" v-if="videoComplain.length == 0">
             <span class="empty_title"> 没视频捏</span>
           </div>
-          <div class="list_wrap" v-else>
+          <div class="list_box" v-else>
+          <div class="list_wrap" >
             <ComplainVideoList
               :videos="videoComplain"
               :pageSize="3"
               :type="2"
               v-on:Delete="Delete"
             />
+          </div>
           </div>
         </el-tab-pane>
         <el-tab-pane label="待审核视频" name="3">
@@ -415,7 +419,13 @@ export default {
   padding: 30px 0 30px 0;
   height: 20vh;
 }
+.list_box{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 .list_wrap {
+  width: 900px;
   padding: 0 15% 0;
 }
 .video_title {

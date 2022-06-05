@@ -5,9 +5,9 @@
         <div class="video_card" v-for="(item, index) in videoShow" :key="index">
           <!-- <el-tag type="danger" class="tag">{{item.description}}</el-tag> -->
           <VideoCard
-            :video="type == 1 ? item : item.video"
-            :description="item.description"
-            :title="item.title"
+            :video="type == 1 ? item : item.complain_detail.video"
+            :description="type == 1 ? null : item.complain_detail.description"
+            :title="type == 1 ? null : item.complain_detail.title"
             :type="type"
             v-on:Delete="Delete"
           />
