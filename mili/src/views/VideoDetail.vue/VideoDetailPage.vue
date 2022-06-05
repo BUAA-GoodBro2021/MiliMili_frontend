@@ -3,6 +3,7 @@
   <div class="video-detail-wrap">
     <!-- 视频+视频交互组件+弹幕发送 -->
     <div class="video-content">
+      <!-- 左侧的视频主体+评论列表 -->
       <div class="content-left">
         <h1 class="title">{{ videoInfo.video_url ? videoInfo.title : "" }}</h1>
         <!-- <div class="play-info">68.7万播放 · 1641弹幕 2021-09-02 13:54:26</div> -->
@@ -45,14 +46,31 @@
             {{ coins.count || coins.count == 0 ? coins.count : 0 }}
           </div> -->
 
-          <!-- <div class="icon-item"> -->
-          <!-- 获取是否收藏，并在点击时切换状态和更新数量 -->
-          <!-- <img class="img" v-if="!collections.like" @click="postCollections" -->
-          <!-- src="../../assets/image/video/icon_03.png" alt=""> -->
-          <!-- <img class="img" v-else @click="postCollections" -->
-          <!-- src="../../assets/image/video/icon_03_active.png" alt=""> -->
-          <!-- {{ collections.count }} -->
-          <!-- </div> -->
+          <div class="icon-item">
+            <!-- 获取是否收藏，并在点击时切换状态和更新数量 -->
+            <!-- <img class="img" v-if="!collections.like" @click="postCollections"
+              src="../../assets/video/icon_03.png" alt="">
+            <img class="img" v-else @click="postCollections"
+              src="../../assets/video/icon_03_active.png" alt="">
+            {{ collections.count }} -->
+
+            <!-- <img class="img" @click="showTheCollectionWindow = true" src="../../assets/video/icon_03.png" alt=""/> -->
+            <img
+              v-if="boolSymbol.isCollectted === 0"
+              class="img"
+              @click="openCollectionWindow"
+              src="../../assets/video/icon_03.png"
+              alt=""
+            />
+            <img
+              v-else
+              class="img"
+              @click="openCollectionWindow"
+              src="../../assets/video/icon_03_active.png"
+              alt=""
+            />
+          </div>
+
           <!-- 留着后续功能开发 -->
           <!-- <div class="icon-item">
             <img class="img" src="../../assets/image/video/icon_04.png" alt="">
@@ -130,18 +148,25 @@
                   -->
                 <div class="comment-in">
                   <!-- 发出一级评论 用户的头像 -->
-                  <!-- TODO: 在这里加入跳转路由  item.comment_root.user_id -->
-                  <img
-                    class="avatar"
-                    :src="item.comment_root.avatar_url"
-                    alt=""
-                  />
+                  <!-- 在这里加入跳转路由  item.comment_root.user_id -->
+                  <router-link
+                    :to="'/OthersHomePage/Main/' + item.comment_root.user_id"
+                    ><img
+                      class="avatar"
+                      :src="item.comment_root.avatar_url"
+                      alt=""
+                  /></router-link>
                   <!-- 一级评论的正文 -->
                   <div class="comment-right">
-                    <!-- TODO: 在这里加入跳转路由 item.comment_root.user_id -->
                     <!-- <div class="name">{{ item.comment_root.username }}</div> -->
+                    <!-- 在这里加入跳转路由 item.comment_root.user_id -->
                     <div class="name-jump-space">
-                      {{ item.comment_root.username }}
+                      <router-link
+                        :to="
+                          '/OthersHomePage/Main/' + item.comment_root.user_id
+                        "
+                        >{{ item.comment_root.username }}</router-link
+                      >
                     </div>
                     <div class="comment-content">
                       {{ item.comment_root.content }}
@@ -188,26 +213,35 @@
                       v-for="(child, childIndex) in item.child_list"
                       :key="'child_' + childIndex"
                     >
-                      <!-- TODO: 在这里加入跳转路由 child.user_id -->
-                      <img
-                        class="child-avatar"
-                        :src="child.avatar_url"
-                        alt=""
-                      />
+                      <!-- 在这里加入跳转路由 child.user_id -->
+                      <router-link :to="'/OthersHomePage/Main/' + child.user_id"
+                        ><img
+                          class="child-avatar"
+                          :src="child.avatar_url"
+                          alt=""
+                      /></router-link>
                       <div class="child-user-info">
                         <div class="child-comment-info">
                           <!-- <span class="child-name">{{ child.username }}</span> -->
                           <!-- <a class="name-jump-space" href="#">{{ child.username }}</a> -->
-                          <!-- TODO: 在这里加入跳转路由 child.user_id -->
-                          <span class="name-jump-space">{{
-                            child.username
-                          }}</span>
+                          <!-- 在这里加入跳转路由 child.user_id -->
+                          <span class="name-jump-space"
+                            ><router-link
+                              :to="'/OthersHomePage/Main/' + child.user_id"
+                              >{{ child.username }}</router-link
+                            ></span
+                          >
                           <!-- <span class="child-comment"><span class="reply-name">{{ '回复 @' + child.reply_username + '：' }}</span>{{ child.content }}</span> -->
-                          <!-- TODO: 在这里  加入跳转路由 replyInfo.replyUserId -->
+                          <!-- TODO: 在这里  加入跳转路由 child.reply_user_id -->
                           <span class="child-comment"
                             >回复
                             <span class="reply-name"
-                              >@{{ child.reply_username }}：</span
+                              ><router-link
+                                :to="
+                                  '/OthersHomePage/Main/' + child.reply_user_id
+                                "
+                                >@{{ child.reply_username }}：</router-link
+                              ></span
                             >{{ child.content }}</span
                           >
                         </div>
@@ -298,6 +332,7 @@
       <!-- 右侧的弹幕列表 -->
       <!-- add by hb  -->
       <!-- 在弹幕的上方加上了个人信息 在弹幕的下方加上了推荐视频的列表 -->
+      <!-- 右侧的弹幕列表+推荐视频列表 -->
       <div class="content-right">
         <!-- 个人信息 -->
         <div class="user_wrap" style="margin-bottom: 10px; width: 100%">
@@ -333,6 +368,68 @@
           <div class="recommend-list-header">推荐视频列表</div>
           <div class="recommend_vidoes" style="margin-top: 10px; width: 100%">
             <VideoList :videos="recommendVidoes" :pageSize="6" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 收藏悬浮窗口 -->
+      <div class="bili-dialog-m" v-if="showTheCollectionWindow === true">
+        <div class="bili-dialog-bomb">
+          <div class="collection-m">
+            <div class="title">
+              添加到收藏夹
+              <!-- 关闭收藏的悬浮窗口 -->
+              <!-- <i class="close" @click="showTheCollectionWindow = false"></i> -->
+              <i class="close" @click="closeCollectionWindow"></i>
+            </div>
+            <div class="content">
+              <div class="group-list">
+                <ul>
+                  <!-- <li>
+                    <label>
+                      <input type="checkbox"/>
+                      <i></i>
+                      <span title="默认收藏夹" class="fav-title">默认收藏夹</span>
+                      <span class="count">238</span>
+                    </label>
+                  </li> -->
+
+                  <!-- 
+                    这里采用一个额外的字段 updating_collection 去记录用户改变的收藏关系，
+                    updating_collection 原本和 is_collect 是一致的，当用户改变勾选框的状态时，
+                    它代替is_collect 记录 更新后的勾选框的选中状态。
+                    最终借由遍历一次收藏夹，比较 is_collect 和 updating_collection 的一致性来完成
+                    收藏关系的更新维护。
+                   -->
+                  <li v-for="(item, index) in collectionList" :key="index">
+                    <label>
+                      <input
+                        type="checkbox"
+                        :checked="item.is_collect === 1"
+                        @change="
+                          item.updating_collection =
+                            1 - item.updating_collection
+                        "
+                      />
+                      <i></i>
+                      <span :title="item.title" class="fav-title">{{
+                        item.title
+                      }}</span>
+                      <span class="count">{{ item.video_num }}/1000</span>
+                    </label>
+                  </li>
+                </ul>
+
+                <div class="add-group clearfix">
+                  <div class="add-btn">新建收藏夹</div>
+                </div>
+              </div>
+            </div>
+            <div class="bottom">
+              <button class="btn-fav" @click="updateCollectionRelations">
+                确定
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -380,205 +477,7 @@ export default {
          */
       videoInfo: {},
       //推荐视频列表
-      recommendVidoes: [
-        {
-          id: 59,
-          title: "终于等到了！二手车取消限迁？珠三角性能车价格要崩？！",
-          description: "二手车限迁政策真的要松绑了？",
-          video: "59.mp4",
-          avatar: "59.jpg",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/59.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/59.jpg",
-          like_num: 1,
-          collect_num: 0,
-          view_num: 1,
-          zone: "时事",
-          tag1: "二手车",
-          tag2: "珠三角",
-          tag3: "价格",
-          tag4: "政策",
-          tag5: "",
-          user_id: 39,
-          created_time: "2022-05-22T03:01:20.412Z",
-          updated_time: "2022-05-22T03:02:06.401Z",
-          isAudit: 1,
-        },
-        {
-          id: 85,
-          title: "之前谁谁 要看 兰博鸡尼 的？请用力点破你们的屏幕！",
-          description:
-            "素材 WoyshnisMedia 【https://www.youtube.com/watch?v=ba7JNTI17uo】",
-          video: "85.mp4",
-          avatar: "85.jpg",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/85.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/85.jpg",
-          like_num: 0,
-          collect_num: 0,
-          view_num: 3,
-          zone: "汽车",
-          tag1: "兰博基尼",
-          tag2: "超跑",
-          tag3: "Aventador",
-          tag4: "改装玩车",
-          tag5: "低趴姿势",
-          user_id: 10,
-          created_time: "2022-06-02T10:11:41.356Z",
-          updated_time: "2022-06-02T10:12:22.108Z",
-          isAudit: 1,
-        },
-        {
-          id: 52,
-          title: "感受新海诚笔下独有的浪漫",
-          description:
-            "BGm：Touch 素材：天气之子 你的名字 秒速五厘米 言叶之庭 十字路口从飘舞着樱花的火车驶过路口 到下雨公园的邂逅 再到交换灵魂奇妙之旅 后到晴天少女与离家少年为了爱打破规矩和阻挠的浪漫主义   今年新海诚携新作铃芽户缔如期而至",
-          video: "52.mp4",
-          avatar: "52.jpg",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/52.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/52.jpg",
-          like_num: 0,
-          collect_num: 0,
-          view_num: 1,
-          zone: "动漫",
-          tag1: "音乐",
-          tag2: "新海诚",
-          tag3: "混剪",
-          tag4: "",
-          tag5: "",
-          user_id: 14,
-          created_time: "2022-05-22T02:42:35.506Z",
-          updated_time: "2022-05-22T02:43:19.743Z",
-          isAudit: 1,
-        },
-        {
-          id: 89,
-          title: "“人生本该自由，乘兴而去，尽兴而归”",
-          description: "BGM：浮光（The History）-Jannik",
-          video: "89.mp4",
-          avatar: "89.jpg",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/89.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/89.jpg",
-          like_num: 0,
-          collect_num: 0,
-          view_num: 4,
-          zone: "户外",
-          tag1: "远方",
-          tag2: "出行",
-          tag3: "生活",
-          tag4: "励志",
-          tag5: "风景",
-          user_id: 10,
-          created_time: "2022-06-02T10:21:06.830Z",
-          updated_time: "2022-06-02T10:21:53.617Z",
-          isAudit: 1,
-        },
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video: "11.mp4",
-          avatar: "",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 2,
-          collect_num: 1,
-          view_num: 23,
-          zone: "科技",
-          tag1: "户外",
-          tag2: "元宇宙",
-          tag3: "长沙",
-          tag4: "",
-          tag5: "",
-          user_id: 20,
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-06-03T04:25:09.452Z",
-          isAudit: 1,
-        },
-        {
-          id: 69,
-          title: "胡桃单曲《嗷》",
-          description:
-            "新的胡桃单曲，bgm是自制的，中间做了段木偶动画月初开始做的，做到现在胡桃池子都快结束了",
-          video: "69.mp4",
-          avatar: "69.jpg",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/69.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/69.jpg",
-          like_num: 0,
-          collect_num: 0,
-          view_num: 10,
-          zone: "鬼畜",
-          tag1: "胡桃",
-          tag2: "原神",
-          tag3: "可爱",
-          tag4: "鬼畜",
-          tag5: "搞笑",
-          user_id: 10,
-          created_time: "2022-06-02T08:39:09.702Z",
-          updated_time: "2022-06-02T08:39:55.290Z",
-          isAudit: 1,
-        },
-        {
-          id: 81,
-          title: "【何同学】80年代的电脑能做什么？苹果麦金塔深度体验龍",
-          description: "能认识大家是我的荣幸",
-          video: "81.mp4",
-          avatar: "81.jpg",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/81.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/81.jpg",
-          like_num: 0,
-          collect_num: 0,
-          view_num: 0,
-          zone: "科技",
-          tag1: "数码",
-          tag2: "测评",
-          tag3: "体验",
-          tag4: "苹果",
-          tag5: "Apple",
-          user_id: 10,
-          created_time: "2022-06-02T09:52:52.870Z",
-          updated_time: "2022-06-02T09:53:44.800Z",
-          isAudit: 1,
-        },
-        {
-          id: 54,
-          title:
-            "数字人民币是什么？使用体验如何？数字人民币简单科普与试点地区体验",
-          description:
-            "本期视频简单介绍了什么是数字人民币，数字人民币双离线支付的大致原理以及数字人民币APP在线上与线下两种场景的使用体验并在视频最后给出了一点自己的见解",
-          video: "54.mp4",
-          avatar: "54.jpg",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/54.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/54.jpg",
-          like_num: 0,
-          collect_num: 0,
-          view_num: 2,
-          zone: "科技",
-          tag1: "科普",
-          tag2: "评测",
-          tag3: "人民币",
-          tag4: "",
-          tag5: "",
-          user_id: 15,
-          created_time: "2022-05-22T02:47:50.153Z",
-          updated_time: "2022-05-22T02:48:36.285Z",
-          isAudit: 1,
-        },
-      ],
+      recommendVidoes: [],
       // 视频投稿时间
       videoCreatedDate: null,
       videoCreatedTime: null,
@@ -589,6 +488,72 @@ export default {
         isLiked: 0,
         isCollectted: 0,
       },
+      // 收藏窗口是否展示
+        showTheCollectionWindow: false,
+        // showTheCollectionWindow: true,
+        // 即将增加收藏关系的 收藏夹id数组
+        addCollectionRelationArray: '',
+        // 即将删除收藏关系 收藏夹id数组
+        deleteCollectionRelationArray: '',
+        /**
+         * 阻止用户获取脏数据的变量，
+         *  >>>在用户成功打开一次窗口时，上锁（true）
+         *  
+         *  <<<在通过点击“叉号”退出时，立即解锁，因为并没有触发更新
+         *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
+         */
+        collectionLock: false,
+
+        collectionList:[
+          {
+            id: "1",
+            title: "自定义收藏夹1号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 0,
+            updating_collection: 0,
+            video_num: 12
+          },
+          {
+            id: "2",
+            title: "自定义收藏夹2号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 1,
+            updating_collection: 1,
+            video_num: 4
+          },
+          {
+            id: "3",
+            title: "自定义收藏夹3号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 0,
+            updating_collection: 0,
+            video_num: 56
+          },
+          {
+            id: "4",
+            title: "自定义收藏夹4号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 1,
+            updating_collection: 1,
+            video_num: 6
+          },
+          {
+            id: "5",
+            title: "自定义收藏夹5号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 0,
+            updating_collection: 0,
+            video_num: 1
+          },
+          {
+            id: "6",
+            title: "自定义收藏夹6号",
+            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
+            is_collect: 0,
+            updating_collection: 0,
+            video_num: 6
+          },  
+        ],
 
       // 一个视频的总评论数目（包括一二级）
       totalCommentsNum: 0,
@@ -605,10 +570,11 @@ export default {
         replyUserName: "",
         comment: "",
       },
-      // TEST_JWT: null,
-      TEST_JWT:
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpc1N1cGVyQWRtaW4iOnRydWV9.ZJoduPgGiwUKhO3lnpePR5PQgf49wfc4sgxFPgQHH14",
-      // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU'
+        // TEST_JWT: null,
+        // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpc1N1cGVyQWRtaW4iOnRydWV9.ZJoduPgGiwUKhO3lnpePR5PQgf49wfc4sgxFPgQHH14',
+        TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1MCwiaXNTdXBlckFkbWluIjpmYWxzZX0.RycUhwt145ZMLtR_9qvRoLotuS8SbKOvCcfIYabsOGE',
+        // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU'
+      
     };
   },
   created() {
@@ -617,6 +583,223 @@ export default {
     this.getCurrentUserSimpleInfo();
   },
   methods: {
+    /**
+       * 先获取收藏列表，再打开收藏窗口
+       */
+      async openCollectionWindow(){
+        // 检查当前收藏夹浮窗是否可以打开
+        if(this.collectionLock === false){
+          const result1 = await this.getCollections();
+          console.log('result1 = ' + result1);
+          const result2 = await this.openCollectionWindowStatus();
+          console.log('result2 = ' + result2);
+        }
+        
+        
+        /**
+         * 下面的同步函数执行方式会导致，即使数据库已经更新，但是打开窗口以后，收藏夹列表还是要等一阵子才能更新，
+         * 但是此时，窗口已经开了，所以就会导致出现一个数据由旧到新的切换过程，很不雅观
+         */
+        // this.getCollections();
+        // this.openCollectionWindowStatus();
+      },
+      /**
+       * 用户直接通过 点击×号关闭窗口，
+       *  此时应该还原已经改变了的 updating_collection  -->似乎这条不需要，这里是保险
+       *    并且应该解锁，使得用户可以再次打开该收藏窗口！
+       */
+      closeCollectionWindow(){
+        let len = this.collectionList.length;
+        let i = 0;
+        for (i = 0; i < len; i++){
+          if (this.collectionList[i].is_collect !== this.collectionList[i].updating_collection){
+            this.collectionList[i].updating_collection = this.collectionList[i].is_collect;
+          }
+        }
+        // 清除以后再关闭窗口
+        this.showTheCollectionWindow = false;
+        // 解锁
+        this.collectionLock = false;  
+      },
+
+      async openCollectionWindowStatus(){
+        this.showTheCollectionWindow = true;
+        this.collectionLock = true;   // 上锁
+        return new Promise(resolve => {
+          resolve('开启收藏窗口');
+        })
+      },
+      /**
+       * 获取 当前用户 对 该视频 的收藏详情
+       * !!!不可以放在created生命周期里
+       * 这里保留一版之前的函数以供备用
+       */
+      // async getCollections(){
+      //   let formData = new FormData();
+      //   let loginMessage = localStorage.getItem("loginMessage");
+      //   let jwt = null;
+      //   if ( loginMessage != null){
+      //     jwt = JSON.parse(loginMessage).JWT;
+      //     this.isLogined = true;
+      //   }else {
+      //     this.$message.warning("请先登录！");
+      //     this.$router.push('/login');
+      //     return;
+      //   }
+      //   let videoId = this.videoInfo.id;
+
+      //   formData.append("JWT", jwt);
+      //   formData.append("video_id", videoId);
+
+      //   this.$axios({
+      //     method: 'post',
+      //     url: 'https://milimili.super2021.com/api/video/favorite-simple-list',
+      //     data: formData,
+      //   })
+      //   .then(res => {          
+      //     console.log(res);
+      //     switch (res.data.result) {
+      //       case 1:
+      //         this.$message.success("获取 当前用户 对 该视频 的收藏详情成功！");
+      //         /* 获取 当前用户 对 该视频 的收藏详情 */
+      //         this.collectionList = res.data.favorite_list_simple;
+      //       break;
+            
+      //       default:
+      //         this.$message.warning("获取 当前用户 对 该视频 的收藏详情失败！");              
+      //         break;
+      //     }
+      //     // 这部分是为了封装成异步函数
+      //     return new Promise( resolve => {
+      //       resolve('获取收藏结束');
+      //     });
+
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   })
+      // },
+
+      async getCollections(){
+        return new Promise((resolve, reject) =>{
+          let formData = new FormData();
+          let loginMessage = localStorage.getItem("loginMessage");
+          let jwt = null;
+          if ( loginMessage != null){
+            jwt = JSON.parse(loginMessage).JWT;
+            this.isLogined = true;
+          }else {
+            this.$message.warning("请先登录！");
+            this.$router.push('/login');
+            // 这部分是为了封装成异步函数
+            reject('未登录不可以操作收藏夹');
+            return;
+          }
+          let videoId = this.videoInfo.id;
+
+          formData.append("JWT", jwt);
+          formData.append("video_id", videoId);
+
+          this.$axios({
+            method: 'post',
+            url: 'https://milimili.super2021.com/api/video/favorite-simple-list',
+            data: formData,
+          })
+          .then(res => {          
+            console.log(res);
+            switch (res.data.result) {
+              case 1:
+                this.$message.success("获取 当前用户 对 该视频 的收藏详情成功！");
+                /* 获取 当前用户 对 该视频 的收藏详情 */
+                this.collectionList = res.data.favorite_list_simple;
+              break;
+              
+              default:
+                this.$message.warning("获取 当前用户 对 该视频 的收藏详情失败！");              
+                break;
+            }
+            // 这部分是为了封装成异步函数
+            resolve('获取收藏结束');
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+      },
+      /**
+       * 更新用户的收藏夹和当前视频的交互关系
+       */
+      async updateCollectionRelations(){
+        // 先关掉窗口
+        this.showTheCollectionWindow = false;
+
+        let len = this.collectionList.length;
+        let i = 0;
+        for (i = 0; i < len; i++){
+          if (this.collectionList[i].is_collect !== this.collectionList[i].updating_collection){
+            if (this.collectionList[i].is_collect===0 && this.collectionList[i].updating_collection===1){
+              this.addCollectionRelationArray = this.addCollectionRelationArray + this.collectionList[i].id + ' ';
+            }
+            else if (this.collectionList[i].is_collect===1 && this.collectionList[i].updating_collection===0){
+              this.deleteCollectionRelationArray = this.deleteCollectionRelationArray + this.collectionList[i].id + ' ';
+            }
+            else{
+              this.$message.warning("收藏逻辑有误！！！请检查");
+            }
+          }
+        }
+        //#region 测试部分，可删
+        console.log('要新增的收藏夹id');
+        console.log(this.addCollectionRelationArray);
+        console.log('要删除的收藏夹id');
+        console.log(this.deleteCollectionRelationArray);
+        //#endregion
+
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        let videoId = this.videoInfo.id;
+
+        formData.append("JWT", jwt);
+        formData.append("video_id", videoId);
+        formData.append("collect_id_list", this.addCollectionRelationArray);
+        formData.append("not_collect_id_list", this.deleteCollectionRelationArray);
+        this.$axios({
+          method: 'post',
+          url: 'https://milimili.super2021.com/api/video/collect-action',
+          data: formData,
+        })
+        .then(res => {    
+          console.log('收藏夹信息');      
+          console.log(res);
+          switch (res.data.result) {
+            case 1:
+              this.$message.success("更新收藏详情成功！");
+              this.boolSymbol.isCollectted = res.data.is_collect;
+            break;
+            
+            default:
+              this.$message.warning("更新收藏详情详情失败！");           
+              break;
+          }
+          // 无论后端响应是否成功，都应该解锁，使得用户可以再次打开该收藏窗口！
+          this.collectionLock = false;      
+          // 无论成败，临时数组必须清空
+          this.addCollectionRelationArray = '';
+          this.deleteCollectionRelationArray = '';   
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      },
     /**
      * 优雅地显示数量
      * @param {int} number
@@ -661,7 +844,7 @@ export default {
               break;
             }
             default:
-              this.$message.warning("获取当前操作用户简要信息失败！");
+              this.$message.warning("获取当前操作用户简要信息失败！");/* CAN_BE_Annotated */
               break;
           }
         })
@@ -714,8 +897,7 @@ export default {
         jwt = JSON.parse(loginMessage).JWT;
         this.isLogined = true;
       }
-      //#region 调试逻辑，要删除
-      this.isLogined = true;
+       console.log("当前用户的JWT是："+jwt);
       jwt = this.TEST_JWT;
       //#endregion
       formData.append("JWT", jwt);
@@ -768,30 +950,24 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
-    },
-    /**
-     * 更新点赞数量
-     */
-    async postLike() {
-      let formData = new FormData();
-      let loginMessage = localStorage.getItem("loginMessage");
-      if (loginMessage == null) {
-        this.$message.warning("请先登录！");
-        this.$router.push("/login");
-        return;
-      }
-      let jwt = null;
-      if (loginMessage != null) {
-        jwt = JSON.parse(loginMessage).JWT;
-        this.isLogined = true;
-      }
-      let videoId = this.videoInfo.id;
-      //#region 调试逻辑，要删除
-      this.isLogined = true;
-      // jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMCwiaXNTdXBlckFkbWluIjp0cnVlfQ.qaTIp4fibthTzo72_Yc3a0iTkWiSm-ESpza_ISYbsnU';
-      jwt = this.TEST_JWT;
-      //#endregion
+        })
+			},
+      /**
+       * 更新点赞数量
+       */
+      async postLike() {
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        let videoId = this.videoInfo.id;
 
       formData.append("JWT", jwt);
       formData.append("video_id", videoId);
@@ -821,23 +997,22 @@ export default {
         });
     },
 
-    async postDisLike() {
-      let formData = new FormData();
-      let loginMessage = localStorage.getItem("loginMessage");
-      let jwt = null;
-      if (loginMessage != null) {
-        jwt = JSON.parse(loginMessage).JWT;
-        console.log("正确获得jwt");
-        this.isLogined = true;
-      }
-      let videoId = this.videoInfo.id;
-      //#region 调试逻辑，要删除
-      this.isLogined = true;
-      jwt = this.TEST_JWT;
-      //#endregion
-
-      formData.append("JWT", jwt);
-      formData.append("video_id", videoId);
+      async postDisLike() {
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          console.log("正确获得jwt")
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        let videoId = this.videoInfo.id;
+        formData.append("JWT", jwt);
+        formData.append("video_id", videoId);
 
       this.$axios({
         method: "post",
@@ -864,46 +1039,44 @@ export default {
         });
     },
 
-    /**
-     * 设置一/二级评论临时信息
-     * @param {String} type
-     * @param {*} root
-     * @param {*} child
-     */
-    setReplyInfo(type, root, child) {
-      // 这里 root 始终传进来的是一级评论 item，所以保证一个一级评论下的 rootId 一致
-      this.replyInfo.videoId = this.videoInfo.id;
-      if (type === "root") {
-        // 回复一级评论的 二级评论
-        this.replyInfo.rootId = root.comment_root.id;
-        this.replyInfo.replyCommentId = root.comment_root.id;
-        this.replyInfo.replyUserId = root.comment_root.user_id;
-        this.replyInfo.replyUserName = root.comment_root.username;
-      } else {
-        // 回复其他 二级评论的 二级评论
-        this.replyInfo.rootId = root.comment_root.id;
-        this.replyInfo.replyCommentId = child.id;
-        this.replyInfo.replyUserId = child.userId;
-        this.replyInfo.replyUserName = child.username;
-      }
-    },
-    /**
-     * 发送一/二级评论
-     * @param {String} type
-     */
-    async postComments(type) {
-      let formData = new FormData();
-      let loginMessage = localStorage.getItem("loginMessage");
-      let jwt = null;
-      if (loginMessage != null) {
-        jwt = JSON.parse(loginMessage).JWT;
-        this.isLogined = true;
-      }
-      //#region 调试逻辑，要删除
-      this.isLogined = true;
-      jwt = this.TEST_JWT;
-      //#endregion
-      formData.append("JWT", jwt);
+      /**
+       * 设置一/二级评论临时信息
+       * @param {String} type 
+       * @param {*} root
+       * @param {*} child 
+       */
+      setReplyInfo(type, root, child) { // 这里 root 始终传进来的是一级评论 item，所以保证一个一级评论下的 rootId 一致
+				this.replyInfo.videoId = this.videoInfo.id;
+				if (type === 'root') {    // 回复一级评论的 二级评论
+					this.replyInfo.rootId = root.comment_root.id;
+          this.replyInfo.replyCommentId = root.comment_root.id;
+					this.replyInfo.replyUserId = root.comment_root.user_id;
+					this.replyInfo.replyUserName = root.comment_root.username;
+				} else {    // 回复其他 二级评论的 二级评论
+					this.replyInfo.rootId = root.comment_root.id;
+          this.replyInfo.replyCommentId = child.id;
+					this.replyInfo.replyUserId = child.userId;
+					this.replyInfo.replyUserName = child.username;
+				}
+			},
+      /**
+       * 发送一/二级评论
+       * @param {String} type 
+       */
+      async postComments(type) {
+				let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        
+        formData.append("JWT", jwt);
 
       if (type === "reply") {
         // 二级评论
@@ -963,27 +1136,28 @@ export default {
           })
           .catch((err) => {
             console.log(err);
-          });
-      }
-    },
-    /**
-     * 删除一/二级评论
-     * @param {int} commentId
-     */
-    async deleteComments(commentId) {
-      let formData = new FormData();
-      let loginMessage = localStorage.getItem("loginMessage");
-      let jwt = null;
-      if (loginMessage != null) {
-        jwt = JSON.parse(loginMessage).JWT;
-        this.isLogined = true;
-      }
-      //#region 调试逻辑，要删除
-      this.isLogined = true;
-      jwt = this.TEST_JWT;
-      //#endregion
-      formData.append("JWT", jwt);
-      formData.append("comment_id", commentId);
+          })
+				}
+			},
+      /**
+       * 删除一/二级评论
+       * @param {int} commentId 
+       */
+      async deleteComments(commentId) {
+				let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        
+        formData.append("JWT", jwt);
+        formData.append("comment_id", commentId);
 
       this.$axios({
         method: "post",
@@ -1006,39 +1180,41 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-        });
-    },
-    /**
-     *
-     * @param {int} commentId
-     * @param {int} type  0 1
-     */
-    async postOrCancelCommentLike(commentId, type) {
-      let formData = new FormData();
-      let loginMessage = localStorage.getItem("loginMessage");
-      let jwt = null;
-      if (loginMessage != null) {
-        jwt = JSON.parse(loginMessage).JWT;
-        this.isLogined = true;
-      }
-      //#region 调试逻辑，要删除
-      this.isLogined = true;
-      jwt = this.TEST_JWT;
-      //#endregion
-      formData.append("JWT", jwt);
-      formData.append("comment_id", commentId);
-      let LIKE_URL = "";
-      if (type === 0) {
-        LIKE_URL = "https://milimili.super2021.com/api/video/like-comment";
-      } else {
-        LIKE_URL = "https://milimili.super2021.com/api/video/dislike-comment";
-      }
-      this.$axios({
-        method: "post",
-        url: LIKE_URL,
-        data: formData,
-      })
-        .then((res) => {
+        })
+
+			},
+      /**
+       * 
+       * @param {int} commentId 
+       * @param {int} type  0 1
+       */
+      async postOrCancelCommentLike(commentId, type) {
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        
+        formData.append("JWT", jwt);
+        formData.append("comment_id", commentId);
+        let LIKE_URL = '';
+        if(type === 0) {
+          LIKE_URL = 'https://milimili.super2021.com/api/video/like-comment';
+        }else{
+          LIKE_URL = 'https://milimili.super2021.com/api/video/dislike-comment';
+        }
+        this.$axios({
+          method: 'post',
+          url: LIKE_URL,
+          data: formData,
+        })
+        .then(res => {          
           console.log(res);
           switch (res.data.result) {
             case 1: {
@@ -1227,14 +1403,15 @@ export default {
 }
 /* #endregion */
 
-/* #region  一级/二级评论发布框 */
-/* 一级 */
-.video-detail-wrap .video-content .content-left .comment-send {
-  margin: 40px 0;
-  width: 800px;
-  height: 85px;
-  display: flex;
-  justify-content: space-between;
+
+    /* #region  一级/二级评论发布框 */
+    /* 一级 */
+.video-detail-wrap .video-content .content-left .comment-send{
+    margin: 40px 0;
+    width: 800PX;
+    height: 85px;
+    display: flex;
+    justify-content: space-between;
 }
 .video-detail-wrap .video-content .content-left .reply-send {
   margin: 20px 0;
@@ -1305,7 +1482,7 @@ export default {
 
 /* #endregion */
 
-/* #region  评论区 */
+    /* #region  评论主题区域 */
 .video-detail-wrap .video-content .content-left .comment-wrap {
   width: 100%;
 }
@@ -1357,16 +1534,10 @@ export default {
   .avatar:hover {
   cursor: pointer;
 }
-/* 单条 一级评论 的评论正文 和 若干条二级评论 */
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-content {
-  margin: 10px 0;
+    /* 单条 一级评论 的评论正文 和 若干条二级评论 */
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-content {
+    font-size: 14px;
+    margin: 10px 0;
 }
 
 .video-detail-wrap
@@ -1418,6 +1589,14 @@ export default {
   color: #00a1d6;
   cursor: pointer;
 }
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name-jump-space a:hover {
+    color: #00a1d6;
+    cursor: pointer;  
+}
+.router-active-class-1{
+    color: #00a1d6;
+    cursor: pointer;
+}
 
 .video-detail-wrap
   .video-content
@@ -1433,28 +1612,20 @@ export default {
   color: #99a2aa;
 }
 
-/*  #region IMPORTANT 一级评论点赞图标样式位置 */
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .time
-  .common-model {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  vertical-align: text-top;
-  margin-right: 5px;
-  margin-left: 15px;
-  /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-  /* background: url('../assets/image/video/milimili-icon-elf.png') no-repeat; */
-  background: url("../../assets/video/milimili-icon-elf.png") no-repeat;
-  background-position: -153px -25px;
-  cursor: pointer;
+      /*  #region IMPORTANT 一级评论点赞图标样式位置 */
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time .common-model{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: text-top;
+    margin-right: 5px;
+    /* margin-right: 3px; */
+    margin-left: 15px;
+    /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
+    /* background: url('../assets/image/video/milimili-icon-elf.png') no-repeat; */
+    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
+    background-position: -153px -25px;
+    cursor: pointer;
 }
 .video-detail-wrap
   .video-content
@@ -1468,27 +1639,19 @@ export default {
   .common-model:hover {
   background-position: -218px -25px;
 }
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .time
-  .liked-model {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  vertical-align: text-top;
-  margin-right: 5px;
-  margin-left: 15px;
-  /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
-  /* background: url('../assets/image/video/milimili-icon-elf.png') no-repeat; */
-  background: url("../../assets/video/milimili-icon-elf.png") no-repeat;
-  background-position: -154px -89px;
-  cursor: pointer;
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time .liked-model{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    vertical-align: text-top;
+    margin-right: 5px;
+    /* margin-right: 3px; */
+    margin-left: 15px;
+    /* background: url(https://s1.hdslb.com/bfs/seed/jinkela/commentpc/static/img/icons-comment.2f36fc5.png) no-repeat; */
+    /* background: url('../assets/image/video/milimili-icon-elf.png') no-repeat; */
+    background: url('../../assets/video/milimili-icon-elf.png') no-repeat;
+    background-position: -154px -89px;
+    cursor: pointer;
 }
 /* #endregion */
 
@@ -1598,35 +1761,13 @@ export default {
     color: #74797A;
 } */
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-user-info
-  .child-comment-info
-  .child-comment {
-  margin-left: 10px;
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment {
+    font-size: 14px;
+    margin-left: 10px;
 }
-
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-user-info
-  .child-comment-info
-  .child-comment
-  .reply-name {
-  margin-right: 5px;
+/* 二级评论 回复的用户的昵称 通过路由点击事件 跳转个人空间的样式  */
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name {
+    margin-right: 5px;
 }
 .video-detail-wrap
   .video-content
@@ -1644,22 +1785,16 @@ export default {
   color: #f25d8e;
   cursor: pointer;
 }
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name a:hover {
+    color: #f25d8e;
+    cursor: pointer;
+}
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-user-info
-  .child-time {
-  margin-top: 10px;
-  font-size: 12px;
-  /* color: #666666; */
-  color: #99a2aa;
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-time {
+    margin-top: 10px;
+    font-size: 12px;
+    /* color: #666666; */
+    color: #99A2AA;    
 }
 /*  #region IMPORTANT 二级评论点赞图标样式位置 */
 .video-detail-wrap
@@ -1724,42 +1859,188 @@ export default {
   background-position: -154px -89px;
   cursor: pointer;
 }
-/* #endregion */
+    /* #endregion */
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-user-info
-  .child-time
-  .child-reply {
-  margin-left: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-  padding: 2px 3px;
+  /* #endregion 评论区域结束*/
+
+/* #endregion 左侧容器部分结束*/
+
+
+/* #region 收藏浮窗部分 */
+.bili-dialog-m{
+    background: rgba(0, 0, 0, 0.65);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10102;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-user-info
-  .child-time
-  .child-reply:hover {
-  color: #fff;
-  background-color: #666666;
+.bili-dialog-bomb{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    box-sizing: border-box;
+    margin-bottom: 50px;
 }
-/* #endregion */
+
+.collection-m{
+    width: 420px;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.collection-m .title{
+    position: relative;
+    padding: 0 20px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    color: #222;
+    border-bottom: 1px solid #e5e9ef;
+    text-align: center;
+}
+
+.collection-m .title .close {
+    position: absolute;
+    right: 20px;
+    line-height: 50px;
+    width: 12px;
+    height: 50px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAAXNSR0IArs4c6QAAAN1JREFUKBWdkjEOwjAMRe30QlyBMyBlAbFVlRBHQLCAOAFDK8FSugTYWRAn4EiNiVNcNSVlwIubH7/Y+SnAv1GU5pFXt/EvvqjMKC/Ni4hQcSGpZAu2NkMgA2DhrhD2iEgop3vAgaASnU0nT9EFQIRlOtNX1luIF30wBnxBXdCNsQGidbcD73MEnRoJoDhfFmTp4C68S+d6Jbpkb4QsOPuRXAcGLEIWMyeAgjtwB2dKzNV2vAD4uMSd++aw5qEhgAs4+qAfjywcYy41CIB/Nx61rk/8R3i9/ZCqgSx1bzXyhJUvBN//AAAAAElFTkSuQmCC) no-repeat center;
+    cursor: pointer;
+}
+
+.collection-m .content{
+    padding: 0 36px;
+    height: 300px;
+    /* overflow: auto 的效果是：
+    如果父元素尺寸小于子元素，那么会以父元素为可见区域创建滚动条，
+    子元素进行滚动，滚动时只会显示出父元素的大小
+    */
+    overflow: auto;
+}
+
+.collection-m .content .group-list {
+    max-height: 300px;
+    padding-bottom: 14px;
+}
+.collection-m .content .group-list ul{
+    position: relative;
+    margin-top: 24px;
+    min-height: 210px;
+    list-style: none;
+    outline: none;
+}
+.collection-m .content .group-list li{
+    padding-bottom: 24px;
+    font-size: 14px;
+    color: #222;
+    cursor: pointer;
+}
+.collection-m .content .group-list li:hover{
+    color: #00a1d6;
+}
+
+.collection-m .content .group-list li label{
+    cursor: pointer;
+    display: block;
+}
+.collection-m .content .group-list li label input{
+    box-sizing: border-box;
+    padding: 0;
+    
+    font-size: 18px;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+    vertical-align: middle;
+    display: none;
+}
+
+.collection-m .content .group-list li label input + i{  /* 兄弟元素选择器 */
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 18px;
+    vertical-align: middle;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAMZJREFUOBFjZACCY8cuSP/4+6ebkYHB4T8DgyRIjFgA1PMcqOcABzNLqZWVwVNGkGE///45w8DANIGZ898iOxOT58QaBlJ36MwZyb/fmeIYGP4VsDOzmDDuO3xmGSMD00VHW6NOUgxCV7v/8Lny/wz/9JlA3gS5DF0BqXyQGSCzGIAuBAYBdQDILCbqGIUwZdRARFiQyxoNQ3JDDqFvCIQhqDwDFUEIR5PHApkBMosJVDhCyjPyDILpApkBMov6BSzIBmpWAQCEVFxRmF8CTgAAAABJRU5ErkJggg==);
+}
+.collection-m .content .group-list li label input:hover + i {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAL5JREFUOBFjZACBVTelGb7/62ZgZHBg+P9fEixGLMHI+JzhP8MBBk6mUoYw9aeMEMP+nmFgYpgANGMRQ6zWc2LNAqtbfA3kgDiGfwwFDJzMJowMC68vY2D6fxFoUCdJBqErXnytnOEfoz4T2Jsgl1EOFkHMWnjtP+VmQU0AmsVENcOgBo0aSHmIjobhyAhDUHkGKYIo8y/IDKBZTODCEVSeUQ7iQGaxgEva78ACdvE1kJEUFrBMwAIWBKhYBQAAjRZDKb7Y9b8AAAAASUVORK5CYII=);
+}
+.collection-m .content .group-list li label input:checked + i,
+.collection-m .content .group-list li label input:checked:hover + i{/* 这里一定要加上，否则就会在选中的情况下，如果触发了hover，依然会是hover的样式 */
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAeJJREFUOBGtlEsvA1EUx/932ppqGtUKiVdFRaQSsbITQYsFiS9g5RvYdG/rWxCJWEpIvFmIjYV0UxKPaIkmNFUqqi/j3Dud1nikU9xF5/bO/f/OOf879zDwsXjWgnxuDgyDUJRGsWb0h7EoFOzDZA5gqvOGqbBskPQuo4wf9sVhsvRKIrO/w3gMF2dJoswfQla8TJZJFXtWiNJTK2PG60K9bCrFJf/NpX/GZ/5GG1aHWyGbJPQ4ZUwfRotiqTgzOOlvqMbKkArjkng6r1NWBOyrs2KNMrOZVdlRLIXZYOx3wF4qbcPvRk2V6lkw/oqx7QiSubfKgV5HFbZG3HAWDuAkkcbIVgQPGT2Mk3Uld5PwdNKDdV9r8fQ67BZsE6zeqp7fRTIDP8HuP3mnpakDjrfY0eWQMdZsFxnxMndG29Bks4j9kecsfJth3KZymv7Lk2E+pGirHsrmeKK96JOiKGCMidfRlywGNsI4T2a17d8+dRleUgbju9d4KRitwWKvOVFmORiPoAPyhYO7FCb3rpHOq4YnMnlxAKHHDH9dduhK/ribX60J8nT56gk8c6ODYeHk9rf3+UsQ6o3UHKg5/tcgliQ6LV3Jf2BSgzUHJN62eacF2BJ9I6W2YTSC0JCWM4j1DpU/mpmyFApZAAAAAElFTkSuQmCC);
+}
+
+.collection-m .content .group-list li .fav-title {
+    max-width: 220px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.collection-m .content .group-list li label .count {
+    float: right;
+    color: #6d757a;
+    font-size: 12px;
+}
+
+.collection-m .content .group-list .add-group {
+    /* margin-bottom: 5px; */
+    padding-bottom: 1px;
+    width: 348px;
+}
+
+.collection-m .content .group-list .add-group .add-btn {
+    height: 34px;
+    line-height: 34px;
+    padding: 0 34px;
+    border: 1px solid #ccd0d7;
+    border-radius: 4px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAC5JREFUKBVjYMABZi5a9R+EcUgzMOGSICQ+EjQy4gs5fAFEduDgNHQ0HhnIT6sAudAOjNLnY/wAAAAASUVORK5CYII=) no-repeat 10px center;
+    font-size: 12px;
+    color: #6d757a;
+    cursor: pointer;
+}
+
+.collection-m .content .group-list .add-group .add-btn:hover {
+    border: 1px solid #00a1d6;
+}
+
+.collection-m .bottom {
+    height: 76px;
+    text-align: center;
+    margin: 0 36px;
+    border-top: 1px solid #e5e9ef;
+}
+
+.collection-m .bottom .btn-fav{
+    font-size: 14px;
+    width: 160px;
+    height: 40px;
+    margin-top: 18px;
+    background: #00a1d6;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+.collection-m .bottom .btn-fav:hover{
+    background: #00b5e5;
+}
+.collection-m .bottom .btn-fav.disable {
+    background-color: #e5e9ef;
+    color: #b8c0cc;
+}
+/* #endregion 收藏浮窗部分结束 */
 
 /* #region 右侧容器部分 */
 .video-detail-wrap .video-content .content-right {
