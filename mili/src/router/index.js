@@ -112,6 +112,13 @@ const routes = [
             requireAuth: true
           },
           hidden: true
+        }, {
+          path: '/PCUpload',
+          name: 'PersonalContributionUpload',
+          component: () => import('../components/PC/UploadVideoPage.vue'),
+          meta: {
+            requireAuth: true
+          },
         }]
       },
       {

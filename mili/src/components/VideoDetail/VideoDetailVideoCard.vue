@@ -9,11 +9,11 @@
       <div class="card_body">
         <div class="card_up">
           <ul>
-            <li style="width: 430px">
+            <li >
               <div class="title_profile">
                 <router-link :to="'/videodetail/' + video.id" style="text-decoration: none;">
                   <span class="title">
-                    {{ video.title }}
+                    {{ video.title | ellipsis }}
                   </span>
                 </router-link>
                 <!-- <span class="profile">
@@ -113,13 +113,34 @@ export default {
       this.$router.push('/videodetail/'+this.video.id)
     },
   },
+  filters: {
+    ellipsis(str) {
+      if (!str) return "";
+      var sum = 0,
+        flag = 0;
+      for (let i in str) {
+        if (sum > 24) {
+          flag = i;
+          break;
+        }
+        let code = str[i].charCodeAt();
+        if ((code > 96 && code < 123) || (str[i] >= '0' && str[i] <= '9')) {
+          sum += 0.5;
+        } else sum++;
+      }
+      if (sum > 24) {
+        return str.slice(0, flag - 1) + "...";
+      }
+      return str;
+    },
+  },
 };
 </script>
 <style scoped>
 .card_wrap {
   display: flex;
   width: 100%;
-  height: 80px;
+  height: 90px;
   border: solid 2px #d0dcdc9a;
   border-radius: 10px;
   padding: 10px 0 10px 0;
@@ -171,17 +192,7 @@ export default {
   word-break: break-all;
   word-wrap: break-word;
   overflow: hidden;
-}
-.profile {
-  font-size: 11px;
-  color: grey;
-  line-height: 20px;
-  text-align: left;
-  height: 50%;
-  display: block;
-  word-break: break-all;
-  word-wrap: break-word;
-  overflow: hidden;
+  margin-right: 20px;
 }
 .card_footer {
   height: 40%;
