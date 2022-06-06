@@ -15,6 +15,162 @@
           <div id="vs" class="vs-class"></div>
         </div>
 
+        <!-- 视频底部控件 -->
+        <div class="video-bottom-wrap">
+          <div class="player-video-sendbar">
+            <div class="player-video-info">
+              <div class="people-number">136</div>
+              <div class="people-text">人正在看&emsp;</div>
+              <div class="info-danmaku">
+                <span class="info-danmaku-dot">已装填</span>
+                <span class="info-danmaku-number">{{danmuId}}</span>
+                <span class="info-danmaku-text">条弹幕</span>
+              </div>
+            </div>
+            <!-- 发送弹幕的组件 -->
+            <div class="player-video-danmaku-root">
+              <div class="danmaku-input-bar">
+                <!-- 弹幕编辑部分 -->
+                <div class="input-bar-wrap">
+                    <div class="color-choose-wrap">
+                      <!-- 出现弹幕样式选择的浮窗的按钮 -->
+                      <span class="color-choose-span">
+                        <!-- A字形图标 -->
+                        <span class="color-choose-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
+                            <path d="M17 16H5c-.55 0-1 .45-1 1s.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1zM6.96 15c.39 0 .74-.24.89-.6l.65-1.6h5l.66 1.6c.15.36.5.6.89.6.69 0 1.15-.71.88-1.34l-3.88-8.97C11.87 4.27 11.46 4 11 4s-.87.27-1.05.69l-3.88 8.97c-.27.63.2 1.34.89 1.34zM11 5.98L12.87 11H9.13L11 5.98z">
+                            </path>
+                          </svg>
+                        </span>
+                      </span>
+                      <!-- 样式选择浮窗 -->
+                      <div class="style-choose-bomb">
+                        <div class="style-choose-wrap">
+                          <!-- 弹幕字号选择 -->
+                          <div class="choose-size">
+                            <div class="row-title">字号</div>
+                            <!-- 选择选项样式 -->
+                            <div class="row-selection">
+                              <!-- 普通选项样式 -->
+                              <div 
+                                class="selection-span" 
+                                :class="danmuStyleSymbol.chooseSmall === true? 'active': '' "
+                                @click="chooseDanmuSize(1)">
+                                <!-- <span class="selection-name">小</span> -->
+                                <span>小</span>
+                              </div>
+                              <!-- 激活选项样式 -->
+                              <div 
+                                class="selection-span" 
+                                :class="danmuStyleSymbol.chooseStandard === true? 'active': '' "
+                                @click="chooseDanmuSize(2)">
+                                <!-- <span class="selection-name">标准</span> -->
+                                <span>标准</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- 弹幕出现位置选择 -->
+                          <div class="choose-position">
+                            <!-- 选择标题样式 -->
+                            <div class="row-title">模式</div>
+                            <!-- 选择选项样式 -->
+                            <div class="row-selection">
+                              <!-- 激活选项样式 -->
+                              <div 
+                                class="selection-span" 
+                                :class="danmuStyleSymbol.chooseScroll === true? 'active': ''"
+                                @click="chooseDanmuPosition(1)">
+                                <!-- 选择icon样式 -->
+                                <span class="selection-icon">
+                                  <span class="selection-svg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+                                      <path d="M23 3H5a4 4 0 00-4 4v14a4 4 0 004 4h18a4 4 0 004-4V7a4 4 0 00-4-4zM11 9h6a1 1 0 010 2h-6a1 1 0 010-2zm-3 2H6V9h2v2zm4 4h-2v-2h2v2zm9 0h-6a1 1 0 010-2h6a1 1 0 010 2z">
+                                      </path>
+                                    </svg>
+                                  </span>
+                                </span>
+                                <span class="selection-name">滚动</span>
+                              </div>
+                              <!-- 普通选项样式 -->
+                              <div 
+                                class="selection-span" 
+                                :class="danmuStyleSymbol.chooseTop === true? 'active': ''"
+                                @click="chooseDanmuPosition(2)">
+                                <span class="selection-icon">
+                                  <span class="selection-svg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+                                      <path d="M23 3H5a4 4 0 00-4 4v14a4 4 0 004 4h18a4 4 0 004-4V7a4 4 0 00-4-4zM9 9H7V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2zm4 0h-2V7h2v2z">
+                                      </path>
+                                    </svg>
+                                  </span>
+                                </span>
+                                <span class="selection-name">顶部</span>
+                              </div>
+                              <!-- 普通选项样式 -->
+                              <!-- <div 
+                                class="selection-span" 
+                                :class="danmuStyleSymbol.chooseBottom === true? 'active': ''"
+                                @click="chooseDanmuPosition(3)">
+                                <span class="selection-icon">
+                                  <span class="selection-svg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">
+                                      <path d="M23 3H5a4 4 0 00-4 4v14a4 4 0 004 4h18a4 4 0 004-4V7a4 4 0 00-4-4zM9 21H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z">
+                                      </path>
+                                    </svg>
+                                  </span>
+                                </span>
+                                <span class="selection-name">底部</span>
+                              </div>                               -->
+                              
+                            </div>
+                          </div>
+
+                          <!-- 弹幕颜色选择 -->
+                          <div class="choose-color">
+                            <!-- 选择标题样式 -->
+                            <div class="row-title">颜色</div>
+                            <!-- 选择选项样式 -->
+                            <!-- 选择选项样式 -->
+                            <div class="row-selection">
+                              <!-- 颜色选择容器 -->
+                              <div class="color-picker-wrap">
+                                <div class="color-picker-result">
+                                  <!-- 用户输入颜色的值 -->
+                                  <span class="color-picker-input">
+                                    <div class="color-input-wrap">
+                                      <input class="color-input-input" type="text" v-model="danmuColor">
+                                    </div>
+                                  </span>
+                                  <!-- 用于给用户展现色块 -->
+                                  <span class="color-picker-display" :style="{backgroundColor: danmuColor}">
+                                  </span>
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="danmaku-wrap" style="display: none;"></div>
+                    <!-- 发送一条长度为100以内的弹幕 -->
+                    <input 
+                      class="danmaku-input" 
+                      type="text" 
+                      placeholder="发个弹幕见证当下" 
+                      maxlength="100"
+                      v-model="danmuText"
+                    >
+                </div>
+                <!-- 弹幕发送按钮 -->
+                <button class="danmaku-send-btn" @click="sendDanmu">发送</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 视频交互组件（点赞 收藏 举报） -->
         <div class="forward-wrap">
           <div class="tool-bar-left">
@@ -72,12 +228,6 @@
             </div>
           </div>
         </div>
-
-        <!-- 发送弹幕文本框 -->
-        <!-- <div class="danmu-content">
-          <textarea rows="" cols="" class="input" placeholder="发一条弹幕" v-model="text"></textarea>
-          <div class="send-btn" @click="socketSend">发送弹幕</div>
-        </div> -->
 
         <!-- 评论区容器 -->
         <div class="comment">
@@ -240,6 +390,16 @@
               <th class="date">发送时间</th>
             </tr>
           </table>
+          <!-- 
+          color: true
+          created_time: "2022-06-06T13:14:20.957Z"
+          duration: 15000
+          id: 1
+          mode: "scroll"
+          prior: true
+          start: "36569"
+          style: Object
+          txt: "这是15号视频的第一条弹幕，标准大小、白色、滚动" -->
           <div class="danmu-list-content">
             <table
               class="danmu-table"
@@ -247,11 +407,12 @@
               cellpadding="0"
               cellspacing="0"
             >
-              <!-- <tr v-for="(item,index) in danmuList" :key="index"> -->
-              <!-- <td class="time">{{ item.danmuTime }}</td>
-                <td class="content">{{ item.content }}</td>
-                <td class="date">{{ item.createTime }}</td> -->
-              <!-- </tr> -->
+              <tr v-for="(item,index) in danmuList" :key="index">
+                <!-- <td class="time">{{ item.start }}</td> -->
+                <td class="time">{{ transMSToS(item.start) }}</td>
+                <td class="content">{{ item.txt }}</td>
+                <td class="date">{{item.created_time.split(/[.]|T/)[0] + " " + item.created_time.split(/[.]|T/)[1]}}</td>
+              </tr>
             </table>
           </div>
         </div>
@@ -325,7 +486,7 @@
           </div>
         </div>
       </div>
-
+      <!-- 投诉悬浮窗口 -->
       <div class="bili-dialog-m" v-if="showTheComplaintWindow === true">
         <div class="bili-dialog-bomb">
           <div class="appeal-box">
@@ -435,12 +596,36 @@ export default {
       videoCreatedTime: null,
 
       // 视频和用户已有的交互
-
       boolSymbol: {
         isLiked: 0,
         isCollectted: 0,
       },
-      
+
+
+      // 当前视频的弹幕列表
+      danmuList: [],
+      // 当前视频如果要新建弹幕的话，弹幕的id
+      danmuId: 0,
+      // 弹幕临时文本
+      danmuText: '',
+      // 弹幕临时时间
+      danmuStart: 0,
+      // 弹幕临时颜色
+      danmuColor: '#FFFFFF',
+      // 弹幕临时展示位置（默认是滚动，可选顶部，底部）
+      danmuPosition: 'scroll',//显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+      // 弹幕字号选择（默认是标准 25px，可选小 18px）
+      danmuFontSize: '25px',
+      // 弹幕样式的选择标志
+      danmuStyleSymbol: {
+        chooseSmall: false,
+        chooseStandard: true,
+
+        chooseScroll: true,
+        chooseTop: false,
+        chooseBottom: false,
+      },
+
       // 收藏窗口是否展示
       showTheCollectionWindow: false,
       // showTheCollectionWindow: true,
@@ -550,8 +735,212 @@ export default {
     console.log("create video detail");
     this.getVideoDetail();
     this.getCurrentUserSimpleInfo();
+    this.getVideoDanmu();
   },
   methods: {
+      /**
+       * 将毫秒转为秒
+       * @param {int} milisecond 
+       */
+      transMSToS(milisecond){
+        let second = parseInt(milisecond / 1000);
+        let minute = parseInt(second / 60);
+        second = parseInt(second % 60);
+        return minute + ':' +second;
+      },
+      /**
+       * 用于得到当前视频对应的弹幕列表
+       */
+      async getVideoDanmu(){
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if (loginMessage != null) {
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }
+        // console.log("当前用户的JWT是："+jwt);
+        let videoId = this.$route.params.id;
+        // formData.append("JWT", jwt);
+        formData.append("video_id", videoId);
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/video/load-bullet",
+          data: formData,
+        })
+        .then((res) => {
+          console.log('弹幕');
+          console.log(res);
+          switch (res.data.result) {
+            case 1: {
+              this.$message.success("加载弹幕成功！");
+              /* 获取弹幕列表 */
+              this.danmuList = res.data.bullet_list;
+              console.log('弹幕列表');
+              console.log(this.danmuList);
+              this.danmuId = res.data.bullet_num;
+              break;
+            }
+            default:
+              this.$message.warning("加载弹幕失败！");
+              break;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      },
+      /**
+       * 在视频播放器中立即发送一条弹幕，并加入到后端数据库中
+       * @param {string} text 
+       */
+      sendDanmu(){
+        // 空白阻止
+        if (!this.danmuText || this.danmuText === ''){
+          return;
+        }
+        //  this.sendDanmuInPlayer();
+        //  return;
+
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if (loginMessage != null) {
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+
+        this.sendDanmuInPlayer();
+        // console.log("当前用户的JWT是："+jwt);
+        let videoId = this.$route.params.id;
+        formData.append("JWT", jwt);
+        formData.append("video_id", videoId);
+        formData.append("id", this.danmuId);
+        formData.append("start", this.danmuStart);
+        formData.append("txt", this.danmuText);
+        formData.append("style_color", this.danmuColor);
+        formData.append("style_fontSize", this.danmuFontSize);
+        formData.append("mode", this.danmuPosition);
+
+        this.danmuText = ''; 
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/video/add-bullet",
+          data: formData,
+        })
+        .then((res) => {
+          console.log('增加弹幕');
+          console.log(res);
+          switch (res.data.result) {
+            case 1: {
+              this.$message.success("增加弹幕成功！");
+              /* 获取弹幕列表 */
+              this.danmuList = res.data.bullet_list;
+              this.danmuId = res.data.bullet_num;
+              break;
+            }
+            default:
+              this.$message.warning("增加弹幕失败！");
+              break;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+      },
+      /**
+       * 在视频播放器中立即发送一条弹幕
+       * （实现前端假响应）
+       * @param {string} text 
+       */
+      sendDanmuInPlayer() {
+				this.danmuId++;
+				// let start = this.player.currentTime;
+				this.danmuStart = this.player.currentTime;
+        console.log(this.danmuStart);
+				// start = start.toFixed(3) * 1000;
+				this.danmuStart = this.danmuStart.toFixed(3) * 1000;
+				let random = this.random(5, 15);
+				let duration = random * 1000;
+				this.player.danmu.sendComment({ //发送弹幕
+					duration: duration, //弹幕持续显示时间,毫秒(最低为5000毫秒)
+					id: this.danmuId,   //弹幕id，需唯一
+					// start: start,       
+					start: this.danmuStart,       //弹幕出现时间，毫秒
+          prior: true,        //该条弹幕优先显示，默认false
+          color: true,        //该条弹幕为彩色弹幕，默认false
+					txt: this.danmuText,          //弹幕文字内容
+					style: {    //弹幕自定义样式
+						// color: '#f00',
+						color: this.danmuColor,
+						// fontSize: '20px',
+						fontSize: this.danmuFontSize,
+						border: 'solid 1px #f00',
+						borderRadius: '50px',
+						padding: '5px 11px',
+						backgroundColor: 'rgba(255, 255, 255, 0.1)'
+					},
+          // mode: 'scroll',//显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+          mode: this.danmuPosition,
+          // mode: 'bottom',
+				});
+				// this.danmuText = '';    // 清空弹幕缓存放在和后端交互的函数里
+			},
+			random(min, max) {
+				return Math.round((Math.random() * (max - min) + min) * 10) / 10;
+			},
+      
+      /**
+       * 选择弹幕尺寸
+       * @param {int} type 1为切换至小号，2为切换至标准
+       */
+      chooseDanmuSize(type){
+        if(type === 1){
+          if (this.danmuStyleSymbol.chooseSmall === false){
+            this.danmuStyleSymbol.chooseSmall = true;
+            this.danmuStyleSymbol.chooseStandard = false;
+            this.danmuFontSize = '18px';
+          }
+        }else if(type === 2){
+          if (this.danmuStyleSymbol.chooseStandard === false){
+            this.danmuStyleSymbol.chooseStandard = true;
+            this.danmuStyleSymbol.chooseSmall = false;
+            this.danmuFontSize = '25px';
+          }
+        }
+      },
+      /**
+       * 选择弹幕位置
+       * @param {int} type 1为切换至scroll，2为切换至top，3为切换至bottom
+       */
+      chooseDanmuPosition(type){
+        if(type === 1){
+          if(this.danmuStyleSymbol.chooseScroll === false){
+            this.danmuStyleSymbol.chooseScroll = true;
+            this.danmuStyleSymbol.chooseTop = false;
+            this.danmuStyleSymbol.chooseBottom = false;
+            this.danmuPosition = 'scroll';
+          }
+        }else if(type === 2){
+          if(this.danmuStyleSymbol.chooseTop === false){
+            this.danmuStyleSymbol.chooseTop = true;
+            this.danmuStyleSymbol.chooseScroll = false;
+            this.danmuStyleSymbol.chooseBottom = false;
+            this.danmuPosition = 'top';
+          }
+        }else if(type === 3){
+          if(this.danmuStyleSymbol.chooseBottom === false){
+            this.danmuStyleSymbol.chooseBottom = true;
+            this.danmuStyleSymbol.chooseScroll = false;
+            this.danmuStyleSymbol.chooseTop = false;
+            this.danmuPosition = 'bottom';
+          }
+        }
+      },
       /**
        * 打开审核浮窗
        */
@@ -891,19 +1280,10 @@ export default {
       },
 
       /**
-       * 初始化视频播放器
+       * 初始化视频播放器 
        * FIXME 弹幕逻辑
        */
       initPlayer(videoUrl) {
-        // let danmuArr = this.initDanmu();
-        // let danmuArr = [];
-        // this.danmuList = danmuArr.map((item) => {
-          // return {
-        //     time: '00:00',
-        //     content: item.txt,
-        //     date: '09-20 15:30'
-        //   }
-        // })
         let _this = this;
         this.player = new Player({
           id: "vs",
@@ -912,22 +1292,40 @@ export default {
           volume: 0.3,      // 初始音量
           playbackRate: [0.5, 0.75, 1, 1.5, 2],   // 当前播放速度
           defaultPlaybackRate: 1,                 // 播放速度设置为1
+          pip: true, //打开画中画功能
+          // fitVideoSize: 'fixWidth',             // 容器宽度固定，高度按照视频比例调整
+          videoInit: true,           // 初始化视频首帧，如果没有封面就默认显示首帧
+          // poster:,                           // 视频封面
           danmu: {
-            // comments: danmuArr,
-            // area: {
-            //   start: 0,
-            //   end: 1
-            // }
+            comments: this.danmuList,
+            area: {
+              start: 0,
+              end: 1
+            }
           },
           // height: 550,
           // width: 800,
           width: '100%',
           height: '500px',
-          whitelist: [""],        
+          whitelist: [""], 
+          /* 键盘交互，箭头键调整播放进度和音量，space键暂停/播放 */
+          keyShortcut: 'on',
+          keyShortcutStep: {  //设置调整步长
+            currentTime: 5,  //播放进度调整步长，默认10秒
+            volume: 0.2       //音量调整步长，默认0.1
+          },
+          // 小窗播放
+          miniplayer: true,
+          miniplayerConfig: {
+            bottom: 200,
+            right: 0,
+            width: 320,
+            height: 180
+          }
         });
       },
       /**
-       * 获取视频信息
+       * 获取视频信息 GVD
        * 点赞数目 + 收藏数目 + 评论列表
        */
       async getVideoDetail() {
@@ -1431,6 +1829,506 @@ export default {
 .video-detail-wrap .video-content .content-left .vs-class {
   width: 100%;
 }
+    /* #region 视频底部控件(弹幕发送、人数) */
+.video-detail-wrap .video-content .content-left .video-bottom-wrap {
+  user-select: none;
+
+  box-sizing: border-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  /* overflow: hidden; */ /* 这里必须去掉 */
+  position: relative;
+  /* height: 100%; */
+  width: 100%;
+  pointer-events: auto;
+
+  margin: 0 auto;
+  box-sizing: border-box;
+  border-radius: 4px;
+  text-align: left;
+  box-shadow: 0 0 8px #e5e9ef;
+  white-space: nowrap;
+
+  line-height: 1;
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar{
+    flex-shrink: 0;
+    position: relative;
+    /* height: 46px; *//* B站原数据 */
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    background: #fff;
+}
+    
+/**
+希望项目排在一行里，但是项目的宽度又不被压缩，那么我们应该给项目设置 flex:none，使项目不能被压缩或放大
+我们接触到的属性，justify-content、align-items、flex-wrap，都是设置在 flex 容器上的。
+但是这个控制项目是否被压缩或放大的属性，是设置在 flex 项目上的。
+*/
+
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-info{
+    display: flex;
+    flex: none;
+    flex-shrink: 1;
+    font-size: 12px;
+    height: 16px;
+    line-height: 16px;
+    color: #505050;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    margin-right: 12px;
+    max-width: 300px;
+    min-width: 100px;
+    white-space: nowrap;
+    align-items: center;
+    overflow: hidden;
+
+    vertical-align: baseline;
+}    
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-info .people-number{
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 3px;
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-info .info-danmaku .info-danmaku-number{
+    margin: 0 3px;
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-info .people-text{
+    position: relative;
+    margin-right: 4px;
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-danmaku-root{
+    height: 34px;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-danmaku-root .danmaku-input-bar{
+    margin-left: 100px;
+    width: 280px;
+    max-width: 710px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    position: relative;
+    /* height: 30px; *//* B站原数据 */
+    /* line-height: 30px; *//* B站原数据 */
+    height: 34px;
+    line-height: 34px;
+    background: #f4f4f4;
+    color: #999;
+    border-radius: 2px;
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap{
+    width: 200px;
+    border-radius: 2px 0 0 2px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    border: 1px solid #e7e7e7;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+
+        /* #region弹幕样式选择器  */
+            /* #region 弹幕样式选择器触发按钮 */
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar 
+.player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .color-choose-wrap:hover .color-choose-span{
+    fill: #00a1d6;
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar 
+.player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .color-choose-wrap:hover .style-choose-bomb
+/* .video-detail-wrap .video-content .content-left .video-bottom-wrap 
+.player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .color-choose-wrap::after:hover, 
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar 
+.player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .style-choose-bomb:hover */
+{
+    display: block;
+}
+/** VERY_IMPORTANT !!! 伪元素的加入使得父元素的被hover的范围扩大了，这样就能
+    在因触发hover弹出的框 的位置 和 父元素有一定距离的时候，用这个伪元素依然维持hover，这样就可以让弹出框持续出现 */
+.video-detail-wrap .video-content .content-left .video-bottom-wrap 
+.player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .color-choose-wrap:hover::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 26px;
+    height: 20px;
+    width: 100%;
+    /* border: 1px solid #000; */
+}
+
+.video-detail-wrap .video-content .content-left .video-bottom-wrap 
+.player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .color-choose-wrap{
+    display: block;
+
+    position: relative;
+    /* height: 30px; *//* B站原数据 */
+    /* line-height: 30px; *//* B站原数据 */
+    /* width: 30px; *//* B站原数据 */
+    height: 34px;
+    line-height: 34px;
+    width: 34px;
+    -webkit-box-flex: 0;
+    flex: none;
+
+    cursor: pointer;
+    text-align: center;
+    color: hsla(0,0%,100%,.8);
+    fill: #757575;
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap 
+.player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .color-choose-wrap .color-choose-span{
+    display: inline-flex;
+    height: 100%;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.video-detail-wrap .video-content .content-left .video-bottom-wrap 
+.player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .color-choose-wrap .color-choose-span .color-choose-icon{
+    display: block;
+    width: 36px;
+    height: 24px;
+}
+
+.video-detail-wrap .video-content .content-left .video-bottom-wrap 
+.player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .color-choose-wrap .color-choose-span .color-choose-icon svg {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+            /* #endregion弹幕样式选择器触发按钮结束  */
+           
+            /* #region 弹幕样式选择浮窗口  */
+.video-detail-wrap .video-content .content-left .video-bottom-wrap 
+.player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .color-choose-wrap .style-choose-bomb {
+    display: none;
+    /* display: block; */
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 216px;
+    height: auto;
+    padding: 2px 0 0;
+    position: absolute;
+    bottom: 39px;
+    /*根据实际尺寸修正*/
+    bottom: 43px; 
+    left: 50%;
+    margin-left: -108px;
+    z-index: 1001;
+    background: rgba(21,21,21,.9);
+    border-radius: 2px;
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap 
+.player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .color-choose-wrap .style-choose-bomb .style-choose-wrap{
+    display: block;
+    position: relative;
+}
+
+
+.style-choose-bomb .style-choose-wrap .choose-size{
+    position: relative;
+    min-height: 22px;
+    margin: 10px 20px;
+    width: 176px;
+    line-height: 22px;
+    font-size: 12px;
+}
+.style-choose-bomb .style-choose-wrap .choose-position{
+    position: relative;
+    min-height: 22px;
+    margin: 10px 20px;
+    width: 176px;
+    line-height: 22px;
+    font-size: 12px;
+}
+.style-choose-bomb .style-choose-wrap .choose-color{
+    position: relative;
+    min-height: 22px;
+    margin: 10px 20px;
+    width: 176px;
+    line-height: 22px;
+    font-size: 12px;
+}
+/* 这里是为了共用样式.choose-size .choose-position .choose-color */
+.style-choose-bomb .style-choose-wrap .row-title{
+    text-align: left;
+    color: #fff;
+    line-height: 16px;
+}
+.style-choose-bomb .style-choose-wrap .row-selection{
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: 8px -8px 0 0;
+}
+.style-choose-bomb .style-choose-wrap .row-selection .selection-name{
+    display: block;
+    line-height: 14px;
+}
+
+/* selection-icon */
+.style-choose-bomb .style-choose-wrap .row-selection .selection-name .selection-icon{
+    font-size: 26px;
+    width: 26px;
+    height: 26px;
+    display: block;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    border-radius: 2px;
+    overflow: hidden;
+}
+/* 存放svg的span标签 */
+.style-choose-bomb .style-choose-wrap .row-selection .selection-name .selection-icon .selection-svg {
+    transition: none;
+}
+/* svg标签 */
+.style-choose-bomb .style-choose-wrap .row-selection .selection-name .selection-icon .selection-svg svg {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+  /**.choose-size */
+.style-choose-bomb .style-choose-wrap .choose-size .row-selection .selection-span{
+    width: 84px;
+    margin-bottom: 8px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 2px;
+    color: #fff;
+    text-align: center;
+    margin-right: 8px;
+    background: hsla(0,0%,100%,.2);
+    font-size: 12px;
+}
+.style-choose-bomb .style-choose-wrap .choose-size .row-selection .selection-span:hover{
+    color: #fff;
+    fill: #fff;
+    /* background: transparent; */
+    background: hsla(0,0%,100%,.4);
+}
+.style-choose-bomb .style-choose-wrap .choose-size .row-selection .selection-span.active{
+    color: #fff;
+    background: #00a1d6;
+}
+
+  /**.choose-position */
+.style-choose-bomb .style-choose-wrap .choose-position .row-selection .selection-span{
+    background: transparent;
+    margin: -4px 22px 0 0;
+    color: hsla(0,0%,100%,.8);
+    fill: hsla(0,0%,100%,.8);
+    position: relative;
+    cursor: pointer;
+    border-radius: 2px;
+    /* color: #fff; */
+    text-align: center;
+    /* margin-right: 8px; */
+    /* background: hsla(0,0%,100%,.2); */
+    font-size: 12px;
+}
+.style-choose-bomb .style-choose-wrap .choose-position .row-selection .selection-span:hover{
+  color: #fff;
+    fill: #fff;
+    background: transparent;
+}
+.style-choose-bomb .style-choose-wrap .choose-position .row-selection .selection-span.active{
+  color: #00a1d6;
+    background: transparent;
+    fill: #00a1d6;
+}
+    /**.choose-color */
+.style-choose-bomb .style-choose-wrap .choose-color .row-selection .selection-span{
+    margin: -4px 8px 0 0; /** 这里的右边距需要调整为8px */
+    color: hsla(0,0%,100%,.8);
+    fill: hsla(0,0%,100%,.8);
+    position: relative;
+    cursor: pointer;
+    border-radius: 2px;
+    /* color: #fff; */
+    text-align: center;
+    /* margin-right: 8px; */
+    /* background: hsla(0,0%,100%,.2); */
+    font-size: 12px;
+}
+
+.style-choose-bomb .style-choose-wrap .row-selection .color-picker-wrap {
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    width: 176px;
+}
+/* 这里是存放颜色选择的结果的容器 */
+.style-choose-bomb .style-choose-wrap .row-selection .color-picker-wrap .color-picker-result {
+    margin-bottom: 6px;
+    display: flex;
+    vertical-align: middle;
+}
+/** 放置输入框的span */
+.style-choose-bomb .style-choose-wrap .row-selection .color-picker-wrap .color-picker-result .color-picker-input{
+    width: auto;
+    /* flex: 1; */
+    /* background-color: transparent; */
+    margin-right: 6px;
+    display: inline-flex;
+    position: relative;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    font-size: 0;
+    height: 22px;
+}
+.style-choose-bomb .style-choose-wrap .row-selection .color-picker-wrap .color-picker-result .color-picker-input .color-input-wrap{
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+}
+.style-choose-bomb .style-choose-wrap .row-selection .color-picker-wrap .color-picker-result .color-picker-input .color-input-wrap .color-input-input{
+    transition: none;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid hsla(0,0%,100%,.2);
+    border-radius: 2px;
+    outline: none;
+    transform: translateZ(0);
+    padding: 4px 7px;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 12px;
+}
+
+.style-choose-bomb .style-choose-wrap .row-selection .color-picker-wrap .color-picker-result .color-picker-display{
+    border: 1px solid hsla(0,0%,100%,.2);
+
+    display: inline-block;
+    width: 50px;
+    min-width: 50px;
+    height: 22px;
+    border-radius: 2px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    transition: background .2s;
+    transform: translateZ(0);
+}
+
+/* .style-choose-bomb .style-choose-wrap .choose-size .row-position .selection-span {
+    width: 84px;
+    margin-bottom: 8px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 2px;
+    color: #fff;
+    text-align: center;
+    margin-right: 8px;
+    background: hsla(0,0%,100%,.2);
+    font-size: 12px;
+}
+
+.style-choose-bomb .style-choose-wrap .choose-size .row-position .selection-span.active {
+    color: #00a1d6;
+    background: transparent;
+    fill: #00a1d6;
+} */
+
+
+            /* #endregion弹幕样式选择浮窗口结束  */
+        /* #endregion弹幕样式选择器结束  */
+
+
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .danmaku-wrap{
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    top: 0;
+    left: 0;
+    padding: 0 10px;
+    z-index: 13;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 12px;
+    line-height: 28px;
+    overflow: hidden;
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .input-bar-wrap .danmaku-input{
+    color: #212121;
+    outline: none;
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    border: 0;
+    /* height: 30px; *//* B站原数据 */
+    /* line-height: 30px; *//* B站原数据 */
+    vertical-align: center;
+    height: 34px;
+    line-height: 34px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    z-index: 12;
+    padding: 0 5px;
+    background: none;
+    font-size: 12px;
+    min-width: 100px;
+    width: 100%;
+}
+
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .danmaku-send-btn{
+    z-index: 13;
+    /* height: 30px; *//* B站原数据 */
+    /* line-height: 30px; *//* B站原数据 */
+    height: 34px;
+    line-height: 34px;
+    vertical-align: center;
+    /* width: 60px; */
+    width: 70px;
+    min-width: 60px;
+    background-color: #00a1d6;
+    border: 1px solid #00a1d6;
+    color: #fff;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 0 2px 2px 0;
+    /* outline: none; */
+}
+.video-detail-wrap .video-content .content-left .video-bottom-wrap .player-video-sendbar .player-video-danmaku-root .danmaku-input-bar .danmaku-send-btn:hover{
+  background-color: #00b5e5;
+  border-color: #00b5e5;
+}
+
+    /* #endregion */
+    
+
     /* #region 视频交互控件 */
 .video-detail-wrap .video-content .content-left .forward-wrap {
   /* width: 800px; */
