@@ -47,7 +47,8 @@
                 list-type="picture-card"
                 :auto-upload="false"
                 :limit="1"
-                :before-upload="beforeimgUpload"
+                :file-list="uploadFiles"
+                :on-change="loadJsonFromFile"
                 ref="uploadImg"
               >
                 <i slot="default" class="el-icon-plus"></i>
@@ -157,6 +158,18 @@
           style="margin: 20px 20px 20px 20px; float: right"
           >上传</el-button
         >
+        <div
+          class="progress"
+          v-if="showProgress"
+          style="margin: 20px 40px 20px 40px"
+        >
+          <el-progress
+            :percentage="myprogress"
+            :text-inside="true"
+            :stroke-width="22"
+            status="success"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -169,6 +182,9 @@ export default {
   name: "UploadVideo",
   data() {
     return {
+      //进度条
+      myprogress: 0,
+      showProgress: false,
       //标签相关
       dynamicTags: [],
       inputVisible: false,
@@ -177,7 +193,7 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
-      avatarFlag: false,
+      uploadFiles: [],
       //分区相关
       zone_list: [
         {
@@ -253,7 +269,7 @@ export default {
     },
     handleInputConfirm(val) {
       if (this.dynamicTags.length == 5) {
-        if(val == 1) {
+        if (val == 1) {
           this.inputVisible = false;
         }
         this.$message.warning("标签的数量不能超过5个哦~");
@@ -284,6 +300,10 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
+    //绑定文件列表
+    loadJsonFromFile(file, fileList) {
+      this.uploadFiles = fileList
+    },
     //视频上传相关
     submitUpload() {
       this.$refs.upload.submit();
@@ -308,8 +328,8 @@ export default {
         this.$message.error("分区!分区！");
         return;
       }
-      let fileList = this.$refs.uploadImg.submit();
-      console.log(fileList);
+
+      
       let formData = new FormData();
       let loginMessage = localStorage.getItem("loginMessage");
       let jwt = null;
@@ -322,13 +342,15 @@ export default {
         return;
       }
 
+      this.showProgress = true;
+      this.$message.warning("上传结束之前请勿进行其他操作！");
+
       // IMPORTANT 填写表单
       formData.append("JWT", jwt);
       formData.append("title", this.videoInfoTitle);
       formData.append("description", this.videoInfoDescription);
       formData.append("zone", this.videoInfoBlock);
-      // if(fileList.length != 0)
-      formData.append("avatar", this.avatar);
+      formData.append("avatar", this.uploadFiles[0].raw);
       formData.append("video", video);
       // TODO：不定个数的tag填入
       for (var index in this.dynamicTags)
@@ -340,12 +362,18 @@ export default {
         method: "post",
         url: "https://milimili.super2021.com/api/video/upload-video",
         data: formData,
+        onUploadProgress: (progress) => {
+          this.myprogress = Math.floor(
+            (progress.loaded / progress.total) * 100
+          );
+        },
       })
         .then((res) => {
           console.log(res);
           switch (res.data.result) {
             case 1: {
               this.$message.success("上传视频成功！");
+              this.showProgress = false;
               break;
             }
             default:
@@ -419,18 +447,6 @@ export default {
       });
       return isQulified;
     },
-    beforeimgUpload(file) {
-      if (file) {
-        console.log("img_exist");
-        this.avatar = file;
-        this.avatarFlag = true;
-      } else {
-        console.log("img_not_exist");
-        this.avatarFlag = false;
-        //不上传图片其实也可以的
-      }
-      return false;
-    },
   },
 
   // watch: {
@@ -469,19 +485,22 @@ export default {
   text-align: left;
 }
 .video {
+  width: 100%;
   display: flex;
 }
 .upload-demo {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  /* overflow: hidden; */
 }
 .img {
   display: flex;
 }
 .file_wrap {
-  margin-left: 40px;
-  width: 100%;
+  /* margin-left: 40px; */
+  width: 80%;
   display: flex;
 }
 .info_block {

@@ -18,6 +18,7 @@
             v-model="inputContext"
             @focus="focusInput"
             @on-blur="blurInput"
+            @keyup.enter.native="searchContext()"
           >
           </el-input>
           <!-- <div class="history_wrap" v-if="focusFlag && islogin">
