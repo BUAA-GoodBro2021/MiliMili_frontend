@@ -90,8 +90,7 @@ export default {
       if (localStorage.getItem("loginMessage") != null) {
         var user_id = JSON.parse(localStorage.getItem("loginMessage")).user.id;
         if (id == user_id) this.$router.push("/PersonalHomePage/Main");
-        return;
-      } else this.$router.push("/OthersHomePage/Main/" + id);
+         } else this.$router.push("/OthersHomePage/Main/" + id);
     },
     follow(id) {
       if (localStorage.getItem("loginMessage") == null) {

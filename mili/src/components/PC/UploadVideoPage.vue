@@ -369,7 +369,7 @@ export default {
       var videoName = file.name || "";
       var suffix = "";
       // #region 视频文件大小检查
-      const isLt50MB = file.size / 1024 / 1024 < 50;
+      const isLt50MB = file.size / 1024 / 1024 < 100;
       console.log(file.size / 1024 / 1024);
       if (!isLt50MB) {
         self.$message.error("上传视频文件的大小超过了50MB！");
@@ -407,7 +407,7 @@ export default {
           // let height = videoElement.videoHeight
           let duration = videoElement.duration; // 视频时长
 
-          if (duration > 60) {
+          if (duration > 500) {
             self.$message.error("上传视频文件的时长超过了60s！");
             return reject();
           }
