@@ -50,8 +50,9 @@
                 :file-list="uploadFiles"
                 :on-change="loadJsonFromFile"
                 ref="uploadImg"
+                accept=".jpg"
               >
-                <i slot="default" class="el-icon-plus"></i>
+                <i slot="default" class="el-icon-plus" ></i>
                 <div slot="file" slot-scope="{ file }">
                   <img
                     class="el-upload-list__item-thumbnail"
