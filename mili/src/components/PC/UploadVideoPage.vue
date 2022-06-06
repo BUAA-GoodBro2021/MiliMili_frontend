@@ -27,6 +27,7 @@
                 :auto-upload="false"
                 :http-request="uploadVideo"
                 :limit="1"
+                accept=".mp4"
               >
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">
