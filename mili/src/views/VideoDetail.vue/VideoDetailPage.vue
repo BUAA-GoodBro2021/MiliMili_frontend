@@ -1544,10 +1544,12 @@ export default {
         formData.append("JWT", jwt);
 
         // FIND_ME elementUI加载实例
-        let loadingInstance = this.$loading({
-          target: "#main-body",
-          fullscreen: true,
-        });
+        // let loadingInstance = this.$loading({
+        //   target: "#main-body",
+        //   fullscreen: true,
+        // });
+        // 自定义加载实例
+        this.$showLoading.show(document.body);
 
         this.$axios({
           method: "post",
@@ -1556,8 +1558,10 @@ export default {
         })
         .then((res) => {
           // FIND_ME 关闭加载实例
-          loadingInstance.close();
-          // 
+          // loadingInstance.close();
+          // 关闭自定义加载实例
+          this.$showLoading.hide();
+          
           console.log(res);
           switch (res.data.result) {
             case 1: {
