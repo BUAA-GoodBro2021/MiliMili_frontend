@@ -108,7 +108,7 @@
                                 <span class="selection-name">顶部</span>
                               </div>
                               <!-- 普通选项样式 -->
-                              <!-- <div 
+                              <div 
                                 class="selection-span" 
                                 :class="danmuStyleSymbol.chooseBottom === true? 'active': ''"
                                 @click="chooseDanmuPosition(3)">
@@ -121,7 +121,7 @@
                                   </span>
                                 </span>
                                 <span class="selection-name">底部</span>
-                              </div>                               -->
+                              </div>                              
                               
                             </div>
                           </div>
@@ -411,7 +411,7 @@
                 <!-- <td class="time">{{ item.start }}</td> -->
                 <td class="time">{{ transMSToS(item.start) }}</td>
                 <td class="content">{{ item.txt }}</td>
-                <td class="date">{{item.created_time.split(/[.]|T/)[0] + " " + item.created_time.split(/[.]|T/)[1]}}</td>
+                <td class="date">{{ handleDanmuCreatedTime(item.created_time) }}</td>
               </tr>
             </table>
           </div>
@@ -748,6 +748,16 @@ export default {
         second = parseInt(second % 60);
         return minute + ':' +second;
       },
+
+      handleDanmuCreatedTime(str){
+        let date = str.split(/[.]|T/)[0];
+        console.log(date);
+        let time = str.split(/[.]|T/)[1];
+        console.log(time);
+        let handleDate = date.substring(5);
+        let handleTime = time.substring(0, 5);
+        return handleDate + ' ' + handleTime;
+      },
       /**
        * 用于得到当前视频对应的弹幕列表
        */
@@ -871,7 +881,7 @@ export default {
 					id: this.danmuId,   //弹幕id，需唯一
 					// start: start,       
 					start: this.danmuStart,       //弹幕出现时间，毫秒
-          prior: true,        //该条弹幕优先显示，默认false
+          prior: false,        //该条弹幕优先显示，默认false
           color: true,        //该条弹幕为彩色弹幕，默认false
 					txt: this.danmuText,          //弹幕文字内容
 					style: {    //弹幕自定义样式
@@ -1284,7 +1294,6 @@ export default {
        * FIXME 弹幕逻辑
        */
       initPlayer(videoUrl) {
-        let _this = this;
         this.player = new Player({
           id: "vs",
           url: videoUrl,    // 传入视频参数
@@ -1683,9 +1692,12 @@ export default {
       wrap.removeChild(video);
       var child = document.createElement("div");
       child.setAttribute("id", "vs");
+      child.setAttribute("class", "vs-class");
       wrap.appendChild(child);
+      /* 更新对应的视频信息、用户信息和弹幕列表 */
       this.getVideoDetail();
       this.getCurrentUserSimpleInfo();
+      this.getVideoDanmu();
     },
     /**
      * 使得空白投诉提示框1秒后消失
@@ -1718,7 +1730,7 @@ export default {
   display: table;
   clear: both;
 }
-/* #region 弹幕样式部分 */
+/* #region 弹幕列表样式部分 */
 .danmu-content {
   margin-bottom: 20px;
   width: 800px;
@@ -1828,6 +1840,7 @@ export default {
 
 .video-detail-wrap .video-content .content-left .vs-class {
   width: 100%;
+  overflow: hidden;
 }
     /* #region 视频底部控件(弹幕发送、人数) */
 .video-detail-wrap .video-content .content-left .video-bottom-wrap {
@@ -2165,7 +2178,7 @@ export default {
     background: transparent;
     fill: #00a1d6;
 }
-    /**.choose-color */
+  /**.choose-color */
 .style-choose-bomb .style-choose-wrap .choose-color .row-selection .selection-span{
     margin: -4px 8px 0 0; /** 这里的右边距需要调整为8px */
     color: hsla(0,0%,100%,.8);
@@ -2326,7 +2339,7 @@ export default {
   border-color: #00b5e5;
 }
 
-    /* #endregion */
+    /* #endregion 视频底部控件(弹幕发送、人数)结束 */
     
 
     /* #region 视频交互控件 */
@@ -2422,9 +2435,9 @@ export default {
   cursor: pointer;
 } */
 
-    /* #endregion */
+    /* #endregion 视频交互控件结束 */
 
-/* #endregion */
+/* #endregion 视频和视频控件结束 */
 
 /* #region  评论区域 */
 .video-detail-wrap .video-content .content-left .comment {
@@ -2432,7 +2445,7 @@ export default {
   z-index: 0;
   position: relative;
 }
-/* #region  评论头部 */
+    /* #region  评论头部 */
 .video-detail-wrap .video-content .content-left .comment .comment-head {
   font-size: 18px;
   line-height: 24px;
@@ -2447,7 +2460,7 @@ export default {
   .comment-count {
   margin-right: 15px;
 }
-/* #endregion */
+    /* #endregion */
 
 
     /* #region  一级/二级评论发布框 */
@@ -2530,7 +2543,7 @@ export default {
 
 /* #endregion */
 
-    /* #region  评论主题区域 */
+    /* #region  评论主体区域 */
 .video-detail-wrap .video-content .content-left .comment-wrap {
   width: 100%;
 }
@@ -2808,7 +2821,7 @@ export default {
 
   /* #endregion 评论区域结束*/
 
-/* #endregion 左侧容器部分结束*/
+/* #endregion 评论区域结束*/
 
 /* #endregion 左侧容器部分结束 */
 
