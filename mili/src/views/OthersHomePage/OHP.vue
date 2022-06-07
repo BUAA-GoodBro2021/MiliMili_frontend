@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #f8f8f7">
+  <div style="background-color: #f8f8f7" id="OHP_main">
     <el-container>
       <el-aside width="130px"></el-aside>
       <el-container>
@@ -34,15 +34,52 @@
             active-text-color="rgb(206, 160, 36)"
             :router="true"
           >
-            <a href="#" style="cursor: auto">
-              <el-avatar
-                :size="80"
-                :src="user.avatar_url"
-                class="ava"
-              ></el-avatar>
-              <p class="Uname" v-text="user.username"></p>
-              <p v-text="user.signature" class="Uintro"></p>
-            </a>
+            <div @mouseleave="leaveava">
+              <a href="#">
+                <el-avatar
+                  :size="80"
+                  :src="user.avatar_url"
+                  class="ava"
+                  @mouseenter="enterava"
+                ></el-avatar>
+                <p
+                  class="Uname"
+                  v-text="user.username"
+                  @mouseenter="enterava"
+                ></p>
+                <p
+                  v-text="user.signature"
+                  class="Uintro"
+                  @mouseenter="enterava"
+                ></p>
+              </a>
+              <div
+                class="icomoon menuboxall"
+                v-show="seen"
+                @mouseleave="leaveava"
+              >
+                <a
+                  href="https://milimili.super2021.com/login"
+                  class="menubox loginbox"
+                  v-if="is_follow == -1"
+                  style="margin-left: 3.1vw"
+                  > 登录</a
+                >
+                <span class="menubox msgbox" v-if="is_follow == -1"
+                  >&nbsp;&nbsp;&nbsp;</span
+                >
+                <span
+                  class="menubox flwbox"
+                  v-if="is_follow == 0"
+                  @click="follow_up"
+                  > 关注</span
+                >
+                <span class="menubox flwbox" v-if="is_follow == 1"> 取关</span>
+                <span class="menubox msgbox" v-if="is_follow != -1"
+                  > 私信</span
+                >
+              </div>
+            </div>
             <el-menu-item :index="'/OthersHomePage/Main/' + id" class="headcol">
               <span class="icomoon zy icohead"></span
               ><span class="catalogue"> 主页</span>
@@ -99,20 +136,73 @@ export default {
   name: "Video",
   data() {
     return {
+      jwt: JSON.parse(localStorage.getItem("loginMessage")).JWT,
       textarea: "",
       activeIndex: "1",
       user: {},
       vedioCanPlay: false,
       fixStyle: "",
       id: this.$route.params.id,
+      seen: false,
+      is_follow: 0,
     };
   },
   methods: {
+    enterava() {
+      this.seen = true;
+    },
+    leaveava() {
+      this.seen = false;
+    },
     handleSelect(tab, event) {
       // console.log(tab, event);
     },
     canplay() {
       this.vedioCanPlay = true;
+    },
+    follow_up() {
+      var id = this.$route.params.id;
+      var that = this;
+      this.$axios({
+        method: "post",
+        url: "https://milimili.super2021.com/api/user/follow",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        data: qs.stringify({
+          JWT: that.jwt,
+          follow_id: id,
+        }),
+      })
+        .then((res) => {
+          console.log("follow!");
+          this.is_follow = 1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    unfollow_up() {
+      var id = this.$route.params.id;
+      var that = this;
+      this.$axios({
+        method: "post",
+        url: "https://milimili.super2021.com/api/user/unfollow",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        data: qs.stringify({
+          JWT: that.jwt,
+          follow_id: id,
+        }),
+      })
+        .then((res) => {
+          console.log("unfollow!");
+          this.is_follow = 0;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   created() {
@@ -132,8 +222,9 @@ export default {
         console.log("user");
         console.log(res);
         console.log(res.data.user);
-        console.log(that.index1);
         that.user = res.data.user;
+        that.is_follow = res.data.is_follow;
+        console.log(res.data.is_follow);
       })
       .catch((err) => {
         console.log(err);
@@ -173,6 +264,10 @@ export default {
 </script>
 
 <style scoped>
+#OHP_main {
+  text-align: center;
+  color: #2c3e50;
+}
 .homepage-hero-module,
 .video-container {
   position: fixed;
@@ -459,7 +554,9 @@ body {
 
 .ava {
   position: absolute;
+  top: 0;
   left: 16vw;
+  background-color: #fff;
 }
 
 .mmenu {
@@ -481,5 +578,36 @@ body {
 .mainn {
   background-color: rgba(255, 255, 255, 0.93);
   border-radius: 5px;
+}
+.menubox {
+  font-size: 2.1vh;
+  display: inline-block;
+  margin-right: 0.72vw;
+  margin-left: 0.6vw;
+  cursor: pointer;
+}
+.menuboxall {
+  margin-top: 3vh;
+  margin-left: -2vw;
+}
+
+.flwbox {
+  transition: 0.2s;
+}
+.flwbox:hover {
+  color: #ec4343;
+}
+.msgbox {
+  transition: 0.2s;
+}
+.msgbox:hover {
+  color: #43aeec;
+}
+.loginbox {
+  margin-right: -0.5vw;
+  transition: 0.2s;
+}
+.loginbox:hover {
+  color: #b3b3b3;
 }
 </style>
