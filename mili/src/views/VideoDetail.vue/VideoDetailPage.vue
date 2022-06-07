@@ -8,7 +8,7 @@
         <h1 class="title">{{ videoInfo.video_url ? videoInfo.title : "" }}</h1>
         <!-- <div class="play-info">68.7万播放 · 1641弹幕 2021-09-02 13:54:26</div> -->
         <div class="play-info">
-          {{ graceNumber(videoInfo.view_num) }}播放 · 1641弹幕 {{ videoCreatedDate }} {{ videoCreatedTime }}
+          {{ graceNumber(videoInfo.view_num) }}播放 · {{ this.danmuId }}弹幕 {{ videoCreatedDate }} {{ videoCreatedTime }}
         </div>
         <!-- 嵌入的视频播放器，id是vs -->
         <div id="vs_tag">
@@ -180,8 +180,6 @@
 
             <div class="icon-item">
               <!-- 获取是否点赞，并在点击时切换状态和更新数量 -->
-              <!-- <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
-                src="../../src/assets/image/video/icon_01.png" alt=""> -->
               <img 
                 v-if="boolSymbol.isLiked === 0"
                 class="img active"
@@ -201,13 +199,6 @@
 
             <div class="icon-item">
               <!-- 获取是否收藏，并在点击时切换状态和更新数量 -->
-              <!-- <img class="img" v-if="!collections.like" @click="postCollections"
-                src="../../assets/video/icon_03.png" alt="">
-              <img class="img" v-else @click="postCollections"
-                src="../../assets/video/icon_03_active.png" alt="">
-              {{ collections.count }} -->
-
-              <!-- <img class="img" @click="showTheCollectionWindow = true" src="../../assets/video/icon_03.png" alt=""/> -->
               <img
                 v-if="boolSymbol.isCollectted === 0"
                 class="img"
@@ -222,12 +213,45 @@
                 src="../../assets/video/icon_03_active.png"
                 alt=""
               />
+              {{ videoInfo.collect_num }}
             </div>
           </div>
 
           <div class="tool-bar-right">
             <div class="manuscript-report" @click="openComplaintWindow">
               稿件投诉
+            </div>
+          </div>
+        </div>
+
+        <!-- 视频简介和视频tag -->
+        <div class="left-container-below-player">
+          <!-- 视频简介 -->
+          <div class="v-info">
+            <!-- <div class="v-info-content" :style="isSpread === false? 'height: 84px;':'height: auto;' "> -->
+            <div 
+              class="v-info-content" 
+              :style="isExcited === true && isSpread === false? 'height: 84px;':'height: auto;' ">
+
+              <span class="info-text">
+                {{this.videoInfo.description}}
+                <!-- {{this.TEST_VIDEO_INFO}} -->
+              </span>
+              
+            </div>
+            <div class="spread-btn" @click="isSpread = !isSpread" v-if="isExcited === true">
+              <span v-if="isSpread === true">收起</span>
+              <span v-else>展开更多</span>
+            </div>
+          </div>
+          <!-- 这边其实是在投稿时做了限制，其实对于长度较长的tag也能实现比较好的存放 -->
+          <div class="v-tag" >
+            <div class="v-tag-wrap">
+              <ul class="tag-area clearfix">
+                <li v-for="(item, index) in videoTagList" :key="index">
+                  <div class="single-tag">{{ item }}</div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -385,16 +409,7 @@
         </div>
 
         <!-- 弹幕列表 -->
-        <div class="danmu-list-wrap">
-          <div class="danmu-list-header">弹幕列表</div>
-          <table class="danmu-table" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-              <th class="time">时间</th>
-              <th class="content">弹幕内容</th>
-              <th class="date">发送时间</th>
-            </tr>
-          </table>
-          <!-- 
+                  <!-- 
           color: true
           created_time: "2022-06-06T13:14:20.957Z"
           duration: 15000
@@ -404,22 +419,56 @@
           start: "36569"
           style: Object
           txt: "这是15号视频的第一条弹幕，标准大小、白色、滚动" -->
-          <div class="danmu-list-content">
-            <table
-              class="danmu-table"
-              border="0"
-              cellpadding="0"
-              cellspacing="0"
-            >
-              <tr v-for="(item,index) in danmuList" :key="index">
-                <!-- <td class="time">{{ item.start }}</td> -->
-                <td class="time">{{ transMSToS(item.start) }}</td>
-                <td class="content">{{ item.txt }}</td>
-                <td class="date">{{ handleDanmuCreatedTime(item.created_time) }}</td>
-              </tr>
-            </table>
+        <div class="danmaku-box">
+          <div class="danmaku-list-wrap">
+            <div class="player-auxiliary">
+              <div class="player-auxiliary-area">
+                <div class="player-auxiliary-collapse">
+                  <div class="ui-collapse-wrap">
+                    <div class="ui-collapse-header" @click="isDanmuListShow = !isDanmuListShow">
+                      <!-- 这里删去了B站原有的箭头图标区域 -->
+                      <div class="player-auxiliary-filter">
+                        <span class="filter-title">弹幕列表</span>
+                      </div>
+                    </div>
+
+                    <div class="ui-collapse-body" :style="isDanmuListShow === false? 'height: 0;':'' ">
+                      <div class="player-auxiliary-wraplist">
+                        <div class="player-auxiliary-danmaku" style="display: block;">
+                          <div class="player-auxiliary-danmaku-management clearfix"></div>
+                          <!-- 弹幕列表表头 -->
+                          <div class="player-auxiliary-danmaku-function">
+                            <div class="btn-time">时间</div>
+                            <div class="btn-danmu">弹幕内容</div>
+                            <div class="btn-date">发送时间</div>
+                          </div>
+                          <!-- 存放弹幕的主体位置 -->
+                          <div class="player-auxiliary-danmaku-wrap" style="height: 307px;">
+                            <div class="danmu-container">
+                              <ul class="player-auxiliary-danmaku-list">
+                                <li class="danmu-info-row" v-for="(item, index) in danmuList" :key="index">
+                                  <span class="danmu-info-time">{{ transMSToS(item.start) }}</span>
+                                  <span class="danmu-info-context">{{ item.txt }}</span>
+                                  <span class="danmu-info-date">{{ handleDanmuCreatedTime(item.created_time) }}</span>
+                                </li>                                
+                              </ul>
+                            </div>
+                          </div>
+                          <!-- 底部按钮 -->
+                          <div class="player-auxiliary-danmaku-footer">
+                            <div class="footer-btn" @click="isDanmuListShow = false">MILIMILI DANMU</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="player-auxiliary-text"></div>
+            </div>
           </div>
         </div>
+
         <!-- 推荐视频 -->
         <div class="recommend_wrap">
           <div class="recommend-list-header">推荐视频列表</div>
@@ -624,6 +673,29 @@ export default {
       // 视频投稿时间
       videoCreatedDate: null,
       videoCreatedTime: null,
+      // 视频简介需要展开/隐藏
+      isExcited: false,
+      // 视频简介是否展开
+      isSpread: false,
+      // 视频tag列表
+      videoTagList: [],
+
+      // TEST_VIDEO_INFO: `这一家三口就没有一个是正常人，什么！被你发现了！<br>
+      //           那……做好准备哦！(*╹▽╹*)<br>
+      //           还有就是，今天是520，那帷幕娘就祝大家520快乐吧！hhhhhh~<br>
+      //           今后我们会上传更多高质量的作品哒~！给个三连救救孩子吧~！<br>
+      //           关注我们会看到很多好（se）玩（se）的东西哦~！⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄<br>
+
+      //           【原作】：CHiCO with HoneyWorks meets 中川翔子 - Mr.Darling / <br>
+      //           【企划】：帷幕VMovie<br>
+      //           【监督/策划】：多刺<br>
+      //           【绘画】：木子、梦生<br>
+      //           【视频后期】：七云<br>
+      //           【特别鸣谢】：麦子<br>
+
+      //           （帷幕VMovie是一家以手书、PV、动画等二次元原创企划的综合性团队）<br>
+      //           （如果您有合作、前后期需求，或者想加入我们，欢迎戳我们的动态查看相关信息哟~！）`,
+      TEST_VIDEO_INFO: "这一家三口就没有一个是正常人，什么！被你发现了！那……做好准备哦！(*╹▽╹*) \n 还有就是，今天是520，那帷幕娘就祝大家520快乐吧！hhhhhh~ \n 今后我们会上传更多高质量的作品哒~！给个三连救救孩子吧~！\n 关注我们会看到很多好（se）玩（se）的东西哦~！⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ \n 【原作】：CHiCO with HoneyWorks meets 中川翔子 - Mr.Darling / \n【企划】：帷幕VMovie \n【企划】：帷幕VMovie\n【企划】：帷幕VMovie\n【企划】：帷幕VMovie ",
 
       // 视频和用户已有的交互
       boolSymbol: {
@@ -632,6 +704,9 @@ export default {
       },
 
       // #region 弹幕数据
+      // 是否要展示当前视频列表
+      isDanmuListShow: false,
+
       // 当前视频的弹幕列表
       danmuList: [],
 
@@ -673,7 +748,7 @@ export default {
           mode: 'scroll' //显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
         },
       ],
-      // 当前视频如果要新建弹幕的话，弹幕的id
+      // 当前视频如果要新建弹幕的话，弹幕的id（实际上是当前视频下的弹幕个数）
       danmuId: 0,
       // 弹幕临时文本
       danmuText: '',
@@ -771,6 +846,29 @@ export default {
     this.getCollections();
   },
   methods: {
+      getStrSum(string, a){
+        // console.log(string);
+        let b = string.indexOf(a);
+        let num = 0;
+        while(b !== -1) {
+          num++;
+          b = string.indexOf(a, b+1);
+        }
+        return num;
+      },
+      /**
+       * true，说明需要固定高度并出现展开按钮
+       * false，说明不需要
+       */
+      getSplitBool(string){
+        console.log("换行符个数"+ this.getStrSum(this.TEST_VIDEO_INFO, '\n'));
+        if(this.getStrSum(string, '\n') >= 3 || this.getStrSum(string, '<br>') >=3 ){
+          return true;
+        }else if (string.length >= 200){
+          return true;
+        }
+        return false;
+      },
     /* #region弹幕方法区域 ***********************************************************************************/
       /**
        * 将弹幕距离视频开始位置（以毫秒为单位记录）转为格式化字符串
@@ -864,7 +962,7 @@ export default {
         formData.append("style_fontSize", this.danmuFontSize);
         formData.append("mode", this.danmuPosition);
 
-        this.danmuText = ''; 
+        this.danmuText = '';
         this.$axios({
           method: "post",
           url: "https://milimili.super2021.com/api/video/add-bullet",
@@ -1429,7 +1527,6 @@ export default {
           //   height: 180
           // }
         });
-        console.log(this.player);
       },
       /**
        * 获取视频信息 GVD
@@ -1467,6 +1564,10 @@ export default {
               this.$message.success("加载成功！");
               /* 视频本身的信息 */
               this.videoInfo = res.data.video_info;
+              /* 获取视频简介 */
+              this.isExcited = this.getSplitBool(res.data.video_info.description);
+              // this.isExcited = this.getSplitBool(this.TEST_VIDEO_INFO);
+              this.videoTagList = this.videoInfo.tag_list;
               //获取推荐视频 hb
               this.recommendVidoes = res.data.recommended_video;
               // console.log(this.videoInfo);
@@ -1816,6 +1917,7 @@ export default {
 </script>
 
 <style scoped>
+
 * {
   margin: 0;
   padding: 0;
@@ -1829,45 +1931,6 @@ export default {
   display: table;
   clear: both;
 }
-/* #region 弹幕列表样式部分 */
-.danmu-content {
-  margin-bottom: 20px;
-  width: 800px;
-  height: 65px;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.danmu-content .input {
-  width: 90%;
-  height: 100%;
-  resize: none;
-  font-size: 12px;
-  box-sizing: border-box;
-  background-color: #f4f5f7;
-  border: 1px solid #e5e9ef;
-  overflow: auto;
-  border-radius: 4px;
-  color: #555;
-  padding: 5px 10px;
-  line-height: normal;
-  outline: none;
-}
-
-.danmu-content .send-btn {
-  width: 70px;
-  height: 100%;
-  background-color: #00a1d6;
-  font-size: 14px;
-  color: #fff;
-  border-radius: 4px;
-  padding: 12px 15px;
-  text-align: center;
-  vertical-align: center;
-  cursor: pointer;
-}
-/* #endregion */
 
 /* 整个视频页面的 外层容器 */
 .video-detail-wrap {
@@ -1923,7 +1986,8 @@ export default {
   color: #212121;
   line-height: 26px;
   height: 26px;
-  margin-top: 14px;
+  /* margin-top: 14px; */
+  margin-top: 18px;
   margin-bottom: 8px;
   /* 下面三行一起用可以实现溢出文本用省略号 "..." 代替 */
   overflow: hidden;
@@ -2537,6 +2601,76 @@ export default {
     /* #endregion 视频交互控件结束 */
 
 /* #endregion 视频和视频控件结束 */
+
+/* #region 视频简介和tag */
+
+.video-detail-wrap .video-content .content-left .left-container-below-player{
+  width: 100%;
+}
+
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-info{
+    margin: 16px 0;
+    position: relative;
+}
+  
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-info .v-info-content{
+    white-space: pre-line;
+    transition: height 0.6s;
+    font-size: 15px;
+    color: #18191C;
+    letter-spacing: 0;
+    line-height: 24px;
+    overflow: hidden;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-info .v-info-content .info-text{
+    font-family: PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-info .spread-btn{
+    margin-top: 10px;
+    font-size: 13px;
+    line-height: 18px;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-info .spread-btn span{
+    cursor: pointer;
+    color: #61666D;
+}
+
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-tag{
+    padding-bottom: 6px;
+    margin: 16px 0 20px 0;
+    border-bottom: 1px solid #E3E5E7;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-tag .v-tag-wrap{
+  transition: height 0.3s;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-tag .v-tag-wrap .tag-area{
+    position: relative;
+    list-style: none;
+    outline: none;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-tag .v-tag-wrap .tag-area > li {
+    float: left;
+    margin: 0 12px 8px 0;
+    position: relative;
+    list-style: none outside none;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-tag .v-tag-wrap .tag-area > li .single-tag{
+    color: #61666D;
+    z-index: 10;
+    height: 28px;
+    line-height: 28px;
+    display: inline-block;
+    font-size: 13px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    background: #F1F2F3;
+    border-radius: 100px;
+    transition: all 0.3s;
+}
+/* #endregion */
+
 
 /* #region  评论区域 */
 .video-detail-wrap .video-content .content-left .comment {
@@ -3334,107 +3468,324 @@ export default {
   /* border: 1px solid yellow; */
 }
 
-.video-detail-wrap .video-content .content-right .danmu-list-wrap {
+/* #region 弹幕列表样式部分 */
+.video-detail-wrap .video-content .content-right .danmaku-box{
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+.video-detail-wrap .video-content .content-right .danmaku-box .danmaku-list-wrap{
+    min-height: 44px;
+    background: #F1F2F3;
+    border-radius: 6px;
+}
+.video-detail-wrap .video-content .content-right .danmaku-box .danmaku-list-wrap .player-auxiliary{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+.video-detail-wrap .video-content .content-right .danmaku-box .danmaku-list-wrap .player-auxiliary .player-auxiliary-area{
+    position: relative;
+    background-color: #fff;
+    position: relative;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 100%;
+    vertical-align: top;
+}
+.video-detail-wrap .video-content .content-right .danmaku-box .danmaku-list-wrap .player-auxiliary .player-auxiliary-area 
+.player-auxiliary-collapse{
+    display: flex;
+    vertical-align: middle;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.player-auxiliary-collapse .ui-collapse-wrap{
   width: 100%;
 }
 
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-header {
-  width: 100%;
-  height: 46px;
-  background-color: #f4f4f4;
-  display: flex;
-  color: #222;
-  font-size: 16px;
-  border-radius: 2px;
-  padding: 0 10px 0 16px;
-  align-items: center;
-  box-sizing: border-box;
+        /* #region 弹幕列表头部 */
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-header{
+  background-color: #f1f2f3;  /* 可能需要提取出去作为变量绑定改变的值 */
+    border-radius: 6px;
+    min-height: 44px;
+    color: #18191c;
+    display: flex;
+    vertical-align: middle;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+    cursor: pointer;
 }
+
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-header .player-auxiliary-filter::after{
+    content: "";
+    display: block;
+    visibility: hidden;
+    height: 0;
+    clear: both;
+    font-size: 0;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-header .player-auxiliary-filter{
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    position: relative;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 6px;
+    padding-left: 16px;
+    height: 44px;
+    line-height: 44px;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-header .player-auxiliary-filter .filter-title{
+    font-size: 15px;
+    color: #18191c;
+    height: 100%;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+}
+        /* #endregion*/
+
+        /* #region 弹幕列表标题 */
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body{
+    background-color: #fff;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    /* -webkit-transition: height .3s; */
+    /* -o-transition: height .3s; */
+    transition: height .3s;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    overflow: hidden;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist{
+    display: block;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist .player-auxiliary-danmaku{
+    overflow: hidden;
+    position: relative;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist .player-auxiliary-danmaku .player-auxiliary-danmaku-management{
+    text-align: center;
+    color: #61666d;
+    background-color: #fff;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist .player-auxiliary-danmaku .player-auxiliary-danmaku-function{
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #fff;
+    display: flex;
+}
+.player-auxiliary-danmaku-function .btn-time{
+    width: 60px;
+    padding-left: 16px;
+    padding-right: 0;
+
+    font-size: 12px;
+    color: #61666d;
+    height: 32px;
+    border: 0;
+    /* padding: 0 6px; */
+    padding: 0 8px;
+    line-height: 32px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    text-align: left;
+}
+.player-auxiliary-danmaku-function .btn-danmu{
+    -webkit-box-flex: 1;
+    -ms-flex: auto;
+    flex: auto;
+
+    font-size: 12px;
+    color: #61666d;
+    height: 32px;
+    border: 0;
+    padding: 0 6px;
+    line-height: 32px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    text-align: left;
+}
+.player-auxiliary-danmaku-function .btn-date{
+    /* width: 88px; */
+    /* width: 103px; */
+    width: 95px;
+
+    font-size: 12px;
+    color: #61666d;
+    height: 32px;
+    border: 0;
+    padding: 0 6px;
+    line-height: 32px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    text-align: left;
+}
+        /* #endregion*/
+
+        /* #region 弹幕列表主体 */
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-danmaku-wrap{
+    background-color: #fff;
+    position: relative;
+    overflow: auto;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-danmaku-wrap .danmu-container{
+    height: 100%;
+    /* overflow: hidden; */
+    overflow: auto;
+    position: relative;
+}
+.danmu-container .player-auxiliary-danmaku-list{
+    /* height: 11784px; */
+    height: auto;
+    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition-duration: 0ms;
+    /* MAYBE_QUESTION 这里其实是动态的 */
+    transform: translate(0px, 0px) scale(1) translateZ(0px);
+
+    position: relative;
+    list-style: none;
+    outline: none;
+}
+
+.danmu-container .player-auxiliary-danmaku-list .danmu-info-row{
+    line-height: 24px;
+    height: 24px;
+    font-size: 12px;
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    color: #61666d;
+    display: flex;
+}
+.danmu-container .player-auxiliary-danmaku-list .danmu-info-row span{
+    vertical-align: top;
+    padding: 0 6px;
+    box-sizing: border-box;
+    z-index: 1;
+    display: inline-block;
+    text-align: left;
+}
+
+.danmu-container .player-auxiliary-danmaku-list .danmu-info-row .danmu-info-time{
+    width: 60px;
+    position: relative;
+    /* text-align: left; */
+    overflow: hidden;
+    /* padding-left: 16px; */
+    padding-left: 5px;
+    -webkit-box-flex: 0;
+    flex: none;
+}
+.danmu-container .player-auxiliary-danmaku-list .danmu-info-row .danmu-info-context{
+    color: #18191c;
+    -webkit-box-flex: 1;
+    -ms-flex: auto;
+    flex: auto;
+    /* ... 三件套 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.danmu-container .player-auxiliary-danmaku-list .danmu-info-row .danmu-info-date{
+    width: 88px;
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+}
+
+        /* #endregion*/
+
+        /* #region 弹幕列表底部 */
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist .player-auxiliary-danmaku .player-auxiliary-danmaku-footer{
+    position: relative;
+    width: auto;
+    height: 39px;
+    background: #fff;
+    overflow: hidden;
+    z-index: 10001;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist .player-auxiliary-danmaku .player-auxiliary-danmaku-footer .footer-btn{
+    color: #18191c;   
+    width: 100%;
+    height: 31px;
+    line-height: 31px;
+    margin-top: 8px;
+    border-radius: 6px;
+    background-color: #f1f2f3;
+    
+    display: inline-flex;
+    cursor: pointer;
+    min-width: 68px;
+    font-size: 12px;
+    box-sizing: border-box;
+    transition: all .2s;
+    transform: translateZ(0);
+    padding: 0;
+    outline: none;
+    text-align: inherit;
+
+    vertical-align: middle;
+    -webkit-box-align: center;
+    align-items: center;
+    justify-content: center;
+    
+    touch-action: manipulation;
+}
+
+
+        /* #endregion*/
+
+/* #endregion */
+
 .video-detail-wrap .video-content .content-right .recommend_wrap .recommend-list-header {
+
   width: 100%;
   height: 46px;
-  background-color: #f4f4f4;
+  /* background-color: #f4f4f4; */
+  background-color: #F1F2F3;
   display: flex;
   color: #222;
   font-size: 16px;
-  border-radius: 2px;
+  /* border-radius: 2px; */
+  border-radius: 6px;
   padding: 0 10px 0 16px;
   align-items: center;
   box-sizing: border-box;
 }
 
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content {
-  width: 100%;
-  height: 500px;
-  overflow-y: scroll;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table {
-  width: 100%;
-  padding-left: 40px;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
-  tr
-  th {
-  font-size: 12px;
-  color: #6d757a;
-  font-weight: 100;
-  text-align: left;
-  padding: 10px 0;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
-  tr
-  td {
-  font-size: 12px;
-  color: #222;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
-  tr
-  .time {
-  width: 20%;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
-  tr
-  .date {
-  width: 40%;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table {
-  width: 100%;
-  padding-left: 40px;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
-  tr
-  th {
-  font-size: 12px;
-  color: #6d757a;
-  font-weight: 100;
-  text-align: left;
-  padding: 10px 0;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
-  tr
-  td {
-  font-size: 12px;
-  color: #222;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
-  tr
-  .time {
-  width: 20%;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
-  tr
-  .date {
-  width: 30%;
-}
 /* #endregion */
 </style>
