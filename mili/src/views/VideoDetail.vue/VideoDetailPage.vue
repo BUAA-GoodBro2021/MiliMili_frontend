@@ -162,10 +162,13 @@
                       placeholder="发个弹幕见证当下" 
                       maxlength="100"
                       v-model="danmuText"
-                    >
+                      @keydown.enter="sendDanmu"
+                    ><!-- 弹幕发送(Enter键) -->
                 </div>
-                <!-- 弹幕发送按钮 -->
-                <button class="danmaku-send-btn" @click="sendDanmu">发送</button>
+                <!-- 弹幕发送按钮(点击“发送”) -->
+                <button 
+                  class="danmaku-send-btn" 
+                  @click="sendDanmu">发送</button>
               </div>
             </div>
           </div>
@@ -380,7 +383,8 @@
         <div class="user_wrap" style="margin-bottom: 10px; width: 100%">
           <UserCard :user="videoInfo.user" :listType="1"></UserCard>
         </div>
-        <!-- 弹幕 -->
+
+        <!-- 弹幕列表 -->
         <div class="danmu-list-wrap">
           <div class="danmu-list-header">弹幕列表</div>
           <table class="danmu-table" border="0" cellpadding="0" cellspacing="0">
@@ -426,9 +430,12 @@
       </div>
 
       <!-- 收藏悬浮窗口 -->
-      <div class="bili-dialog-m" v-if="showTheCollectionWindow === true">
+      <div class="bili-dialog-m" 
+        v-if="showTheCollectionWindow === true" 
+        @click.self="closeCollectionWindow"
+      >
         <div class="bili-dialog-bomb">
-          <div class="collection-m">
+          <div class="collection-m" >
             <div class="title">
               添加到收藏夹
               <!-- 关闭收藏的悬浮窗口 -->
@@ -473,8 +480,27 @@
                   </li>
                 </ul>
 
-                <div class="add-group clearfix">
-                  <div class="add-btn">新建收藏夹</div>
+                <!-- <div class="add-group clearfix"> -->
+                <div class="add-group">
+                  <div 
+                    class="add-btn" 
+                    v-if="changeToNewCollectionInput === false" 
+                    @click="changeToNewCollectionInput = true">新建收藏夹</div>
+                  <div class="input-group" v-else @keydown.esc="changeToNewCollectionInput = false">
+                    <input 
+                      
+                      type="text" 
+                      maxlength="20" 
+                      placeholder="最多可以输入20字"
+                      v-model="newCollectionName"
+                    >
+                    <button 
+                      class="submit-collection-btn"
+                      @click="addUserCollection"
+                    >新建</button>
+                    <el-radio class="collection-type" v-model="newCollectionType" label="0">公开</el-radio>
+                    <el-radio class="collection-type" v-model="newCollectionType" label="1">私密</el-radio>
+                  </div>
                 </div>
               </div>
             </div>
@@ -487,7 +513,11 @@
         </div>
       </div>
       <!-- 投诉悬浮窗口 -->
-      <div class="bili-dialog-m" v-if="showTheComplaintWindow === true">
+      <div 
+        class="bili-dialog-m" 
+        v-if="showTheComplaintWindow === true"
+        @click="closeComplaintWindow"
+      >
         <div class="bili-dialog-bomb">
           <div class="appeal-box">
             <div class="appeal-box-inner">
@@ -601,9 +631,48 @@ export default {
         isCollectted: 0,
       },
 
-
+      // #region 弹幕数据
       // 当前视频的弹幕列表
       danmuList: [],
+
+      fixDanmuList: [
+        {
+          duration: 5000, //弹幕持续显示时间,毫秒(最低为5000毫秒)
+          created_time: "2022-06-07T17:30:56.083",
+          id: 1, //弹幕id，需唯一
+          start: 3000, //弹幕出现时间，毫秒
+          prior: false, //该条弹幕优先显示，默认false
+          color: true, //该条弹幕为彩色弹幕，默认false
+          txt: '长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕', //弹幕文字内容
+          style: {  //弹幕自定义样式
+            color: '#ff9500',
+            fontSize: '20px',
+            border: 'solid 1px #ff9500',
+            borderRadius: '50px',
+            padding: '5px 11px',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+          },
+          mode: 'top' //显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+        },
+        {
+          // duration: 5000, //弹幕持续显示时间,毫秒(最低为5000毫秒)
+          created_time: "2022-06-07T17:30:56.083",
+          id: 2, //弹幕id，需唯一
+          start: 4000, //弹幕出现时间，毫秒
+          prior: true, //该条弹幕优先显示，默认false
+          color: true, //该条弹幕为彩色弹幕，默认false
+          txt: '长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕', //弹幕文字内容
+          style: {  //弹幕自定义样式
+            color: '#ff9500',
+            fontSize: '20px',
+            border: 'solid 1px #ff0000',
+            borderRadius: '50px',
+            padding: '5px 11px',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+          },
+          mode: 'scroll' //显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+        },
+      ],
       // 当前视频如果要新建弹幕的话，弹幕的id
       danmuId: 0,
       // 弹幕临时文本
@@ -625,7 +694,15 @@ export default {
         chooseTop: false,
         chooseBottom: false,
       },
+      // #endregion
 
+      // #region 收藏数据
+      // 是否切换新建收藏夹时的输入框
+      changeToNewCollectionInput: false,
+      // 新建收藏夹的名称
+      newCollectionName: '',
+      // 新建收藏夹的类型 0公开 1私密
+      newCollectionType: '0',
       // 收藏窗口是否展示
       showTheCollectionWindow: false,
       // showTheCollectionWindow: true,
@@ -637,62 +714,15 @@ export default {
        * 阻止用户获取脏数据的变量，collectionLock
        *  >>>在用户成功打开一次窗口时，上锁（true）
        *  
-       *  <<<在通过点击“叉号”退出时，立即解锁，因为并没有触发更新
+       *  <<<在通过点击“叉号”退出或者点击容器外部退出时，立即解锁，因为并没有触发更新
        *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
        */
       collectionLock: false,
       collectionNum: 0,
-      collectionList:[
-          {
-            id: "1",
-            title: "自定义收藏夹1号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 0,
-            updating_collection: 0,
-            video_num: 12
-          },
-          {
-            id: "2",
-            title: "自定义收藏夹2号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 1,
-            updating_collection: 1,
-            video_num: 4
-          },
-          {
-            id: "3",
-            title: "自定义收藏夹3号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 0,
-            updating_collection: 0,
-            video_num: 56
-          },
-          {
-            id: "4",
-            title: "自定义收藏夹4号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 1,
-            updating_collection: 1,
-            video_num: 6
-          },
-          {
-            id: "5",
-            title: "自定义收藏夹5号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 0,
-            updating_collection: 0,
-            video_num: 1
-          },
-          {
-            id: "6",
-            title: "自定义收藏夹6号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 0,
-            updating_collection: 0,
-            video_num: 6
-          },  
-      ],
+      collectionList:[],
+      // #endregion
 
+      // #region 投诉数据
       // 投诉窗口是否展示
       showTheComplaintWindow: false,
       // 阻止空白投诉
@@ -701,14 +731,15 @@ export default {
        * 阻止用户获取脏数据的变量，complaint
        *  >>>在用户成功打开一次窗口时，上锁（true）
        *  
-       *  <<<在通过点击“叉号”或者点击“取消”退出时，立即解锁，因为并没有触发更新
+       *  <<<在通过点击“叉号”或者点击“取消”或者点击容器外部退出退出时，立即解锁，因为并没有触发更新
        *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
        */
       complaintLock: false,
       titleTextarea:'',
       descriptionTextarea:'',
+      // #endregion
 
-
+      // #region 评论数据
       // 一个视频的总评论数目（包括一二级）
       totalCommentsNum: 0,
       // 视频一级评论列表
@@ -724,6 +755,7 @@ export default {
         replyUserName: "",
         comment: "",
       },
+      // #endregion
       // TEST_JWT: null,
       // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpc1N1cGVyQWRtaW4iOnRydWV9.ZJoduPgGiwUKhO3lnpePR5PQgf49wfc4sgxFPgQHH14',
       // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1MCwiaXNTdXBlckFkbWluIjpmYWxzZX0.RycUhwt145ZMLtR_9qvRoLotuS8SbKOvCcfIYabsOGE',
@@ -733,27 +765,34 @@ export default {
   },
   created() {
     console.log("create video detail");
+    this.getVideoDanmu();
     this.getVideoDetail();
     this.getCurrentUserSimpleInfo();
-    this.getVideoDanmu();
+    this.getCollections();
   },
   methods: {
+    /* #region弹幕方法区域 ***********************************************************************************/
       /**
-       * 将毫秒转为秒
+       * 将弹幕距离视频开始位置（以毫秒为单位记录）转为格式化字符串
        * @param {int} milisecond 
        */
       transMSToS(milisecond){
         let second = parseInt(milisecond / 1000);
         let minute = parseInt(second / 60);
         second = parseInt(second % 60);
+        if(minute < 10) minute = '0'+minute;
+        if(second < 10) second = '0'+second;
         return minute + ':' +second;
       },
-
+      /**
+       * 将弹幕传入的处理为合适的字符串
+       * @param {string} str
+       */
       handleDanmuCreatedTime(str){
         let date = str.split(/[.]|T/)[0];
-        console.log(date);
+        // console.log(date);
         let time = str.split(/[.]|T/)[1];
-        console.log(time);
+        // console.log(time);
         let handleDate = date.substring(5);
         let handleTime = time.substring(0, 5);
         return handleDate + ' ' + handleTime;
@@ -761,17 +800,9 @@ export default {
       /**
        * 用于得到当前视频对应的弹幕列表
        */
-      async getVideoDanmu(){
+      async getVideoDanmu(){        
         let formData = new FormData();
-        let loginMessage = localStorage.getItem("loginMessage");
-        let jwt = null;
-        if (loginMessage != null) {
-          jwt = JSON.parse(loginMessage).JWT;
-          this.isLogined = true;
-        }
-        // console.log("当前用户的JWT是："+jwt);
         let videoId = this.$route.params.id;
-        // formData.append("JWT", jwt);
         formData.append("video_id", videoId);
         this.$axios({
           method: "post",
@@ -786,8 +817,6 @@ export default {
               this.$message.success("加载弹幕成功！");
               /* 获取弹幕列表 */
               this.danmuList = res.data.bullet_list;
-              console.log('弹幕列表');
-              console.log(this.danmuList);
               this.danmuId = res.data.bullet_num;
               break;
             }
@@ -811,7 +840,6 @@ export default {
         }
         //  this.sendDanmuInPlayer();
         //  return;
-
         let formData = new FormData();
         let loginMessage = localStorage.getItem("loginMessage");
         let jwt = null;
@@ -850,6 +878,7 @@ export default {
               this.$message.success("增加弹幕成功！");
               /* 获取弹幕列表 */
               this.danmuList = res.data.bullet_list;
+              this.player.danmu.comments = res.data.bullet_list;
               this.danmuId = res.data.bullet_num;
               break;
             }
@@ -881,7 +910,7 @@ export default {
 					id: this.danmuId,   //弹幕id，需唯一
 					// start: start,       
 					start: this.danmuStart,       //弹幕出现时间，毫秒
-          prior: false,        //该条弹幕优先显示，默认false
+          prior: true,        //该条弹幕优先显示，默认false
           color: true,        //该条弹幕为彩色弹幕，默认false
 					txt: this.danmuText,          //弹幕文字内容
 					style: {    //弹幕自定义样式
@@ -951,6 +980,8 @@ export default {
           }
         }
       },
+    /* #endregion */
+    /* #region审核方法区域 ***********************************************************************************/
       /**
        * 打开审核浮窗
        */
@@ -961,7 +992,7 @@ export default {
         }
       },
       /**
-       * 通过点击“叉号”或者点击“取消”退出时，立即解锁，因为并没有触发更新
+       * 通过点击“叉号”或者点击“取消” 或者点击容器外部 退出时，立即解锁，因为并没有触发更新
        */
       closeComplaintWindow(){
         this.showTheComplaintWindow = false;
@@ -992,7 +1023,8 @@ export default {
           this.$router.push('/login');
           return;
         }
-        let videoId = this.videoInfo.id;
+        // let videoId = this.videoInfo.id;
+        let videoId = this.$route.params.id;
 
         formData.append("JWT", jwt);
         formData.append("title", this.titleTextarea);
@@ -1024,6 +1056,8 @@ export default {
           console.log(err);
         });
       },
+    /* #endregion */
+    /* #region收藏方法区域 ***********************************************************************************/
       /**
        * 先获取收藏列表，再打开收藏窗口
        */ 
@@ -1043,7 +1077,7 @@ export default {
           // this.openCollectionWindowStatus();
       },
       /**
-       * 用户直接通过 点击×号关闭窗口，
+       * 用户直接通过 点击×号关闭窗口，点击容器外部关闭窗口
        *  此时应该还原已经改变了的 updating_collection  -->似乎这条不需要，这里是保险
        *    并且应该解锁，使得用户可以再次打开该收藏窗口！
        */
@@ -1058,7 +1092,11 @@ export default {
         // 清除以后再关闭窗口
         this.showTheCollectionWindow = false;
         // 解锁
-        this.collectionLock = false;  
+        this.collectionLock = false;
+        // 切换回原来的按钮
+        this.changeToNewCollectionInput = false;
+        // 切换回默认为公开
+        this.newCollectionType = '0';
       },
 
       async openCollectionWindowStatus(){
@@ -1134,7 +1172,7 @@ export default {
             reject('未登录不可以操作收藏夹');
             return;
           }
-          let videoId = this.videoInfo.id;
+          let videoId = this.$route.params.id;
 
           formData.append("JWT", jwt);
           formData.append("video_id", videoId);
@@ -1188,10 +1226,10 @@ export default {
           }
         }
         //#region 测试部分，可删
-        console.log('要新增的收藏夹id');
-        console.log(this.addCollectionRelationArray);
-        console.log('要删除的收藏夹id');
-        console.log(this.deleteCollectionRelationArray);
+        // console.log('要新增的收藏夹id');
+        // console.log(this.addCollectionRelationArray);
+        // console.log('要删除的收藏夹id');
+        // console.log(this.deleteCollectionRelationArray);
         //#endregion
 
         let formData = new FormData();
@@ -1239,6 +1277,63 @@ export default {
           console.log(err);
         })
       },
+      /**
+       * 为当前用户新建一个收藏夹 AUC
+       */
+      async addUserCollection(){
+        // 阻止空收藏夹
+        if (!this.newCollectionName || this.newCollectionName === ''){
+          return;
+        }
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        let videoId = this.videoInfo.id;
+
+        formData.append("JWT", jwt);
+        formData.append("video_id", videoId);
+        formData.append("title", this.newCollectionName);
+        formData.append("description", "");
+        formData.append("isPrivate", this.newCollectionType === '0'? 0:1);
+
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/video/create-favorite-simple",
+          data: formData,
+        })
+        .then((res) => {
+          console.log(res);
+          switch (res.data.result) {
+            case 1:
+              this.$message.success("新建收藏夹成功！");
+              this.collectionList = res.data.favorite_list_simple;
+              break;
+
+            default:
+              this.$message.warning("新建收藏夹失败！");
+              break;
+          }
+          // 无论请求成败，都应该清空临时存放的 希望新建的收藏夹名字
+          this.newCollectionName = '';
+          // 切换回原来的按钮
+          this.changeToNewCollectionInput = false;
+          // 切换回默认为公开
+          this.newCollectionType = '0';
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      },
+    /* #endregion */
+
       /**
        * 优雅地显示数量
        * @param {int} number
@@ -1291,7 +1386,7 @@ export default {
 
       /**
        * 初始化视频播放器 
-       * FIXME 弹幕逻辑
+       * FIXME 弹幕逻辑     ITP
        */
       initPlayer(videoUrl) {
         this.player = new Player({
@@ -1301,19 +1396,21 @@ export default {
           volume: 0.3,      // 初始音量
           playbackRate: [0.5, 0.75, 1, 1.5, 2],   // 当前播放速度
           defaultPlaybackRate: 1,                 // 播放速度设置为1
-          pip: true, //打开画中画功能
+          // pip: true, //打开画中画功能
           // fitVideoSize: 'fixWidth',             // 容器宽度固定，高度按照视频比例调整
           videoInit: true,           // 初始化视频首帧，如果没有封面就默认显示首帧
           // poster:,                           // 视频封面
           danmu: {
             comments: this.danmuList,
+            // comments: this.videoInfo.bullet,
+            // comments: this.fixDanmuList,
+            // comments: danmuArr,
             area: {
               start: 0,
               end: 1
             }
           },
-          // height: 550,
-          // width: 800,
+
           width: '100%',
           height: '500px',
           whitelist: [""], 
@@ -1323,15 +1420,16 @@ export default {
             currentTime: 5,  //播放进度调整步长，默认10秒
             volume: 0.2       //音量调整步长，默认0.1
           },
-          // 小窗播放
-          miniplayer: true,
-          miniplayerConfig: {
-            bottom: 200,
-            right: 0,
-            width: 320,
-            height: 180
-          }
+          // // 小窗播放
+          // miniplayer: true,
+          // miniplayerConfig: {
+          //   bottom: 200,
+          //   right: 0,
+          //   width: 320,
+          //   height: 180
+          // }
         });
+        console.log(this.player);
       },
       /**
        * 获取视频信息 GVD
@@ -1379,6 +1477,7 @@ export default {
                 this.videoInfo.created_time.split(/[.]|T/)[0];
               this.videoCreatedTime =
                 this.videoInfo.created_time.split(/[.]|T/)[1];
+
               this.initPlayer(videoUrl);
               /* 当前获取到的视频和用户已有的交互 */
               this.boolSymbol.isLiked = res.data.is_like;
@@ -1430,7 +1529,6 @@ export default {
           switch (res.data.result) {
             case 1:
               this.$message.success("点赞成功！");
-              console.log(res);
               this.boolSymbol.isLiked = 1;
               this.videoInfo.like_num++;
               break;
@@ -1462,17 +1560,16 @@ export default {
         formData.append("JWT", jwt);
         formData.append("video_id", videoId);
 
-      this.$axios({
-        method: "post",
-        url: "https://milimili.super2021.com/api/video/dislike",
-        data: formData,
-      })
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/video/dislike",
+          data: formData,
+        })
         .then((res) => {
           console.log(res);
           switch (res.data.result) {
             case 1:
               this.$message.success("取消点赞成功！");
-              console.log(res);
               this.boolSymbol.isLiked = 0;
               this.videoInfo.like_num--;
               break;
@@ -1694,6 +1791,8 @@ export default {
       child.setAttribute("id", "vs");
       child.setAttribute("class", "vs-class");
       wrap.appendChild(child);
+      /* 避免从推荐视频列表切换视频时弹幕污染 */
+      this.danmuList = [];
       /* 更新对应的视频信息、用户信息和弹幕列表 */
       this.getVideoDetail();
       this.getCurrentUserSimpleInfo();
@@ -2579,6 +2678,9 @@ export default {
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-content {
     font-size: 14px;
     margin: 10px 0;
+    /* VERY_IMPORTANT 这里的两句话是为了防止超长的单个单词溢出文本框 */
+    hyphens: auto;
+    word-break: break-all;
 }
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right {
@@ -2750,6 +2852,9 @@ export default {
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment {
     font-size: 14px;
     margin-left: 10px;
+    /* VERY_IMPORTANT 这里的两句话是为了防止超长的单个单词溢出文本框 */
+    hyphens: auto;
+    word-break: break-all;
 }
 /* 二级评论 回复的用户的昵称 通过路由点击事件 跳转个人空间的样式  */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name {
@@ -2825,7 +2930,7 @@ export default {
 
 /* #endregion 左侧容器部分结束 */
 
-/* #region 收藏浮窗部分 */
+/* #region 收藏/投诉 浮窗部分 */
 .bili-dialog-m{
     background: rgba(0, 0, 0, 0.65);
     position: fixed;
@@ -2953,7 +3058,7 @@ export default {
 }
 
 .collection-m .content .group-list .add-group {
-    /* margin-bottom: 5px; */
+  /* margin-bottom: 5px; */
     padding-bottom: 1px;
     width: 348px;
 }
@@ -2971,7 +3076,47 @@ export default {
 }
 
 .collection-m .content .group-list .add-group .add-btn:hover {
+  border: 1px solid #00a1d6;
+}
+.collection-m .content .group-list .add-group .input-group .collection-type{
+    /* margin-top: 1px; */
+    /* margin-right: 60px; */
+    margin-right: 90px;
+}
+.collection-m .content .group-list .add-group .input-group{
+    height: 34px;
+    line-height: 34px;
+    /* 新版色调 */
+    /* border: 1px solid #00AEEC; */ 
     border: 1px solid #00a1d6;
+    border-radius: 4px;
+    position: relative;
+}
+.collection-m .content .group-list .add-group .input-group > input{
+    border: none;
+    outline: none;
+    font-size: 12px;
+    width: 200px;
+    margin-left: 10px;
+    padding: 0;
+    box-shadow: none;
+    height: 100%;
+    background: transparent;
+    color: #18191C;
+}
+.collection-m .content .group-list .add-group .input-group .submit-collection-btn{
+    float: right;
+    height: 34px;
+    width: 90px;
+    background: #d9f1f9;
+    border: none;
+    /* 新版色调 */ 
+    /* border-left: 1px solid #00AEEC; */
+    border-left: 1px solid #00a1d6;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+    color: #00AEEC;
+    cursor: pointer;
 }
 
 .collection-m .bottom {
