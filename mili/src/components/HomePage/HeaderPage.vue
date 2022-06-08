@@ -6,7 +6,7 @@
           src="@/assets/logo/logo.png"
           width="150px"
           height="61px"
-          style="margin-right: 190px; margin-left: 100px"
+          style="margin-right: 16vw; margin-left: 100px"
         />
       </router-link>
       <div class="search" v-show="!headerInput">

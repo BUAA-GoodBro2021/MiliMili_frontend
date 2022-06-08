@@ -2,7 +2,7 @@
   <div>
     <div class="video_warp">
       <div class="cover_warp">
-        <router-link :to='"/videodetail/"+singleVideo.id' style="text-decoration: none">
+        <router-link :to='"/videodetail/"+singleVideo.id' style="text-decoration: none" tag="a" target="_blank">
           <img
             width="238px"
             height="134px"
@@ -27,7 +27,7 @@
         </router-link>
       </div>
       <div class="title">
-        <router-link :to='"/videodetail/"+singleVideo.id' style="text-decoration: none">
+        <router-link :to='"/videodetail/"+singleVideo.id' style="text-decoration: none" tag="a" target="_blank">
           {{ singleVideo.title | ellipsis }}
         </router-link>
       </div>
