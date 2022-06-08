@@ -18,6 +18,7 @@
             v-model="inputContext"
             @focus="focusInput"
             @on-blur="blurInput"
+            @keyup.enter.native="searchContext()"
           >
           </el-input>
           <!-- <div class="history_wrap" v-if="focusFlag && islogin">
@@ -55,7 +56,7 @@
             <div class="not-read" v-if="islogin == 1 && notRead == true"></div>
           </div>
         </el-menu-item>
-        <el-menu-item index="upload">
+        <el-menu-item index="/PCUpload">
           <div
             class="upload jump"
             :class="[headerMode ? 'text-transparent' : '']"
@@ -84,7 +85,6 @@
           <el-menu-item index="/history" v-if="islogin"
             >观看历史</el-menu-item
           >
-          <el-menu-item index="/upload" v-if="islogin">发布视频</el-menu-item>
           <el-menu-item index="/ChangePassword" v-if="islogin"
             >修改密码</el-menu-item
           >

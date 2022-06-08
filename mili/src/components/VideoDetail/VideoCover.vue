@@ -40,11 +40,9 @@
           plain
           >作者</el-tag
         >
-        <router-link :to="'/OthersHomePage/Main/'+singleVideo.user.id" style="text-decoration: none;">
-          <span class="name" style="float: left; color: grey;">{{
+          <span class="name" style="float: left; color: grey; cursor: pointer;" @click="toUser(singleVideo.user.id)">{{
             singleVideo.user.username
           }}</span>
-        </router-link>
       </div>
     </div>
   </div>
@@ -94,6 +92,13 @@ export default {
   methods: {
     handle: function (url) {
       return require(url);
+    },
+    toUser(id) {
+      if (localStorage.getItem("loginMessage") != null) {
+        var user_id = JSON.parse(localStorage.getItem("loginMessage")).user.id;
+        if (id == user_id) this.$router.push("/PersonalHomePage/Main");
+        return;
+      } else this.$router.push("/OthersHomePage/Main/" + id);
     },
   },
   filters: {
@@ -161,7 +166,7 @@ export default {
 .title {
   height: 44px;
   width: 238px;
-
+  margin-top: 10px;
   font-size: 15px;
   text-align: left;
   display: block;

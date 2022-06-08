@@ -34,14 +34,18 @@
       <div class="card_footer">
         <ul>
           <li>
-            <span class="foot_text"> 粉丝数量: {{ user.fan_num? user.fan_num : 1 }} </span>
+            <span class="foot_text">
+              粉丝数量: {{ user.fan_num ? user.fan_num : 1 }}
+            </span>
           </li>
           <li>
-            <span class="foot_text"> 视频数量: {{ user.video_num ? user.video_num : 1 }} </span>
+            <span class="foot_text">
+              视频数量: {{ user.video_num ? user.video_num : 1 }}
+            </span>
           </li>
           <li style="float: right">
             <i class="el-icon-date" /><span class="foot_text">
-              入会时间: {{ "2022-1-30" }}
+              入会时间: {{  user.created_time.split("T")[0] }}
             </span>
           </li>
         </ul>
@@ -78,7 +82,7 @@ export default {
   data() {
     return {
       deleteFlag: 0, //1的时候为删除
-      isfollow: false
+      isfollow: false,
     };
   },
   methods: {
@@ -87,7 +91,11 @@ export default {
       this.$emit("cancelfollow", this.user.id);
     },
     toUserHome(id) {
-      this.$router.push('/OthersHomePage/Main/'+id );
+      if (localStorage.getItem("loginMessage") != null) {
+        var user_id = JSON.parse(localStorage.getItem("loginMessage")).user.id;
+        if (id == user_id) this.$router.push("/PersonalHomePage/Main");
+        else this.$router.push("/OthersHomePage/Main/" + id);
+      } else this.$router.push("/OthersHomePage/Main/" + id);
     },
     follow(id) {
       if (localStorage.getItem("loginMessage") == null) {
@@ -106,35 +114,37 @@ export default {
           follow_id: id,
         }),
         headers: { "content-type": "application/x-www-form-urlencoded" },
-      }).then((res) => {
-        if (res.data.result == 1) {
-          this.$message({
-            type: "success",
-            message: res.data.message,
-          });
-          this.isfollow = true
-        }else{
-          this.$message({
-            type: "error",
-            message: res.data.message,
-          });
-        }
-      }).catch((err) => {
-        this.$message({
-            type: "error",
-            message: '寄了QAQ',
-          });
       })
+        .then((res) => {
+          if (res.data.result == 1) {
+            this.$message({
+              type: "success",
+              message: res.data.message,
+            });
+            this.isfollow = true;
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.message,
+            });
+          }
+        })
+        .catch((err) => {
+          this.$message({
+            type: "error",
+            message: "寄了QAQ",
+          });
+        });
     },
   },
-  mounted(){
-    this.isfollow = this.user.is_follow
+  mounted() {
+    this.isfollow = this.user.is_follow;
   },
-  watch:{
-    user(newValue,oldValue){
-      this.isfollow = newValue.is_follow
-    }
-  }
+  watch: {
+    user(newValue, oldValue) {
+      this.isfollow = newValue.is_follow;
+    },
+  },
 };
 </script>
 <style scoped>
@@ -173,7 +183,7 @@ export default {
   cursor: pointer;
   text-align: left;
   display: block;
-  color: #E6A23C;
+  color: #e6a23c;
 }
 .profile {
   font-size: 13px;
@@ -201,7 +211,7 @@ export default {
 .card_footer li {
   list-style: none;
   float: left;
-  margin-right: 20px;
+  margin-right: 10px;
   display: inline-block;
   height: 20px;
   vertical-align: middle;

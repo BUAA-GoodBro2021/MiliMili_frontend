@@ -10,6 +10,7 @@
           placeholder="请输入您要搜索的内容"
           class="input"
           v-model="searchContent"
+          @keyup.enter.native="searchData()"
         >
         </el-input>
         <i
@@ -281,6 +282,10 @@ export default {
         });
         return;
       }
+      let loadingInstance = this.$loading({
+        target: "#main-body",
+        fullscreen: true,
+      });
       localStorage.removeItem("searchContent");
       localStorage.setItem("searchContent", this.searchContent);
       var that = this;
@@ -288,6 +293,7 @@ export default {
         .all([that.getVideos(order), that.getUsers(order)])
         .then(
           this.$axios.spread(function (res1, res2) {
+            loadingInstance.close()
             console.log(res1);
             console.log(res2);
             if (res1.data.result != 1 || res2.data.result != 1) {
@@ -317,6 +323,7 @@ export default {
     },
   },
   created() {
+    
     this.searchContent = localStorage.getItem("searchContent");
     this.searchData("time");
   },

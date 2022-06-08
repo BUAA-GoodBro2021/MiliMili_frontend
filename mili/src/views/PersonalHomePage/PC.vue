@@ -37,6 +37,7 @@
             </template>
             <el-menu-item index="/PCmanageVideo">稿件管理</el-menu-item>
             <el-menu-item index="/PCmanageComplaint">投诉管理</el-menu-item>
+            <el-menu-item index="/PCupload">上传视频</el-menu-item>
           </el-submenu>
           <el-menu-item index="/PCMessage">
             <i class="el-icon-chat-dot-square"></i>

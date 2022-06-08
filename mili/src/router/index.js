@@ -112,6 +112,13 @@ const routes = [
             requireAuth: true
           },
           hidden: true
+        }, {
+          path: '/PCUpload',
+          name: 'PersonalContributionUpload',
+          component: () => import('../components/PC/UploadVideoPage.vue'),
+          meta: {
+            requireAuth: true
+          },
         }]
       },
       {
@@ -185,6 +192,7 @@ router.beforeEach((to, from, next) => {
   // 通过 Vuex 获取用户登录信息（在实战篇中会介绍到）
   const userInfo = localStorage.getItem('loginMessage')
 
+  
   // 若用户未登录且访问的页面需要登录，则跳转至登录页面
   if (userInfo == null && to.meta.requireAuth) {
     Message({

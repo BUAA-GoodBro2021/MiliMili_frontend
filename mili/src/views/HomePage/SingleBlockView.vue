@@ -2,8 +2,10 @@
   <div style="overflow-x: hidden; width: 100vw">
     <Header :headerMode="headMode" />
     <DynamicBanner />
-    <el-footer style="height: 20px; width: 100%"></el-footer>
-    <!-- <div class="change_wrap">
+    <div class="main_body">
+      <div style=" width: 1600px;">
+        <el-footer style="height: 20px; width: 100%"></el-footer>
+        <!-- <div class="change_wrap">
       <span class="change_title" v-show="changeType">视频</span>
       <span class="change_title" v-show="!changeType"> 榜单</span>
       <i
@@ -12,66 +14,68 @@
         @click="changeContent()"
       />
     </div> -->
-    <!-- <div class="video_wrap" v-show="changeType"> -->
-    <div v-if="videos.length == 0">
-      <span class="empty_title"> 空空如也QAQ</span>
-    </div>
-    <div v-if="videos.length != 0">
-      <!-- 加不加推荐的走马灯呢 -->
-      <div class="title_wrap">
-        <span class="title1">{{ id2block($route.params.blockid) }}</span>
+        <!-- <div class="video_wrap" v-show="changeType"> -->
+        <div v-if="videos.length == 0">
+          <span class="empty_title"> 空空如也QAQ</span>
+        </div>
+        <div v-if="videos.length != 0">
+          <!-- 加不加推荐的走马灯呢 -->
+          <div class="title_wrap">
+            <span class="title1">{{ id2block($route.params.blockid) }}</span>
 
-        <span class="title_sub">排行榜</span>
-        <div class="title_divide">
-          <el-divider />
-        </div>
-      </div>
-      <div v-if="sortedVideos1.length != 0" class="sorts">
-        <div class="sort1 sort">
-          <Sort
-            :sortedvideos="sortedVideos1"
-            :sortType="2"
-            sortTitle="播放排行榜"
-          />
-        </div>
-        <div class="sort2 sort">
-          <!-- todo -->
-          <Sort
-            :sortedvideos="sortedVideos1"
-            :sortType="3"
-            sortTitle="点赞排行榜"
-          />
-        </div>
-        <div class="sort2 sort">
-          <Sort
-            :sortedvideos="sortedVideos1"
-            :sortType="4"
-            sortTitle="收藏排行榜"
-          />
-        </div>
-      </div>
+            <span class="title_sub">排行榜</span>
+            <div class="title_divide">
+              <!-- <el-divider /> -->
+            </div>
+          </div>
+          <div v-if="sortedVideos1.length != 0" class="sorts">
+            <div class="sort1 sort">
+              <Sort
+                :sortedvideos="sortedVideos1"
+                :sortType="2"
+                sortTitle="播放排行榜"
+              />
+            </div>
+            <div class="sort2 sort">
+              <!-- todo -->
+              <Sort
+                :sortedvideos="sortedVideos1"
+                :sortType="3"
+                sortTitle="点赞排行榜"
+              />
+            </div>
+            <div class="sort3 sort">
+              <Sort
+                :sortedvideos="sortedVideos1"
+                :sortType="4"
+                sortTitle="收藏排行榜"
+              />
+            </div>
+          </div>
 
-      <div class="title_wrap">
-        <span class="title1">{{ id2block($route.params.blockid)}}</span>
-        <span class="title_sub">推荐</span>
-      </div>
-      <div>
-        <Recommend :videos="recommendVideos" />
-      </div>
-    </div>
-    <div class="title_wrap">
-      <span class="title1">{{ id2block($route.params.blockid) }}</span>
-      <span class="title_sub">视频合集</span>
-    </div>
-    <div class="videos">
-      <div v-for="(item, index) in videos" :key="index" class="video">
-        <Video :singleVideo="item" />
-      </div>
-    </div>
-    <!-- </div> -->
-    <!-- <div v-if="sortedVideos1.length == 0">
+          <div class="title_wrap">
+            <span class="title1">{{ id2block($route.params.blockid) }}</span>
+            <span class="title_sub">推荐</span>
+          </div>
+          <div>
+            <Recommend :videos="recommendVideos" />
+          </div>
+        </div>
+        <div class="title_wrap">
+          <span class="title1">{{ id2block($route.params.blockid) }}</span>
+          <span class="title_sub">视频合集</span>
+        </div>
+        <div class="videos">
+          <div v-for="(item, index) in videos" :key="index" class="video">
+            <Video :singleVideo="item" />
+          </div>
+        </div>
+        <!-- </div> -->
+        <!-- <div v-if="sortedVideos1.length == 0">
       <span class="empty_title"> 空空如也QAQ</span>
     </div> -->
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -587,56 +591,56 @@ export default {
       sortedVideos1: [],
       sortedVideos2: [],
       sortedVideos3: [],
-       zone_list: [
+      zone_list: [
         {
-            "id": 1,
-            "zone": "鬼畜"
+          id: 1,
+          zone: "鬼畜",
         },
         {
-            "id": 2,
-            "zone": "科技"
+          id: 2,
+          zone: "科技",
         },
         {
-            "id": 3,
-            "zone": "户外"
+          id: 3,
+          zone: "户外",
         },
         {
-            "id": 4,
-            "zone": "动漫"
+          id: 4,
+          zone: "动漫",
         },
         {
-            "id": 5,
-            "zone": "影视"
+          id: 5,
+          zone: "影视",
         },
         {
-            "id": 6,
-            "zone": "音乐"
+          id: 6,
+          zone: "音乐",
         },
         {
-            "id": 7,
-            "zone": "汽车"
+          id: 7,
+          zone: "汽车",
         },
         {
-            "id": 8,
-            "zone": "教育"
+          id: 8,
+          zone: "教育",
         },
         {
-            "id": 9,
-            "zone": "游戏"
+          id: 9,
+          zone: "游戏",
         },
         {
-            "id": 10,
-            "zone": "时事"
+          id: 10,
+          zone: "时事",
         },
         {
-            "id": 11,
-            "zone": "生活"
+          id: 11,
+          zone: "生活",
         },
         {
-            "id": 12,
-            "zone": "军事"
-        }
-    ],
+          id: 12,
+          zone: "军事",
+        },
+      ],
     };
   },
   filters: {
@@ -668,9 +672,10 @@ export default {
       this.changeType = !this.changeType;
     },
   },
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll);
-    console.log(this.$route.params.blockid);
+  created() {
+    this.$showLoading.show(document.body);
+
+    //this.$showLoading.hide();
     var id = this.$route.params.blockid;
     if (localStorage.getItem("loginMessage") != null)
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
@@ -683,14 +688,15 @@ export default {
       }),
     })
       .then((res) => {
+        this.$showLoading.hide();
         console.log("分区");
         console.log(res);
         if (res.data.result == 1) {
-          this.sortedVideos1 = res.data.view_rank_list
-          this.sortedVideos2 = res.data.like_rank_list
-          this.sortedVideos3 = res.data.collect_rank_list
-          this.recommendVideos = res.data.random_list
-          this.videos = res.data.all_list
+          this.sortedVideos1 = res.data.view_rank_list;
+          this.sortedVideos2 = res.data.like_rank_list;
+          this.sortedVideos3 = res.data.collect_rank_list;
+          this.recommendVideos = res.data.random_list;
+          this.videos = res.data.all_list;
           //this.users = res.data.follow_list;
         } else {
           this.$message({
@@ -706,9 +712,18 @@ export default {
         });
       });
   },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+    console.log(this.$route.params.blockid);
+  },
 };
 </script>
 <style scoped>
+.main_body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 .title_wrap {
   height: 50px;
   line-height: 30px;
@@ -782,19 +797,22 @@ export default {
   width: 95%;
   justify-content: space-around;
   margin: 20px 2.5% 20px 2.5%;
-  border-right: solid 2px #ffb444a9;
+  position: relative;
+  /* border-right: solid 2px #ffb444a9;
   border-left: solid 2px #ffb444a9;
-  border-bottom: solid 2px #ffb444a9;
+  border-bottom: solid 2px #ffb444a9; */
 }
 .sort {
   width: 23%;
   border-radius: 10px;
-  border: solid 0.5px #ffb444a9;
+  border: solid 0.5px #363432a9;
   padding-top: 10px;
-  box-shadow: 0 0.5px 0 0.5px #ffb444a9;
+  box-shadow: 0 0.5px 0 0.5px #212121a9;
   /* background: #fdf6ec; */
   height: auto;
-  padding: 15px 0 15px 10px;
+  /* padding: 15px 0 15px 10px; */
   margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
 }
 </style>

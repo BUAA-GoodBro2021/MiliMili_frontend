@@ -20,7 +20,6 @@
                
                list-type="picture-card"
                :on-change="handlePictureCardPreview"     
-               :on-remove="handleRemove"  
                
                :http-request="submitAvatarHttp"
                accept=".jpg"
@@ -223,7 +222,7 @@ export default {
       data.append("JWT", jwt);
       data.append("avatar", val.file);
       console.log("in!");
-      console.log(val.file);
+
       this.$axios({
         method: "post",
         url: "/user/upload-avatar",
@@ -238,7 +237,6 @@ export default {
               message: "上传成功！",
             });
           }
-          console.log(res);
           console.log("avatar!");
         })
         .catch((err) => {

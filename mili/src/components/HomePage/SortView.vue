@@ -200,7 +200,7 @@ export default {
       var sum = 0,
         flag = 0;
       for (let i in str) {
-        if (sum > 27) {
+        if (sum > 20) {
           flag = i;
           break;
         }
@@ -209,7 +209,7 @@ export default {
           sum += 0.5;
         } else sum++;
       }
-      if (sum > 27) {
+      if (sum > 20) {
         return str.slice(0, flag - 1) + "...";
       }
       return str;
@@ -227,7 +227,12 @@ export default {
 </script>
 <style scoped>
 .hot-head-details {
+  width: 130px;
   margin-left: 20px;
+}
+
+.hot-head-txt{
+  width: 125px;
 }
 
 .hot-head-txt-title {
@@ -273,7 +278,7 @@ export default {
 }
 
 #hot-title {
-  width: 654px;
+  
   height: 40px;
   line-height: 24px;
   font-size: 14px;
@@ -290,7 +295,8 @@ export default {
 .center_title {
   font-size: 20px;
   text-align: center;
-  margin-left: 100px;
+  width: 100%;
+  /* margin-left: 100px; */
 }
 #more {
   float: right;
@@ -300,6 +306,7 @@ export default {
   margin-left: 14px;
 }
 #hot {
+  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -314,6 +321,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
+  margin-right: 0;
 }
 
 #hot li:nth-child(odd) {

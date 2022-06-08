@@ -44,11 +44,27 @@
               >
             </li>
             <li>
-              <el-tag type="danger" class="tag" >{{title}}</el-tag>
+              <el-popover
+                placement="top-start"
+                title="详细理由"
+                width="400"
+                trigger="hover"
+                :content="description"
+              >
+                <el-tag
+                  slot="reference"
+                  type="danger"
+                  class="tag"
+                  style="cursor: pointer"
+                  @click="showDialog == true"
+                  >{{ title }}</el-tag
+                >
+              </el-popover>
             </li>
-            <li>
+            <!-- <el-dialog v-model="showDialog">{{description}}</el-dialog> -->
+            <!-- <li>
               <el-tag type="danger" class="tag" >{{description}}</el-tag>
-            </li>
+            </li> -->
             <li style="float: right; margin-right: 10px">
               <i class="el-icon-date text_icon" /><span class="text_footer">
                 上传时间: {{ video.created_time.split("T")[0] }}
@@ -109,18 +125,23 @@ export default {
         };
       },
     },
-    description:{
+    description: {
       type: String,
-      default(){
-        return "涉及代孕"
-      }
+      default() {
+        return "涉及代孕";
+      },
     },
-    title:{
+    title: {
       type: String,
-      default(){
-        return "涉及代孕"
-      }
+      default() {
+        return "涉及代孕";
+      },
     },
+  },
+  data() {
+    return {
+      showDialog: false,
+    };
   },
 };
 </script>
@@ -132,7 +153,7 @@ export default {
   border: solid 2px #d0dcdc9a;
   border-radius: 10px;
   padding: 10px 0 10px 0;
-  box-shadow: 0 0.5px 0 0.5px#e7f6f69a
+  box-shadow: 0 0.5px 0 0.5px#e7f6f69a;
 }
 .card_img {
   width: 26%;
@@ -215,7 +236,7 @@ export default {
   font-size: 13px;
   color: grey;
 }
-.tag{
+.tag {
   height: 15px;
   line-height: 12px;
   font-size: 12px;

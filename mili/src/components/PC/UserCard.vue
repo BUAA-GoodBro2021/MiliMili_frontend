@@ -117,7 +117,7 @@ export default {
   data() {
     return {
       deleteFlag: 0, //1的时候为删除
-      isfollow: false
+      isfollow: false,
     };
   },
   methods: {
@@ -126,7 +126,12 @@ export default {
       this.$emit("cancelfollow", this.user.id);
     },
     toUserHome(id) {
-      this.$router.push('/OthersHomePage/Main/'+id );
+      console.log("id:" + id);
+      if (localStorage.getItem("loginMessage") != null) {
+        var user_id = JSON.parse(localStorage.getItem("loginMessage")).user.id;
+        if (id == user_id) this.$router.push("/PersonalHomePage/Main");
+        else this.$router.push("/OthersHomePage/Main/" + id);
+      } else this.$router.push("/OthersHomePage/Main/" + id);
     },
     follow(id) {
       if (localStorage.getItem("loginMessage") == null) {
@@ -145,35 +150,37 @@ export default {
           follow_id: id,
         }),
         headers: { "content-type": "application/x-www-form-urlencoded" },
-      }).then((res) => {
-        if (res.data.result == 1) {
-          this.$message({
-            type: "success",
-            message: res.data.message,
-          });
-          this.isfollow = true
-        }else{
-          this.$message({
-            type: "error",
-            message: res.data.message,
-          });
-        }
-      }).catch((err) => {
-        this.$message({
-            type: "error",
-            message: '寄了QAQ',
-          });
       })
+        .then((res) => {
+          if (res.data.result == 1) {
+            this.$message({
+              type: "success",
+              message: res.data.message,
+            });
+            this.isfollow = true;
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.message,
+            });
+          }
+        })
+        .catch((err) => {
+          this.$message({
+            type: "error",
+            message: "寄了QAQ",
+          });
+        });
     },
   },
-  mounted(){
-    this.isfollow = this.user.is_follow
+  mounted() {
+    this.isfollow = this.user.is_follow;
   },
-  watch:{
-    user(newValue,oldValue){
-      this.isfollow = newValue.is_follow
-    }
-  }
+  watch: {
+    user(newValue, oldValue) {
+      this.isfollow = newValue.is_follow;
+    },
+  },
 };
 </script>
 <style scoped>

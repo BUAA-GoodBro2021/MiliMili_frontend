@@ -1,7 +1,7 @@
 <template>
   <div style="overflow: hidden">
     <div class="whole_wrap">
-      <Header :headerMode="false"/>
+      <Header :headerMode="false" />
       <!-- <Header /> -->
       <!-- <img class="background" src="@/assets/PCM/BG7.jpg" /> -->
       <div class="container">
@@ -173,9 +173,14 @@ export default {
                 //跳转路由的判断
                 var history_pth = localStorage.getItem("preRoute");
                 setTimeout(() => {
-                  if (history_pth == null || history_pth === "/register")
+                  if (
+                    history_pth == null ||
+                    history_pth === "/register" ||
+                    history_pth === "/login"
+                  ) {
+                    console.log(history_pth);
                     this.$router.push("/homepage");
-                  else this.$router.push({ path: history_pth });
+                  } else this.$router.push({ path: history_pth });
                 }, 1000);
 
                 localStorage.setItem("loginMessage", JSON.stringify(res.data));
