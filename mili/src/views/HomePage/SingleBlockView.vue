@@ -1,5 +1,7 @@
 <template>
-  <div style="overflow-x: hidden; width: 100vw">
+  <div style="overflow-x: hidden; width: 100vw;">
+  <div class="main_body">
+    <div>
     <Header :headerMode="headMode" />
     <DynamicBanner />
     <el-footer style="height: 20px; width: 100%"></el-footer>
@@ -23,7 +25,7 @@
 
         <span class="title_sub">排行榜</span>
         <div class="title_divide">
-          <el-divider />
+          <!-- <el-divider /> -->
         </div>
       </div>
       <div v-if="sortedVideos1.length != 0" class="sorts">
@@ -42,7 +44,7 @@
             sortTitle="点赞排行榜"
           />
         </div>
-        <div class="sort2 sort">
+        <div class="sort3 sort">
           <Sort
             :sortedvideos="sortedVideos1"
             :sortType="4"
@@ -72,6 +74,8 @@
     <!-- <div v-if="sortedVideos1.length == 0">
       <span class="empty_title"> 空空如也QAQ</span>
     </div> -->
+  </div>
+  </div>
   </div>
 </template>
 <script>
@@ -668,9 +672,10 @@ export default {
       this.changeType = !this.changeType;
     },
   },
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll);
-    console.log(this.$route.params.blockid);
+  created(){
+     this.$showLoading.show(document.body);
+
+    //this.$showLoading.hide();
     var id = this.$route.params.blockid;
     if (localStorage.getItem("loginMessage") != null)
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
@@ -683,6 +688,7 @@ export default {
       }),
     })
       .then((res) => {
+        this.$showLoading.hide();
         console.log("分区");
         console.log(res);
         if (res.data.result == 1) {
@@ -706,9 +712,18 @@ export default {
         });
       });
   },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+    console.log(this.$route.params.blockid)
+  },
 };
 </script>
 <style scoped>
+.main_body{
+  width: 1600px;
+  display: flex;
+  justify-content: center;
+}
 .title_wrap {
   height: 50px;
   line-height: 30px;
@@ -782,9 +797,10 @@ export default {
   width: 95%;
   justify-content: space-around;
   margin: 20px 2.5% 20px 2.5%;
-  border-right: solid 2px #ffb444a9;
+  position: relative;
+  /* border-right: solid 2px #ffb444a9;
   border-left: solid 2px #ffb444a9;
-  border-bottom: solid 2px #ffb444a9;
+  border-bottom: solid 2px #ffb444a9; */
 }
 .sort {
   width: 23%;
@@ -794,7 +810,9 @@ export default {
   box-shadow: 0 0.5px 0 0.5px #ffb444a9;
   /* background: #fdf6ec; */
   height: auto;
-  padding: 15px 0 15px 10px;
+  /* padding: 15px 0 15px 10px; */
   margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
 }
 </style>

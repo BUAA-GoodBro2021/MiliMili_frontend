@@ -300,6 +300,7 @@ export default {
   margin-left: 14px;
 }
 #hot {
+  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -314,6 +315,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
+  margin-right: 0;
 }
 
 #hot li:nth-child(odd) {

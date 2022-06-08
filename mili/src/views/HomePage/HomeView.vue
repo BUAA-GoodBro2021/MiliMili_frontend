@@ -2483,10 +2483,8 @@ export default {
       );
       console.log(this.isAdmin);
     }
-    let loadingInstance = this.$loading({
-        target: "#main-body",
-        fullscreen: true,
-      });
+    this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     this.$axios({
       method: "post",
       url: "/index/",
@@ -2495,7 +2493,8 @@ export default {
       }),
       headers: { "content-type": "application/x-www-form-urlencoded" },
     }).then((res) => {
-      loadingInstance.close();
+      //loadingInstance.close();
+      this.$showLoading.hide();
       console.log("主页视频");
       console.log(res);
       this.recommend_list = res.data.recommend_list;
