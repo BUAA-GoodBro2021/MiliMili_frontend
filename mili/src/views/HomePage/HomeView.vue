@@ -29,20 +29,20 @@
               </router-link>
             </div>
             <div class="card" style="background: #307ad5b1">
-              <router-link to="/PersonalHomePage" style="text-decoration: none">
+              <router-link to="/PersonalInformation" style="text-decoration: none">
                 <i class="el-icon-user iconImg" /><span class="text">
-                  个人中心</span
+                  个人信息</span
                 >
               </router-link>
             </div>
             <div class="card" style="background: #d94da6b1">
-              <router-link to="/PCMessage" style="text-decoration: none">
-                <i class="el-icon-chat-line-round iconImg" /><span class="text">
-                  私信管理</span
+              <router-link to="/PCmanageVideo" style="text-decoration: none">
+                <i class="el-icon-document iconImg" /><span class="text">
+                  稿件管理</span
                 >
               </router-link>
             </div>
-            <div
+            <!-- <div
               class="card"
               style="background: rgb(230, 180, 80)"
               v-if="!isAdmin"
@@ -57,15 +57,14 @@
               <span class="text_ip">
                 {{ ip.lat + "°N" }}
               </span>
-            </div>
+            </div> -->
             <div
               class="card"
               style="background: rgb(230, 180, 80)"
-              v-if="isAdmin"
             >
-              <router-link to="/admin" style="text-decoration: none">
-                <i class="el-icon-message-solid iconImg" /><span class="text">
-                  审核管理</span
+              <router-link to="/history" style="text-decoration: none">
+                <i class="el-icon-folder-opened iconImg" /><span class="text">
+                  观看历史</span
                 >
               </router-link>
             </div>

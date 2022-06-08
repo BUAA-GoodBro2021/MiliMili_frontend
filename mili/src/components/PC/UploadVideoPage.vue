@@ -53,7 +53,7 @@
                 ref="uploadImg"
                 accept=".jpg"
               >
-                <i slot="default" class="el-icon-plus" ></i>
+                <i slot="default" class="el-icon-plus"></i>
                 <div slot="file" slot-scope="{ file }">
                   <img
                     class="el-upload-list__item-thumbnail"
@@ -160,7 +160,7 @@
           style="margin: 20px 20px 20px 20px; float: right"
           >上传</el-button
         >
-        <div
+        <!-- <div
           class="progress"
           v-if="showProgress"
           style="margin: 20px 40px 20px 40px"
@@ -171,7 +171,17 @@
             :stroke-width="22"
             status="success"
           />
-        </div>
+        </div> -->
+        <el-dialog :visible.sync="showProgress"  title="上传中，请等候... ..." :show-close="false"  :close-on-click-modal = "false">
+          <div style="margin:30px 0 30px 0;">
+            <el-progress
+              :percentage="myprogress"
+              :text-inside="true"
+              :stroke-width="22"
+              status="success"
+            />
+          </div>
+        </el-dialog>
       </div>
     </div>
   </div>
@@ -304,7 +314,7 @@ export default {
     },
     //绑定文件列表
     loadJsonFromFile(file, fileList) {
-      this.uploadFiles = fileList
+      this.uploadFiles = fileList;
     },
     //视频上传相关
     submitUpload() {
@@ -331,7 +341,6 @@ export default {
         return;
       }
 
-      
       let formData = new FormData();
       let loginMessage = localStorage.getItem("loginMessage");
       let jwt = null;
