@@ -10,6 +10,7 @@
           placeholder="请输入您要搜索的内容"
           class="input"
           v-model="searchContent"
+          @keyup.enter.native="searchData()"
         >
         </el-input>
         <i

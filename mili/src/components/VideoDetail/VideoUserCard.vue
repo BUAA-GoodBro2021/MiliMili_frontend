@@ -45,7 +45,7 @@
           </li>
           <li style="float: right">
             <i class="el-icon-date" /><span class="foot_text">
-              入会时间: {{ "2022-1-30" }}
+              入会时间: {{  user.created_time.split("T")[0] }}
             </span>
           </li>
         </ul>
@@ -211,7 +211,7 @@ export default {
 .card_footer li {
   list-style: none;
   float: left;
-  margin-right: 20px;
+  margin-right: 10px;
   display: inline-block;
   height: 20px;
   vertical-align: middle;
