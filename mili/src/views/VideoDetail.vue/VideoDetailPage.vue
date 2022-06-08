@@ -19,7 +19,7 @@
         <div class="video-bottom-wrap">
           <div class="player-video-sendbar">
             <div class="player-video-info">
-              <div class="people-number">136</div>
+              <div class="people-number">---</div>
               <div class="people-text">人正在看&emsp;</div>
               <div class="info-danmaku">
                 <span class="info-danmaku-dot">已装填</span>
