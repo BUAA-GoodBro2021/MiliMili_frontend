@@ -48,8 +48,8 @@ export default {
 .outer::after{
     /* 加载实例全局设定 */
     /* --light-color: rgba(255, 231, 231, 0.6); */
-    /* --light-color: rgba(255, 230, 212, 0.9); */
-    --light-color: rgba(255, 230, 212, 1);
+    --light-color: rgba(255, 230, 212, 0.9);
+    /* --light-color: rgba(255, 230, 212, 1); */
     /* --dark-color: rgb(255, 194, 194); */
     /* --dark-color: rgb(240, 123, 50); */
     --dark-color: #ff9900;
