@@ -200,7 +200,7 @@ export default {
       var sum = 0,
         flag = 0;
       for (let i in str) {
-        if (sum > 27) {
+        if (sum > 20) {
           flag = i;
           break;
         }
@@ -209,7 +209,7 @@ export default {
           sum += 0.5;
         } else sum++;
       }
-      if (sum > 27) {
+      if (sum > 20) {
         return str.slice(0, flag - 1) + "...";
       }
       return str;
@@ -227,7 +227,12 @@ export default {
 </script>
 <style scoped>
 .hot-head-details {
+  width: 130px;
   margin-left: 20px;
+}
+
+.hot-head-txt{
+  width: 125px;
 }
 
 .hot-head-txt-title {
