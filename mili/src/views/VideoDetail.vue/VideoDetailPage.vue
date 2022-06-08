@@ -19,7 +19,7 @@
         <div class="video-bottom-wrap">
           <div class="player-video-sendbar">
             <div class="player-video-info">
-              <div class="people-number">136</div>
+              <div class="people-number">---</div>
               <div class="people-text">人正在看&emsp;</div>
               <div class="info-danmaku">
                 <span class="info-danmaku-dot">已装填</span>
@@ -793,7 +793,8 @@ export default {
        *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
        */
       collectionLock: false,
-      collectionNum: 0,
+      // 当前视频的收藏个数（按用户计算）整合进入videoInfo了
+      // collectionNum: 0,
       collectionList:[],
       // #endregion
 
@@ -1302,7 +1303,7 @@ export default {
         });
       },
       /**
-       * 更新用户的收藏夹和当前视频的交互关系
+       * 更新用户的收藏夹和当前视频的交互关系 UCR
        */
       async updateCollectionRelations(){
         // 先关掉窗口
@@ -1359,6 +1360,11 @@ export default {
             case 1:
               this.$message.success("更新收藏详情成功！");
               this.boolSymbol.isCollectted = res.data.is_collect;
+              /*  VERY_IMPORTANT 
+                更新当前视频的收藏数目，
+                这里不确定是否一定要增加，所以和点赞/取消点赞、增加评论不同的是：这里不可以直接操作前端数据 */
+              // this.collectionNum = res.data.collect_num;
+              this.videoInfo.collect_num = res.data.collect_num;
             break;
             
             default:
@@ -1531,6 +1537,9 @@ export default {
       /**
        * 获取视频信息 GVD
        * 点赞数目 + 收藏数目 + 评论列表
+       * 点赞数目的获取是在 this.videoInfo = res.data.video_info;
+       * 收藏数目的获取是在 this.videoInfo = res.data.video_info;
+       * 评论数目的获取是在 this.totalCommentsNum = res.data.comment_num;
        */
       async getVideoDetail() {
         let formData = new FormData();
@@ -1549,7 +1558,7 @@ export default {
         //   fullscreen: true,
         // });
         // 自定义加载实例
-        this.$showLoading.show(document.body);
+        this.$showLoading.show(document.body);// 层级比较分明，然后更接近我们JS函数的习惯
 
         this.$axios({
           method: "post",
@@ -1571,6 +1580,7 @@ export default {
               /* 获取视频简介 */
               this.isExcited = this.getSplitBool(res.data.video_info.description);
               // this.isExcited = this.getSplitBool(this.TEST_VIDEO_INFO);
+              /* 获取视频tag */
               this.videoTagList = this.videoInfo.tag_list;
               //获取推荐视频 hb
               this.recommendVidoes = res.data.recommended_video;
@@ -1711,6 +1721,7 @@ export default {
 			},
       /**
        * 发送一/二级评论
+       * NEW 实现页面 评论个数 及时响应
        * @param {String} type 
        */
       async postComments(type) {
@@ -1749,6 +1760,8 @@ export default {
                 this.commentList = res.data.comment;
                 /* 临时存放二级评论的文本要清空 */
                 this.replyInfo.comment = "";
+                /* 更新评论个数 */
+                this.totalCommentsNum++;
                 break;
               }
               default:
@@ -1777,6 +1790,8 @@ export default {
                 this.commentList = res.data.comment;
                 /* 临时存放一级评论的文本要清空 */
                 this.comment = "";
+                /* 更新评论个数 */
+                this.totalCommentsNum++;
                 break;
               }
               default:
@@ -1791,6 +1806,7 @@ export default {
 			},
       /**
        * 删除一/二级评论
+       * NEW 实现页面 评论个数 及时响应
        * @param {int} commentId 
        */
       async deleteComments(commentId) {
@@ -1821,6 +1837,11 @@ export default {
               this.$message.success("删除评论成功！");
               /* 更新页面评论 */
               this.commentList = res.data.comment;
+              /*  VERY_IMPORTANT 
+                更新当前视频的评论数目，
+                这里不确定要删除多少条，所以和点赞/取消点赞、增加评论不同的是：这里不可以直接操作前端数据
+                必须接受后端传递的数据 */
+              this.totalCommentsNum = res.data.comment_num;
               break;
             }
             default:
