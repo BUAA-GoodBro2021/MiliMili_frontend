@@ -18,7 +18,9 @@
               </div>
             </li>
             <li style="float: right; margin-right: 10px">
-              <el-tag style="cursor: pointer; width: 70px;margin-right: 10px;" @click="ReCheck()"
+              <el-tag
+                style="cursor: pointer; width: 70px; margin-right: 10px"
+                @click="ReCheck()"
                 ><i class="el-icon-zoom-in" /> 重审</el-tag
               >
               <el-tag
@@ -49,8 +51,16 @@
                 {{ video.collect_num }}</span
               >
             </li>
-            <li v-if="type==2">
-              <el-tag type="danger" class="tag" >{{title}}</el-tag>
+            <li v-if="type == 2">
+              <el-popover
+                placement="top-start"
+                title="详细理由"
+                width="400"
+                trigger="hover"
+                :content="description"
+              >
+                <el-tag slot="reference" type="danger" class="tag" style="cursor: pointer;">{{ title }}</el-tag>
+              </el-popover>
             </li>
             <!-- <li v-if="type==2">
               <el-tag type="danger" class="tag" >{{description}}</el-tag>
@@ -136,24 +146,26 @@ export default {
     },
   },
   methods: {
-
     Delete(val) {
       ///val是0 表示投诉不通过 视频正常 否则是通过 转到审核列表
       console.log("Delete");
-      var data = val == 0? {
-        success: 0,
-        id: this.video.id
-      }:{
-         success: 1,
-        id: this.video.id
-      }
+      var data =
+        val == 0
+          ? {
+              success: 0,
+              id: this.video.id,
+            }
+          : {
+              success: 1,
+              id: this.video.id,
+            };
       this.$emit("Delete", this.video.id);
     },
     ReCheck() {
-      //投诉视频的重申 就是success为1 投诉通过 
-      if(this.type == 2){
-        this.Delete(1)
-        return
+      //投诉视频的重申 就是success为1 投诉通过
+      if (this.type == 2) {
+        this.Delete(1);
+        return;
       }
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({

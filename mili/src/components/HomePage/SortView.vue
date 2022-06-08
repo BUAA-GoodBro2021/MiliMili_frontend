@@ -273,7 +273,7 @@ export default {
 }
 
 #hot-title {
-  width: 654px;
+  
   height: 40px;
   line-height: 24px;
   font-size: 14px;
@@ -290,7 +290,8 @@ export default {
 .center_title {
   font-size: 20px;
   text-align: center;
-  margin-left: 100px;
+  width: 100%;
+  /* margin-left: 100px; */
 }
 #more {
   float: right;

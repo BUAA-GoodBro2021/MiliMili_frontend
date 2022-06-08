@@ -147,7 +147,7 @@
               <el-input
                 v-model="videoInfoDescription"
                 type="textarea"
-                maxlength="30"
+                maxlength="200"
                 style="width: 90%"
                 show-word-limit
               ></el-input>

@@ -166,7 +166,7 @@ export default {
 .title {
   height: 44px;
   width: 238px;
-
+  margin-top: 10px;
   font-size: 15px;
   text-align: left;
   display: block;
