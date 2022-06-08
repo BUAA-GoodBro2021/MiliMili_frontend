@@ -8,7 +8,7 @@
         <h1 class="title">{{ videoInfo.video_url ? videoInfo.title : "" }}</h1>
         <!-- <div class="play-info">68.7万播放 · 1641弹幕 2021-09-02 13:54:26</div> -->
         <div class="play-info">
-          {{ graceNumber(videoInfo.view_num) }}播放 · 1641弹幕 {{ videoCreatedDate }} {{ videoCreatedTime }}
+          {{ graceNumber(videoInfo.view_num) }}播放 · {{ this.danmuId }}弹幕 {{ videoCreatedDate }} {{ videoCreatedTime }}
         </div>
         <!-- 嵌入的视频播放器，id是vs -->
         <div id="vs_tag">
@@ -108,7 +108,7 @@
                                 <span class="selection-name">顶部</span>
                               </div>
                               <!-- 普通选项样式 -->
-                              <!-- <div 
+                              <div 
                                 class="selection-span" 
                                 :class="danmuStyleSymbol.chooseBottom === true? 'active': ''"
                                 @click="chooseDanmuPosition(3)">
@@ -121,7 +121,7 @@
                                   </span>
                                 </span>
                                 <span class="selection-name">底部</span>
-                              </div>                               -->
+                              </div>                              
                               
                             </div>
                           </div>
@@ -162,10 +162,13 @@
                       placeholder="发个弹幕见证当下" 
                       maxlength="100"
                       v-model="danmuText"
-                    >
+                      @keydown.enter="sendDanmu"
+                    ><!-- 弹幕发送(Enter键) -->
                 </div>
-                <!-- 弹幕发送按钮 -->
-                <button class="danmaku-send-btn" @click="sendDanmu">发送</button>
+                <!-- 弹幕发送按钮(点击“发送”) -->
+                <button 
+                  class="danmaku-send-btn" 
+                  @click="sendDanmu">发送</button>
               </div>
             </div>
           </div>
@@ -177,8 +180,6 @@
 
             <div class="icon-item">
               <!-- 获取是否点赞，并在点击时切换状态和更新数量 -->
-              <!-- <img v-if="boolSymbol.isLiked === 0" class="img active" @click="postLike"
-                src="../../src/assets/image/video/icon_01.png" alt=""> -->
               <img 
                 v-if="boolSymbol.isLiked === 0"
                 class="img active"
@@ -198,13 +199,6 @@
 
             <div class="icon-item">
               <!-- 获取是否收藏，并在点击时切换状态和更新数量 -->
-              <!-- <img class="img" v-if="!collections.like" @click="postCollections"
-                src="../../assets/video/icon_03.png" alt="">
-              <img class="img" v-else @click="postCollections"
-                src="../../assets/video/icon_03_active.png" alt="">
-              {{ collections.count }} -->
-
-              <!-- <img class="img" @click="showTheCollectionWindow = true" src="../../assets/video/icon_03.png" alt=""/> -->
               <img
                 v-if="boolSymbol.isCollectted === 0"
                 class="img"
@@ -219,12 +213,45 @@
                 src="../../assets/video/icon_03_active.png"
                 alt=""
               />
+              {{ videoInfo.collect_num }}
             </div>
           </div>
 
           <div class="tool-bar-right">
             <div class="manuscript-report" @click="openComplaintWindow">
               稿件投诉
+            </div>
+          </div>
+        </div>
+
+        <!-- 视频简介和视频tag -->
+        <div class="left-container-below-player">
+          <!-- 视频简介 -->
+          <div class="v-info">
+            <!-- <div class="v-info-content" :style="isSpread === false? 'height: 84px;':'height: auto;' "> -->
+            <div 
+              class="v-info-content" 
+              :style="isExcited === true && isSpread === false? 'height: 84px;':'height: auto;' ">
+
+              <span class="info-text">
+                {{this.videoInfo.description}}
+                <!-- {{this.TEST_VIDEO_INFO}} -->
+              </span>
+              
+            </div>
+            <div class="spread-btn" @click="isSpread = !isSpread" v-if="isExcited === true">
+              <span v-if="isSpread === true">收起</span>
+              <span v-else>展开更多</span>
+            </div>
+          </div>
+          <!-- 这边其实是在投稿时做了限制，其实对于长度较长的tag也能实现比较好的存放 -->
+          <div class="v-tag" >
+            <div class="v-tag-wrap">
+              <ul class="tag-area clearfix">
+                <li v-for="(item, index) in videoTagList" :key="index">
+                  <div class="single-tag">{{ item }}</div>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -380,17 +407,9 @@
         <div class="user_wrap" style="margin-bottom: 10px; width: 100%">
           <UserCard :user="videoInfo.user" :listType="1"></UserCard>
         </div>
-        <!-- 弹幕 -->
-        <div class="danmu-list-wrap">
-          <div class="danmu-list-header">弹幕列表</div>
-          <table class="danmu-table" border="0" cellpadding="0" cellspacing="0">
-            <tr>
-              <th class="time">时间</th>
-              <th class="content">弹幕内容</th>
-              <th class="date">发送时间</th>
-            </tr>
-          </table>
-          <!-- 
+
+        <!-- 弹幕列表 -->
+                  <!-- 
           color: true
           created_time: "2022-06-06T13:14:20.957Z"
           duration: 15000
@@ -400,22 +419,56 @@
           start: "36569"
           style: Object
           txt: "这是15号视频的第一条弹幕，标准大小、白色、滚动" -->
-          <div class="danmu-list-content">
-            <table
-              class="danmu-table"
-              border="0"
-              cellpadding="0"
-              cellspacing="0"
-            >
-              <tr v-for="(item,index) in danmuList" :key="index">
-                <!-- <td class="time">{{ item.start }}</td> -->
-                <td class="time">{{ transMSToS(item.start) }}</td>
-                <td class="content">{{ item.txt }}</td>
-                <td class="date">{{item.created_time.split(/[.]|T/)[0] + " " + item.created_time.split(/[.]|T/)[1]}}</td>
-              </tr>
-            </table>
+        <div class="danmaku-box">
+          <div class="danmaku-list-wrap">
+            <div class="player-auxiliary">
+              <div class="player-auxiliary-area">
+                <div class="player-auxiliary-collapse">
+                  <div class="ui-collapse-wrap">
+                    <div class="ui-collapse-header" @click="isDanmuListShow = !isDanmuListShow">
+                      <!-- 这里删去了B站原有的箭头图标区域 -->
+                      <div class="player-auxiliary-filter">
+                        <span class="filter-title">弹幕列表</span>
+                      </div>
+                    </div>
+
+                    <div class="ui-collapse-body" :style="isDanmuListShow === false? 'height: 0;':'' ">
+                      <div class="player-auxiliary-wraplist">
+                        <div class="player-auxiliary-danmaku" style="display: block;">
+                          <div class="player-auxiliary-danmaku-management clearfix"></div>
+                          <!-- 弹幕列表表头 -->
+                          <div class="player-auxiliary-danmaku-function">
+                            <div class="btn-time">时间</div>
+                            <div class="btn-danmu">弹幕内容</div>
+                            <div class="btn-date">发送时间</div>
+                          </div>
+                          <!-- 存放弹幕的主体位置 -->
+                          <div class="player-auxiliary-danmaku-wrap" style="height: 307px;">
+                            <div class="danmu-container">
+                              <ul class="player-auxiliary-danmaku-list">
+                                <li class="danmu-info-row" v-for="(item, index) in danmuList" :key="index">
+                                  <span class="danmu-info-time">{{ transMSToS(item.start) }}</span>
+                                  <span class="danmu-info-context">{{ item.txt }}</span>
+                                  <span class="danmu-info-date">{{ handleDanmuCreatedTime(item.created_time) }}</span>
+                                </li>                                
+                              </ul>
+                            </div>
+                          </div>
+                          <!-- 底部按钮 -->
+                          <div class="player-auxiliary-danmaku-footer">
+                            <div class="footer-btn" @click="isDanmuListShow = false">MILIMILI DANMU</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="player-auxiliary-text"></div>
+            </div>
           </div>
         </div>
+
         <!-- 推荐视频 -->
         <div class="recommend_wrap">
           <div class="recommend-list-header">推荐视频列表</div>
@@ -426,9 +479,12 @@
       </div>
 
       <!-- 收藏悬浮窗口 -->
-      <div class="bili-dialog-m" v-if="showTheCollectionWindow === true">
+      <div class="bili-dialog-m" 
+        v-if="showTheCollectionWindow === true" 
+        @click.self="closeCollectionWindow"
+      >
         <div class="bili-dialog-bomb">
-          <div class="collection-m">
+          <div class="collection-m" >
             <div class="title">
               添加到收藏夹
               <!-- 关闭收藏的悬浮窗口 -->
@@ -473,8 +529,27 @@
                   </li>
                 </ul>
 
-                <div class="add-group clearfix">
-                  <div class="add-btn">新建收藏夹</div>
+                <!-- <div class="add-group clearfix"> -->
+                <div class="add-group">
+                  <div 
+                    class="add-btn" 
+                    v-if="changeToNewCollectionInput === false" 
+                    @click="changeToNewCollectionInput = true">新建收藏夹</div>
+                  <div class="input-group" v-else @keydown.esc="changeToNewCollectionInput = false">
+                    <input 
+                      
+                      type="text" 
+                      maxlength="20" 
+                      placeholder="最多可以输入20字"
+                      v-model="newCollectionName"
+                    >
+                    <button 
+                      class="submit-collection-btn"
+                      @click="addUserCollection"
+                    >新建</button>
+                    <el-radio class="collection-type" v-model="newCollectionType" label="0">公开</el-radio>
+                    <el-radio class="collection-type" v-model="newCollectionType" label="1">私密</el-radio>
+                  </div>
                 </div>
               </div>
             </div>
@@ -487,7 +562,11 @@
         </div>
       </div>
       <!-- 投诉悬浮窗口 -->
-      <div class="bili-dialog-m" v-if="showTheComplaintWindow === true">
+      <div 
+        class="bili-dialog-m" 
+        v-if="showTheComplaintWindow === true"
+        @click="closeComplaintWindow"
+      >
         <div class="bili-dialog-bomb">
           <div class="appeal-box">
             <div class="appeal-box-inner">
@@ -594,6 +673,29 @@ export default {
       // 视频投稿时间
       videoCreatedDate: null,
       videoCreatedTime: null,
+      // 视频简介需要展开/隐藏
+      isExcited: false,
+      // 视频简介是否展开
+      isSpread: false,
+      // 视频tag列表
+      videoTagList: [],
+
+      // TEST_VIDEO_INFO: `这一家三口就没有一个是正常人，什么！被你发现了！<br>
+      //           那……做好准备哦！(*╹▽╹*)<br>
+      //           还有就是，今天是520，那帷幕娘就祝大家520快乐吧！hhhhhh~<br>
+      //           今后我们会上传更多高质量的作品哒~！给个三连救救孩子吧~！<br>
+      //           关注我们会看到很多好（se）玩（se）的东西哦~！⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄<br>
+
+      //           【原作】：CHiCO with HoneyWorks meets 中川翔子 - Mr.Darling / <br>
+      //           【企划】：帷幕VMovie<br>
+      //           【监督/策划】：多刺<br>
+      //           【绘画】：木子、梦生<br>
+      //           【视频后期】：七云<br>
+      //           【特别鸣谢】：麦子<br>
+
+      //           （帷幕VMovie是一家以手书、PV、动画等二次元原创企划的综合性团队）<br>
+      //           （如果您有合作、前后期需求，或者想加入我们，欢迎戳我们的动态查看相关信息哟~！）`,
+      TEST_VIDEO_INFO: "这一家三口就没有一个是正常人，什么！被你发现了！那……做好准备哦！(*╹▽╹*) \n 还有就是，今天是520，那帷幕娘就祝大家520快乐吧！hhhhhh~ \n 今后我们会上传更多高质量的作品哒~！给个三连救救孩子吧~！\n 关注我们会看到很多好（se）玩（se）的东西哦~！⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄ \n 【原作】：CHiCO with HoneyWorks meets 中川翔子 - Mr.Darling / \n【企划】：帷幕VMovie \n【企划】：帷幕VMovie\n【企划】：帷幕VMovie\n【企划】：帷幕VMovie ",
 
       // 视频和用户已有的交互
       boolSymbol: {
@@ -601,10 +703,52 @@ export default {
         isCollectted: 0,
       },
 
+      // #region 弹幕数据
+      // 是否要展示当前视频列表
+      isDanmuListShow: false,
 
       // 当前视频的弹幕列表
       danmuList: [],
-      // 当前视频如果要新建弹幕的话，弹幕的id
+
+      fixDanmuList: [
+        {
+          duration: 5000, //弹幕持续显示时间,毫秒(最低为5000毫秒)
+          created_time: "2022-06-07T17:30:56.083",
+          id: 1, //弹幕id，需唯一
+          start: 3000, //弹幕出现时间，毫秒
+          prior: false, //该条弹幕优先显示，默认false
+          color: true, //该条弹幕为彩色弹幕，默认false
+          txt: '长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕', //弹幕文字内容
+          style: {  //弹幕自定义样式
+            color: '#ff9500',
+            fontSize: '20px',
+            border: 'solid 1px #ff9500',
+            borderRadius: '50px',
+            padding: '5px 11px',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+          },
+          mode: 'top' //显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+        },
+        {
+          // duration: 5000, //弹幕持续显示时间,毫秒(最低为5000毫秒)
+          created_time: "2022-06-07T17:30:56.083",
+          id: 2, //弹幕id，需唯一
+          start: 4000, //弹幕出现时间，毫秒
+          prior: true, //该条弹幕优先显示，默认false
+          color: true, //该条弹幕为彩色弹幕，默认false
+          txt: '长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕长弹幕', //弹幕文字内容
+          style: {  //弹幕自定义样式
+            color: '#ff9500',
+            fontSize: '20px',
+            border: 'solid 1px #ff0000',
+            borderRadius: '50px',
+            padding: '5px 11px',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+          },
+          mode: 'scroll' //显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+        },
+      ],
+      // 当前视频如果要新建弹幕的话，弹幕的id（实际上是当前视频下的弹幕个数）
       danmuId: 0,
       // 弹幕临时文本
       danmuText: '',
@@ -625,7 +769,15 @@ export default {
         chooseTop: false,
         chooseBottom: false,
       },
+      // #endregion
 
+      // #region 收藏数据
+      // 是否切换新建收藏夹时的输入框
+      changeToNewCollectionInput: false,
+      // 新建收藏夹的名称
+      newCollectionName: '',
+      // 新建收藏夹的类型 0公开 1私密
+      newCollectionType: '0',
       // 收藏窗口是否展示
       showTheCollectionWindow: false,
       // showTheCollectionWindow: true,
@@ -637,62 +789,15 @@ export default {
        * 阻止用户获取脏数据的变量，collectionLock
        *  >>>在用户成功打开一次窗口时，上锁（true）
        *  
-       *  <<<在通过点击“叉号”退出时，立即解锁，因为并没有触发更新
+       *  <<<在通过点击“叉号”退出或者点击容器外部退出时，立即解锁，因为并没有触发更新
        *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
        */
       collectionLock: false,
       collectionNum: 0,
-      collectionList:[
-          {
-            id: "1",
-            title: "自定义收藏夹1号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 0,
-            updating_collection: 0,
-            video_num: 12
-          },
-          {
-            id: "2",
-            title: "自定义收藏夹2号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 1,
-            updating_collection: 1,
-            video_num: 4
-          },
-          {
-            id: "3",
-            title: "自定义收藏夹3号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 0,
-            updating_collection: 0,
-            video_num: 56
-          },
-          {
-            id: "4",
-            title: "自定义收藏夹4号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 1,
-            updating_collection: 1,
-            video_num: 6
-          },
-          {
-            id: "5",
-            title: "自定义收藏夹5号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 0,
-            updating_collection: 0,
-            video_num: 1
-          },
-          {
-            id: "6",
-            title: "自定义收藏夹6号",
-            avatar_url: "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-            is_collect: 0,
-            updating_collection: 0,
-            video_num: 6
-          },  
-      ],
+      collectionList:[],
+      // #endregion
 
+      // #region 投诉数据
       // 投诉窗口是否展示
       showTheComplaintWindow: false,
       // 阻止空白投诉
@@ -701,14 +806,15 @@ export default {
        * 阻止用户获取脏数据的变量，complaint
        *  >>>在用户成功打开一次窗口时，上锁（true）
        *  
-       *  <<<在通过点击“叉号”或者点击“取消”退出时，立即解锁，因为并没有触发更新
+       *  <<<在通过点击“叉号”或者点击“取消”或者点击容器外部退出退出时，立即解锁，因为并没有触发更新
        *  <<<在通过点击“确定”退出时，等到响应结束（无论响应是否成功）后，再解锁，避免在后端数据更新不完全的时候获取脏数据
        */
       complaintLock: false,
       titleTextarea:'',
       descriptionTextarea:'',
+      // #endregion
 
-
+      // #region 评论数据
       // 一个视频的总评论数目（包括一二级）
       totalCommentsNum: 0,
       // 视频一级评论列表
@@ -724,6 +830,7 @@ export default {
         replyUserName: "",
         comment: "",
       },
+      // #endregion
       // TEST_JWT: null,
       // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJpc1N1cGVyQWRtaW4iOnRydWV9.ZJoduPgGiwUKhO3lnpePR5PQgf49wfc4sgxFPgQHH14',
       // TEST_JWT: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1MCwiaXNTdXBlckFkbWluIjpmYWxzZX0.RycUhwt145ZMLtR_9qvRoLotuS8SbKOvCcfIYabsOGE',
@@ -733,35 +840,67 @@ export default {
   },
   created() {
     console.log("create video detail");
+    this.getVideoDanmu();
     this.getVideoDetail();
     this.getCurrentUserSimpleInfo();
-    this.getVideoDanmu();
+    this.getCollections();
   },
   methods: {
+      getStrSum(string, a){
+        // console.log(string);
+        let b = string.indexOf(a);
+        let num = 0;
+        while(b !== -1) {
+          num++;
+          b = string.indexOf(a, b+1);
+        }
+        return num;
+      },
       /**
-       * 将毫秒转为秒
+       * true，说明需要固定高度并出现展开按钮
+       * false，说明不需要
+       */
+      getSplitBool(string){
+        console.log("换行符个数"+ this.getStrSum(this.TEST_VIDEO_INFO, '\n'));
+        if(this.getStrSum(string, '\n') >= 3 || this.getStrSum(string, '<br>') >=3 ){
+          return true;
+        }else if (string.length >= 200){
+          return true;
+        }
+        return false;
+      },
+    /* #region弹幕方法区域 ***********************************************************************************/
+      /**
+       * 将弹幕距离视频开始位置（以毫秒为单位记录）转为格式化字符串
        * @param {int} milisecond 
        */
       transMSToS(milisecond){
         let second = parseInt(milisecond / 1000);
         let minute = parseInt(second / 60);
         second = parseInt(second % 60);
+        if(minute < 10) minute = '0'+minute;
+        if(second < 10) second = '0'+second;
         return minute + ':' +second;
+      },
+      /**
+       * 将弹幕传入的处理为合适的字符串
+       * @param {string} str
+       */
+      handleDanmuCreatedTime(str){
+        let date = str.split(/[.]|T/)[0];
+        // console.log(date);
+        let time = str.split(/[.]|T/)[1];
+        // console.log(time);
+        let handleDate = date.substring(5);
+        let handleTime = time.substring(0, 5);
+        return handleDate + ' ' + handleTime;
       },
       /**
        * 用于得到当前视频对应的弹幕列表
        */
-      async getVideoDanmu(){
+      async getVideoDanmu(){        
         let formData = new FormData();
-        let loginMessage = localStorage.getItem("loginMessage");
-        let jwt = null;
-        if (loginMessage != null) {
-          jwt = JSON.parse(loginMessage).JWT;
-          this.isLogined = true;
-        }
-        // console.log("当前用户的JWT是："+jwt);
         let videoId = this.$route.params.id;
-        // formData.append("JWT", jwt);
         formData.append("video_id", videoId);
         this.$axios({
           method: "post",
@@ -776,8 +915,6 @@ export default {
               this.$message.success("加载弹幕成功！");
               /* 获取弹幕列表 */
               this.danmuList = res.data.bullet_list;
-              console.log('弹幕列表');
-              console.log(this.danmuList);
               this.danmuId = res.data.bullet_num;
               break;
             }
@@ -801,7 +938,6 @@ export default {
         }
         //  this.sendDanmuInPlayer();
         //  return;
-
         let formData = new FormData();
         let loginMessage = localStorage.getItem("loginMessage");
         let jwt = null;
@@ -826,7 +962,7 @@ export default {
         formData.append("style_fontSize", this.danmuFontSize);
         formData.append("mode", this.danmuPosition);
 
-        this.danmuText = ''; 
+        this.danmuText = '';
         this.$axios({
           method: "post",
           url: "https://milimili.super2021.com/api/video/add-bullet",
@@ -840,6 +976,7 @@ export default {
               this.$message.success("增加弹幕成功！");
               /* 获取弹幕列表 */
               this.danmuList = res.data.bullet_list;
+              this.player.danmu.comments = res.data.bullet_list;
               this.danmuId = res.data.bullet_num;
               break;
             }
@@ -941,6 +1078,8 @@ export default {
           }
         }
       },
+    /* #endregion */
+    /* #region审核方法区域 ***********************************************************************************/
       /**
        * 打开审核浮窗
        */
@@ -951,7 +1090,7 @@ export default {
         }
       },
       /**
-       * 通过点击“叉号”或者点击“取消”退出时，立即解锁，因为并没有触发更新
+       * 通过点击“叉号”或者点击“取消” 或者点击容器外部 退出时，立即解锁，因为并没有触发更新
        */
       closeComplaintWindow(){
         this.showTheComplaintWindow = false;
@@ -982,7 +1121,8 @@ export default {
           this.$router.push('/login');
           return;
         }
-        let videoId = this.videoInfo.id;
+        // let videoId = this.videoInfo.id;
+        let videoId = this.$route.params.id;
 
         formData.append("JWT", jwt);
         formData.append("title", this.titleTextarea);
@@ -1014,6 +1154,8 @@ export default {
           console.log(err);
         });
       },
+    /* #endregion */
+    /* #region收藏方法区域 ***********************************************************************************/
       /**
        * 先获取收藏列表，再打开收藏窗口
        */ 
@@ -1033,7 +1175,7 @@ export default {
           // this.openCollectionWindowStatus();
       },
       /**
-       * 用户直接通过 点击×号关闭窗口，
+       * 用户直接通过 点击×号关闭窗口，点击容器外部关闭窗口
        *  此时应该还原已经改变了的 updating_collection  -->似乎这条不需要，这里是保险
        *    并且应该解锁，使得用户可以再次打开该收藏窗口！
        */
@@ -1048,7 +1190,11 @@ export default {
         // 清除以后再关闭窗口
         this.showTheCollectionWindow = false;
         // 解锁
-        this.collectionLock = false;  
+        this.collectionLock = false;
+        // 切换回原来的按钮
+        this.changeToNewCollectionInput = false;
+        // 切换回默认为公开
+        this.newCollectionType = '0';
       },
 
       async openCollectionWindowStatus(){
@@ -1124,7 +1270,7 @@ export default {
             reject('未登录不可以操作收藏夹');
             return;
           }
-          let videoId = this.videoInfo.id;
+          let videoId = this.$route.params.id;
 
           formData.append("JWT", jwt);
           formData.append("video_id", videoId);
@@ -1178,10 +1324,10 @@ export default {
           }
         }
         //#region 测试部分，可删
-        console.log('要新增的收藏夹id');
-        console.log(this.addCollectionRelationArray);
-        console.log('要删除的收藏夹id');
-        console.log(this.deleteCollectionRelationArray);
+        // console.log('要新增的收藏夹id');
+        // console.log(this.addCollectionRelationArray);
+        // console.log('要删除的收藏夹id');
+        // console.log(this.deleteCollectionRelationArray);
         //#endregion
 
         let formData = new FormData();
@@ -1229,6 +1375,63 @@ export default {
           console.log(err);
         })
       },
+      /**
+       * 为当前用户新建一个收藏夹 AUC
+       */
+      async addUserCollection(){
+        // 阻止空收藏夹
+        if (!this.newCollectionName || this.newCollectionName === ''){
+          return;
+        }
+        let formData = new FormData();
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+        let videoId = this.videoInfo.id;
+
+        formData.append("JWT", jwt);
+        formData.append("video_id", videoId);
+        formData.append("title", this.newCollectionName);
+        formData.append("description", "");
+        formData.append("isPrivate", this.newCollectionType === '0'? 0:1);
+
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/video/create-favorite-simple",
+          data: formData,
+        })
+        .then((res) => {
+          console.log(res);
+          switch (res.data.result) {
+            case 1:
+              this.$message.success("新建收藏夹成功！");
+              this.collectionList = res.data.favorite_list_simple;
+              break;
+
+            default:
+              this.$message.warning("新建收藏夹失败！");
+              break;
+          }
+          // 无论请求成败，都应该清空临时存放的 希望新建的收藏夹名字
+          this.newCollectionName = '';
+          // 切换回原来的按钮
+          this.changeToNewCollectionInput = false;
+          // 切换回默认为公开
+          this.newCollectionType = '0';
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      },
+    /* #endregion */
+
       /**
        * 优雅地显示数量
        * @param {int} number
@@ -1281,10 +1484,9 @@ export default {
 
       /**
        * 初始化视频播放器 
-       * FIXME 弹幕逻辑
+       * FIXME 弹幕逻辑     ITP
        */
       initPlayer(videoUrl) {
-        let _this = this;
         this.player = new Player({
           id: "vs",
           url: videoUrl,    // 传入视频参数
@@ -1292,19 +1494,21 @@ export default {
           volume: 0.3,      // 初始音量
           playbackRate: [0.5, 0.75, 1, 1.5, 2],   // 当前播放速度
           defaultPlaybackRate: 1,                 // 播放速度设置为1
-          pip: true, //打开画中画功能
+          // pip: true, //打开画中画功能
           // fitVideoSize: 'fixWidth',             // 容器宽度固定，高度按照视频比例调整
           videoInit: true,           // 初始化视频首帧，如果没有封面就默认显示首帧
           // poster:,                           // 视频封面
           danmu: {
             comments: this.danmuList,
+            // comments: this.videoInfo.bullet,
+            // comments: this.fixDanmuList,
+            // comments: danmuArr,
             area: {
               start: 0,
               end: 1
             }
           },
-          // height: 550,
-          // width: 800,
+
           width: '100%',
           height: '500px',
           whitelist: [""], 
@@ -1314,14 +1518,14 @@ export default {
             currentTime: 5,  //播放进度调整步长，默认10秒
             volume: 0.2       //音量调整步长，默认0.1
           },
-          // 小窗播放
-          miniplayer: true,
-          miniplayerConfig: {
-            bottom: 200,
-            right: 0,
-            width: 320,
-            height: 180
-          }
+          // // 小窗播放
+          // miniplayer: true,
+          // miniplayerConfig: {
+          //   bottom: 200,
+          //   right: 0,
+          //   width: 320,
+          //   height: 180
+          // }
         });
       },
       /**
@@ -1340,10 +1544,12 @@ export default {
         formData.append("JWT", jwt);
 
         // FIND_ME elementUI加载实例
-        let loadingInstance = this.$loading({
-          target: "#main-body",
-          fullscreen: true,
-        });
+        // let loadingInstance = this.$loading({
+        //   target: "#main-body",
+        //   fullscreen: true,
+        // });
+        // 自定义加载实例
+        this.$showLoading.show(document.body);
 
         this.$axios({
           method: "post",
@@ -1352,14 +1558,20 @@ export default {
         })
         .then((res) => {
           // FIND_ME 关闭加载实例
-          loadingInstance.close();
-          // 
+          // loadingInstance.close();
+          // 关闭自定义加载实例
+          this.$showLoading.hide();
+          
           console.log(res);
           switch (res.data.result) {
             case 1: {
               this.$message.success("加载成功！");
               /* 视频本身的信息 */
               this.videoInfo = res.data.video_info;
+              /* 获取视频简介 */
+              this.isExcited = this.getSplitBool(res.data.video_info.description);
+              // this.isExcited = this.getSplitBool(this.TEST_VIDEO_INFO);
+              this.videoTagList = this.videoInfo.tag_list;
               //获取推荐视频 hb
               this.recommendVidoes = res.data.recommended_video;
               // console.log(this.videoInfo);
@@ -1370,6 +1582,7 @@ export default {
                 this.videoInfo.created_time.split(/[.]|T/)[0];
               this.videoCreatedTime =
                 this.videoInfo.created_time.split(/[.]|T/)[1];
+
               this.initPlayer(videoUrl);
               /* 当前获取到的视频和用户已有的交互 */
               this.boolSymbol.isLiked = res.data.is_like;
@@ -1421,7 +1634,6 @@ export default {
           switch (res.data.result) {
             case 1:
               this.$message.success("点赞成功！");
-              console.log(res);
               this.boolSymbol.isLiked = 1;
               this.videoInfo.like_num++;
               break;
@@ -1453,17 +1665,16 @@ export default {
         formData.append("JWT", jwt);
         formData.append("video_id", videoId);
 
-      this.$axios({
-        method: "post",
-        url: "https://milimili.super2021.com/api/video/dislike",
-        data: formData,
-      })
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/video/dislike",
+          data: formData,
+        })
         .then((res) => {
           console.log(res);
           switch (res.data.result) {
             case 1:
               this.$message.success("取消点赞成功！");
-              console.log(res);
               this.boolSymbol.isLiked = 0;
               this.videoInfo.like_num--;
               break;
@@ -1683,9 +1894,14 @@ export default {
       wrap.removeChild(video);
       var child = document.createElement("div");
       child.setAttribute("id", "vs");
+      child.setAttribute("class", "vs-class");
       wrap.appendChild(child);
+      /* 避免从推荐视频列表切换视频时弹幕污染 */
+      this.danmuList = [];
+      /* 更新对应的视频信息、用户信息和弹幕列表 */
       this.getVideoDetail();
       this.getCurrentUserSimpleInfo();
+      this.getVideoDanmu();
     },
     /**
      * 使得空白投诉提示框1秒后消失
@@ -1705,6 +1921,7 @@ export default {
 </script>
 
 <style scoped>
+
 * {
   margin: 0;
   padding: 0;
@@ -1718,45 +1935,6 @@ export default {
   display: table;
   clear: both;
 }
-/* #region 弹幕样式部分 */
-.danmu-content {
-  margin-bottom: 20px;
-  width: 800px;
-  height: 65px;
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.danmu-content .input {
-  width: 90%;
-  height: 100%;
-  resize: none;
-  font-size: 12px;
-  box-sizing: border-box;
-  background-color: #f4f5f7;
-  border: 1px solid #e5e9ef;
-  overflow: auto;
-  border-radius: 4px;
-  color: #555;
-  padding: 5px 10px;
-  line-height: normal;
-  outline: none;
-}
-
-.danmu-content .send-btn {
-  width: 70px;
-  height: 100%;
-  background-color: #00a1d6;
-  font-size: 14px;
-  color: #fff;
-  border-radius: 4px;
-  padding: 12px 15px;
-  text-align: center;
-  vertical-align: center;
-  cursor: pointer;
-}
-/* #endregion */
 
 /* 整个视频页面的 外层容器 */
 .video-detail-wrap {
@@ -1812,7 +1990,8 @@ export default {
   color: #212121;
   line-height: 26px;
   height: 26px;
-  margin-top: 14px;
+  /* margin-top: 14px; */
+  margin-top: 18px;
   margin-bottom: 8px;
   /* 下面三行一起用可以实现溢出文本用省略号 "..." 代替 */
   overflow: hidden;
@@ -1828,6 +2007,7 @@ export default {
 
 .video-detail-wrap .video-content .content-left .vs-class {
   width: 100%;
+  overflow: hidden;
 }
     /* #region 视频底部控件(弹幕发送、人数) */
 .video-detail-wrap .video-content .content-left .video-bottom-wrap {
@@ -2165,7 +2345,7 @@ export default {
     background: transparent;
     fill: #00a1d6;
 }
-    /**.choose-color */
+  /**.choose-color */
 .style-choose-bomb .style-choose-wrap .choose-color .row-selection .selection-span{
     margin: -4px 8px 0 0; /** 这里的右边距需要调整为8px */
     color: hsla(0,0%,100%,.8);
@@ -2326,7 +2506,7 @@ export default {
   border-color: #00b5e5;
 }
 
-    /* #endregion */
+    /* #endregion 视频底部控件(弹幕发送、人数)结束 */
     
 
     /* #region 视频交互控件 */
@@ -2422,9 +2602,79 @@ export default {
   cursor: pointer;
 } */
 
-    /* #endregion */
+    /* #endregion 视频交互控件结束 */
 
+/* #endregion 视频和视频控件结束 */
+
+/* #region 视频简介和tag */
+
+.video-detail-wrap .video-content .content-left .left-container-below-player{
+  width: 100%;
+}
+
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-info{
+    margin: 16px 0;
+    position: relative;
+}
+  
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-info .v-info-content{
+    white-space: pre-line;
+    transition: height 0.6s;
+    font-size: 15px;
+    color: #18191C;
+    letter-spacing: 0;
+    line-height: 24px;
+    overflow: hidden;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-info .v-info-content .info-text{
+    font-family: PingFang SC, HarmonyOS_Regular, Helvetica Neue, Microsoft YaHei, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-info .spread-btn{
+    margin-top: 10px;
+    font-size: 13px;
+    line-height: 18px;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-info .spread-btn span{
+    cursor: pointer;
+    color: #61666D;
+}
+
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-tag{
+    padding-bottom: 6px;
+    margin: 16px 0 20px 0;
+    border-bottom: 1px solid #E3E5E7;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-tag .v-tag-wrap{
+  transition: height 0.3s;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-tag .v-tag-wrap .tag-area{
+    position: relative;
+    list-style: none;
+    outline: none;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-tag .v-tag-wrap .tag-area > li {
+    float: left;
+    margin: 0 12px 8px 0;
+    position: relative;
+    list-style: none outside none;
+}
+.video-detail-wrap .video-content .content-left .left-container-below-player .v-tag .v-tag-wrap .tag-area > li .single-tag{
+    color: #61666D;
+    z-index: 10;
+    height: 28px;
+    line-height: 28px;
+    display: inline-block;
+    font-size: 13px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    background: #F1F2F3;
+    border-radius: 100px;
+    transition: all 0.3s;
+}
 /* #endregion */
+
 
 /* #region  评论区域 */
 .video-detail-wrap .video-content .content-left .comment {
@@ -2432,7 +2682,7 @@ export default {
   z-index: 0;
   position: relative;
 }
-/* #region  评论头部 */
+    /* #region  评论头部 */
 .video-detail-wrap .video-content .content-left .comment .comment-head {
   font-size: 18px;
   line-height: 24px;
@@ -2447,7 +2697,7 @@ export default {
   .comment-count {
   margin-right: 15px;
 }
-/* #endregion */
+    /* #endregion */
 
 
     /* #region  一级/二级评论发布框 */
@@ -2530,7 +2780,7 @@ export default {
 
 /* #endregion */
 
-    /* #region  评论主题区域 */
+    /* #region  评论主体区域 */
 .video-detail-wrap .video-content .content-left .comment-wrap {
   width: 100%;
 }
@@ -2566,6 +2816,9 @@ export default {
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-content {
     font-size: 14px;
     margin: 10px 0;
+    /* VERY_IMPORTANT 这里的两句话是为了防止超长的单个单词溢出文本框 */
+    hyphens: auto;
+    word-break: break-all;
 }
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right {
@@ -2737,6 +2990,9 @@ export default {
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment {
     font-size: 14px;
     margin-left: 10px;
+    /* VERY_IMPORTANT 这里的两句话是为了防止超长的单个单词溢出文本框 */
+    hyphens: auto;
+    word-break: break-all;
 }
 /* 二级评论 回复的用户的昵称 通过路由点击事件 跳转个人空间的样式  */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name {
@@ -2808,11 +3064,11 @@ export default {
 
   /* #endregion 评论区域结束*/
 
-/* #endregion 左侧容器部分结束*/
+/* #endregion 评论区域结束*/
 
 /* #endregion 左侧容器部分结束 */
 
-/* #region 收藏浮窗部分 */
+/* #region 收藏/投诉 浮窗部分 */
 .bili-dialog-m{
     background: rgba(0, 0, 0, 0.65);
     position: fixed;
@@ -2940,7 +3196,7 @@ export default {
 }
 
 .collection-m .content .group-list .add-group {
-    /* margin-bottom: 5px; */
+  /* margin-bottom: 5px; */
     padding-bottom: 1px;
     width: 348px;
 }
@@ -2958,7 +3214,47 @@ export default {
 }
 
 .collection-m .content .group-list .add-group .add-btn:hover {
+  border: 1px solid #00a1d6;
+}
+.collection-m .content .group-list .add-group .input-group .collection-type{
+    /* margin-top: 1px; */
+    /* margin-right: 60px; */
+    margin-right: 90px;
+}
+.collection-m .content .group-list .add-group .input-group{
+    height: 34px;
+    line-height: 34px;
+    /* 新版色调 */
+    /* border: 1px solid #00AEEC; */ 
     border: 1px solid #00a1d6;
+    border-radius: 4px;
+    position: relative;
+}
+.collection-m .content .group-list .add-group .input-group > input{
+    border: none;
+    outline: none;
+    font-size: 12px;
+    width: 200px;
+    margin-left: 10px;
+    padding: 0;
+    box-shadow: none;
+    height: 100%;
+    background: transparent;
+    color: #18191C;
+}
+.collection-m .content .group-list .add-group .input-group .submit-collection-btn{
+    float: right;
+    height: 34px;
+    width: 90px;
+    background: #d9f1f9;
+    border: none;
+    /* 新版色调 */ 
+    /* border-left: 1px solid #00AEEC; */
+    border-left: 1px solid #00a1d6;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+    color: #00AEEC;
+    cursor: pointer;
 }
 
 .collection-m .bottom {
@@ -3176,107 +3472,324 @@ export default {
   /* border: 1px solid yellow; */
 }
 
-.video-detail-wrap .video-content .content-right .danmu-list-wrap {
+/* #region 弹幕列表样式部分 */
+.video-detail-wrap .video-content .content-right .danmaku-box{
+  margin-top: 0;
+  margin-bottom: 18px;
+}
+.video-detail-wrap .video-content .content-right .danmaku-box .danmaku-list-wrap{
+    min-height: 44px;
+    background: #F1F2F3;
+    border-radius: 6px;
+}
+.video-detail-wrap .video-content .content-right .danmaku-box .danmaku-list-wrap .player-auxiliary{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+.video-detail-wrap .video-content .content-right .danmaku-box .danmaku-list-wrap .player-auxiliary .player-auxiliary-area{
+    position: relative;
+    background-color: #fff;
+    position: relative;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 100%;
+    vertical-align: top;
+}
+.video-detail-wrap .video-content .content-right .danmaku-box .danmaku-list-wrap .player-auxiliary .player-auxiliary-area 
+.player-auxiliary-collapse{
+    display: flex;
+    vertical-align: middle;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.player-auxiliary-collapse .ui-collapse-wrap{
   width: 100%;
 }
 
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-header {
-  width: 100%;
-  height: 46px;
-  background-color: #f4f4f4;
-  display: flex;
-  color: #222;
-  font-size: 16px;
-  border-radius: 2px;
-  padding: 0 10px 0 16px;
-  align-items: center;
-  box-sizing: border-box;
+        /* #region 弹幕列表头部 */
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-header{
+  background-color: #f1f2f3;  /* 可能需要提取出去作为变量绑定改变的值 */
+    border-radius: 6px;
+    min-height: 44px;
+    color: #18191c;
+    display: flex;
+    vertical-align: middle;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+    cursor: pointer;
 }
+
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-header .player-auxiliary-filter::after{
+    content: "";
+    display: block;
+    visibility: hidden;
+    height: 0;
+    clear: both;
+    font-size: 0;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-header .player-auxiliary-filter{
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    position: relative;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 6px;
+    padding-left: 16px;
+    height: 44px;
+    line-height: 44px;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-header .player-auxiliary-filter .filter-title{
+    font-size: 15px;
+    color: #18191c;
+    height: 100%;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+}
+        /* #endregion*/
+
+        /* #region 弹幕列表标题 */
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body{
+    background-color: #fff;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    /* -webkit-transition: height .3s; */
+    /* -o-transition: height .3s; */
+    transition: height .3s;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    overflow: hidden;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist{
+    display: block;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist .player-auxiliary-danmaku{
+    overflow: hidden;
+    position: relative;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist .player-auxiliary-danmaku .player-auxiliary-danmaku-management{
+    text-align: center;
+    color: #61666d;
+    background-color: #fff;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist .player-auxiliary-danmaku .player-auxiliary-danmaku-function{
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    background-color: #fff;
+    display: flex;
+}
+.player-auxiliary-danmaku-function .btn-time{
+    width: 60px;
+    padding-left: 16px;
+    padding-right: 0;
+
+    font-size: 12px;
+    color: #61666d;
+    height: 32px;
+    border: 0;
+    /* padding: 0 6px; */
+    padding: 0 8px;
+    line-height: 32px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    text-align: left;
+}
+.player-auxiliary-danmaku-function .btn-danmu{
+    -webkit-box-flex: 1;
+    -ms-flex: auto;
+    flex: auto;
+
+    font-size: 12px;
+    color: #61666d;
+    height: 32px;
+    border: 0;
+    padding: 0 6px;
+    line-height: 32px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    text-align: left;
+}
+.player-auxiliary-danmaku-function .btn-date{
+    /* width: 88px; */
+    /* width: 103px; */
+    width: 95px;
+
+    font-size: 12px;
+    color: #61666d;
+    height: 32px;
+    border: 0;
+    padding: 0 6px;
+    line-height: 32px;
+    cursor: pointer;
+    display: inline-block;
+    background-color: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    text-align: left;
+}
+        /* #endregion*/
+
+        /* #region 弹幕列表主体 */
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-danmaku-wrap{
+    background-color: #fff;
+    position: relative;
+    overflow: auto;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-danmaku-wrap .danmu-container{
+    height: 100%;
+    /* overflow: hidden; */
+    overflow: auto;
+    position: relative;
+}
+.danmu-container .player-auxiliary-danmaku-list{
+    /* height: 11784px; */
+    height: auto;
+    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition-duration: 0ms;
+    /* MAYBE_QUESTION 这里其实是动态的 */
+    transform: translate(0px, 0px) scale(1) translateZ(0px);
+
+    position: relative;
+    list-style: none;
+    outline: none;
+}
+
+.danmu-container .player-auxiliary-danmaku-list .danmu-info-row{
+    line-height: 24px;
+    height: 24px;
+    font-size: 12px;
+    user-select: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    color: #61666d;
+    display: flex;
+}
+.danmu-container .player-auxiliary-danmaku-list .danmu-info-row span{
+    vertical-align: top;
+    padding: 0 6px;
+    box-sizing: border-box;
+    z-index: 1;
+    display: inline-block;
+    text-align: left;
+}
+
+.danmu-container .player-auxiliary-danmaku-list .danmu-info-row .danmu-info-time{
+    width: 60px;
+    position: relative;
+    /* text-align: left; */
+    overflow: hidden;
+    /* padding-left: 16px; */
+    padding-left: 5px;
+    -webkit-box-flex: 0;
+    flex: none;
+}
+.danmu-container .player-auxiliary-danmaku-list .danmu-info-row .danmu-info-context{
+    color: #18191c;
+    -webkit-box-flex: 1;
+    -ms-flex: auto;
+    flex: auto;
+    /* ... 三件套 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.danmu-container .player-auxiliary-danmaku-list .danmu-info-row .danmu-info-date{
+    width: 88px;
+    white-space: nowrap;
+    overflow: hidden;
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+}
+
+        /* #endregion*/
+
+        /* #region 弹幕列表底部 */
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist .player-auxiliary-danmaku .player-auxiliary-danmaku-footer{
+    position: relative;
+    width: auto;
+    height: 39px;
+    background: #fff;
+    overflow: hidden;
+    z-index: 10001;
+}
+.player-auxiliary-collapse .ui-collapse-wrap .ui-collapse-body .player-auxiliary-wraplist .player-auxiliary-danmaku .player-auxiliary-danmaku-footer .footer-btn{
+    color: #18191c;   
+    width: 100%;
+    height: 31px;
+    line-height: 31px;
+    margin-top: 8px;
+    border-radius: 6px;
+    background-color: #f1f2f3;
+    
+    display: inline-flex;
+    cursor: pointer;
+    min-width: 68px;
+    font-size: 12px;
+    box-sizing: border-box;
+    transition: all .2s;
+    transform: translateZ(0);
+    padding: 0;
+    outline: none;
+    text-align: inherit;
+
+    vertical-align: middle;
+    -webkit-box-align: center;
+    align-items: center;
+    justify-content: center;
+    
+    touch-action: manipulation;
+}
+
+
+        /* #endregion*/
+
+/* #endregion */
+
 .video-detail-wrap .video-content .content-right .recommend_wrap .recommend-list-header {
+
   width: 100%;
   height: 46px;
-  background-color: #f4f4f4;
+  /* background-color: #f4f4f4; */
+  background-color: #F1F2F3;
   display: flex;
   color: #222;
   font-size: 16px;
-  border-radius: 2px;
+  /* border-radius: 2px; */
+  border-radius: 6px;
   padding: 0 10px 0 16px;
   align-items: center;
   box-sizing: border-box;
 }
 
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content {
-  width: 100%;
-  height: 500px;
-  overflow-y: scroll;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table {
-  width: 100%;
-  padding-left: 40px;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
-  tr
-  th {
-  font-size: 12px;
-  color: #6d757a;
-  font-weight: 100;
-  text-align: left;
-  padding: 10px 0;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
-  tr
-  td {
-  font-size: 12px;
-  color: #222;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
-  tr
-  .time {
-  width: 20%;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-list-content .danmu-table
-  tr
-  .date {
-  width: 40%;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table {
-  width: 100%;
-  padding-left: 40px;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
-  tr
-  th {
-  font-size: 12px;
-  color: #6d757a;
-  font-weight: 100;
-  text-align: left;
-  padding: 10px 0;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
-  tr
-  td {
-  font-size: 12px;
-  color: #222;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
-  tr
-  .time {
-  width: 20%;
-}
-
-.video-detail-wrap .video-content .content-right .danmu-list-wrap .danmu-table
-  tr
-  .date {
-  width: 30%;
-}
 /* #endregion */
 </style>
