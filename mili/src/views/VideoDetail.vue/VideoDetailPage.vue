@@ -840,11 +840,14 @@ export default {
     };
   },
   created() {
+    /**
+     * 这里面的三个函数都不应该在游客浏览时强制登录
+     */
     console.log("create video detail");
     this.getVideoDanmu();
     this.getVideoDetail();
     this.getCurrentUserSimpleInfo();
-    this.getCollections();
+    // this.getCollections();
   },
   methods: {
       getStrSum(string, a){
@@ -930,6 +933,8 @@ export default {
       },
       /**
        * 在视频播放器中立即发送一条弹幕，并加入到后端数据库中
+       * 游客不可以发送弹幕
+       * NEW FIX 清空本地临时弹幕文本
        * @param {string} text 
        */
       sendDanmu(){
@@ -948,6 +953,8 @@ export default {
         }else {
           this.$message.warning("请先登录！");
           this.$router.push('/login');
+          // 清空本地临时弹幕文本
+          this.danmuText = '';
           return;
         }
 
@@ -963,6 +970,7 @@ export default {
         formData.append("style_fontSize", this.danmuFontSize);
         formData.append("mode", this.danmuPosition);
 
+        // 清空本地临时弹幕文本
         this.danmuText = '';
         this.$axios({
           method: "post",
@@ -1083,8 +1091,20 @@ export default {
     /* #region审核方法区域 ***********************************************************************************/
       /**
        * 打开审核浮窗
+       * NEW FIX（游客不可以打开）
        */
       openComplaintWindow(){
+        let loginMessage = localStorage.getItem("loginMessage");
+        let jwt = null;
+        if ( loginMessage != null){
+          jwt = JSON.parse(loginMessage).JWT;
+          this.isLogined = true;
+        }else {
+          this.$message.warning("请先登录！");
+          this.$router.push('/login');
+          return;
+        }
+
         if (this.complaintLock === false){
           this.showTheComplaintWindow = true;
           this.complaintLock = true;  // 只要开启浮窗，就对按钮上锁
@@ -1471,7 +1491,7 @@ export default {
           console.log(res);
           switch (res.data.result) {
             case 1: {
-              this.$message.success("获取当前操作用户简要信息成功！");
+              // this.$message.success("获取当前操作用户简要信息成功！");
               this.currentUserSimpleInfo.currentUserName =
                 res.data.user.username;
               this.currentUserSimpleInfo.currentUserAvatar =
@@ -1479,7 +1499,8 @@ export default {
               break;
             }
             default:
-              this.$message.warning("获取当前操作用户简要信息失败！");/* CAN_BE_Annotated */
+              /* CAN_BE_Annotated */
+              // this.$message.warning("获取当前操作用户简要信息失败！");
               break;
           }
         })
@@ -1722,6 +1743,7 @@ export default {
       /**
        * 发送一/二级评论
        * NEW 实现页面 评论个数 及时响应
+       * NEW FIX 清空本地临时一二级评论文本
        * @param {String} type 
        */
       async postComments(type) {
@@ -1734,6 +1756,10 @@ export default {
         }else {
           this.$message.warning("请先登录！");
           this.$router.push('/login');
+          /* 临时存放二级评论的文本要清空 */
+          this.replyInfo.comment = "";
+          /* 临时存放一级评论的文本要清空 */
+          this.comment = "";
           return;
         }
         
