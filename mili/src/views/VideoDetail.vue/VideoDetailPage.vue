@@ -565,7 +565,7 @@
       <div 
         class="bili-dialog-m" 
         v-if="showTheComplaintWindow === true"
-        @click="closeComplaintWindow"
+        @click.self="closeComplaintWindow"
       >
         <div class="bili-dialog-bomb">
           <div class="appeal-box">
