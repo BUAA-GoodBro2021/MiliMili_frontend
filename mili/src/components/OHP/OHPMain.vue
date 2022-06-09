@@ -256,6 +256,7 @@ body {
 }
 .pagination_personPage {
   margin-right: 4%;
+  margin-top: 10px;
 }
 .icomoon {
   font-family: icomoon;

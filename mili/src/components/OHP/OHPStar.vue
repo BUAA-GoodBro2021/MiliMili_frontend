@@ -43,7 +43,8 @@
                     style="margin-left: 10px; margin-top: 10px"
                     :command="itemP.id"
                     class="favPBBox">
-                      <a :href="itemP.video_url" v-text="itemP.title" class="favPB"></a>
+                      <!-- <a :href="itemP.video_url" v-text="itemP.title" class="favPB"></a> -->
+                       <a :href="'/videodetail/'+itemP.id" v-text="itemP.title" class="favPB"></a>
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
@@ -51,10 +52,13 @@
             </div>
         </div>
         </div>
+        <div style="display:flex; flex-wrap: wrap;">
         <div v-for="(itemV, indexV) in item.favorite_list_video_detail"
           :key="indexV"
-          style="margin-left: 10px; margin-top: 10px">
-          <Video :singleVideo="itemV" /></div>
+          style="margin-left: 30px; margin-top: 10px">
+          <Video :singleVideo="itemV" />
+        </div>
+        </div>
         </el-tab-pane>
       <!-- </el-tab-pane> -->
     </el-tabs>
@@ -70,7 +74,9 @@ import qs from "qs";
 export default {
   data() {
     return {
-      jwt:  (localStorage.getItem("loginMessage")) ? JSON.parse(localStorage.getItem("loginMessage")).JWT : null,
+      jwt: localStorage.getItem("loginMessage")
+        ? JSON.parse(localStorage.getItem("loginMessage")).JWT
+        : null,
       AllStars: [],
       len: 0,
       group: 0,
@@ -78,7 +84,7 @@ export default {
     };
   },
   created() {
-      this.$showLoading.show(document.body);
+    this.$showLoading.show(document.body);
     //this.$showLoading.hide();
     var id = this.$route.params.id;
     var that = this;
