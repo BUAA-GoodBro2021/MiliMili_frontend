@@ -515,8 +515,11 @@ export default {
   left: 53vh;
   top: 11.4vh;
 }
-.pagination_personPage {
+.tabs .pagination_personPage{
   margin-top: 15px;
+  /* VERY_IMPORTANT 这里的两句话是为了防止超长的单个单词溢出文本框 */
+  hyphens: auto;
+  word-break: break-all;
 }
 .TabTitle {
   height: 6vh;
