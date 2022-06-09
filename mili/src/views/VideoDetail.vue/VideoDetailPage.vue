@@ -309,14 +309,18 @@
                 <div class="comment-in">
                   <!-- 发出一级评论 用户的头像 -->
                   <!-- 在这里加入跳转路由  item.comment_root.user_id -->
-                  <router-link :to="'/OthersHomePage/Main/' + item.comment_root.user_id">
+                  <!-- <router-link :to="'/OthersHomePage/Main/' + item.comment_root.user_id"> -->
+                  <router-link :to="checkRouterLink(item.comment_root.user_id)">
                     <img class="avatar" :src="item.comment_root.avatar_url" alt="" />
                   </router-link>
                   <!-- 一级评论的正文 -->
                   <div class="comment-right">
                     <!-- 在这里加入跳转路由 item.comment_root.user_id -->
                     <div class="name-jump-space">
-                      <router-link :to="'/OthersHomePage/Main/' + item.comment_root.user_id">{{ item.comment_root.username }}</router-link>
+                      <!-- <router-link :to="'/OthersHomePage/Main/' + item.comment_root.user_id"> -->
+                      <router-link :to="checkRouterLink(item.comment_root.user_id)">
+                        {{ item.comment_root.username }}
+                      </router-link>
                     </div>
                     <div class="comment-content">
                       {{ item.comment_root.content }}
@@ -335,7 +339,8 @@
                     <!-- 遍历当前一级评论的二级评论列表 -->
                     <div class="child-comments" v-for="(child, childIndex) in item.child_list" :key="'child_' + childIndex">
                       <!-- 在这里加入跳转路由 child.user_id -->
-                      <router-link :to="'/OthersHomePage/Main/' + child.user_id">
+                      <!-- <router-link :to="'/OthersHomePage/Main/' + child.user_id"> -->
+                      <router-link :to="checkRouterLink(child.user_id)">
                         <img class="child-avatar" :src="child.avatar_url" alt=""/>
                       </router-link>
                       <div class="child-user-info">
@@ -345,14 +350,20 @@
                           <!-- <a class="name-jump-space" href="#">{{ child.username }}</a> -->
                           <!-- 在这里加入跳转路由 child.user_id -->
                           <span class="name-jump-space">
-                            <router-link :to="'/OthersHomePage/Main/' + child.user_id">{{ child.username }}</router-link>
+                            <!-- <router-link :to="'/OthersHomePage/Main/' + child.user_id"> -->
+                            <router-link :to="checkRouterLink(child.user_id)">
+                              {{ child.username }}
+                            </router-link>
                           </span>
                           <!-- <span class="child-comment"><span class="reply-name">{{ '回复 @' + child.reply_username + '：' }}</span>{{ child.content }}</span> -->
                           <!-- 在这里  加入跳转路由 child.reply_user_id -->
                           <span class="child-comment">
                             回复
                             <span class="reply-name">
-                              <router-link :to="'/OthersHomePage/Main/' + child.reply_user_id">@{{ child.reply_username }}：</router-link>
+                              <!-- <router-link :to="'/OthersHomePage/Main/' + child.reply_user_id"> -->
+                              <router-link :to="checkRouterLink(child.reply_user_id)">
+                                @{{ child.reply_username }}：
+                              </router-link>
                             </span>
                             {{ child.content }}
                           </span>
@@ -647,6 +658,7 @@ export default {
       currentUserSimpleInfo: {
         currentUserName: "",
         currentUserAvatar: "",
+        currentUserId: 0,
       },
       // 页面播放器
       player: null,
@@ -850,6 +862,27 @@ export default {
     // this.getCollections();
   },
   methods: {
+      /**
+       * 路由跳转方法
+       * @param {int} id
+       */
+      checkRouterLink(id){
+        let loginMessage = localStorage.getItem("loginMessage");
+        /* 游客一律登录'/OthersHomePage/Main/' */
+        if ( loginMessage == null){
+          return '/OthersHomePage/Main/'+id;
+        }else {
+          // console.log('要跳转到的用户个人空间的用户id：'+id);
+          // console.log('当前正在登录的的用户id：'+this.currentUserSimpleInfo.currentUserId);
+          /* 登录用户要注意区分自己和他人 */
+          if(id === this.currentUserSimpleInfo.currentUserId){
+            return '/PersonalHomePage/Main';
+          }else{
+            return '/OthersHomePage/Main/'+id;
+          }
+        }
+      },
+
       getStrSum(string, a){
         // console.log(string);
         let b = string.indexOf(a);
@@ -1496,6 +1529,8 @@ export default {
                 res.data.user.username;
               this.currentUserSimpleInfo.currentUserAvatar =
                 res.data.user.avatar_url;
+              this.currentUserSimpleInfo.currentUserId = 
+                res.data.user.id;
               break;
             }
             default:
