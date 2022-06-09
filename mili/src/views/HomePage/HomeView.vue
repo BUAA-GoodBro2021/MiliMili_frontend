@@ -29,7 +29,10 @@
               </router-link>
             </div>
             <div class="card" style="background: #307ad5b1">
-              <router-link to="/PersonalInformation" style="text-decoration: none">
+              <router-link
+                to="/PersonalInformation"
+                style="text-decoration: none"
+              >
                 <i class="el-icon-user iconImg" /><span class="text">
                   个人信息</span
                 >
@@ -58,10 +61,7 @@
                 {{ ip.lat + "°N" }}
               </span>
             </div> -->
-            <div
-              class="card"
-              style="background: rgb(230, 180, 80)"
-            >
+            <div class="card" style="background: rgb(230, 180, 80)">
               <router-link to="/history" style="text-decoration: none">
                 <i class="el-icon-folder-opened iconImg" /><span class="text">
                   观看历史</span
@@ -90,6 +90,13 @@
         </div>
       </div>
     </div>
+    <div class="beian_wrap">
+      <router-link to="https://beian.miit.gov.cn" tag="a" target="_blank">
+        <div class="beian_text">京ICP备2022007189号-2</div> Copyright © 2021-2022 Super2021.
+      </router-link>
+      <!-- <div class="beian_text">Copyright © 2021-2022 Super2021.</div> -->
+      <div class="beian_text">All Rights Reserved. Super2021 版权所有</div>
+    </div>
   </div>
 </template>
 <script>
@@ -100,7 +107,7 @@ import DynamicBanner from "@/components/HomePage/DynamicBanner.vue";
 import Header from "@/components/HomePage/HeaderPage.vue";
 import ComplainVideoCard from "../../components/PC/ComplainVideoCard.vue";
 export default {
-  components: { Recommend, Block, DynamicBanner, Header,ComplainVideoCard },
+  components: { Recommend, Block, DynamicBanner, Header, ComplainVideoCard },
   data() {
     return {
       isAdmin: false,
@@ -2525,7 +2532,7 @@ export default {
   width: 100%;
   justify-content: center;
 }
-.homepage_body_content{
+.homepage_body_content {
   width: 1600px;
 }
 
@@ -2602,5 +2609,15 @@ export default {
   color: white;
   font-size: 15px;
   display: block;
+}
+.beian_wrap {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.beian_text {
+  color: grey;
+  margin: 5px 0 5px 0;
+  align-content: center;
 }
 </style>
