@@ -2,7 +2,7 @@
   <div>
     <div class="video_warp">
       <div class="cover_warp">
-        <router-link :to='"/videodetail/"+singleVideo.id' style="text-decoration: none">
+        <router-link :to='"/videodetail/"+singleVideo.id' style="text-decoration: none" tag="a" target="_blank">
           <img
             width="238px"
             height="134px"
@@ -27,7 +27,7 @@
         </router-link>
       </div>
       <div class="title">
-        <router-link :to='"/videodetail/"+singleVideo.id' style="text-decoration: none">
+        <router-link :to='"/videodetail/"+singleVideo.id' style="text-decoration: none" tag="a" target="_blank">
           {{ singleVideo.title | ellipsis }}
         </router-link>
       </div>
@@ -54,20 +54,11 @@ export default {
       type: Object,
       default() {
         return {
-          // id: 1,
-          // watch: 3330,
-          // comments: 2357,
-          // distance: "15:07",
-          // title: "这里是标题",
-          // follow: true,
-          // sender: "Harbour",
-          // video_url: "@/assets/debug/cover1.jepg",
           id: 1,
           view_num: 3330,
           like_num: 2357,
           updated_time: "15:07",
           title: "这里是标题",
-          // follow: true,
           user: {
             username: "harboue",
           },

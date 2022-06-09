@@ -6,7 +6,7 @@
           src="@/assets/logo/logo.png"
           width="150px"
           height="61px"
-          style="margin-right: 190px; margin-left: 100px"
+          style="margin-right: 16vw; margin-left: 100px"
         />
       </router-link>
       <div class="search" v-show="!headerInput">
@@ -47,6 +47,20 @@
           <div
             class="message jump"
             :class="[headerMode ? 'text-transparent' : '']"
+            v-if="isAdmin"
+          >
+            <i
+              class="el-icon-message-solid"
+              :class="[headerMode ? 'text-transparent' : '']"
+            />
+            <span>审核管理</span>
+    
+          </div>
+        </el-menu-item>
+        <el-menu-item index="/PCMessage">
+          <div
+            class="message jump"
+            :class="[headerMode ? 'text-transparent' : '']"
           >
             <i
               class="el-icon-chat-line-round"
@@ -71,7 +85,7 @@
         <el-submenu index="user" class="jump">
           <template slot="title">
             <img class="avatar" /><i
-              class="el-icon-user"
+              class="el-icon-user-solid"
               :class="[headerMode ? 'text-transparent' : '']"
             />
             <span :class="[headerMode ? 'text-transparent' : '']"
@@ -82,9 +96,7 @@
           <el-menu-item index="/PersonalHomePage/Main" v-if="islogin"
             >个人中心</el-menu-item
           >
-          <el-menu-item index="/history" v-if="islogin"
-            >观看历史</el-menu-item
-          >
+          <el-menu-item index="/history" v-if="islogin">观看历史</el-menu-item>
           <el-menu-item index="/ChangePassword" v-if="islogin"
             >修改密码</el-menu-item
           >
@@ -115,6 +127,7 @@ export default {
   },
   data() {
     return {
+      isAdmin: false,
       inputContext: "",
       islogin: localStorage.getItem("loginMessage") != null,
       notRead: true,
@@ -162,25 +175,37 @@ export default {
           this.history_list = res.data.history;
         }
         this.notRead = res.data.not_read;
-        console.log('是否含有未读消息:'+res.data.not_read)
+        console.log("是否含有未读消息:" + res.data.not_read);
       });
     },
   },
   watch: {
     headerMode(newName, oldName) {
       console.log(oldName + "->" + newName);
-      console.log(this.$route.name)
+      console.log(this.$route.name);
     },
     "$route.name": {
-      handler(){
+      handler() {
         console.log("pageheader route change");
-      this.getHistory();
+        this.getHistory();
       },
       immediate: true,
     },
   },
   created() {
     this.getHistory();
+    if (localStorage.getItem("loginMessage") == null) var jwt = null;
+    else {
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      this.isAdmin = JSON.parse(
+        localStorage.getItem("loginMessage")
+      ).user.isSuperAdmin;
+      console.log(
+        "super" +
+          JSON.parse(localStorage.getItem("loginMessage")).user.isSuperAdmin
+      );
+      console.log(this.isAdmin);
+    }
   },
 };
 </script>

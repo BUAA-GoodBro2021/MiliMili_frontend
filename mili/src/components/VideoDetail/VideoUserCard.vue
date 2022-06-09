@@ -69,6 +69,7 @@ export default {
           is_follow: true,
           followers: 12,
           videos: 23,
+          created_time: '2021-1-30T11'
         };
       },
     },

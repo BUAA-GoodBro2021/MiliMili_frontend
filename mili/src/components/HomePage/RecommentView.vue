@@ -279,7 +279,9 @@ export default {
   },
   methods: {
     toVideo(id) {
-      this.$router.push({ name: "VideoDetail", params: { id: id } });
+      let routeData = this.$router.resolve({name: "VideoDetail", params: { id: id }})
+      window.open(routeData.href,'_blank')
+      //this.$router.push({ name: "VideoDetail", params: { id: id } });
     },
   },
 };
