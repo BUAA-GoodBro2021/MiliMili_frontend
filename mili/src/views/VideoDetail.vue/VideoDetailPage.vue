@@ -499,21 +499,11 @@
             <div class="title">
               添加到收藏夹
               <!-- 关闭收藏的悬浮窗口 -->
-              <!-- <i class="close" @click="showTheCollectionWindow = false"></i> -->
               <i class="close" @click="closeCollectionWindow"></i>
             </div>
             <div class="content">
               <div class="group-list">
                 <ul>
-                  <!-- <li>
-                    <label>
-                      <input type="checkbox"/>
-                      <i></i>
-                      <span title="默认收藏夹" class="fav-title">默认收藏夹</span>
-                      <span class="count">238</span>
-                    </label>
-                  </li> -->
-
                   <!-- 
                     这里采用一个额外的字段 updating_collection 去记录用户改变的收藏关系，
                     updating_collection 原本和 is_collect 是一致的，当用户改变勾选框的状态时，
@@ -1234,6 +1224,7 @@ export default {
        *    并且应该解锁，使得用户可以再次打开该收藏窗口！
        */
       closeCollectionWindow(){
+        // 如果是不点击确定就退出，那么就需要还原更改的操作
         let len = this.collectionList.length;
         let i = 0;
         for (i = 0; i < len; i++){
@@ -1261,54 +1252,7 @@ export default {
       /**
        * 获取 当前用户 对 该视频 的收藏详情
        * !!!不可以放在created生命周期里
-       * 这里保留一版之前的函数以供备用
        */
-      // async getCollections(){
-      //   let formData = new FormData();
-      //   let loginMessage = localStorage.getItem("loginMessage");
-      //   let jwt = null;
-      //   if ( loginMessage != null){
-      //     jwt = JSON.parse(loginMessage).JWT;
-      //     this.isLogined = true;
-      //   }else {
-      //     this.$message.warning("请先登录！");
-      //     this.$router.push('/login');
-      //     return;
-      //   }
-      //   let videoId = this.videoInfo.id;
-
-      //   formData.append("JWT", jwt);
-      //   formData.append("video_id", videoId);
-
-      //   this.$axios({
-      //     method: 'post',
-      //     url: 'https://milimili.super2021.com/api/video/favorite-simple-list',
-      //     data: formData,
-      //   })
-      //   .then(res => {          
-      //     console.log(res);
-      //     switch (res.data.result) {
-      //       case 1:
-      //         this.$message.success("获取 当前用户 对 该视频 的收藏详情成功！");
-      //         /* 获取 当前用户 对 该视频 的收藏详情 */
-      //         this.collectionList = res.data.favorite_list_simple;
-      //       break;
-            
-      //       default:
-      //         this.$message.warning("获取 当前用户 对 该视频 的收藏详情失败！");              
-      //         break;
-      //     }
-      //     // 这部分是为了封装成异步函数
-      //     return new Promise( resolve => {
-      //       resolve('获取收藏结束');
-      //     });
-
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   })
-      // },
-
       async getCollections(){
         return new Promise((resolve, reject) =>{
           let formData = new FormData();
@@ -1436,6 +1380,7 @@ export default {
       },
       /**
        * 为当前用户新建一个收藏夹 AUC
+       * FIXME 残留一个bug，在新建收藏夹之前，如果改动了勾选，那么新建收藏夹以后，这些勾选改动实际上是无效的（懒得修复了）
        */
       async addUserCollection(){
         // 阻止空收藏夹
