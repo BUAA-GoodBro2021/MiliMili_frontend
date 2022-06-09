@@ -19,7 +19,7 @@
     <div v-if="videos.length != 0">
       <!-- 加不加推荐的走马灯呢 -->
       <div class="title_wrap">
-        <span class="title1">{{ blockName }}</span>
+        <span class="title1">{{ id2block($route.params.blockid) }}</span>
 
         <span class="title_sub">排行榜</span>
         <div class="title_divide">
@@ -52,7 +52,7 @@
       </div>
 
       <div class="title_wrap">
-        <span class="title1">{{ blockName }}</span>
+        <span class="title1">{{ id2block($route.params.blockid)}}</span>
         <span class="title_sub">推荐</span>
       </div>
       <div>
@@ -60,7 +60,7 @@
       </div>
     </div>
     <div class="title_wrap">
-      <span class="title1">{{ blockName }}</span>
+      <span class="title1">{{ id2block($route.params.blockid) }}</span>
       <span class="title_sub">视频合集</span>
     </div>
     <div class="videos">
@@ -80,6 +80,7 @@ import DynamicBanner from "@/components/HomePage/DynamicBanner.vue";
 import Header from "@/components/HomePage/HeaderPage.vue";
 import Sort from "@/components/HomePage/SortView.vue";
 import Video from "@/components/VideoDetail/VideoCover.vue";
+import qs from "qs";
 export default {
   components: { Recommend, DynamicBanner, Header, Sort, Video },
   data() {
@@ -583,421 +584,69 @@ export default {
           index_list: [0, 1],
         },
       ],
-      sortedVideos1: [
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 1,
-          collect_num: 1,
-          view_num: 0,
-          zone: "科技",
-          tag_list: [],
-          user: {
-            id: 20,
-            username: "super2021",
-            email: "2868470542@qq.com",
-            nickname: "Super2021!",
-            sex: "男",
-            signature: "Super2021 超乎你的想象!",
-            birthday: "2002-08-06",
-            location: "北京",
-            video_num: 11,
-            like_num: 1,
-            collect_num: 1,
-            favorite_num: 2,
-            fan_num: 0,
-            follow_num: 1,
-            avatar_url:
-              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
-            created_time: "2022-04-11T09:29:13.850Z",
-            updated_time: "2022-05-11T13:23:56.738Z",
-            isSuperAdmin: true,
-          },
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-04-17T07:47:53.970Z",
-          isAudit: 1,
-          need_verify: 0,
-          distance: 11,
-          index_list: [0, 1],
-        },
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 1,
-          collect_num: 1,
-          view_num: 0,
-          zone: "科技",
-          tag_list: [],
-          user: {
-            id: 20,
-            username: "super2021",
-            email: "2868470542@qq.com",
-            nickname: "Super2021!",
-            sex: "男",
-            signature: "Super2021 超乎你的想象!",
-            birthday: "2002-08-06",
-            location: "北京",
-            video_num: 11,
-            like_num: 1,
-            collect_num: 1,
-            favorite_num: 2,
-            fan_num: 0,
-            follow_num: 1,
-            avatar_url:
-              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
-            created_time: "2022-04-11T09:29:13.850Z",
-            updated_time: "2022-05-11T13:23:56.738Z",
-            isSuperAdmin: true,
-          },
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-04-17T07:47:53.970Z",
-          isAudit: 1,
-          need_verify: 0,
-          distance: 11,
-          index_list: [0, 1],
-        },
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 1,
-          collect_num: 1,
-          view_num: 0,
-          zone: "科技",
-          tag_list: [],
-          user: {
-            id: 20,
-            username: "super2021",
-            email: "2868470542@qq.com",
-            nickname: "Super2021!",
-            sex: "男",
-            signature: "Super2021 超乎你的想象!",
-            birthday: "2002-08-06",
-            location: "北京",
-            video_num: 11,
-            like_num: 1,
-            collect_num: 1,
-            favorite_num: 2,
-            fan_num: 0,
-            follow_num: 1,
-            avatar_url:
-              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
-            created_time: "2022-04-11T09:29:13.850Z",
-            updated_time: "2022-05-11T13:23:56.738Z",
-            isSuperAdmin: true,
-          },
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-04-17T07:47:53.970Z",
-          isAudit: 1,
-          need_verify: 0,
-          distance: 11,
-          index_list: [0, 1],
-        },
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 1,
-          collect_num: 1,
-          view_num: 0,
-          zone: "科技",
-          tag_list: [],
-          user: {
-            id: 20,
-            username: "super2021",
-            email: "2868470542@qq.com",
-            nickname: "Super2021!",
-            sex: "男",
-            signature: "Super2021 超乎你的想象!",
-            birthday: "2002-08-06",
-            location: "北京",
-            video_num: 11,
-            like_num: 1,
-            collect_num: 1,
-            favorite_num: 2,
-            fan_num: 0,
-            follow_num: 1,
-            avatar_url:
-              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
-            created_time: "2022-04-11T09:29:13.850Z",
-            updated_time: "2022-05-11T13:23:56.738Z",
-            isSuperAdmin: true,
-          },
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-04-17T07:47:53.970Z",
-          isAudit: 1,
-          need_verify: 0,
-          distance: 11,
-          index_list: [0, 1],
-        },
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 1,
-          collect_num: 1,
-          view_num: 0,
-          zone: "科技",
-          tag_list: [],
-          user: {
-            id: 20,
-            username: "super2021",
-            email: "2868470542@qq.com",
-            nickname: "Super2021!",
-            sex: "男",
-            signature: "Super2021 超乎你的想象!",
-            birthday: "2002-08-06",
-            location: "北京",
-            video_num: 11,
-            like_num: 1,
-            collect_num: 1,
-            favorite_num: 2,
-            fan_num: 0,
-            follow_num: 1,
-            avatar_url:
-              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
-            created_time: "2022-04-11T09:29:13.850Z",
-            updated_time: "2022-05-11T13:23:56.738Z",
-            isSuperAdmin: true,
-          },
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-04-17T07:47:53.970Z",
-          isAudit: 1,
-          need_verify: 0,
-          distance: 11,
-          index_list: [0, 1],
-        },
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 1,
-          collect_num: 1,
-          view_num: 0,
-          zone: "科技",
-          tag_list: [],
-          user: {
-            id: 20,
-            username: "super2021",
-            email: "2868470542@qq.com",
-            nickname: "Super2021!",
-            sex: "男",
-            signature: "Super2021 超乎你的想象!",
-            birthday: "2002-08-06",
-            location: "北京",
-            video_num: 11,
-            like_num: 1,
-            collect_num: 1,
-            favorite_num: 2,
-            fan_num: 0,
-            follow_num: 1,
-            avatar_url:
-              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
-            created_time: "2022-04-11T09:29:13.850Z",
-            updated_time: "2022-05-11T13:23:56.738Z",
-            isSuperAdmin: true,
-          },
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-04-17T07:47:53.970Z",
-          isAudit: 1,
-          need_verify: 0,
-          distance: 11,
-          index_list: [0, 1],
-        },
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 1,
-          collect_num: 1,
-          view_num: 0,
-          zone: "科技",
-          tag_list: [],
-          user: {
-            id: 20,
-            username: "super2021",
-            email: "2868470542@qq.com",
-            nickname: "Super2021!",
-            sex: "男",
-            signature: "Super2021 超乎你的想象!",
-            birthday: "2002-08-06",
-            location: "北京",
-            video_num: 11,
-            like_num: 1,
-            collect_num: 1,
-            favorite_num: 2,
-            fan_num: 0,
-            follow_num: 1,
-            avatar_url:
-              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
-            created_time: "2022-04-11T09:29:13.850Z",
-            updated_time: "2022-05-11T13:23:56.738Z",
-            isSuperAdmin: true,
-          },
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-04-17T07:47:53.970Z",
-          isAudit: 1,
-          need_verify: 0,
-          distance: 11,
-          index_list: [0, 1],
-        },
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 1,
-          collect_num: 1,
-          view_num: 0,
-          zone: "科技",
-          tag_list: [],
-          user: {
-            id: 20,
-            username: "super2021",
-            email: "2868470542@qq.com",
-            nickname: "Super2021!",
-            sex: "男",
-            signature: "Super2021 超乎你的想象!",
-            birthday: "2002-08-06",
-            location: "北京",
-            video_num: 11,
-            like_num: 1,
-            collect_num: 1,
-            favorite_num: 2,
-            fan_num: 0,
-            follow_num: 1,
-            avatar_url:
-              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
-            created_time: "2022-04-11T09:29:13.850Z",
-            updated_time: "2022-05-11T13:23:56.738Z",
-            isSuperAdmin: true,
-          },
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-04-17T07:47:53.970Z",
-          isAudit: 1,
-          need_verify: 0,
-          distance: 11,
-          index_list: [0, 1],
-        },
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 1,
-          collect_num: 1,
-          view_num: 0,
-          zone: "科技",
-          tag_list: [],
-          user: {
-            id: 20,
-            username: "super2021",
-            email: "2868470542@qq.com",
-            nickname: "Super2021!",
-            sex: "男",
-            signature: "Super2021 超乎你的想象!",
-            birthday: "2002-08-06",
-            location: "北京",
-            video_num: 11,
-            like_num: 1,
-            collect_num: 1,
-            favorite_num: 2,
-            fan_num: 0,
-            follow_num: 1,
-            avatar_url:
-              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
-            created_time: "2022-04-11T09:29:13.850Z",
-            updated_time: "2022-05-11T13:23:56.738Z",
-            isSuperAdmin: true,
-          },
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-04-17T07:47:53.970Z",
-          isAudit: 1,
-          need_verify: 0,
-          distance: 11,
-          index_list: [0, 1],
-        },
-        {
-          id: 11,
-          title: "元宇宙下的长沙，科技感爆棚！",
-          description: "在元宇宙下看长沙",
-          video_url:
-            "https://video-1309504341.cos.ap-beijing.myqcloud.com/11.mp4",
-          avatar_url:
-            "https://cover-1309504341.cos.ap-beijing.myqcloud.com/11.png",
-          like_num: 1,
-          collect_num: 1,
-          view_num: 0,
-          zone: "科技",
-          tag_list: [],
-          user: {
-            id: 20,
-            username: "super2021",
-            email: "2868470542@qq.com",
-            nickname: "Super2021!",
-            sex: "男",
-            signature: "Super2021 超乎你的想象!",
-            birthday: "2002-08-06",
-            location: "北京",
-            video_num: 11,
-            like_num: 1,
-            collect_num: 1,
-            favorite_num: 2,
-            fan_num: 0,
-            follow_num: 1,
-            avatar_url:
-              "https://avatar-1309504341.cos.ap-beijing.myqcloud.com/20.png",
-            created_time: "2022-04-11T09:29:13.850Z",
-            updated_time: "2022-05-11T13:23:56.738Z",
-            isSuperAdmin: true,
-          },
-          created_time: "2022-04-15T08:15:36.662Z",
-          updated_time: "2022-04-17T07:47:53.970Z",
-          isAudit: 1,
-          need_verify: 0,
-          distance: 11,
-          index_list: [0, 1],
-        },
-      ],
+      sortedVideos1: [],
       sortedVideos2: [],
       sortedVideos3: [],
+       zone_list: [
+        {
+            "id": 1,
+            "zone": "鬼畜"
+        },
+        {
+            "id": 2,
+            "zone": "科技"
+        },
+        {
+            "id": 3,
+            "zone": "户外"
+        },
+        {
+            "id": 4,
+            "zone": "动漫"
+        },
+        {
+            "id": 5,
+            "zone": "影视"
+        },
+        {
+            "id": 6,
+            "zone": "音乐"
+        },
+        {
+            "id": 7,
+            "zone": "汽车"
+        },
+        {
+            "id": 8,
+            "zone": "教育"
+        },
+        {
+            "id": 9,
+            "zone": "游戏"
+        },
+        {
+            "id": 10,
+            "zone": "时事"
+        },
+        {
+            "id": 11,
+            "zone": "生活"
+        },
+        {
+            "id": 12,
+            "zone": "军事"
+        }
+    ],
     };
+  },
+  filters: {
+    ellipsis(value) {
+      if (!value) return "";
+      if (value.length > 10) {
+        return value.slice(0, 10) + "...";
+      }
+      return value;
+    },
   },
   methods: {
     handleScroll: function () {
@@ -1009,12 +658,53 @@ export default {
         this.headMode = true;
       } else this.headMode = false;
     },
+    id2block(id) {
+      for (var item in this.zone_list) {
+        //console.log(item)
+        if (this.zone_list[item].id == id) return this.zone_list[item].zone;
+      }
+    },
     changeContent() {
       this.changeType = !this.changeType;
     },
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
+    console.log(this.$route.params.blockid);
+    var id = this.$route.params.blockid;
+    if (localStorage.getItem("loginMessage") != null)
+      var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+    else var jwt = null;
+    this.$axios({
+      method: "post",
+      url: "/index/zone/" + id,
+      data: qs.stringify({
+        JWT: jwt,
+      }),
+    })
+      .then((res) => {
+        console.log("分区");
+        console.log(res);
+        if (res.data.result == 1) {
+          this.sortedVideos1 = res.data.view_rank_list
+          this.sortedVideos2 = res.data.like_rank_list
+          this.sortedVideos3 = res.data.collect_rank_list
+          this.recommendVideos = res.data.random_list
+          this.videos = res.data.all_list
+          //this.users = res.data.follow_list;
+        } else {
+          this.$message({
+            type: "error",
+            message: res.data.message,
+          });
+        }
+      })
+      .catch((err) => {
+        this.$message({
+          type: "error",
+          message: "网络出错QAQ",
+        });
+      });
   },
 };
 </script>
@@ -1083,12 +773,12 @@ export default {
   margin-right: 20px;
 }
 .sort_wrap {
-  height: auto;
+  height: 500px;
   width: 100%;
 }
 .sorts {
   display: flex;
-  height: auto;
+  height: 500px;
   width: 95%;
   justify-content: space-around;
   margin: 20px 2.5% 20px 2.5%;

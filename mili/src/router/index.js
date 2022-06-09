@@ -6,6 +6,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    /* redirect 重定向 
+      执行/根目录路由地址时，就跳转执行/homepage路由地址 ，进而把对应的组件给显示出来。*/
     redirect: '/homepage',
     component: () => import('../views/HomePage/HeadView.vue'),
     children: [
@@ -89,6 +91,16 @@ const routes = [
           component: () => import('../components/PC/PCMessage.vue'),
           hidden: true
         }]
+      },
+      {
+        path: '/admin',
+        name: 'AdminPage',
+        component: () => import('../views/admin/CheckVideo.vue'),
+      },
+      {
+        path: '/videodetail/:id',
+        name: 'VideoDetail',
+        component: () => import('../views/VideoDetail.vue/VideoDetailPage.vue'),
       },
       //在这里填写的路由都将获得不透明header
     ]

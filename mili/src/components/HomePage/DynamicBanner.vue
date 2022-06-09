@@ -156,7 +156,7 @@ export default {
     },
     async makeBlink(){
       // this.animateGirl = this.$refs.animateGirl;
-      console.log('animationGirl is:', this.animateGirl);
+     // console.log('animationGirl is:', this.animateGirl);
       if (this.animateGirl) {
         // console.log('???');
         const img = this.animateGirl.childNodes[0];

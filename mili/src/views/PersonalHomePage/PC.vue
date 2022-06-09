@@ -1,5 +1,5 @@
 <template>
-  <div id="body">
+  <div id="PC_main">
     <el-container>
       <el-aside width="20vw">
         <div style="text-align: left">
@@ -86,7 +86,13 @@ export default {
 
 <style scoped>
 /* 内外边距清零 */
-
+#PC_main {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 
 ::v-deep .el-aside {
   height: 89vh;
@@ -152,8 +158,7 @@ export default {
   color: #46c1fa;
 }
 
-
-#body {
+#PC_main {
   background-image: url("../../assets/PCM/BG16.webp"); /*68 12*/
   background-repeat: no-repeat;
   background-attachment: fixed;

@@ -6,7 +6,7 @@
     <div class="list_wrap">
       <PersonList
         :users="users"
-        :listType="3"
+        :listType="4"
         :pageSize="3"
         v-on:cancelfollow="cancelfollow"
       />
