@@ -26,6 +26,46 @@
               />
             </video>
           </div>
+          <div class="dialogbox">
+            <el-dialog
+              title="跟对方的悄悄话呦"
+              :visible.sync="dialogVisible"
+              width="30%"
+            >
+              <div class="input-group" id="UTBox">
+                <div>
+                  <h5 v-if="ffUT">标题</h5>
+                  <input
+                    type="text"
+                    placeholder="标题"
+                    class="input"
+                    id="Utitle"
+                    v-model="title"
+                    @focus="focusFuncUT"
+                    @on-blur="blurFuncUT"
+                  />
+                </div>
+              </div>
+              <div class="areabox">
+                <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 4, maxRows: 10 }"
+                  placeholder="大人要对ta说点什么呢~"
+                  v-model="content"
+                  class="input-textarea"
+                >
+                </el-input>
+              </div>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="cancelsend" class="dialogbtn"
+                  >退 出</el-button
+                >
+                <el-button @click="sendmsg" class="dialogbtn">
+                  发 送
+                </el-button>
+              </span>
+            </el-dialog>
+          </div>
           <el-menu
             :default-active="activeIndex"
             class="el-menu-demo mmenu"
@@ -63,7 +103,7 @@
                   class="menubox loginbox"
                   v-if="is_follow == -1"
                   style="margin-left: 3.1vw"
-                  > 登录</a
+                  > 登录</a
                 >
                 <span class="menubox msgbox" v-if="is_follow == -1"
                   >&nbsp;&nbsp;&nbsp;</span
@@ -72,11 +112,19 @@
                   class="menubox flwbox"
                   v-if="is_follow == 0"
                   @click="follow_up"
-                  > 关注</span
+                  > 关注</span
                 >
-                <span class="menubox flwbox" v-if="is_follow == 1"> 取关</span>
-                <span class="menubox msgbox" v-if="is_follow != -1"
-                  > 私信</span
+                <span
+                  class="menubox flwbox"
+                  v-if="is_follow == 1"
+                  @click="unfollow_up"
+                  > 取关</span
+                >
+                <span
+                  class="menubox msgbox"
+                  v-if="is_follow != -1"
+                  @click="dialogVisible = true"
+                  > 私信</span
                 >
               </div>
             </div>
@@ -145,9 +193,70 @@ export default {
       id: this.$route.params.id,
       seen: false,
       is_follow: 0,
+      dialogVisible: false,
+      title: "你收到了一条私信，请注意查收~",
+      content: "",
+      ffUT: false,
     };
   },
   methods: {
+    cancelsend() {
+      this.dialogVisible = false;
+      this.title = "你收到了一条私信，请注意查收~";
+      this.content = "";
+    },
+    sendmsg() {
+      var id = this.$route.params.id;
+      var that = this;
+      console.log(this.title);
+      console.log(this.content);
+      if (that.content != "") {
+        this.$axios({
+          method: "post",
+          url: "https://milimili.super2021.com/api/sending/message/send-message",
+          headers: {
+            "content-type": "application/x-www-form-urlencoded",
+          },
+          data: qs.stringify({
+            JWT: that.jwt,
+            title: that.title,
+            content: that.content,
+            send_user_id: id,
+          }),
+        })
+          .then((res) => {
+            console.log(res);
+            console.log("send!");
+            this.$message("发送成功");
+            that.dialogVisible = false;
+          })
+          .catch((err) => {
+            console.log(err);
+            this.$message("发送失败");
+          });
+      } else {
+        this.$message("请输入内容");
+      }
+    },
+    blurFuncUT() {
+      var x = document.getElementById("UTBox");
+      if (document.getElementById("Utitle").value == "") {
+        x.classList.remove("focus");
+        this.ffUT = false;
+      }
+    },
+    focusFuncUT() {
+      var x = document.getElementById("UTBox");
+      x.classList.add("focus");
+      this.ffUT = true;
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
     enterava() {
       this.seen = true;
     },
@@ -208,27 +317,52 @@ export default {
   created() {
     var id = this.$route.params.id;
     var that = this;
-    this.$axios({
-      method: "post",
-      url: "https://milimili.super2021.com/api/user/up-all-list",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded",
-      },
-      data: qs.stringify({
-        up_user_id: id,
-      }),
-    })
-      .then((res) => {
-        console.log("user");
-        console.log(res);
-        console.log(res.data.user);
-        that.user = res.data.user;
-        that.is_follow = res.data.is_follow;
-        console.log(res.data.is_follow);
+    if (this.$route.params.id == null) {
+      this.$axios({
+        method: "post",
+        url: "https://milimili.super2021.com/api/user/up-all-list",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        data: qs.stringify({
+          up_user_id: id,
+        }),
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          console.log("user");
+          console.log(res);
+          console.log(res.data.user);
+          that.user = res.data.user;
+          that.is_follow = res.data.is_follow;
+          console.log(res.data.is_follow);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      this.$axios({
+        method: "post",
+        url: "https://milimili.super2021.com/api/user/up-all-list",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        data: qs.stringify({
+          up_user_id: id,
+          JWT: that.jwt,
+        }),
+      })
+        .then((res) => {
+          console.log("user");
+          console.log(res);
+          console.log(res.data.user);
+          that.user = res.data.user;
+          that.is_follow = res.data.is_follow;
+          console.log(res.data.is_follow);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
   mounted: function () {
     //屏幕自适应
@@ -378,6 +512,22 @@ body {
 }
 .icomoon {
   font-family: icomoon;
+}
+.input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0.5vw;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0.5vh 0.5vw;
+  color: #3f3f3f;
+  font-size: 2vh;
+  font-weight: 900;
+  height: 4vh;
+  font-family: "Roboto", sans-serif;
 }
 .el-header {
   width: 100%;
@@ -609,5 +759,87 @@ body {
 }
 .loginbox:hover {
   color: #b3b3b3;
+}
+
+.dialogbox {
+  margin-top: 40vh;
+}
+.input-group {
+  position: relative;
+  margin: 1vw 0;
+  padding: 1vh 0;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+.input-group:nth-child(1) {
+  margin-bottom: 1vh;
+}
+.input-group:before,
+.input-group:after {
+  content: "";
+  position: absolute;
+  bottom: -0.2vh;
+  width: 0;
+  height: 0.15vh;
+  background-color: #38ced3;
+  transition: 0.3s;
+}
+.input-group:after {
+  right: 50%;
+}
+.input-group:before {
+  left: 50%;
+}
+
+.input-group > div {
+  position: relative;
+  height: 4vh;
+}
+.input-group > div > h5 {
+  position: absolute;
+  left: 1vw;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #d9d9d9;
+  font-size: 2vh;
+  transition: 0.3s;
+}
+
+.input-group.focus div h5 {
+  top: -0.5vh;
+  font-size: 1.5vh;
+}
+.input-group.focus:after,
+.input-group.focus:before {
+  width: 50%;
+}
+
+.areabox {
+  margin-top: 2vh;
+}
+.input-textarea {
+  height: 78%;
+  width: 99%;
+  resize: none;
+  padding: 5px;
+}
+
+::v-deep .el-textarea__inner:focus {
+  background-color: transparent !important;
+  border: 1.5px solid #38ced3;
+}
+::v-deep textarea::-webkit-input-placeholder {
+  color: #0f0f0f;
+}
+
+.dialogbtn {
+  height: 4vh;
+  width: 4vw;
+}
+.el-button:focus,
+.el-button:hover {
+  color: #32ced3;
+  border-color: #dcfffcc9;
+  background-color: #ecf5ff;
 }
 </style>
