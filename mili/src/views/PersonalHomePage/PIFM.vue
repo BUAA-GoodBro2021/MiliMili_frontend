@@ -1,71 +1,97 @@
 <template>
-    <div id="PIFM_main">
-      <div class="bbgg"></div>
-  <div id="body">
-    <div class="container">
-      <div class="message_box">
-        <form action="">
-          <el-avatar
-            :size="60"
-            :src="form.user.avatar_url"
-            class="Ava"
-          ></el-avatar>
-          <div class="changeAvatar" >
-            <div>
-              <el-upload
-               ref="upload"
-               class="upload-demo"
-               action="https://milimili.super2021.com/api/user/upload-avatar"
-               :show-file-list="false"
-               
-               list-type="picture-card"
-               :on-change="handlePictureCardPreview"     
-               :on-remove="handleRemove"  
-               
-               :http-request="submitAvatarHttp"
-               accept=".jpg"
-              >
-              <i class="el-icon-refresh change_icon" />
-              <!-- <input type="text" placeholder="头像" class="input" id="Uavatar"  @focus="focusFuncUA" @on-blur="blurFuncUA"/> -->
-              </el-upload>
+  <div id="PIFM_main">
+    <div class="bbgg"></div>
+    <div id="body">
+      <div class="container">
+        <div class="message_box">
+          <form action="">
+            <el-avatar
+              :size="60"
+              :src="form.user.avatar_url"
+              class="Ava"
+            ></el-avatar>
+            <div class="changeAvatar">
+              <div>
+                <el-upload
+                  ref="upload"
+                  class="upload-demo"
+                  action="https://milimili.super2021.com/api/user/upload-avatar"
+                  :show-file-list="false"
+                  list-type="picture-card"
+                  :on-change="handlePictureCardPreview"
+                  :on-remove="handleRemove"
+                  :http-request="submitAvatarHttp"
+                  accept=".jpg"
+                >
+                  <i class="el-icon-refresh change_icon" />
+                  <!-- <input type="text" placeholder="头像" class="input" id="Uavatar"  @focus="focusFuncUA" @on-blur="blurFuncUA"/> -->
+                </el-upload>
+              </div>
             </div>
-          </div>
-          <h2>MiliMili</h2>
-          <div class="input-group" id="UNBox">
-            <div>
-              <h5 v-if="ffUN">usrname</h5>
-              <input type="text" class="input" id="Uname" v-model="form.user.username" @focus="focusFuncUN" @blur="blurFuncUN"/>
+            <h2>MiliMili</h2>
+            <div class="input-group" id="UNBox">
+              <div>
+                <h5 v-if="ffUN">usrname</h5>
+                <input
+                  type="text"
+                  class="input"
+                  id="Uname"
+                  v-model="form.user.username"
+                  @focus="focusFuncUN"
+                  @blur="blurFuncUN"
+                />
+              </div>
             </div>
-          </div>
-          <div class="input-group" id="USBox">
-            <div>
-              <h5 v-if="ffUS">signature</h5>
-              <input type="text"  placeholder="设置您的签名- ( ゜- ゜)つロ" class="input" id="Usign" v-model="form.user.signature" @focus="focusFuncUS" @on-blur="blurFuncUS"/>
+            <div class="input-group" id="USBox">
+              <div>
+                <h5 v-if="ffUS">signature</h5>
+                <input
+                  type="text"
+                  placeholder="设置您的签名- ( ゜- ゜)つロ"
+                  class="input"
+                  id="Usign"
+                  v-model="form.user.signature"
+                  @focus="focusFuncUS"
+                  @on-blur="blurFuncUS"
+                />
+              </div>
             </div>
-          </div>
-          <div class="input-group" id="UXBox">
-            <div>
-              <h5 v-if="ffUX">sex</h5>
-              <input type="text" placeholder="性别" class="input" id="Usex" v-model="form.user.sex" @focus="focusFuncUX" @on-blur="blurFuncUX"/>
+            <div class="input-group" id="UXBox">
+              <div class="sexbox">
+                <el-radio v-model="form.user.sex" label="男">男</el-radio>
+                <el-radio v-model="form.user.sex" label="女" class="female"
+                  >女</el-radio
+                >
+                <el-radio v-model="form.user.sex" label="秘密" class="female"
+                  >秘密</el-radio
+                >
+              </div>
             </div>
-          </div>
-          <div class="input-group" id="UDBox">
-            <div style="height: 5.3vh" v-show="ffUD">
-              <h5 v-if="ffUD">birthday</h5>
-              <el-date-picker
-              type="date"
-              placeholder="选择日期"
-              v-model="form.user.birthday"
-              style="width: 100%; "
-              class="DateBox"
-            ></el-date-picker>
+            <div class="input-group" id="UDBox">
+              <div style="height: 5.3vh" v-show="ffUD">
+                <h5 v-if="ffUD">birthday</h5>
+                <el-date-picker
+                  type="date"
+                  placeholder="选择日期"
+                  v-model="form.user.birthday"
+                  style="width: 100%"
+                  class="DateBox"
+                ></el-date-picker>
+              </div>
+              <div v-show="!ffUD">
+                <h5 v-if="ffUD">birthday</h5>
+                <input
+                  type="text"
+                  placeholder="您的降生之日哦！"
+                  class="input"
+                  id="Udate"
+                  v-model="form.user.birthday.split('T')[0]"
+                  @focus="focusFuncUD"
+                  @on-blur="blurFuncUD"
+                />
+              </div>
             </div>
-            <div v-show="!ffUD">
-              <h5 v-if="ffUD">birthday</h5>
-              <input type="text" placeholder="您的降生之日哦！" class="input" id="Udate" v-model="form.user.birthday.split('T')[0]" @focus="focusFuncUD" @on-blur="blurFuncUD"/>
-            </div>
-          </div>
-          <!-- <div class="input-group" id="UABox">
+            <!-- <div class="input-group" id="UABox">
             <div>
               <h5 v-if="ffUA">avatar</h5>
               <el-upload
@@ -82,10 +108,15 @@
               </el-upload>
             </div>
           </div> -->
-          <input type="submit"  class="btn" value="submit" @click="onSubmit()" />
-        </form>
+            <input
+              type="submit"
+              class="btn"
+              value="submit"
+              @click="onSubmit()"
+            />
+          </form>
+        </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -516,5 +547,12 @@ a:hover {
   position: relative;
   top: 0.6vh;
   border: none;
+}
+.sexbox {
+  position: relative;
+  left: -4vw;
+}
+.female {
+  margin-left: 1vw;
 }
 </style>
