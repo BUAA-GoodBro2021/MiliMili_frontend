@@ -46,8 +46,9 @@
                       <a :href="itemP.video_url" v-text="itemP.title" class="favPB"></a>
                     </el-dropdown-item>
                   </el-dropdown-menu>
-                </el-dropdown>
-              </div>
+                </el-dropdown> 
+                </div>
+                <el-button type="warning" plain class="delstar" @click="deldir(item.favorite_list_detail.id)">删除收藏夹</el-button><!--挪下去&click没写-->
             </div>
         </div>
         </div>
@@ -102,6 +103,27 @@ export default {
   methods: {
     handleCommand(command) {
       this.$message("click on item " + command);
+    },
+    deldir(starid) {
+      var that = this;
+      this.$axios({
+        method: "post",
+        url: "https://milimili.super2021.com/api/video/del-favorite",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        data: qs.stringify({
+          JWT: that.jwt,
+          favorite_id: starid,
+        }),
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      location.reload();
     },
   },
   components: { Video },
@@ -339,10 +361,6 @@ body {
 .fevBox {
   margin-top: 2vh;
 }
-.el-dropdown-link {
-  cursor: pointer;
-  color: #409eff;
-}
 .el-icon-arrow-down {
   font-size: 12px;
 }
@@ -371,5 +389,27 @@ body {
 }
 .favPBBox:hover {
   background-color: #fff;
+}
+
+.delstar {
+  position: absolute;
+  top: 30vh;
+  color: #666;
+  background-color: #ffedb3;
+  border: #fad046 1px solid;
+  border-radius: 1vh;
+  width: 7vw;
+  height: 4.3vh;
+  text-align: center;
+  line-height: 4.3vh;
+  margin-top: -10.2vh;
+  margin-left: 6vw;
+  transition: 0.2s;
+}
+.delstar:hover {
+  color: rgb(163, 163, 163);
+  background-color: #ffedb3;
+  border: #fad046 1px solid;
+  border-radius: 1vh;
 }
 </style>

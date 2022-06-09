@@ -5,15 +5,15 @@
         <div>
           <div class="TabTitle"><span>回复我的</span></div>
         </div>
-        <div class="empty" v-if="replys.length == 0">
+        <div class="empty" v-if="replayss.length == 0">
           <span class="empty_title"> 空空如也QAQ</span>
         </div>
         <div
           style="height: 2vh; width: 100%; backgroung-color: transparent"
         ></div>
-        <div class="mm" v-if="replys.length != 0">
+        <div class="mm" v-if="replayss.length != 0">
           <div
-            v-for="(item, index) in replysSelected"
+            v-for="(item, index) in replayssSelected"
             :key="index"
             style="margin-left: 10px; margin-top: 10px"
           >
@@ -26,11 +26,11 @@
           <el-pagination
             hide-on-single-page
             background
-            :page-size="pageSizereplys"
+            :page-size="pageSizereplayss"
             :page-sizes="[1, 2, 3, 4, 5]"
             layout="prev ,next"
-            :total="replys.length"
-            @current-change="topicInitreplys"
+            :total="replayss.length"
+            @current-change="topicInitreplayss"
             small
           />
         </div>
@@ -152,6 +152,7 @@
             v-for="(item, index) in messagesSelected"
             :key="index"
             style="margin-left: 10px; margin-top: 10px"
+            @click="open(item)"
           >
             <div class="mmm">
               <MsgBox :msg="item" />
@@ -233,7 +234,7 @@ export default {
           },
         },
       ],
-      replys: [
+      replayss: [
         {
           id: 199,
           title: "用户个人信息修改成功！",
@@ -343,19 +344,20 @@ export default {
       ],
       jwt: JSON.parse(localStorage.getItem("loginMessage")).JWT,
       commentsSelected: [],
-      replysSelected: [],
+      replayssSelected: [],
       likesSelected: [],
       collectsSelected: [],
       sysmsgSelected: [],
       messagesSelected: [],
       fansSelected: [],
       pageSizecomments: 5,
-      pageSizereplys: 5,
+      pageSizereplayss: 5,
       pageSizelikes: 5,
       pageSizecollects: 5,
       pageSizesysmsg: 5,
       pageSizemessages: 5,
       pageSizefans: 5,
+      centerDialogVisible: false,
     };
   },
   created() {
@@ -373,7 +375,7 @@ export default {
       .then((res) => {
         console.log(res);
         console.log(res.data);
-        that.replys = res.data.message_reply;
+        that.replayss = res.data.message_reply;
         that.likes = res.data.message_like;
         that.collects = res.data.message_collect;
         that.sysmsg = res.data.message_sys;
@@ -388,11 +390,35 @@ export default {
   },
   components: { MsgBox },
   methods: {
-    topicInitreplys: function (page) {
-      if (this.replys.length <= 0) return;
-      this.replysSelected = this.replys.slice(
-        this.pageSizereplys * (page - 1),
-        this.pageSizereplys * page
+    open(item) {
+      this.$alert(item.content, item.title, {
+        confirmButtonText: "朕阅读啦",
+        dangerouslyUseHTMLString: true,
+      });
+      var that = this;
+      this.$axios({
+        method: "post",
+        url: "https://milimili.super2021.com/api/sending/read-message/detail",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+        data: qs.stringify({
+          JWT: that.jwt,
+          message_id: item.id,
+        }),
+      })
+        .then((res) => {
+          console.log("已阅");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    topicInitreplayss: function (page) {
+      if (this.replayss.length <= 0) return;
+      this.replayssSelected = this.replayss.slice(
+        this.pageSizereplayss * (page - 1),
+        this.pageSizereplayss * page
       );
       //console.log(this.pagesize)
       //console.log(this.usersShow)
@@ -444,9 +470,9 @@ export default {
     },
   },
   watch: {
-    replys(newval, oldval) {
-      this.pageSizereplys = 5 < newval.length ? 5 : newval.length;
-      this.topicInitreplys(1);
+    replayss(newval, oldval) {
+      this.pageSizereplayss = 5 < newval.length ? 5 : newval.length;
+      this.topicInitreplayss(1);
     },
     likes(newval, oldval) {
       this.pageSizelikes = 5 < newval.length ? 5 : newval.length;
@@ -457,7 +483,7 @@ export default {
       this.topicInitcollects(1);
     },
     sysmsg(newval, oldval) {
-      this.pageSizesysmsg = 5 < newval.length ? 5 : newvallength;
+      this.pageSizesysmsg = 5 < newval.length ? 5 : newval.length;
       this.topicInitsysmsg(1);
     },
     messages(newval, oldval) {
