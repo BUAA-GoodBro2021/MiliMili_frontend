@@ -184,7 +184,7 @@ export default {
   name: "Video",
   data() {
     return {
-      jwt: JSON.parse(localStorage.getItem("loginMessage")).JWT,
+      jwt: (JSON.parse(localStorage.getItem("loginMessage"))) ? JSON.parse(localStorage.getItem("loginMessage")).JWT : null,
       textarea: "",
       activeIndex: "1",
       user: {},
@@ -264,7 +264,7 @@ export default {
       this.seen = false;
     },
     handleSelect(tab, event) {
-      // console.log(tab, event);
+       console.log(tab, event);
     },
     canplay() {
       this.vedioCanPlay = true;

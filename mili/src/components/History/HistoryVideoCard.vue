@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     toVideo() {
-      this.$router.push('/videodetail/'+video.id)
+      this.$router.push('/videodetail/'+this.video.id)
     },
   },
 };

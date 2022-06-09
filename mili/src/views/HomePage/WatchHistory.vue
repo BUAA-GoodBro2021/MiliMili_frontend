@@ -149,6 +149,8 @@ export default {
   },
   mounted() {
     var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+    this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     this.$axios({
       method: "post",
       data: qs.stringify({
@@ -170,6 +172,7 @@ export default {
             message: res.data.message,
           });
         }
+        this.$showLoading.hide();
       })
       .catch((err) => {
         this.$message({

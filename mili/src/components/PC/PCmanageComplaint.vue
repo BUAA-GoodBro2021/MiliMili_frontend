@@ -161,6 +161,8 @@ export default {
     };
   },
   created() {
+        this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     var that = this;
     this.$axios({
       method: "post",
@@ -173,6 +175,7 @@ export default {
       }),
     })
       .then((res) => {
+        this.$showLoading.hide();
         console.log(res);
         that.VideoArrayAll = res.data.video_complain_list;
         that.VideoArrayAuditing = res.data.video_complaining_list;

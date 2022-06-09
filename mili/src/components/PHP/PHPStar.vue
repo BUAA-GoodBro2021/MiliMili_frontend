@@ -31,8 +31,10 @@
                   <span v-if="!item.favorite_list_detail.isPrivate" class="favMetaCon">公开</span>
                 </div>
               </div>
+              <div style="display: flex; width: 300px; position: relative; margin-top: 20px;">
               <div class="favPlay">
-                <el-dropdown @command="handleCommand" trigger="click">
+                <div class="first">
+                  <el-dropdown @command="handleCommand" trigger="click">
                   <span class="el-dropdown-link">播放
                     <i class="el-icon-arrow-down el-icon--right"></i>
                   </span>
@@ -48,7 +50,14 @@
                   </el-dropdown-menu>
                 </el-dropdown> 
                 </div>
-                <el-button type="warning" plain class="delstar" @click="deldir(item.favorite_list_detail.id)">删除收藏夹</el-button><!--挪下去&click没写-->
+                 
+                   <!-- <el-button type="warning" plain class="delstar" @click="deldir(item.favorite_list_detail.id)">删除</el-button> -->
+                 <!--挪下去&click没写-->
+              </div>
+              <div style="height: 4vh; margin-left: 10px;">
+                 <el-button type="warning" plain class="delstar" @click="deldir(item.favorite_list_detail.id)">删除</el-button>
+              </div>
+              </div>
             </div>
         </div>
         </div>
@@ -368,7 +377,8 @@ body {
   font-size: 12px;
 }
 .favPlay {
-  margin-top: 2vh;
+  
+  margin-right: 0;
   background-color: #ffedb3;
   border: #fad046 1px solid;
   border-radius: 1vh;
@@ -376,6 +386,7 @@ body {
   height: 4vh;
   text-align: center;
   line-height: 4vh;
+  /* display: flex; */
 }
 .el-dropdown-link {
   cursor: pointer;
@@ -396,17 +407,16 @@ body {
 
 .delstar {
   position: absolute;
-  top: 30vh;
   color: #666;
   background-color: #ffedb3;
   border: #fad046 1px solid;
   border-radius: 1vh;
-  width: 7vw;
+  width: 5vw;
   height: 4.3vh;
   text-align: center;
   line-height: 4.3vh;
-  margin-top: -10.2vh;
-  margin-left: 6vw;
+  /* margin-top: -10.2vh; */
+  /* margin-left: 6vw; */
   transition: 0.2s;
 }
 .delstar:hover {

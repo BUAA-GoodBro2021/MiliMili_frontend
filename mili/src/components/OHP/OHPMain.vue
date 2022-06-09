@@ -98,7 +98,7 @@ import qs from "qs";
 export default {
   data() {
     return {
-      jwt: JSON.parse(localStorage.getItem("loginMessage")).JWT,
+      jwt:  (localStorage.getItem("loginMessage")) ? JSON.parse(localStorage.getItem("loginMessage")).JWT : null,
       VideoArray: [],
       len: 0,
       user: {},
