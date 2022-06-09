@@ -91,9 +91,9 @@
       </div>
     </div>
     <div class="beian_wrap">
-      <router-link to="https://beian.miit.gov.cn" tag="a" target="_blank">
-        <div class="beian_text">京ICP备2022007189号-2</div> Copyright © 2021-2022 Super2021.
-      </router-link>
+      <a href="https://beian.miit.gov.cn"  target="_blank">
+        京ICP备2022007189号-2 <div class="beian_text">Copyright © 2021-2022 Super2021.</div>
+      </a>
       <!-- <div class="beian_text">Copyright © 2021-2022 Super2021.</div> -->
       <div class="beian_text">All Rights Reserved. Super2021 版权所有</div>
     </div>
@@ -2617,7 +2617,7 @@ export default {
 }
 .beian_text {
   color: grey;
-  margin: 5px 0 5px 0;
+  margin: 10px 0 0px 0;
   align-content: center;
 }
 </style>
