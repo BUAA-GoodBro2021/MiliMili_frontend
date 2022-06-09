@@ -9,7 +9,7 @@
               v-for="(item, index) in VideoArraySelected"
               :key="index"
               class="video"
-              style="margin-left: 30px; margin-top: 20px"
+              style="margin-left: 15px; margin-top: 20px"
             >
               <Video :singleVideo="item" />
             </div>
@@ -19,11 +19,11 @@
               hide-on-single-page
               background
               :page-size="pagesize"
-              :page-sizes="[1, 2, 3, 4, 5, 6]"
+              :page-sizes="[1, 2, 3, 4, 5, 6, 7, 8]"
               layout="prev, pager, next"
               :total="VideoArray.length"
               @current-change="topicInit"
-              style="float: right; margin-bottom: 10px;"
+              style="float: right; margin-bottom: 10px"
             >
             </el-pagination>
           </div></div
@@ -111,11 +111,13 @@ export default {
       len: 0,
       user: {},
       VideoArraySelected: [],
-      pagesize: 6,
+      pagesize: 8,
     };
   },
   created() {
     var that = this;
+    this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     this.$axios({
       method: "post",
       url: "https://milimili.super2021.com/api/user/video-list",
@@ -129,24 +131,29 @@ export default {
       .then((res) => {
         console.log(res);
         console.log(res.data.video_list);
-        that.VideoArray = res.data.video_list;
-        console.log(this.VideoArray);
-        that.len = this.VideoArray.length;
-        console.log(that.len);
-        that.user = res.data.user;
+        if (res.data.result == 1) {
+          this.$message.success("获取成功！");
+          that.VideoArray = res.data.video_list;
+          that.len = this.VideoArray.length;
+          that.user = res.data.user;
+          this.$showLoading.hide();
+        } else {
+          this.$message.error("获取失败！");
+        }
       })
       .catch((err) => {
         console.log(err);
+        this.$message.error("网络错误！");
       });
   },
   mounted() {
-    this.pagesize = 6 < this.VideoArray.length ? 6 : this.VideoArray.length;
+    this.pagesize = 8 < this.VideoArray.length ? 8 : this.VideoArray.length;
     this.topicInit(1);
   },
   watch: {
     VideoArray(newName, oldName) {
       //异步问题的解决
-      this.pagesize = 6 < newName.length ? 6 : newName.length;
+      this.pagesize = 8 < newName.length ? 8 : newName.length;
       this.topicInit(1);
     },
   },

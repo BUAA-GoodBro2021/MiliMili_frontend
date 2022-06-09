@@ -316,6 +316,7 @@ export default {
   },
   created() {
     var id = this.$route.params.id;
+    console.log('跳转到别人的主页：'+id)
     var that = this;
     if (this.$route.params.id == null) {
       this.$axios({

@@ -9,7 +9,7 @@
               v-for="(item, index) in VideoArraySelected"
               :key="index"
               class="video"
-              style="margin-left: 30px; margin-top: 10px"
+              style="margin-left: 15px; margin-top: 10px"
             >
               <Video :singleVideo="item" />
             </div>
@@ -19,11 +19,11 @@
               hide-on-single-page
               background
               :page-size="pagesize"
-              :page-sizes="[1, 2, 3, 4, 5, 6]"
+              :page-sizes="[1, 2, 3, 4, 5, 6, 7, 8]"
               layout="prev, pager, next"
               :total="VideoArray.length"
               @current-change="topicInit"
-              style="float: right;margin-bottom: 10px;"
+              style="float: right; margin-bottom: 10px"
             >
             </el-pagination>
           </div></div
@@ -108,6 +108,8 @@ export default {
   },
   created() {
     //在登陆的情况下 如果id与登录id一样 就跳转到个人主页
+    this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     var id = this.$route.params.id;
     var that = this;
     this.$axios({
@@ -128,19 +130,20 @@ export default {
         that.len = this.VideoArray.length;
         console.log(that.len);
         that.user = res.data.user;
+        this.$showLoading.hide();
       })
       .catch((err) => {
         console.log(err);
       });
   },
   mounted() {
-    this.pagesize = 6 < this.VideoArray.length ? 6 : this.VideoArray.length;
+    this.pagesize = 8 < this.VideoArray.length ? 8 : this.VideoArray.length;
     this.topicInit(1);
   },
   watch: {
     VideoArray(newName, oldName) {
       //异步问题的解决
-      this.pagesize = 6 < newName.length ? 6 : newName.length;
+      this.pagesize = 8 < newName.length ? 8 : newName.length;
       this.topicInit(1);
     },
   },

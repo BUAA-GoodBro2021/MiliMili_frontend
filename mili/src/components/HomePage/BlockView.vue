@@ -30,7 +30,7 @@
       </div>
       <div class="sort" v-else>
         <Sort
-          :sortedvideos="blockContent.rank_list[0]"
+          :sortedvideos="blockContent.rank_list"
           sortTitle="排行榜"
           :sortType="1"
           :block_id="blockContent.id"

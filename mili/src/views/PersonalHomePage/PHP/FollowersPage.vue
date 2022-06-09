@@ -21,6 +21,8 @@ export default {
   methods: {},
   mounted() {
     //要么是个人主页 要么是其他人的主页
+      this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     if (this.$route.params.id == null) {
       //个人主页的列表 必定有jwt
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
@@ -34,7 +36,9 @@ export default {
       })
         .then((res) => {
           if (res.data.result == 1) {
+            this.$showLoading.hide();
             this.users = res.data.fan_list;
+            console.log('粉丝列表:'+res.data)
           } else {
             this.$message({
               type: "error",

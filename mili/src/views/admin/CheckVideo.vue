@@ -12,10 +12,10 @@
           <div class="empty" v-if="videos.length == 0">
             <span class="empty_title"> 没视频捏</span>
           </div>
-          <div class="list_box"  v-else>
-          <div class="list_wrap">
-            <ComplainVideoList :videos="videos" :pageSize="5" :type="1" />
-          </div>
+          <div class="list_box" v-else>
+            <div class="list_wrap">
+              <ComplainVideoList :videos="videos" :pageSize="5" :type="1" v-on:ReCheck="ReCheck" />
+            </div>
           </div>
         </el-tab-pane>
         <el-tab-pane label="投诉视频" name="2">
@@ -23,14 +23,14 @@
             <span class="empty_title"> 没视频捏</span>
           </div>
           <div class="list_box" v-else>
-          <div class="list_wrap" >
-            <ComplainVideoList
-              :videos="videoComplain"
-              :pageSize="3"
-              :type="2"
-              v-on:Delete="Delete"
-            />
-          </div>
+            <div class="list_wrap">
+              <ComplainVideoList
+                :videos="videoComplain"
+                :pageSize="3"
+                :type="2"
+                v-on:Delete="Delete"
+              />
+            </div>
           </div>
         </el-tab-pane>
         <el-tab-pane label="待审核视频" name="3">
@@ -49,9 +49,7 @@
                 "还要审核" + videoDetail.length + "个视频就下班啦！"
               }}</span>
             </div>
-            <div id="video_detail">
-              
-            </div>
+            <div id="video_detail"></div>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -104,7 +102,7 @@ export default {
         data: qs.stringify({
           JWT: jwt,
           video_id: this.videoDetail[0].id,
-          success: 1
+          success: 1,
         }),
         url: "/super_admin/audit-video",
         headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -137,7 +135,7 @@ export default {
         data: qs.stringify({
           JWT: jwt,
           video_id: this.videoDetail[0].id,
-          success: 0
+          success: 0,
         }),
         url: "/super_admin/audit-video",
         headers: { "content-type": "application/x-www-form-urlencoded" },
@@ -170,7 +168,7 @@ export default {
         method: "post",
         data: qs.stringify({
           JWT: jwt,
-          complain_id: val.id, 
+          complain_id: val.id,
           success: val.success,
         }),
         url: "/super_admin/verify-complain-video",
@@ -210,11 +208,15 @@ export default {
         this.initPlayer(this.videoSingle.video_url);
       }
     },
+    ReCheck(val) {
+      //详情见card
+     this.getVideoList(0)
+    },
     //所有视频
     getVideoList(val) {
       //TODO
       this.$showLoading.show(document.body);
-    //this.$showLoading.hide();
+      //this.$showLoading.hide();
       var _this = this;
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
@@ -251,6 +253,8 @@ export default {
     },
     //待审核视频与被投诉的视频
     getVideoDetail(val) {
+      this.$showLoading.show(document.body);
+      //this.$showLoading.hide();
       var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
       this.$axios({
         method: "post",
@@ -261,9 +265,10 @@ export default {
         headers: { "content-type": "application/x-www-form-urlencoded" },
       })
         .then((res) => {
+          this.$showLoading.hide();
           if (res.data.result == 1) {
             this.videoDetail = res.data.video_audit_list;
-            if (this.videoDetail.length != 0 && this.activeName == '3')
+            if (this.videoDetail.length != 0 && this.activeName == "3")
               this.initPlayer(this.videoDetail[0].video_url);
             this.videoComplain = res.data.video_complain_list;
             if (val == 1) {
@@ -288,7 +293,7 @@ export default {
     },
     handleClick(tab, event) {
       var wrap = document.getElementById("video_detail");
-      console.log(wrap)
+      console.log(wrap);
       if (tab.name == "1") {
         console.log("change to one");
         if (document.getElementById("vs") != null) {
@@ -334,7 +339,7 @@ export default {
   padding: 30px 0 30px 0;
   height: 20vh;
 }
-.list_box{
+.list_box {
   width: 100%;
   display: flex;
   justify-content: center;

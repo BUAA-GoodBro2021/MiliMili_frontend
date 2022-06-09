@@ -3,7 +3,7 @@
     <div class="empty" v-if="users.length == 0">
       <span class="empty_title"> 空空如也orz</span>
     </div>
-    <div class="list_wrap">
+    <div class="list_wrap" v-if="users.length != 0">
       <PersonList
         :users="users"
         :listType="4"
@@ -32,6 +32,8 @@ export default {
     },
   },
   mounted() {
+     this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     var id = this.$route.params.id;
     this.$axios({
       method: "post",
@@ -50,6 +52,7 @@ export default {
             message: "请求出错QAQ",
           });
         }
+        this.$showLoading.hide();
       })
       .catch((err) => {
         this.$message({

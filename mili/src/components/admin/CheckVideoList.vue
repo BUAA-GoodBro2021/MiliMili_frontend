@@ -9,7 +9,9 @@
             :description="type == 1 ? null : item.complain_detail.description"
             :title="type == 1 ? null : item.complain_detail.title"
             :type="type"
+            :complain_id="type == 1 ? null : item.complain_detail.id"
             v-on:Delete="Delete"
+            v-on:ReCheck="ReCheck"
           />
         </div>
       </div>
@@ -123,6 +125,11 @@ export default {
       //详情见card
       console.log("checklist_delete" + val);
       this.$emit("Delete", val);
+    },
+    ReCheck(val) {
+      //详情见card
+      console.log("NormalVideoReCheck");
+      this.$emit("ReCheck");
     },
   },
   created() {

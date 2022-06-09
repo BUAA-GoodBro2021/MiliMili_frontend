@@ -282,10 +282,8 @@ export default {
         });
         return;
       }
-      let loadingInstance = this.$loading({
-        target: "#main-body",
-        fullscreen: true,
-      });
+      this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
       localStorage.removeItem("searchContent");
       localStorage.setItem("searchContent", this.searchContent);
       var that = this;
@@ -293,7 +291,7 @@ export default {
         .all([that.getVideos(order), that.getUsers(order)])
         .then(
           this.$axios.spread(function (res1, res2) {
-            loadingInstance.close()
+            that.$showLoading.hide();
             console.log(res1);
             console.log(res2);
             if (res1.data.result != 1 || res2.data.result != 1) {
