@@ -43,7 +43,7 @@
                     style="margin-left: 10px; margin-top: 10px"
                     :command="itemP.id"
                     class="favPBBox">
-                      <a :href="itemP.video_url" v-text="itemP.title" class="favPB"></a>
+                      <a :href="'/videodetail/'+itemP.id" v-text="itemP.title" class="favPB"></a>
                     </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown> 
