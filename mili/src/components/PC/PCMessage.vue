@@ -16,6 +16,7 @@
             v-for="(item, index) in replayssSelected"
             :key="index"
             style="margin-left: 10px; margin-top: 10px"
+            @click="open(item)"
           >
             <div class="mmm">
               <MsgBox :msg="item" />
@@ -50,6 +51,7 @@
             v-for="(item, index) in likesSelected"
             :key="index"
             style="margin-left: 10px; margin-top: 10px"
+            @click="open(item)"
           >
             <div class="mmm">
               <MsgBox :msg="item" />
@@ -84,6 +86,7 @@
             v-for="(item, index) in collectsSelected"
             :key="index"
             style="margin-left: 10px; margin-top: 10px"
+            @click="open(item)"
           >
             <div class="mmm">
               <MsgBox :msg="item" />
@@ -118,6 +121,7 @@
             v-for="(item, index) in sysmsgSelected"
             :key="index"
             style="margin-left: 10px; margin-top: 10px"
+            @click="open(item)"
           >
             <div class="mmm">
               <MsgBox :msg="item" />
@@ -187,6 +191,7 @@
             v-for="(item, index) in fansSelected"
             :key="index"
             style="margin-left: 10px; margin-top: 10px"
+            @click="open(item)"
           >
             <div class="mmm">
               <MsgBox :msg="item" />

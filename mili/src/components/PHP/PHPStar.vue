@@ -80,6 +80,8 @@ export default {
   },
   created() {
     var that = this;
+    this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     this.$axios({
       method: "post",
       url: "https://milimili.super2021.com/api/video/favorite-list",
@@ -95,6 +97,7 @@ export default {
         console.log(res.data.favorite_list_detail);
         that.AllStars = res.data.favorite_list_detail;
         that.user = res.data.user;
+        this.$showLoading.hide();
       })
       .catch((err) => {
         console.log(err);

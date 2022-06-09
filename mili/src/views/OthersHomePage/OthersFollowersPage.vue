@@ -20,6 +20,8 @@ export default {
   },
   methods: {},
   mounted() {
+    this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     var id = this.$route.params.id;
     this.$axios({
       method: "post",
@@ -32,12 +34,15 @@ export default {
       .then((res) => {
         if (res.data.result == 1) {
           this.users = res.data.fan_list;
+          console.log("他人主页粉丝列表:" );
+          console.log(res.data.fan_list)
         } else {
           this.$message({
             type: "error",
             message: "请求出错QAQ",
           });
         }
+        this.$showLoading.hide();
       })
       .catch((err) => {
         this.$message({

@@ -27,7 +27,7 @@
                 style="cursor: pointer; width: 70px"
                 @click="Delete(0)"
                 v-if="type == 2"
-                ><i class="el-icon-delete" /> 通过</el-tag
+                ><i class="el-icon-success" /> 通过</el-tag
               >
             </li>
           </ul>
@@ -144,22 +144,28 @@ export default {
         return 1;
       },
     },
+    complain_id:{
+      type: Number,
+      default() {
+        return 1;
+      },
+    }
   },
   methods: {
     Delete(val) {
-      ///val是0 表示投诉不通过 视频正常 否则是通过 转到审核列表
+      ///val是0 表示投诉不通过 视频恢复正常 否则是通过 转到审核列表
       console.log("Delete");
       var data =
         val == 0
           ? {
               success: 0,
-              id: this.video.id,
+              id: this.complain_id,
             }
           : {
               success: 1,
-              id: this.video.id,
+              id: this.complain_id,
             };
-      this.$emit("Delete", this.video.id);
+      this.$emit("Delete", data);
     },
     ReCheck() {
       //投诉视频的重申 就是success为1 投诉通过
@@ -183,6 +189,7 @@ export default {
               type: "success",
               message: "重置成功！",
             });
+            this.$emit("ReCheck");
           } else {
             this.$message({
               type: "error",

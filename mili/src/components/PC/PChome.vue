@@ -3,36 +3,28 @@
     <el-card class="data-card">
       <div slot="header" class="clearfix">
         <el-tabs v-model="activeName" @tab-click="handleClick()">
-          <el-tab-pane label="视频数据" name="first">
+          <el-tab-pane label="我的数据" name="first">
             <div>
               <div class="VDBox">
                 <div class="VideoData">
-                  <p>
-                    <a href="#" class="aData">
-                      <span class="icomoon"></span> 净增粉丝>
-                    </a>
-                  </p>
-                  <p v-text="fansNum"></p>
+                  <p><span class="icomoon"></span> 粉丝</p>
+                  <p v-text="user.fan_num"></p>
                 </div>
               </div>
               <div class="VDBox">
                 <div class="VideoData">
-                  <p>
-                    <a href="#" class="aData">
-                      <span class="icomoon"></span> 播放量>
-                    </a>
-                  </p>
-                  <p v-text="playNum"></p>
+                  <p><span class="icomoon"></span> 关注</p>
+                  <p v-text="user.follow_num"></p>
                 </div>
               </div>
               <div class="VDBox">
                 <div class="VideoData">
                   <p>
                     <span style="color: #666">
-                      <span class="icomoon"></span> 评论</span
+                      <span class="icomoon"></span> 收藏</span
                     >
                   </p>
-                  <p v-text="commentNum"></p>
+                  <p v-text="user.favorite_num"></p>
                 </div>
               </div>
             </div>
@@ -44,17 +36,17 @@
                       <span class="icomoon"></span> 点赞</span
                     >
                   </p>
-                  <p v-text="likeNum"></p>
+                  <p v-text="user.like_num"></p>
                 </div>
               </div>
               <div class="VDBox">
                 <div class="VideoData">
                   <p>
                     <span style="color: #666">
-                      <span class="icomoon"></span> 分享</span
+                      <span class="icomoon"></span> 视频</span
                     >
                   </p>
-                  <p v-text="shareNum"></p>
+                  <p v-text="user.video_num"></p>
                 </div>
               </div>
               <div class="VDBox">
@@ -64,73 +56,7 @@
                       <span class="icomoon"></span> 收藏</span
                     >
                   </p>
-                  <p v-text="starNum"></p>
-                </div>
-              </div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="专栏数据" name="second">
-            <div>
-              <div class="VDBox">
-                <div class="VideoData">
-                  <p>
-                    <a href="#" class="aData">
-                      <span class="icomoon"></span> 粉丝数>
-                    </a>
-                  </p>
-                  <p v-text="allFansNum"></p>
-                </div>
-              </div>
-              <div class="VDBox">
-                <div class="VideoData">
-                  <p>
-                    <span style="color: #666">
-                      <span class="icomoon"></span> 阅读量
-                    </span>
-                  </p>
-                  <p v-text="readNum"></p>
-                </div>
-              </div>
-              <div class="VDBox">
-                <div class="VideoData">
-                  <p>
-                    <span style="color: #666">
-                      <span class="icomoon"></span> 评论数
-                    </span>
-                  </p>
-                  <p v-text="allCommentNum"></p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="VDBox">
-                <div class="VideoData">
-                  <p>
-                    <span style="color: #666">
-                      <span class="icomoon"></span> 点赞数</span
-                    >
-                  </p>
-                  <p v-text="allLikeNum"></p>
-                </div>
-              </div>
-              <div class="VDBox">
-                <div class="VideoData">
-                  <p>
-                    <span style="color: #666">
-                      <span class="icomoon"></span> 分享数</span
-                    >
-                  </p>
-                  <p v-text="allShareNum"></p>
-                </div>
-              </div>
-              <div class="VDBox">
-                <div class="VideoData">
-                  <p>
-                    <span style="color: #666">
-                      <span class="icomoon"></span> 收藏数</span
-                    >
-                  </p>
-                  <p v-text="allStarNum"></p>
+                  <p v-text="user.collect_num"></p>
                 </div>
               </div>
             </div>
@@ -142,28 +68,41 @@
 </template>
 
 <script>
+import qs from "qs";
 export default {
   data() {
     return {
       activeName: "first",
-      fansNum: 0,
-      playNum: 0,
-      commentNum: 0,
-      starNum: 0,
-      likeNum: 0,
-      shareNum: 0,
-      allFansNum: 0,
-      readNum: 0,
-      allCommentNum: 0,
-      allLikeNum: 0,
-      allShareNum: 0,
-      allStarNum: 0,
+      user: {},
+      jwt: JSON.parse(localStorage.getItem("loginMessage")).JWT,
     };
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+  },
+  created() {
+    var that = this;
+    this.$axios({
+      method: "post",
+      url: "https://milimili.super2021.com/api/user/all-list",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      data: qs.stringify({
+        JWT: that.jwt,
+      }),
+    })
+      .then((res) => {
+        console.log("user");
+        console.log(res);
+        console.log(res.data.user);
+        that.user = res.data.user;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>

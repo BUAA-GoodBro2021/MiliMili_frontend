@@ -78,6 +78,8 @@ export default {
     };
   },
   created() {
+      this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     var id = this.$route.params.id;
     var that = this;
     this.$axios({
@@ -95,6 +97,7 @@ export default {
         console.log(res.data.favorite_list_detail);
         that.AllStars = res.data.favorite_list_detail;
         that.user = res.data.user;
+        this.$showLoading.hide();
       })
       .catch((err) => {
         console.log(err);

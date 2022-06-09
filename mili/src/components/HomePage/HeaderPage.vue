@@ -43,7 +43,7 @@
         router
         :ellipsis="false"
       >
-        <el-menu-item index="/PCMessage">
+        <el-menu-item index="/admin">
           <div
             class="message jump"
             :class="[headerMode ? 'text-transparent' : '']"
@@ -184,12 +184,13 @@ export default {
       console.log(oldName + "->" + newName);
       console.log(this.$route.name);
     },
-    "$route.name": {
+    "$route": {
       handler() {
-        console.log("pageheader route change");
+        // console.log("pageheader route change");
         this.getHistory();
       },
       immediate: true,
+      deep: true,
     },
   },
   created() {
