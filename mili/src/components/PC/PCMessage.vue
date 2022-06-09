@@ -402,6 +402,7 @@ export default {
       this.$alert(item.content, item.title, {
         confirmButtonText: "朕阅读啦",
         dangerouslyUseHTMLString: true,
+        customClass: 'custom-alert-class'
       });
       var that = this;
       this.$axios({
@@ -506,7 +507,16 @@ export default {
 };
 </script>
 
+<style>
+.custom-alert-class{
+  /* VERY_IMPORTANT  FIX SIRI BUG  这里的两句话是为了防止超长的单个单词溢出文本框 */
+  hyphens: auto;
+  word-break: break-all;
+}
+</style>
+
 <style scoped>
+
 .empty_title {
   font-size: 25px;
   color: grey;
@@ -523,12 +533,10 @@ export default {
   left: 53vh;
   top: 11.4vh;
 }
-.tabs .pagination_personPage{
+.pagination_personPage{
   margin-top: 15px;
-  /* VERY_IMPORTANT 这里的两句话是为了防止超长的单个单词溢出文本框 */
-  hyphens: auto;
-  word-break: break-all;
 }
+
 .TabTitle {
   height: 6vh;
   background-color: #fff;
