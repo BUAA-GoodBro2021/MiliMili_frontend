@@ -21,7 +21,7 @@
                 <div class="VideoData">
                   <p>
                     <span style="color: #666">
-                      <span class="icomoon"></span> 收藏</span
+                      <span class="icomoon"></span> 收藏夹</span
                     >
                   </p>
                   <p v-text="user.favorite_num"></p>

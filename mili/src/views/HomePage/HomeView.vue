@@ -23,7 +23,7 @@
           </div>
           <div class="block_others">
             <div class="card c1">
-              <router-link to="/upload" style="text-decoration: none">
+              <router-link to="/PCUpload" style="text-decoration: none">
                 <i class="el-icon-upload iconImg t1" />
                 <span class="text t1"> 上传视频</span>
               </router-link>

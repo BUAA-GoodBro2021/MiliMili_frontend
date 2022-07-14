@@ -15,7 +15,9 @@ export default {
   components: { PersonList },
   data() {
     return {
-      users: [],
+      users: [
+        
+      ],
     };
   },
   methods: {},

@@ -130,7 +130,7 @@ export default {
       isAdmin: false,
       inputContext: "",
       islogin: localStorage.getItem("loginMessage") != null,
-      notRead: true,
+      notRead: false,
       focusFlag: false,
       history_list: null,
     };
@@ -151,7 +151,6 @@ export default {
         });
         return;
       }
-      localStorage.removeItem("searchContent"); //每次搜索到结果之后将旧的搜索结果删除存入新的搜索结果
       localStorage.setItem("searchContent", this.inputContext);
       this.$router.push("/search");
     },
@@ -178,6 +177,22 @@ export default {
         console.log("是否含有未读消息:" + res.data.not_read);
       });
     },
+    getNotRead(){
+      if (this.islogin)
+        var jwt = JSON.parse(localStorage.getItem("loginMessage")).JWT;
+      else var jwt = null;
+       this.$axios({
+        method: "post",
+        data: qs.stringify({
+          JWT: jwt,
+        }),
+        url: "/sending/message/not-read",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      }).then((res) => {
+        this.notRead = res.data.not_read;
+        console.log("是否含有未读消息:" + res.data.not_read);
+      });
+    }
   },
   watch: {
     headerMode(newName, oldName) {
@@ -187,7 +202,7 @@ export default {
     "$route": {
       handler() {
         // console.log("pageheader route change");
-        this.getHistory();
+        this.getNotRead();
       },
       immediate: true,
       deep: true,

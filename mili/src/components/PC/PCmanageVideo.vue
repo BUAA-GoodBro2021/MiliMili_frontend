@@ -251,6 +251,8 @@ export default {
 
     },
     getVideo(){
+              this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
        var that = this;
     this.$axios({
       method: "post",
@@ -263,6 +265,7 @@ export default {
       }),
     })
       .then((res) => {
+        this.$showLoading.hide();
         console.log(res);
         console.log(res.data.video_list);
         that.VideoArrayMain = res.data.video_list;

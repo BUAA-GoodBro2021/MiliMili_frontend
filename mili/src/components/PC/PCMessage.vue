@@ -366,6 +366,8 @@ export default {
     };
   },
   created() {
+    this.$showLoading.show(document.body);
+    //this.$showLoading.hide();
     var that = this;
     this.$axios({
       method: "post",
@@ -378,6 +380,7 @@ export default {
       }),
     })
       .then((res) => {
+        this.$showLoading.hide();
         console.log(res);
         console.log(res.data);
         that.replayss = res.data.message_reply;
