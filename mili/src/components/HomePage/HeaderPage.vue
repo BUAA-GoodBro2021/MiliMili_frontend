@@ -3,7 +3,7 @@
     <div :class="[headerMode ? 'header-transparent' : 'header']">
       <router-link to="/homepage">
         <img
-          src="@/assets/logo/logo.png"
+          src="../../assets/logo/logo.png"
           width="150px"
           height="61px"
           style="margin-right: 16vw; margin-left: 100px"
