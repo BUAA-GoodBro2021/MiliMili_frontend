@@ -490,7 +490,8 @@
       </div>
 
       <!-- 收藏悬浮窗口 -->
-      <div class="bili-dialog-m" 
+      <div 
+        class="bili-dialog-m" 
         v-if="showTheCollectionWindow === true" 
         @click.self="closeCollectionWindow"
       >
