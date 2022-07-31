@@ -976,6 +976,8 @@ export default {
           this.isLogined = true;
         }else {
           this.$message.warning("请先登录！");
+          // VERY IMPORTANT 
+          // 使用this.$router.push进行页面上router-view组件的路由替换；
           this.$router.push('/login');
           // 清空本地临时弹幕文本
           this.danmuText = '';
@@ -2077,6 +2079,7 @@ export default {
 }
     
 /**
+VERY IMPORTANT
 希望项目排在一行里，但是项目的宽度又不被压缩，那么我们应该给项目设置 flex:none，使项目不能被压缩或放大
 我们接触到的属性，justify-content、align-items、flex-wrap，都是设置在 flex 容器上的。
 但是这个控制项目是否被压缩或放大的属性，是设置在 flex 项目上的。
@@ -2864,7 +2867,7 @@ export default {
     color: #74797A;
 } */
 
-/*一级/二级评论的昵称(由于都在.comment-right 下，直接复用) 通过路由点击事件 跳转个人空间的样式  */
+/* VERY IMPORTANT 一级/二级评论的昵称(由于都在.comment-right 下，直接复用) 通过路由点击事件 跳转个人空间的样式  */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name-jump-space {
   font-size: 14px;
   font-weight: bold;
@@ -2875,14 +2878,14 @@ export default {
   color: #00a1d6;
   cursor: pointer;
 }
+/* VERY IMPORTANT 
+发现一个可以设置router-link的hover样式的方法，
+router-link默认自己之后会转化为一个a标签，那么就直接在对应的div下设置a:hover就可以了 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .name-jump-space a:hover {
     color: #00a1d6;
     cursor: pointer;  
 }
-/* .router-active-class-1{
-    color: #00a1d6;
-    cursor: pointer;
-} */
+
 
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .time {
   font-size: 12px;
@@ -2953,44 +2956,17 @@ export default {
 }
 
 /* 单条 二级评论 的头像 */
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-avatar {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-avatar {
   width: 30px;
   height: 30px;
   display: block;
   border-radius: 50%;
 }
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-avatar:hover {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-avatar:hover {
   cursor: pointer;
 }
 
-.video-detail-wrap
-  .video-content
-  .content-left
-  .comment-wrap
-  .comment-list
-  .comment-item
-  .comment-in
-  .comment-right
-  .child-comments
-  .child-user-info {
+.video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info {
   margin-left: 10px;
 }
 
@@ -3022,7 +2998,7 @@ export default {
     hyphens: auto;
     word-break: break-all;
 }
-/* 二级评论 回复的用户的昵称 通过路由点击事件 跳转个人空间的样式  */
+/* VERY IMPORTANT 二级评论 回复的用户的昵称 通过路由点击事件 跳转个人空间的样式  */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name {
     margin-right: 5px;
 }
@@ -3030,6 +3006,9 @@ export default {
   color: #f25d8e;
   cursor: pointer;
 }
+/* VERY IMPORTANT 
+发现一个可以设置router-link的hover样式的方法，
+router-link默认自己之后会转化为一个a标签，那么就直接在对应的div下设置a:hover就可以了 */
 .video-detail-wrap .video-content .content-left .comment-wrap .comment-list .comment-item .comment-in .comment-right .child-comments .child-user-info .child-comment-info .child-comment .reply-name a:hover {
     color: #f25d8e;
     cursor: pointer;
