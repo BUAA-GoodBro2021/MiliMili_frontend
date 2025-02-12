@@ -3138,6 +3138,8 @@ router-link默认自己之后会转化为一个a标签，那么就直接在对�
     max-height: 300px;
     padding-bottom: 14px;
 }
+
+            /* #region 收藏列表样式 */
 .collection-m .content .group-list ul{
     position: relative;
     margin-top: 24px;
@@ -3201,6 +3203,7 @@ router-link默认自己之后会转化为一个a标签，那么就直接在对�
     color: #6d757a;
     font-size: 12px;
 }
+            /* #endregion */
 
 .collection-m .content .group-list .add-group {
   /* margin-bottom: 5px; */
@@ -3249,6 +3252,7 @@ router-link默认自己之后会转化为一个a标签，那么就直接在对�
     background: transparent;
     color: #18191C;
 }
+
 .collection-m .content .group-list .add-group .input-group .submit-collection-btn{
     float: right;
     height: 34px;
